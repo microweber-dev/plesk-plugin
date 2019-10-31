@@ -1,0 +1,90 @@
+<?php
+// Copyright 1999-2017. Plesk International GmbH.
+?>
+<?php echo $this->renderTabs($this->tabs); ?>
+
+<h3>Choose installation options</h3>
+<b>Random values will be generated if fields are left blank.</b>
+
+<br />
+<br />
+
+<?php echo $this->form; ?>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script>
+$.noConflict();
+jQuery(document).ready(function($) {
+	
+	 $(document).keyup('#installation_folder', function() { 
+        if ($('#installation_folder').val().match(/[^a-zA-Z0-9 ]/g)) {
+             $('#installation_folder').val($('#installation_folder').val().replace(/[^a-zA-Z0-9 ]/g, ''));
+        }
+        // console.log($('#installation_folder').val());
+     });
+	
+	$('#installation_domain').after(' / <input type="text" name="installation_folder" id="installation_folder" value="microweber" class="input-text">');
+
+	
+	var show_password = '&nbsp; <a class="toggle-password">Show</a>';
+	$('#installation_password').after(show_password);
+
+	$('.toggle-password').click(function() {
+		if ($(".toggle-password").text() == 'Show') {
+			$('.toggle-password').html('Hide');
+			$('#installation_password').attr('type', 'text');
+		} else {
+			$('.toggle-password').html('Show');
+			$('#installation_password').attr('type', 'password');
+		}
+	}); 
+	
+	$('#installation_domain-form-row').after('<div class="domain-message"></div>');
+	
+	$('#installation_folder').keyup(function() {
+		checkInstallPath();
+	});
+	
+	$('#installation_domain').change(function() {
+		checkInstallPath();
+	});
+	
+	function checkInstallPath() { 
+		 
+		$('#pm-form-simple').find('.domain-message').html('');
+		
+		$.ajax({
+			url:"check_install_path", 
+			data: $("#pm-form-simple").serialize(),
+			dataType: "json"
+		}).done(function(result) {
+
+			warning_html = false;
+
+			if (result.found_app) {
+				warning_html = ''+
+				'<div  style="background: #fff7eb;padding: 15px;">'+
+				'<span>'+
+				'Microweber is already installed on the target. <br />If you proceed with installing, '+
+				'this Microweber installation will be overwritten. Overwrite instance on target?'+
+				'</span>'+
+				'</div>';
+			} else if (result.found_thirdparty_app) { 
+				warning_html = ''+
+					'<div  style="background: #fff7eb;padding: 15px;">'+
+					'<span>'+
+					'Some files exists on the target. <br />If you proceed with installing, '+
+					'this Microweber installation will be overwritten. Overwrite instance on target?'+
+					'</span>'+
+					'</div>';
+			}
+			
+			if (warning_html) {
+				$('#pm-form-simple').find('.domain-message').html('<div class="form-row"><div class="field-name"></div><div class="field-value">'+warning_html+'</div></div>');
+			}
+		});
+	}
+
+	checkInstallPath();
+});
+</script>

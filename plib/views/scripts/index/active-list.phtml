@@ -1,0 +1,152 @@
+<?php
+// Copyright 1999-2017. Plesk International GmbH.
+?>
+<?php echo $this->renderTabs($this->tabs); ?>
+
+    <h3><?php echo pm_Locale::lmsg('activeListHeader'); ?></h3>
+<?php echo $this->activeList([
+    'layout' => [
+        'type' => pm_View_Helper_ActiveList::LAYOUT_RESPONSIVECOLUMN,
+        'stretched' => true,
+        'columns' => 'xl-2 xxl-3',
+    ],
+    'locale' => [
+        'noObjects' => 'No items',
+    ],
+    'data' => [
+        [
+            'id' => 'container-1',
+            'icon' => pm_Context::getBaseUrl() . 'images/databases.png',
+            'title' => pm_Locale::lmsg('service1Title'),
+            'labels' => [[
+                'value' => pm_Locale::lmsg($this->itemStatus == 'started' ? 'status1Title' : 'status2Title'),
+                'type' => $this->itemStatus == 'started' ? 'success' : 'inactive',
+            ]],
+            'primaryActions' => [
+                [
+                    'title' => 'primary action1',
+                    'link' => pm_Context::getActionUrl('index', 'list') . '/id/list',
+                ],
+            ],
+            'summary' => [
+                [
+                    'name' => pm_Locale::lmsg('param1Title'),
+                    'value' => 'Value 1',
+                ],
+                [
+                    'name' => pm_Locale::lmsg('param2Title'),
+                    'value' => 'Value 2',
+                ],
+            ],
+            'toolbar' => [
+                [
+                    'title' => pm_Locale::lmsg($this->itemStatus == 'started' ? 'action2Title' : 'action1Title'),
+                    'iconClass' => $this->itemStatus == 'started' ? 'icon-delete' : 'icon-start',
+                    'link' => pm_Context::getActionUrl('index', 'service1') . ($this->itemStatus == 'started' ? '/stop' : '/start'),
+                ],
+                [
+                    'title' => pm_Locale::lmsg('action3Title'),
+                    'iconClass' => 'icon-restart',
+                ],
+                [
+                    'title' => pm_Locale::lmsg('action2Title'),
+                    'iconClass' => 'icon-delete',
+                ]
+            ],
+            'services' => [
+                [
+                    'title' => pm_Locale::lmsg('NewService1'),
+                    'icon' => pm_Context::getBaseUrl() . 'images/file-manager.png',
+
+                    'link' => pm_Context::getActionUrl('index', 'form') . '/id/form',
+                    'toolbar' => [
+                        [
+                            'title' => pm_Locale::lmsg('toolbarTitle'),
+                            'link' => pm_Context::getActionUrl('index', 'form') . '/id/form',
+                        ],
+                    ],
+                ],
+            ],
+            'additionalHtml' => '<H3>' . pm_Locale::lmsg('htmlBlock') . '<H3>',
+            'actions' => [
+                [
+                    'title' => pm_Locale::lmsg('action5Title'),
+                    'icon' => pm_Context::getBaseUrl() . 'images/panel.png',
+                    'link' => pm_Context::getActionUrl('index', 'form') . '/id/form',
+                ],
+                [
+                    'title' => pm_Locale::lmsg('action6Title'),
+                    'icon' => pm_Context::getBaseUrl() . 'images/manage.png',
+                    'link' => pm_Context::getActionUrl('index', 'tools') . '/id/tools',
+                ],
+            ]
+        ],
+        [
+            'id' => 'container-2',
+            'icon' => pm_Context::getBaseUrl() . 'images/details.png',
+            'title' => pm_Locale::lmsg('service2Title'),
+            'labels' => [
+                [
+                    'value' => pm_Locale::lmsg('status2Title'),
+                    'type' => 'inactive',
+                ],
+                [
+                    'value' => pm_Locale::lmsg('status3Title'),
+                    'type' => 'warning',
+                ]
+            ],
+            'type' => 'danger',
+            'summary' => [
+                [
+                    'name' => pm_Locale::lmsg('param3Title'),
+                    'value' => 'Value 3',
+                ],
+            ],
+            'toolbar' => [
+                [
+                    'title' => pm_Locale::lmsg('action4Title'),
+                    'iconClass' => 'icon-start',
+                ],
+            ],
+            'services' => [
+                [
+                    'title' => pm_Locale::lmsg('NewService2'),
+                    'icon' => pm_Context::getBaseUrl() . 'images/file-manager.png',
+
+                    'link' => pm_Context::getActionUrl('index', 'form') . '/id/form',
+                    'messages' => [
+                        [
+                            'icon' => pm_Context::getBaseUrl() . 'images/appkey-ok.png',
+                            'info' => pm_Locale::lmsg('serviceMessage1') . ' <a href="#!">example</a>',
+                            'noEscape' => true,
+                        ],
+                    ],
+
+                ],
+            ],
+        ],
+        [
+            'id' => 'container-3',
+            'title' => pm_Locale::lmsg('service4Title'),
+            'labels' => [
+                [
+                    'value' => pm_Locale::lmsg('status4Title'),
+                    'type' => 'danger',
+                ]
+            ],
+            'type' => 'inactive',
+            'summary' => [
+                [
+                    'name' => pm_Locale::lmsg('param4Title'),
+                    'value' => 'Value 4',
+                ],
+            ],
+            'toolbar' => [
+                [
+                    'title' => pm_Locale::lmsg('action4Title'),
+                    'iconClass' => 'icon-start',
+                ],
+            ],
+        ],
+    ],
+]);

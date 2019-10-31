@@ -1,0 +1,6 @@
+{
+    "require-dev": {
+        "plesk/pm-api-stubs": "^17.0",
+        "phpstan/phpstan": "^0.11.16"
+    }
+}
