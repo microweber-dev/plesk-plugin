@@ -4,12 +4,9 @@
 class Modules_Microweber_Config
 {
 
-	public static function getModuleVarPath() {
-		return rtrim(pm_Context::getVarDir());
-	}
-	
-	public static function getAppSharedPath() {
-		return rtrim(self::getModuleVarPath() . 'latest/');
+	public static function getAppLatestVersionFolder()
+	{
+		return '/usr/share/microweber/latest';
 	}
 
 	public static function getPlanItems()

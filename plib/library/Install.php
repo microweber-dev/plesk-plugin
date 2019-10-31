@@ -14,7 +14,7 @@ class Modules_Microweber_Install {
     protected $_progressLogger = false;
     
     public function __construct() {
-    	$this->_appLatestVersionFolder = Modules_Microweber_Config::getAppSharedPath();
+    	$this->_appLatestVersionFolder = Modules_Microweber_Config::getAppLatestVersionFolder();
     }
     
     public function setProgressLogger($logger) {
@@ -67,29 +67,20 @@ class Modules_Microweber_Install {
 	    
         $this->setProgress(10);
         
-        $serverFileManager = new \pm_ServerFileManager();
         $fileManager = new \pm_FileManager($domain->getId());
         
 		$sslEmail = 'admin@microweber.com';
-		
-		$encryptOptions = [];
-		$encryptOptions[] = '--domain';
-		$encryptOptions[] = $domain->getName();
-		$encryptOptions[] = '--email';
-		$encryptOptions[] = $sslEmail;
-		  
-		/*
+		    
 		// Add SSL
 		try {
 			pm_Log::debug('Start installign SSL for domain: ' . $domain->getName() . '; SSL Email: ' . $sslEmail);
-			$artisan = \pm_ApiCli::call('extension', array_merge(['--exec', 'letsencrypt', 'cli.php'], $encryptOptions), \pm_ApiCli::RESULT_FULL);
+			$artisan = pm_ApiCli::callSbin('encrypt_domain.sh', [$domain->getName(), $sslEmail]);
 			pm_Log::debug('Encrypt domain log for: ' . $domain->getName() . '<br />' . $artisan['stdout']. '<br /><br />');
 			pm_Log::debug('Success instalation SSL for domain: ' . $domain->getName());
 		} catch(\Exception $e) {
 			pm_Log::debug('Can\'t install SSL for domain: ' . $domain->getName());
 			pm_Log::debug('Error: ' . $e->getMessage());
 		}
-		*/
 		
 		$this->setProgress(20);
 	    
@@ -180,22 +171,6 @@ class Modules_Microweber_Install {
         	$this->setProgress(75);
         	
         } else {
-        	
-        	$listOfAppFiles = $this->_getListOfAppFiles($serverFileManager);
-        	foreach($listOfAppFiles as $dirOrFile) {
-        		
-        		if ($serverFileManager->isDir($dirOrFile)) {
-        			$makeDir = str_replace($this->_appLatestVersionFolder, false, $dirOrFile);
-        			$fileManager->mkdir($domainDocumentRoot . '/' . $makeDir, '0755', true);
-        		}
-        		
-        	}
-        	
-        	
-        	echo 1;
-        	die();
-        	
-        	
         	pm_ApiCli::callSbin('rsync_two_dirs.sh', [$domain->getSysUserLogin(), $this->_appLatestVersionFolder . '/', $domainDocumentRoot]);
         	$this->setProgress(65);
         }
@@ -275,23 +250,6 @@ class Modules_Microweber_Install {
         	return array('success'=>false,'error'=>true, 'log'=> $e->getMessage());
         }
         
-    }
-    
-    private function _getListOfAppFiles($fileManager) {
-    	
-    	$iterator = new RecursiveIteratorIterator(
-    		new RecursiveDirectoryIterator($this->_appLatestVersionFolder, RecursiveDirectoryIterator::SKIP_DOTS),
-    		RecursiveIteratorIterator::SELF_FIRST,
-    		RecursiveIteratorIterator::CATCH_GET_CHILD // Ignore "Permission denied"
-    	);
-    	
-    	$pathsAndFiles = [];
-    	foreach ($iterator as $path=>$file) {
-    		$pathsAndFiles[] = $path;
-    	}
-    	
-    	return $pathsAndFiles;
-    	
     }
     
     private function _fixHtaccess($fileManager, $installPath)

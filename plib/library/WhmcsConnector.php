@@ -17,8 +17,8 @@ class Modules_Microweber_WhmcsConnector
         $whmcsJson['whmcs_url'] = pm_Settings::get('whmcs_url');
 
         $whmcsJson = json_encode($whmcsJson, JSON_PRETTY_PRINT);
-		
-        $whmFilePath = Modules_Microweber_Config::getAppSharedPath() . '/userfiles/modules/whmcs_connector/settings.json';
+
+        $whmFilePath = Modules_Microweber_Config::getAppLatestVersionFolder() . '/userfiles/modules/whmcs_connector/settings.json';
        
         $manager = new pm_ServerFileManager();
         $manager->filePutContents($whmFilePath, $whmcsJson);

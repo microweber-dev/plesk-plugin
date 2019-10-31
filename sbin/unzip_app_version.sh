@@ -2,27 +2,32 @@
 
 downloadUrl=$(echo "$1" | base64 -d)
 
-latestFolder=$2"/latest"
-if [ ! -d "$latestFolder" ]; then
-	mkdir -p "$latestFolder"
-fi
+downloadCacheFolder='/usr/share/'$2'-download-cache'
 
-downloadCacheFolder=$2"/cache"
 if [ ! -d "$downloadCacheFolder" ]; then
-	mkdir -p "$downloadCacheFolder"
+	mkdir "$downloadCacheFolder"
 fi
 
 cd "$downloadCacheFolder" || exit
 
-zipDownloadedFile="microweber-app.zip";
+zipDownloadedFile=$2'-app-cache.zip';
 
 echo 'Download from url...'
 wget "$downloadUrl" -O "$zipDownloadedFile"
 
 # Unzip selected version
 echo 'Unzip file...'
-unzip $2"/cache/"$zipDownloadedFile -d $2"/latest" > unziping-microweber-app.log
+unzip "$zipDownloadedFile" -d latest > unziping.log
 
-chmod 755 -R $2"/latest"
+if [ ! -d '/usr/share/'"$2" ]; then
+	echo 'Make dir /usr/share/'"$2"
+	mkdir '/usr/share/'"$2"
+fi
+
+echo 'Move file to /usr/share/'"$2"
+rsync -a latest /usr/share/"$2"
+rm -rf latest
+
+chmod 755 -R /usr/share/"$2"/latest
 
 echo "Done!"

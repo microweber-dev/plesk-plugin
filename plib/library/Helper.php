@@ -1,19 +1,9 @@
 <?php
-/**
- * @author Bozhidar Slaveykov
- * @email bobi@microweber.com
- * @site microweber.com
- */
+// Copyright 1999-2017. Parallels IP Holdings GmbH.
 
 class Modules_Microweber_Helper
 {
-	/**
-	 * Get random password
-	 *
-	 * @param number $length
-	 * @param boolean $complex
-	 * @return string
-	 */
+
 	public static function getRandomPassword($length = 16, $complex = false)
 	{
 		$alphabet = 'ghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
