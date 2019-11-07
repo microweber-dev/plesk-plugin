@@ -30,7 +30,7 @@ class Modules_Microweber_WhiteLabel
 		$whiteLabelSettings['logo_admin'] = pm_Settings::get('wl_logo_admin_panel');
 		$whiteLabelSettings['logo_live_edit'] = pm_Settings::get('wl_logo_live_edit_toolbar');
 		$whiteLabelSettings['logo_login'] = pm_Settings::get('wl_logo_login_screen');
-		$whiteLabelSettings['powered_by_link'] = pm_Settings::get('wl_hide_powered_by_link');
+		$whiteLabelSettings['powered_by_link'] = pm_Settings::get('wl_powered_by_link');
 		$whiteLabelSettings['disable_marketplace'] = pm_Settings::get('wl_disable_microweber_marketplace');
 		$whiteLabelSettings['disable_powered_by_link'] = pm_Settings::get('wl_hide_powered_by_link');
 		$whiteLabelSettings['enable_service_links'] = pm_Settings::get('wl_enable_support_links');
