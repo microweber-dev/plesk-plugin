@@ -121,10 +121,10 @@ class IndexController extends pm_Controller_Action {
     			'label' => 'Enable support links', 'value' => pm_Settings::get('wl_enable_support_links')
     		)
     	);
-    	$form->addElement('textarea', 'wl_powered_by', 
+    	$form->addElement('textarea', 'wl_powered_by_link', 
     		array(
     			'label' => 'Enter "Powered by" text', 
-    			'value' => pm_Settings::get('wl_powered_by'), 
+    			'value' => pm_Settings::get('wl_powered_by_link'), 
     			'rows' => 3
     		)
     	);
@@ -172,7 +172,7 @@ class IndexController extends pm_Controller_Action {
 	    		pm_Settings::set('wl_admin_login_url', $form->getValue('wl_admin_login_url'));
 	    		pm_Settings::set('wl_contact_page', $form->getValue('wl_contact_page'));
 	    		pm_Settings::set('wl_enable_support_links', $form->getValue('wl_enable_support_links'));
-	    		pm_Settings::set('wl_powered_by_link', $form->getValue('wl_powered_by'));
+	    		pm_Settings::set('wl_powered_by_link', $form->getValue('wl_powered_by_link'));
 	    		pm_Settings::set('wl_hide_powered_by_link', $form->getValue('wl_hide_powered_by_link'));
 	    		pm_Settings::set('wl_logo_admin_panel', $form->getValue('wl_logo_admin_panel'));
 	    		pm_Settings::set('wl_logo_live_edit_toolbar', $form->getValue('wl_logo_live_edit_toolbar'));
