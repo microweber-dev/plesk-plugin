@@ -153,6 +153,16 @@ class IndexController extends pm_Controller_Action {
     			'label' => 'Disable Microweber Marketplace', 'value' => pm_Settings::get('wl_disable_microweber_marketplace')
     		)
     	);
+    	$form->addElement('text', 'wl_external_login_server_button_text', [
+    		'label' => 'External Login Server Button Text',
+    		'value' => pm_Settings::get('wl_external_login_server_button_text'),
+    		'placeholder'=> 'Login with Microweber Account'
+    	]);
+    	$form->addElement('checkbox', 'wl_external_login_server_enable',
+    		array(
+    			'label' => 'External Login Server Enable', 'value' => pm_Settings::get('wl_external_login_server_enable')
+    		)
+    	);
     	
     	$form->addControlButtons([
     		'cancelLink' => pm_Context::getModulesListUrl(),
@@ -178,6 +188,8 @@ class IndexController extends pm_Controller_Action {
 	    		pm_Settings::set('wl_logo_live_edit_toolbar', $form->getValue('wl_logo_live_edit_toolbar'));
 	    		pm_Settings::set('wl_logo_login_screen', $form->getValue('wl_logo_login_screen'));
 	    		pm_Settings::set('wl_disable_microweber_marketplace', $form->getValue('wl_disable_microweber_marketplace'));
+	    		pm_Settings::set('wl_external_login_server_button_text', $form->getValue('wl_external_login_server_button_text'));
+	    		pm_Settings::set('wl_external_login_server_enable', $form->getValue('wl_external_login_server_enable'));
 	    		
 	    		Modules_Microweber_WhiteLabel::updateWhiteLabelDomains();
 	    		
