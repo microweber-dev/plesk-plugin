@@ -11,11 +11,15 @@ class Modules_Microweber_WhmcsConnector
 
     public static function updateWhmcsConnector()
     {
-
         $whmcsJson = [];
         $whmcsJson['url'] = pm_Settings::get('whmcs_url');
         $whmcsJson['whmcs_url'] = pm_Settings::get('whmcs_url');
 
+        $whmcsPackageUrls = Modules_Microweber_Config::getWhmcsPackageManagerUrls();
+        if (!empty($whmcsPackageUrls)) {
+        	$whmcsJson['marketplace_repositories_urls'] = $whmcsPackageUrls;
+        }
+        
         $whmcsJson = json_encode($whmcsJson, JSON_PRETTY_PRINT);
 
         $whmFilePath = Modules_Microweber_Config::getAppLatestVersionFolder() . '/userfiles/modules/whmcs_connector/settings.json';
@@ -43,27 +47,6 @@ class Modules_Microweber_WhmcsConnector
         }
 
         return $template;
-    }
-
-    private function _getJsonFromUrl($url, $postfields = [])
-    {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-
-        if (!empty($postfields)) {
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-        }
-
-        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-        $data = curl_exec($ch);
-
-        curl_close($ch);
-
-        return @json_decode($data, true);
     }
 
 }
