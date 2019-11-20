@@ -41,4 +41,11 @@ class Modules_Microweber_Helper
 		
 		return @json_decode($data, true);
 	}
+	
+	public static function getFileExtension($path)
+	{
+		$ext = pathinfo($path, PATHINFO_EXTENSION);
+		
+		return $ext;
+	}
 }

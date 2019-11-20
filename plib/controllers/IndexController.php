@@ -465,6 +465,13 @@ class IndexController extends pm_Controller_Action {
             'value' => pm_Settings::get('installation_settings'),
             'required' => true,
         ]);
+        
+        $form->addElement('select', 'installation_language', [
+        	'label' => 'Installation Language',
+        	'multiOptions' => Modules_Microweber_Config::getSupportedLanguages(),
+        	'value' => pm_Settings::get('installation_language'),
+        	'required' => true,
+        ]);
 
         $form->addElement('radio', 'installation_type', [
             'label' => 'Installation Type',
@@ -520,6 +527,7 @@ class IndexController extends pm_Controller_Action {
             $success = true;
         	
             // Form proccessing
+            pm_Settings::set('installation_language', $form->getValue('installation_language'));
             pm_Settings::set('installation_settings', $form->getValue('installation_settings'));
             pm_Settings::set('installation_type', $form->getValue('installation_type'));
             pm_Settings::set('installation_database_driver', $form->getValue('installation_database_driver'));
@@ -536,7 +544,7 @@ class IndexController extends pm_Controller_Action {
             	$success = false;
             }
 		
-	    Modules_Microweber_WhmcsConnector::updateWhmcsConnector();
+			Modules_Microweber_WhmcsConnector::updateWhmcsConnector();
             
             if ($success) {
             	$this->_status->addMessage('info', 'Settings was successfully saved.');

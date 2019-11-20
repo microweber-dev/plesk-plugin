@@ -8,6 +8,30 @@ class Modules_Microweber_Config
 	{
 		return '/usr/share/microweber/latest';
 	}
+	
+	public static function getSupportedLanguages()
+	{
+		
+		$languages = array();
+		
+		$sfm = new pm_ServerFileManager();
+		$listDir = $sfm->scandir(self::getAppLatestVersionFolder() . '/userfiles/modules/microweber/language', true);
+		
+		foreach ($listDir as $file) {
+			$ext = Modules_Microweber_Helper::getFileExtension($file);
+			if ($ext == 'json') {
+				
+				$upperText = $file;
+				$upperText = str_replace('.json', false, $file);
+				$upperText = strtoupper($upperText);
+				
+				$languages[$file] = $upperText;
+			}
+		}
+		
+		return $languages;
+		
+	}
 
 	public static function getPlanItems()
 	{

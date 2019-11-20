@@ -204,7 +204,7 @@ class Modules_Microweber_Install {
         	$dbPort = '';
         	$dbName = $domainDocumentRoot . '/storage/database1.sqlite';
         }
-        
+   		     
         $whmcsConnector = new Modules_Microweber_WhmcsConnector();
         $whmcsConnector->setDomainName($domainName);
         
@@ -223,6 +223,7 @@ class Modules_Microweber_Install {
         $installArguments[] = $this->_databaseDriver;
 		$installArguments = array_map('escapeshellarg', $installArguments);
 		
+		$installArguments[] = escapeshellarg('-l ' . pm_Settings::get('installation_language'));
         $installArguments[] = '-p mw_';
         $installArguments[] = '-t ' . $whmcsConnector->getSelectedTemplate();
         $installArguments[] = '-d 1';
