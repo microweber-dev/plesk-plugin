@@ -69,19 +69,6 @@ class Modules_Microweber_Install {
         
         $fileManager = new \pm_FileManager($domain->getId());
         
-		$sslEmail = 'admin@microweber.com';
-		    
-		// Add SSL
-		try {
-			pm_Log::debug('Start installign SSL for domain: ' . $domain->getName() . '; SSL Email: ' . $sslEmail);
-			$artisan = pm_ApiCli::callSbin('encrypt_domain.sh', [$domain->getName(), $sslEmail]);
-			pm_Log::debug('Encrypt domain log for: ' . $domain->getName() . '<br />' . $artisan['stdout']. '<br /><br />');
-			pm_Log::debug('Success instalation SSL for domain: ' . $domain->getName());
-		} catch(\Exception $e) {
-			pm_Log::debug('Can\'t install SSL for domain: ' . $domain->getName());
-			pm_Log::debug('Error: ' . $e->getMessage());
-		}
-		
 		$this->setProgress(20);
 	    
         pm_Log::debug('Start installing Microweber on domain: ' . $domain->getName());
@@ -223,7 +210,12 @@ class Modules_Microweber_Install {
         $installArguments[] = $this->_databaseDriver;
 		$installArguments = array_map('escapeshellarg', $installArguments);
 		
-		$installArguments[] = escapeshellarg('-l ' . pm_Settings::get('installation_language'));
+		
+		$installationLanguage = pm_Settings::get('installation_language');
+		if (!empty($installationLanguage)) { 
+			$installArguments[] = escapeshellarg('-l ' . $installationLanguage);
+    	}
+    	
         $installArguments[] = '-p mw_';
         $installArguments[] = '-t ' . $whmcsConnector->getSelectedTemplate();
         $installArguments[] = '-d 1';
@@ -244,6 +236,19 @@ class Modules_Microweber_Install {
         	pm_Log::debug('Microweber install log for: ' . $domain->getName() . '<br />' . $artisan['stdout']. '<br /><br />');
         	
         	Modules_Microweber_WhiteLabel::updateWhiteLabelDomainById($domain->getId());
+        	
+        	$sslEmail = 'admin@microweber.com';
+        	
+        	// Add SSL
+        	try {
+        		pm_Log::debug('Start installign SSL for domain: ' . $domain->getName() . '; SSL Email: ' . $sslEmail);
+        		$artisan = pm_ApiCli::callSbin('encrypt_domain.sh', [$domain->getName(), $sslEmail]);
+        		pm_Log::debug('Encrypt domain log for: ' . $domain->getName() . '<br />' . $artisan['stdout']. '<br /><br />');
+        		pm_Log::debug('Success instalation SSL for domain: ' . $domain->getName());
+        	} catch(\Exception $e) {
+        		pm_Log::debug('Can\'t install SSL for domain: ' . $domain->getName());
+        		pm_Log::debug('Error: ' . $e->getMessage());
+        	}
         	
         	return array('success'=>true, 'log'=> $artisan['stdout']);
         	
