@@ -39,4 +39,11 @@ class Modules_Microweber_Config
 		return $updateWhmcsUrl;
 	}
 	
+	public static function getWhmcsPackageManagerUrls()
+	{
+		$whmcsUrl = self::getWhmcsUrl();
+		
+		return Modules_Microweber_Helper::getJsonFromUrl($whmcsUrl . '/index.php?m=microweber_addon&function=get_package_manager_urls');
+	}
+	
 }
