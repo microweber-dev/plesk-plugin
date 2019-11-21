@@ -25,7 +25,7 @@ class Modules_Microweber_Config
 				$upperText = str_replace('.json', false, $file);
 				$upperText = strtoupper($upperText);
 				
-				$languages[$file] = $upperText;
+				$languages[trim(strtolower($upperText))] = $upperText;
 			}
 		}
 		

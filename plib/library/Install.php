@@ -213,7 +213,7 @@ class Modules_Microweber_Install {
 		
 		$installationLanguage = pm_Settings::get('installation_language');
 		if (!empty($installationLanguage)) { 
-			$installArguments[] = escapeshellarg('-l ' . $installationLanguage);
+			$installArguments[] = escapeshellarg('-l ' . trim($installationLanguage));
     	}
     	
         $installArguments[] = '-p mw_';
@@ -242,8 +242,8 @@ class Modules_Microweber_Install {
         	// Add SSL
         	try {
         		pm_Log::debug('Start installign SSL for domain: ' . $domain->getName() . '; SSL Email: ' . $sslEmail);
-        		$artisan = pm_ApiCli::callSbin('encrypt_domain.sh', [$domain->getName(), $sslEmail]);
-        		pm_Log::debug('Encrypt domain log for: ' . $domain->getName() . '<br />' . $artisan['stdout']. '<br /><br />');
+        		$encrypt = pm_ApiCli::callSbin('encrypt_domain.sh', [$domain->getName(), $sslEmail]);
+        		pm_Log::debug('Encrypt domain log for: ' . $domain->getName() . '<br />' . $encrypt['stdout']. '<br /><br />');
         		pm_Log::debug('Success instalation SSL for domain: ' . $domain->getName());
         	} catch(\Exception $e) {
         		pm_Log::debug('Can\'t install SSL for domain: ' . $domain->getName());
