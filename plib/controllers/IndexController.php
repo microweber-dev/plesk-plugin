@@ -242,7 +242,7 @@ class IndexController extends pm_Controller_Action {
     	$templatesUrl = $this->_getPremiumTemplatesUrl();
     	
     	if ($templatesUrl) {
-	    	$downloadLog = pm_ApiCli::callSbin('unzip_app_templates.sh',[base64_encode($templatesUrl), $this->_getSharedFolderAppName()])['stdout'];
+	    	$downloadLog = pm_ApiCli::callSbin('unzip_app_templates.sh',[base64_encode($templatesUrl), Modules_Microweber_Config::getAppSharedPath()])['stdout'];
 	    	
 	    	$this->_status->addMessage('info', $downloadLog);
     	}
@@ -345,6 +345,8 @@ class IndexController extends pm_Controller_Action {
             }
             
 			$domain = new pm_Domain($post['installation_domain']);
+			
+			/*
             if (!empty($domain->getName())) {
             	
             	$task = new Modules_Microweber_TaskInstall();
@@ -371,8 +373,8 @@ class IndexController extends pm_Controller_Action {
             	echo 'Please, select domain.';
             	exit;
             }
-            
-            /*
+            */
+           
             $newInstallation = new Modules_Microweber_Install();
             $newInstallation->setDomainId($post['installation_domain']);
             $newInstallation->setType($post['installation_type']);
@@ -392,7 +394,7 @@ class IndexController extends pm_Controller_Action {
             }
             
             $newInstallation->run(); 
-            */
+            
             
         }
 
@@ -503,20 +505,6 @@ class IndexController extends pm_Controller_Action {
         	'value' => Modules_Microweber_Config::getWhmcsUrl(),
         	//'required' => true,
         ]);
-        
-        /*
-        $form->addElement('text', 'download_latest_version_app_url', [
-        	'label' => 'Download latest version app url',
-        	'value' => pm_Settings::get('download_latest_version_app_url'),
-        	'required' => true,
-        ]);
-        */
-        
-        $form->addElement('text', 'shared_folder_app_name', [
-        	'label' => 'Shared folder app name (Folder name for symlinks)',
-        	'value' => $this->_getSharedFolderAppName(),
-        	'required' => true,
-        ]);
 
         $form->addControlButtons([
             'cancelLink' => pm_Context::getModulesListUrl(),
@@ -535,9 +523,7 @@ class IndexController extends pm_Controller_Action {
             pm_Settings::set('update_app_url', $form->getValue('update_app_url'));
             pm_Settings::set('whmcs_url', $form->getValue('whmcs_url'));
             
-            // pm_Settings::set('download_latest_version_app_url', $form->getValue('download_latest_version_app_url'));
-            pm_Settings::set('shared_folder_app_name', $form->getValue('shared_folder_app_name'));
-
+            
             $release = $this->_getRelease();
             if (empty($release)) {
             	$this->_status->addMessage('error', 'Can\'t get latest version from selected download url.');
@@ -578,14 +564,15 @@ class IndexController extends pm_Controller_Action {
     	$release = $this->_getRelease();
     	
     	if (empty($release)) {
-    		return 'No releases fond.';
+    		return 'No releases found.';
     	}
     	
-    	$downloadLog = pm_ApiCli::callSbin('unzip_app_version.sh',[base64_encode($release['url']), $this->_getSharedFolderAppName()])['stdout'];
+    	$downloadLog = pm_ApiCli::callSbin('unzip_app_version.sh', [base64_encode($release['url']), Modules_Microweber_Config::getAppSharedPath()])['stdout'];
+    	
     	
     	// Whm Connector
     	$downloadUrl = 'https://github.com/microweber-dev/whmcs-connector/archive/master.zip';
-        $downloadLog .= pm_ApiCli::callSbin('unzip_app_modules.sh',[base64_encode($downloadUrl), $this->_getSharedFolderAppName()])['stdout'];
+        $downloadLog .= pm_ApiCli::callSbin('unzip_app_modules.sh',[base64_encode($downloadUrl), Modules_Microweber_Config::getAppSharedPath()])['stdout'];
     	
     	Modules_Microweber_WhmcsConnector::updateWhmcsConnector();
     	
@@ -595,7 +582,7 @@ class IndexController extends pm_Controller_Action {
     private function _updateTemplates() {
     	
     	$templatesUrl = $this->_getTemplatesUrl();
-    	$downloadLog = pm_ApiCli::callSbin('unzip_app_templates.sh',[base64_encode($templatesUrl), $this->_getSharedFolderAppName()])['stdout'];
+    	$downloadLog = pm_ApiCli::callSbin('unzip_app_templates.sh',[base64_encode($templatesUrl), Modules_Microweber_Config::getAppSharedPath()])['stdout'];
     	
     	return $downloadLog;
     }
@@ -625,7 +612,7 @@ class IndexController extends pm_Controller_Action {
     
     private function _checkAppSettingsIsCorrect() 
     {
-    	if (empty(pm_Settings::get('shared_folder_app_name'))) {
+    	if (empty(pm_Settings::get('installation_type'))) {
     		$this->_status->addMessage('warning', 'First you must to fill your app settings.');
     		header("Location: " . pm_Context::getBaseUrl() . 'index.php/index/settings');
     		exit;
@@ -636,9 +623,9 @@ class IndexController extends pm_Controller_Action {
     {
     	$manager = new pm_ServerFileManager();
     	
-    	$version_file = $manager->fileExists($this->_getSharedFolderPath() . 'version.txt');
+    	$version_file = $manager->fileExists(Modules_Microweber_Config::getAppSharedPath() . 'version.txt');
     	if ($version_file) {
-    		$version = filectime($this->_getSharedFolderPath() . 'version.txt');
+    		$version = filectime(Modules_Microweber_Config::getAppSharedPath() . 'version.txt');
     		if ($version) {
     			return date('Y-m-d H:i:s', $version);
     		}
@@ -648,30 +635,15 @@ class IndexController extends pm_Controller_Action {
     {
     	$manager = new pm_ServerFileManager();
     	
-    	$versionFile = $manager->fileExists($this->_getSharedFolderPath() . 'version.txt');
+    	$versionFile = $manager->fileExists(Modules_Microweber_Config::getAppSharedPath() . 'version.txt');
     	
     	$version = 'unknown';
     	if ($versionFile) {
-    		$version = $manager->fileGetContents($this->_getSharedFolderPath() . 'version.txt');
+    		$version = $manager->fileGetContents(Modules_Microweber_Config::getAppSharedPath() . 'version.txt');
     		$version = strip_tags($version);
     	}
     	
     	return $version;
-    }
-	
-    private function _getSharedFolderPath() {
-    	return '/usr/share/'.strtolower($this->_moduleName).'/latest/';
-    }
-    
-    private function _getSharedFolderAppName() {
-    	
-    	$sharedFolderAppName = pm_Settings::get('shared_folder_app_name', 'microweber');
-    	
-    	if (empty($sharedFolderAppName)) {
-    		$sharedFolderAppName = strtolower($this->_moduleName);
-    	}
-    	
-    	return $sharedFolderAppName;
     }
     
     private function _getAppInstalations() {

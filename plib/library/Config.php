@@ -3,10 +3,14 @@
 
 class Modules_Microweber_Config
 {
-
-	public static function getAppLatestVersionFolder()
+	public static function getModuleVarPath() 
 	{
-		return '/usr/share/microweber/latest';
+		return trim(pm_Context::getVarDir());
+	}
+	
+	public static function getAppSharedPath() 
+	{
+		return self::getModuleVarPath() . 'latest/';
 	}
 	
 	public static function getSupportedLanguages()
@@ -14,19 +18,24 @@ class Modules_Microweber_Config
 		
 		$languages = array();
 		
-		$sfm = new pm_ServerFileManager();
-		$listDir = $sfm->scandir(self::getAppLatestVersionFolder() . '/userfiles/modules/microweber/language', true);
-		
-		foreach ($listDir as $file) {
-			$ext = Modules_Microweber_Helper::getFileExtension($file);
-			if ($ext == 'json') {
-				
-				$upperText = $file;
-				$upperText = str_replace('.json', false, $file);
-				$upperText = strtoupper($upperText);
-				
-				$languages[trim(strtolower($upperText))] = $upperText;
+		try {
+			$sfm = new pm_ServerFileManager();
+			$listDir = $sfm->scandir(self::getAppSharedPath() . 'userfiles/modules/microweber/language', true);
+			
+			foreach ($listDir as $file) {
+				$ext = Modules_Microweber_Helper::getFileExtension($file);
+				if ($ext == 'json') {
+					
+					$upperText = $file;
+					$upperText = str_replace('.json', false, $file);
+					$upperText = strtoupper($upperText);
+					
+					$languages[trim(strtolower($upperText))] = $upperText;
+				}
 			}
+		} catch (Exception $e) {
+			// Cant get supported languages
+			$languages['en'] = 'EN';
 		}
 		
 		return $languages;

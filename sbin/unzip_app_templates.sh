@@ -2,32 +2,26 @@
 
 downloadUrl=$(echo "$1" | base64 -d)
 
-downloadCacheFolder='/usr/share/'$2'-download-cache'
-
-if [ ! -d "$downloadCacheFolder" ]; then
-	mkdir "$downloadCacheFolder"
+latestFolder=$2
+if [ ! -d "$latestFolder" ]; then
+	mkdir -p "$latestFolder"
 fi
 
-cd "$downloadCacheFolder" || exit
+cd "$latestFolder"
 
-zipDownloadedFile=$2'-app-templates-cache.zip';
+zipDownloadedFile="microweber-templates.zip";
 
-echo 'Download templates from url...'
+echo 'Download from url...'
 wget "$downloadUrl" -O "$zipDownloadedFile"
 
 # Unzip selected version
 echo 'Unzip file...'
-unzip "$zipDownloadedFile" -d templates > unziping.log
+unzip $zipDownloadedFile -d $2 > unziping-microweber-templates.log
 
-if [ ! -d '/usr/share/'"$2" ]; then
-	echo 'First you need to download the app.'
-	exit
-fi
+find $latestFolder -type d -exec chmod 0755 {} \;
+find $latestFolder -type f -exec chmod 0644 {} \;
 
-echo 'Rsync files with /usr/share/'"$2"'/latest'
-rsync -a templates/userfiles /usr/share/"$2"/latest
-rm -rf templates
-
-chmod 755 -R /usr/share/"$2"/latest/userfiles
+rm -f $zipDownloadedFile
+rm -f "unziping-microweber-templates.log"
 
 echo "Done!"

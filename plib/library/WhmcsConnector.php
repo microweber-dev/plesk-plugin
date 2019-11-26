@@ -23,10 +23,15 @@ class Modules_Microweber_WhmcsConnector
         
         $whmcsJson = json_encode($whmcsJson, JSON_PRETTY_PRINT);
         
-        $whmFilePath = Modules_Microweber_Config::getAppLatestVersionFolder() . '/userfiles/modules/whmcs_connector/settings.json';
+        $whmFilePath = Modules_Microweber_Config::getAppSharedPath() . 'userfiles/modules/whmcs_connector/';
+        $whmFileName = 'settings.json';
        
         $manager = new pm_ServerFileManager();
-        $manager->filePutContents($whmFilePath, $whmcsJson);
+        if (!$manager->fileExists($whmFilePath)) {
+        	$manager->mkdir($whmFilePath, null, true);
+        }
+        
+        $manager->filePutContents($whmFilePath . $whmFileName, $whmcsJson);
         
     }
 

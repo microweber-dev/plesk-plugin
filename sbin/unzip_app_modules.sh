@@ -2,32 +2,40 @@
 
 downloadUrl=$(echo "$1" | base64 -d)
 
-downloadCacheFolder='/usr/share/'$2'-download-cache'
-
-if [ ! -d "$downloadCacheFolder" ]; then
-	mkdir "$downloadCacheFolder"
+latestFolder=$2
+if [ ! -d "$latestFolder" ]; then
+	mkdir -p "$latestFolder"
 fi
 
-cd "$downloadCacheFolder" || exit
+downloadCacheFolder='/tmp/microweber-module-cache'
 
-zipDownloadedFile=$2'-app-modules-cache.zip';
+rm -rf "$downloadCacheFolder"
+mkdir "$downloadCacheFolder"
+
+cd "$downloadCacheFolder"
+
+zipDownloadedFile='microweber-module.zip';
 
 echo 'Download modules from url...'
 wget "$downloadUrl" -O "$zipDownloadedFile"
 
 # Unzip selected version
 echo 'Unzip file...'
-unzip "$zipDownloadedFile" > unziping.log
+unzip "$zipDownloadedFile" > microweber-module-unzip.log
 
-if [ ! -d '/usr/share/'"$2" ]; then
-	echo 'First you need to download the app.'
-	exit
+find $latestFolder -type d -exec chmod 0755 {} \;
+find $latestFolder -type f -exec chmod 0644 {} \;
+
+rm -rf "$zipDownloadedFile"
+rm -rf "microweber-module-unzip.log"
+
+cd *
+
+if [ ! -d "$latestFolder" ]; then
+	mkdir -p "$latestFolder"
 fi
 
-echo 'Rsync files with /usr/share/'"$2"'/latest'
-rsync -a whmcs-connector-master/userfiles /usr/share/"$2"/latest
-rm -rf whmcs-connector-master
-
-chmod 755 -R /usr/share/"$2"/latest/userfiles
+echo 'Rsync files with' "$latestFolder"
+rsync -a "userfiles" "$latestFolder"
 
 echo "Done!"

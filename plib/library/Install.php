@@ -14,7 +14,7 @@ class Modules_Microweber_Install {
     protected $_progressLogger = false;
     
     public function __construct() {
-    	$this->_appLatestVersionFolder = Modules_Microweber_Config::getAppLatestVersionFolder();
+    	$this->_appLatestVersionFolder = Modules_Microweber_Config::getAppSharedPath();
     }
     
     public function setProgressLogger($logger) {
@@ -64,7 +64,20 @@ class Modules_Microweber_Install {
         if (empty($domain->getName())) {
             throw new \Exception('Domain not found.');
         }
-	    
+        
+        $hostingManager = new Modules_Microweber_HostingManager();
+        $hostingManager->setDomainId($domain->getId());
+        
+        $hostingProperties = $hostingManager->getHostingProperties();
+        
+        if (!$hostingProperties['php']) {
+        	throw new \Exception('PHP is not activated on selected domain.');
+        }
+        
+        
+        
+        var_dump($hostingManager->getPhpHandler($hostingProperties['php_handler_id']));
+        die();
         $this->setProgress(10);
         
         $fileManager = new \pm_FileManager($domain->getId());
@@ -83,9 +96,9 @@ class Modules_Microweber_Install {
         	
         	pm_Log::debug('Create database for domain: ' . $domain->getName());
         	
-	        $dbManager = new Modules_Microweber_DatabaseManager();
-	        $dbManager->setDomainId($domain->getId());
-	
+        	$dbManager = new Modules_Microweber_DatabaseManager();
+        	$dbManager->setDomainId($domain->getId());
+        	
 	        $newDb = $dbManager->createDatabase($dbName);
 	        
 	        if (isset($newDb['database']['add-db']['result']['errtext'])) {
@@ -130,41 +143,36 @@ class Modules_Microweber_Install {
         
         $this->setProgress(60);
        	
-        if ($this->_type == 'symlink') {
+        
+        // First we will make a directories
+        foreach ($this->_getDirsToMake() as $dir) {
+        	$fileManager->mkdir($domainDocumentRoot . '/' . $dir, '0755', true);
+        }
         	
-        	// First we will make a directories
-        	foreach ($this->_getDirsToMake() as $dir) {
-        		$fileManager->mkdir($domainDocumentRoot . '/' . $dir, '0755', true);
-        	}
+        $this->setProgress(65);
         	
-        	$this->setProgress(65);
-        	
-        	foreach ($this->_getFilesForSymlinking() as $folder) {
+        foreach ($this->_getFilesForSymlinking() as $folder) {
         		
-        		$scriptDirOrFile = $this->_appLatestVersionFolder . '/' . $folder;
-        		$domainDirOrFile = $domainDocumentRoot .'/'. $folder;
-        		
+        	$scriptDirOrFile = $this->_appLatestVersionFolder . $folder;
+        	$domainDirOrFile = $domainDocumentRoot .'/'. $folder;
+        	
+        	if ($this->_type == 'symlink') {
         		$result = pm_ApiCli::callSbin('create_symlink.sh', [$domain->getSysUserLogin(), $scriptDirOrFile, $domainDirOrFile], pm_ApiCli::RESULT_FULL);
-        		
+        	} else {
+        		$fileManager->copyFile($scriptDirOrFile, dirname($domainDirOrFile));
         	}
-        	
-        	$this->setProgress(70);
-        	
-        	// And then we will copy files
-        	foreach ($this->_getFilesForCopy() as $file) {
-        		$fileManager->copyFile($this->_appLatestVersionFolder . '/' . $file, $domainDocumentRoot . '/' . $file);
-        	}
-        	
-        	$this->setProgress(75);
-        	
-        } else {
-        	pm_ApiCli::callSbin('rsync_two_dirs.sh', [$domain->getSysUserLogin(), $this->_appLatestVersionFolder . '/', $domainDocumentRoot]);
-        	$this->setProgress(65);
         }
         
-        $this->setProgress(80);
+        $this->setProgress(70);
+        	
+        // And then we will copy files
+        foreach ($this->_getFilesForCopy() as $file) {
+        	$fileManager->copyFile($this->_appLatestVersionFolder . $file, dirname($domainDocumentRoot . '/' . $file));
+        }
+        	
+        $this->setProgress(75);
         
-        $this->_fixHtaccess($fileManager, $domainDocumentRoot);
+        $this->_fixHtaccess($fileManager, $domainDocumentRoot); 
         
         $this->setProgress(85);
         
@@ -228,15 +236,36 @@ class Modules_Microweber_Install {
 		
         $command = $domainDocumentRoot . '/artisan microweber:install ' . $installArguments;
 	
-        try { 
-		$artisan = pm_ApiCli::callSbin('run_php.sh', [$domain->getSysUserLogin(), $command]);  
+        
+        //$artisan = pm_ApiCli::callSbin('run_php.sh', [$domain->getSysUserLogin(), $command]);
+        
+        $args = [
+        	$domain->getSysUserLogin(),
+        	'php',
+        	'-v',
+        ];
+        
+        $err = pm_ApiCli::callSbin('filemng', $args, pm_ApiCli::RESULT_FULL);
+        if ($err['code'] <> 0) {
+        	// throw new pm_Exception("Failed to create folder: filemng " . print_r($args, true) . " with: " . print_r($err, true));
+        }
+        var_dump($err);
+        die();
+        
+        
+        try {
+			$artisan = pm_ApiCli::callSbin('run_php.sh', [$domain->getSysUserLogin(), $command]);  
 
+			var_dump($artisan);
+			die();
+			
         	$this->setProgress(95);
  
         	pm_Log::debug('Microweber install log for: ' . $domain->getName() . '<br />' . $artisan['stdout']. '<br /><br />');
         	
         	Modules_Microweber_WhiteLabel::updateWhiteLabelDomainById($domain->getId());
         	
+        	/* 
         	$sslEmail = 'admin@microweber.com';
         	
         	// Add SSL
@@ -248,7 +277,7 @@ class Modules_Microweber_Install {
         	} catch(\Exception $e) {
         		pm_Log::debug('Can\'t install SSL for domain: ' . $domain->getName());
         		pm_Log::debug('Error: ' . $e->getMessage());
-        	}
+        	} */
         	
         	return array('success'=>true, 'log'=> $artisan['stdout']);
         	
@@ -334,13 +363,14 @@ class Modules_Microweber_Install {
     	
     	$files = [];
     	
+    	$files[] = 'userfiles/modules';
+    	$files[] = 'userfiles/templates';
+    	$files[] = 'userfiles/elements';
+    	
     	$files[] = 'vendor';
     	$files[] = 'src';
     	$files[] = 'resources';
     	$files[] = 'database';
-    	$files[] = 'userfiles/modules';
-    	$files[] = 'userfiles/templates';
-    	$files[] = 'userfiles/elements';
     	
     	return $files;
     }
