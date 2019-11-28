@@ -1,5 +1,7 @@
 <?php
 
+include dirname(__DIR__) . '/library/MicroweberMarketplaceConnector.php';
+
 class IndexController extends pm_Controller_Action {
 
 	private $taskManager = NULL;
@@ -606,10 +608,22 @@ class IndexController extends pm_Controller_Action {
     
     private function _updateTemplates() {
     	
-    	$templatesUrl = $this->_getTemplatesUrl();
-    	$downloadLog = pm_ApiCli::callSbin('unzip_app_templates.sh',[base64_encode($templatesUrl), Modules_Microweber_Config::getAppSharedPath()])['stdout'];
+    	// $templatesUrl = $this->_getTemplatesUrl();
     	
-    	return $downloadLog;
+    	$connector = new MicroweberMarketplaceConnector();
+    	$templates = $connector->get_templates_download_urls();
+    	
+    	foreach ($templates as $template) {
+    		
+    		$downloadLog = pm_ApiCli::callSbin('unzip_app_template.sh',[
+    			base64_encode($template['download_url']),
+    			Modules_Microweber_Config::getAppSharedPath(),
+    			$template['target_dir']
+    		])['stdout'];
+    		
+    		var_dump($downloadLog);
+    		die();
+    	}
     }
     
     private function _getLicensedView() 
