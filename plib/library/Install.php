@@ -140,7 +140,6 @@ class Modules_Microweber_Install {
         $this->_prepairDomainFolder($fileManager, $domainDocumentRoot, $domain->getHomePath());
         
         $this->setProgress(60);
-       	
         
         // First we will make a directories
         foreach ($this->_getDirsToMake() as $dir) {
@@ -150,12 +149,11 @@ class Modules_Microweber_Install {
         $this->setProgress(65);
         	
         foreach ($this->_getFilesForSymlinking() as $folder) {
-        		
         	$scriptDirOrFile = $this->_appLatestVersionFolder . $folder;
         	$domainDirOrFile = $domainDocumentRoot .'/'. $folder;
         	
         	if ($this->_type == 'symlink') {
-        		// Create symlink
+        		// Create symlink 
         		$result = pm_ApiCli::callSbin('create_symlink.sh', [$domain->getSysUserLogin(), $scriptDirOrFile, $domainDirOrFile], pm_ApiCli::RESULT_FULL);
         	} else {
         		$fileManager->copyFile($scriptDirOrFile, dirname($domainDirOrFile));
@@ -176,7 +174,6 @@ class Modules_Microweber_Install {
         }
         
         $this->setProgress(85);
-        
         
         $adminEmail = 'admin@microweber.com';
         $adminPassword = '1';
@@ -200,18 +197,17 @@ class Modules_Microweber_Install {
         	$dbPort = '';
         	$dbName = $domainDocumentRoot . '/storage/database1.sqlite';
         }
-   		     
-        $whmcsConnector = new Modules_Microweber_WhmcsConnector();
-        $whmcsConnector->setDomainName($domainName);
         
         $this->setProgress(90);
         
         $installArguments = [];
-        
+
+        // Admin details
         $installArguments[] =  $adminEmail;
         $installArguments[] =  $adminUsername;
         $installArguments[] =  $adminPassword;
         
+        // Database settings
         $installArguments[] = $dbHost;
         $installArguments[] = $dbName;
         $installArguments[] = $dbUsername;
@@ -225,8 +221,12 @@ class Modules_Microweber_Install {
 			$installArguments[] = escapeshellarg('-l ' . trim($installationLanguage));
     	}
     	
+    	$whmcsConnector = new Modules_Microweber_WhmcsConnector();
+    	$whmcsConnector->setDomainName($domainName);
+    	$template = $whmcsConnector->getSelectedTemplate();
+    	
         $installArguments[] = '-p mw_';
-        $installArguments[] = '-t ' . $whmcsConnector->getSelectedTemplate();
+        $installArguments[] = '-t ' . $template;
         $installArguments[] = '-d 1';
         
         if (!pm_Session::getClient()->isAdmin()) {
@@ -239,7 +239,7 @@ class Modules_Microweber_Install {
         	$args = [
         		$domain->getSysUserLogin(),
         		'exec',
-        		$fileManager->getFilePath('/httpdocs/'),
+        		$fileManager->getFilePath('/httpdocs/'), 
         		$phpHandler['clipath'],
         		'artisan',
         		'microweber:install',
@@ -257,7 +257,6 @@ class Modules_Microweber_Install {
         	$this->addDomainEncryption($domain);
         	
         	return array('success'=>true, 'log'=> $artisan['stdout']);
-        	
         } catch (Exception $e) {
         	return array('success'=>false, 'error'=>true, 'log'=> $e->getMessage());
         }
@@ -301,7 +300,7 @@ class Modules_Microweber_Install {
     		
     		$content = $fileManager->fileGetContents($installPath . '/.htaccess');
     		
-    		$content = str_replace('-MultiViews -Indexes', '+FollowSymLinks', $content);
+    		$content = str_replace('-MultiViews -Indexes', 'FollowSymLinks', $content);
     		
     		$fileManager->filePutContents($installPath . '/.htaccess', $content);
     		
@@ -342,6 +341,9 @@ class Modules_Microweber_Install {
     	
     	$dirs = [];
     	
+    	// Config dir
+    	$dirs[] = 'config';
+    	
     	// Storage dirs
     	$dirs[] = 'storage';
     	$dirs[] = 'storage/framework';
@@ -361,9 +363,6 @@ class Modules_Microweber_Install {
     	$dirs[] = 'userfiles/modules';
     	$dirs[] = 'userfiles/templates';
     	
-    	// Config dir
-    	$dirs[] = 'config';
-    	
     	return $dirs;
     }
     
@@ -371,14 +370,13 @@ class Modules_Microweber_Install {
     	
     	$files = [];
     	
-    	$files[] = 'userfiles/modules';
-    	$files[] = 'userfiles/templates';
-    	$files[] = 'userfiles/elements';
-    	
     	$files[] = 'vendor';
     	$files[] = 'src';
     	$files[] = 'resources';
     	$files[] = 'database';
+    	$files[] = 'userfiles/modules';
+    	$files[] = 'userfiles/templates';
+    	$files[] = 'userfiles/elements';
     	
     	return $files;
     }
