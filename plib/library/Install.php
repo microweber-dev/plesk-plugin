@@ -74,10 +74,8 @@ class Modules_Microweber_Install {
         	throw new \Exception('PHP is not activated on selected domain.');
         }
         
+        $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
         
-        
-        var_dump($hostingManager->getPhpHandler($hostingProperties['php_handler_id']));
-        die();
         $this->setProgress(10);
         
         $fileManager = new \pm_FileManager($domain->getId());
@@ -157,6 +155,7 @@ class Modules_Microweber_Install {
         	$domainDirOrFile = $domainDocumentRoot .'/'. $folder;
         	
         	if ($this->_type == 'symlink') {
+        		// Create symlink
         		$result = pm_ApiCli::callSbin('create_symlink.sh', [$domain->getSysUserLogin(), $scriptDirOrFile, $domainDirOrFile], pm_ApiCli::RESULT_FULL);
         	} else {
         		$fileManager->copyFile($scriptDirOrFile, dirname($domainDirOrFile));
@@ -172,7 +171,9 @@ class Modules_Microweber_Install {
         	
         $this->setProgress(75);
         
-        $this->_fixHtaccess($fileManager, $domainDocumentRoot); 
+        if ($this->_type == 'symlink') {
+        	$this->_fixHtaccess($fileManager, $domainDocumentRoot); 
+        }
         
         $this->setProgress(85);
         
@@ -234,30 +235,18 @@ class Modules_Microweber_Install {
 		
         $installArguments = implode(' ', $installArguments);
 		
-        $command = $domainDocumentRoot . '/artisan microweber:install ' . $installArguments;
-	
-        
-        //$artisan = pm_ApiCli::callSbin('run_php.sh', [$domain->getSysUserLogin(), $command]);
-        
-        $args = [
-        	$domain->getSysUserLogin(),
-        	'php',
-        	'-v',
-        ];
-        
-        $err = pm_ApiCli::callSbin('filemng', $args, pm_ApiCli::RESULT_FULL);
-        if ($err['code'] <> 0) {
-        	// throw new pm_Exception("Failed to create folder: filemng " . print_r($args, true) . " with: " . print_r($err, true));
-        }
-        var_dump($err);
-        die();
-        
-        
         try {
-			$artisan = pm_ApiCli::callSbin('run_php.sh', [$domain->getSysUserLogin(), $command]);  
-
-			var_dump($artisan);
-			die();
+        	$args = [
+        		$domain->getSysUserLogin(),
+        		'exec',
+        		$fileManager->getFilePath('/httpdocs/'),
+        		$phpHandler['clipath'],
+        		'artisan',
+        		'microweber:install',
+        		$installArguments
+        	];
+        	
+        	$artisan = pm_ApiCli::callSbin('filemng', $args, pm_ApiCli::RESULT_FULL);
 			
         	$this->setProgress(95);
  
@@ -265,26 +254,45 @@ class Modules_Microweber_Install {
         	
         	Modules_Microweber_WhiteLabel::updateWhiteLabelDomainById($domain->getId());
         	
-        	/* 
-        	$sslEmail = 'admin@microweber.com';
-        	
-        	// Add SSL
-        	try {
-        		pm_Log::debug('Start installign SSL for domain: ' . $domain->getName() . '; SSL Email: ' . $sslEmail);
-        		$encrypt = pm_ApiCli::callSbin('encrypt_domain.sh', [$domain->getName(), $sslEmail]);
-        		pm_Log::debug('Encrypt domain log for: ' . $domain->getName() . '<br />' . $encrypt['stdout']. '<br /><br />');
-        		pm_Log::debug('Success instalation SSL for domain: ' . $domain->getName());
-        	} catch(\Exception $e) {
-        		pm_Log::debug('Can\'t install SSL for domain: ' . $domain->getName());
-        		pm_Log::debug('Error: ' . $e->getMessage());
-        	} */
+        	$this->addDomainEncryption($domain);
         	
         	return array('success'=>true, 'log'=> $artisan['stdout']);
         	
         } catch (Exception $e) {
-        	return array('success'=>false,'error'=>true, 'log'=> $e->getMessage());
+        	return array('success'=>false, 'error'=>true, 'log'=> $e->getMessage());
         }
         
+    }
+    
+    private function addDomainEncryption($domain)
+    {
+    	$artisan = false;
+    	
+    	$sslEmail = 'admin@microweber.com';
+    	
+    	$encryptOptions = [];
+    	$encryptOptions[] = '--domain';
+    	$encryptOptions[] = $domain->getName();
+    	$encryptOptions[] = '--email';
+    	$encryptOptions[] = $sslEmail;
+    	
+    	 // Add SSL
+    	 try {
+    	 	pm_Log::debug('Start installign SSL for domain: ' . $domain->getName() . '; SSL Email: ' . $sslEmail);
+    	 	
+    	 	$artisan = \pm_ApiCli::call('extension', array_merge(['--exec', 'letsencrypt', 'cli.php'], $encryptOptions), \pm_ApiCli::RESULT_FULL);
+    	 	
+    		pm_Log::debug('Encrypt domain log for: ' . $domain->getName() . '<br />' . $artisan['stdout']. '<br /><br />');
+    	 	pm_Log::debug('Success instalation SSL for domain: ' . $domain->getName());
+    	 	
+    	 } catch(\Exception $e) {
+    	 	
+    	 	pm_Log::debug('Can\'t install SSL for domain: ' . $domain->getName());
+    	 	pm_Log::debug('Error: ' . $e->getMessage());
+    	 	
+    	 }
+    	 
+    	 return $artisan;
     }
     
     private function _fixHtaccess($fileManager, $installPath)
@@ -293,7 +301,7 @@ class Modules_Microweber_Install {
     		
     		$content = $fileManager->fileGetContents($installPath . '/.htaccess');
     		
-    		$content = str_replace('-MultiViews -Indexes', 'FollowSymLinks', $content);
+    		$content = str_replace('-MultiViews -Indexes', '+FollowSymLinks', $content);
     		
     		$fileManager->filePutContents($installPath . '/.htaccess', $content);
     		
@@ -315,8 +323,8 @@ class Modules_Microweber_Install {
     		
     		if (!empty($findedFiles)) {
     			// Make backup dir
-    			$backupFilesPath = $backupPath . '/backup-files-' . date('Y-m-d-H-i-s');
-    			$fileManager->mkdir($backupFilesPath);
+    			$backupFilesPath = $backupPath . '/backup_files/backup-' . date('Y-m-d-H-i-s');
+    			$fileManager->mkdir($backupFilesPath, null, true);
     			
     			// Move files to backup dir
     			foreach ($findedFiles as $file) {
