@@ -25,6 +25,14 @@ class Modules_Microweber_TaskInstall extends \pm_LongTask_Task
 			$newInstallation->setPassword($this->getParam('password'));
 		}
 		
+		if (!empty($this->getParam('template'))) {
+			$newInstallation->setTemplate($this->getParam('template'));
+		}
+		
+		if (!empty($this->getParam('language'))) {
+			$newInstallation->setLanguage($this->getParam('language'));
+		}
+		
 		$newInstallation->setProgressLogger($this);
 		$newInstallation->run();
 		

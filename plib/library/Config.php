@@ -13,6 +13,28 @@ class Modules_Microweber_Config
 		return self::getModuleVarPath() . 'latest/';
 	}
 	
+	public static function getSupportedTemplates()
+	{
+		
+		$templates = array();
+		
+		try {
+			$sfm = new pm_ServerFileManager();
+			$listDir = $sfm->scandir(self::getAppSharedPath() . 'userfiles/templates/', true);
+			foreach ($listDir as $file) {
+				$upperText = $file;
+				$upperText = ucfirst($upperText);
+				$templates[trim($file)] = $upperText;
+			}
+		} catch (Exception $e) {
+			// Cant get supported languages
+			$templates['Default'] = 'Default';
+		}
+		
+		return $templates;
+		
+	}
+	
 	public static function getSupportedLanguages()
 	{
 		

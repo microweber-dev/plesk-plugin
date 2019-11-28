@@ -12,6 +12,8 @@ class Modules_Microweber_Install {
     protected $_password = '';
     protected $_path = false;
     protected $_progressLogger = false;
+    protected $_template = false;
+    protected $_language = false;
     
     public function __construct() {
     	$this->_appLatestVersionFolder = Modules_Microweber_Config::getAppSharedPath();
@@ -37,6 +39,14 @@ class Modules_Microweber_Install {
 
     public function setType($type) {
         $this->_type = $type;
+    }
+    
+    public function setLanguage($language) {
+    	$this->_language = $language;
+    }
+    
+    public function setTemplate($template) {
+    	$this->_template = $template;
     }
     
     public function setDatabaseDriver($driver) {
@@ -213,28 +223,40 @@ class Modules_Microweber_Install {
         $installArguments[] = $dbUsername;
         $installArguments[] = $dbPassword;
         $installArguments[] = $this->_databaseDriver;
-		$installArguments = array_map('escapeshellarg', $installArguments);
+			
+		if ($this->_language) {
+			$installationLanguage = $this->_language;
+		} else {
+			$installationLanguage = pm_Settings::get('installation_language');
+		}
 		
-		
-		$installationLanguage = pm_Settings::get('installation_language');
 		if (!empty($installationLanguage)) { 
-			$installArguments[] = escapeshellarg('-l ' . trim($installationLanguage));
+			$installArguments[] = '-l';
+			$installArguments[] = trim($installationLanguage);
     	}
     	
-    	$whmcsConnector = new Modules_Microweber_WhmcsConnector();
-    	$whmcsConnector->setDomainName($domainName);
-    	$template = $whmcsConnector->getSelectedTemplate();
+    	if ($this->_template) {
+    		$template = $this->_template;
+    	} else {
+    		$whmcsConnector = new Modules_Microweber_WhmcsConnector();
+    		$whmcsConnector->setDomainName($domainName);
+    		$template = $whmcsConnector->getSelectedTemplate();
+    	}
     	
-        $installArguments[] = '-p mw_';
-        $installArguments[] = '-t ' . $template;
-        $installArguments[] = '-d 1';
+        $installArguments[] = '-p'; 
+        $installArguments[] = 'mw_';
+        
+        $installArguments[] = '-t';
+        $installArguments[] = $template;
+        
+        $installArguments[] = '-d';
+        $installArguments[] = '1';
         
         if (!pm_Session::getClient()->isAdmin()) {
-       		$installArguments[] = '-c 1';
+       		$installArguments[] = '-c';
+       		$installArguments[] = '1';
         }
-		
-        $installArguments = implode(' ', $installArguments);
-		
+        
         try {
         	$args = [
         		$domain->getSysUserLogin(),
@@ -243,8 +265,8 @@ class Modules_Microweber_Install {
         		$phpHandler['clipath'],
         		'artisan',
         		'microweber:install',
-        		$installArguments
         	];
+        	$args = array_merge($args, $installArguments);
         	
         	$artisan = pm_ApiCli::callSbin('filemng', $args, pm_ApiCli::RESULT_FULL);
 			
@@ -252,7 +274,7 @@ class Modules_Microweber_Install {
  
         	pm_Log::debug('Microweber install log for: ' . $domain->getName() . '<br />' . $artisan['stdout']. '<br /><br />');
         	
-        	Modules_Microweber_WhiteLabel::updateWhiteLabelDomainById($domain->getId());
+        	Modules_Microweber_WhiteLabel::updateWhiteLabelDomainById($domain->getId()); 
         	
         	$this->addDomainEncryption($domain);
         	

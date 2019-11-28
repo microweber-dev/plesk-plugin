@@ -280,6 +280,20 @@ class IndexController extends pm_Controller_Action {
         	)
         );
         
+        $form->addElement('select', 'installation_language', [
+        	'label' => 'Installation Language',
+        	'multiOptions' => Modules_Microweber_Config::getSupportedLanguages(),
+        	'value' => pm_Settings::get('installation_language'),
+        	'required' => true,
+        ]);
+        
+        $form->addElement('select', 'installation_template', [
+        	'label' => 'Installation Template',
+        	'multiOptions' => Modules_Microweber_Config::getSupportedTemplates(),
+        	'value' => pm_Settings::get('installation_template'),
+        	'required' => true,
+        ]);
+        
         $form->addElement('radio', 'installation_type', [
             'label' => 'Installation Type',
             'multiOptions' =>
@@ -346,7 +360,7 @@ class IndexController extends pm_Controller_Action {
             
 			$domain = new pm_Domain($post['installation_domain']);
 			
-			/*
+			
             if (!empty($domain->getName())) {
             	
             	$task = new Modules_Microweber_TaskInstall();
@@ -355,6 +369,8 @@ class IndexController extends pm_Controller_Action {
             	$task->setParam('type', $post['installation_type']); 
             	$task->setParam('databaseDriver', $post['installation_database_driver']);
             	$task->setParam('path', $post['installation_folder']);
+            	$task->setParam('template', $post['installation_template']);
+            	$task->setParam('language', $post['installation_language']);
             	$task->setParam('email', $post['installation_email']);
             	$task->setParam('username', $post['installation_username']);
             	$task->setParam('password', $post['installation_password']);
@@ -373,13 +389,15 @@ class IndexController extends pm_Controller_Action {
             	echo 'Please, select domain.';
             	exit;
             }
-            */
-           
+            
+          /*   
             $newInstallation = new Modules_Microweber_Install();
             $newInstallation->setDomainId($post['installation_domain']);
             $newInstallation->setType($post['installation_type']);
             $newInstallation->setDatabaseDriver($post['installation_database_driver']);
             $newInstallation->setPath($post['installation_folder']);
+            $newInstallation->setTemplate($post['installation_template']);
+            $newInstallation->setLanguage($post['installation_language']);
             
             if (!empty($post['installation_email'])) {
             	$newInstallation->setEmail($post['installation_email']);
@@ -394,7 +412,7 @@ class IndexController extends pm_Controller_Action {
             }
             
             $newInstallation->run(); 
-            
+             */
             
         }
 
@@ -468,6 +486,13 @@ class IndexController extends pm_Controller_Action {
             'required' => true,
         ]);
         
+        $form->addElement('select', 'installation_template', [
+        	'label' => 'Installation Template',
+        	'multiOptions' => Modules_Microweber_Config::getSupportedTemplates(),
+        	'value' => pm_Settings::get('installation_template'),
+        	'required' => true,
+        ]);
+        
         $form->addElement('select', 'installation_language', [
         	'label' => 'Installation Language',
         	'multiOptions' => Modules_Microweber_Config::getSupportedLanguages(),
@@ -517,6 +542,7 @@ class IndexController extends pm_Controller_Action {
             // Form proccessing
             pm_Settings::set('installation_language', $form->getValue('installation_language'));
             pm_Settings::set('installation_settings', $form->getValue('installation_settings'));
+            pm_Settings::set('installation_template', $form->getValue('installation_template'));
             pm_Settings::set('installation_type', $form->getValue('installation_type'));
             pm_Settings::set('installation_database_driver', $form->getValue('installation_database_driver'));
             
@@ -568,7 +594,6 @@ class IndexController extends pm_Controller_Action {
     	}
     	
     	$downloadLog = pm_ApiCli::callSbin('unzip_app_version.sh', [base64_encode($release['url']), Modules_Microweber_Config::getAppSharedPath()])['stdout'];
-    	
     	
     	// Whm Connector
     	$downloadUrl = 'https://github.com/microweber-dev/whmcs-connector/archive/master.zip';
