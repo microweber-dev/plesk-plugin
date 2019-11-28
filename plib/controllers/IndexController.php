@@ -93,8 +93,6 @@ class IndexController extends pm_Controller_Action {
     	
     	$this->view->pageTitle = $this->_moduleName . ' - White Label';
     	
-    	$this->view->updatePremiumTemplatesLink = pm_Context::getBaseUrl() . 'index.php/index/update_premium_templates';
-    	
     	// WL - white label
     	
     	$form = new pm_Form_Simple();
@@ -232,24 +230,6 @@ class IndexController extends pm_Controller_Action {
     	$this->_status->addMessage('info', $this->_updateTemplates());
     	
     	header("Location: " . pm_Context::getBaseUrl() . 'index.php/index/versions');
-    	exit;
-    }
-    
-    public function updatepremiumtemplatesAction() {
-    	
-    	if (!pm_Session::getClient()->isAdmin()) {
-    		throw new Exception('You don\'t have permissions to see this page.');
-    	}
-    	 
-    	$templatesUrl = $this->_getPremiumTemplatesUrl();
-    	
-    	if ($templatesUrl) {
-	    	$downloadLog = pm_ApiCli::callSbin('unzip_app_templates.sh',[base64_encode($templatesUrl), Modules_Microweber_Config::getAppSharedPath()])['stdout'];
-	    	
-	    	$this->_status->addMessage('info', $downloadLog);
-    	}
-    	
-    	header("Location: " . pm_Context::getBaseUrl() . 'index.php/index/whitelabel');
     	exit;
     }
 	
@@ -608,22 +588,18 @@ class IndexController extends pm_Controller_Action {
     
     private function _updateTemplates() {
     	
-    	// $templatesUrl = $this->_getTemplatesUrl();
-    	
-    	$connector = new MicroweberMarketplaceConnector();
-    	$templates = $connector->get_templates_download_urls();
+    	$templates = $this->_getTemplatesUrl();
     	
     	foreach ($templates as $template) {
     		
-    		$downloadLog = pm_ApiCli::callSbin('unzip_app_template.sh',[
-    			base64_encode($template['download_url']),
-    			Modules_Microweber_Config::getAppSharedPath(),
-    			$template['target_dir']
-    		])['stdout'];
+    		$task = new Modules_Microweber_TaskTemplateDownload();
+    		$task->setParam('downloadUrl', $template['download_url']);
+    		$task->setParam('targetDir', $template['target_dir']);
     		
-    		var_dump($downloadLog);
-    		die();
+    		$this->taskManager->start($task, NULL);
     	}
+    	
+    	return 'Downloading templates task started.';
     }
     
     private function _getLicensedView() 
@@ -819,22 +795,10 @@ class IndexController extends pm_Controller_Action {
     
     private function _getTemplatesUrl() {
     	
-    	$templatesUrl = Modules_Microweber_Config::getUpdateAppUrl();
-    	$templatesUrl .= '?api_function=download&get_extra_content=1&name=templates';
+    	$connector = new MicroweberMarketplaceConnector();
+    	$templatesUrl = $connector->get_templates_download_urls();
     	
     	return $templatesUrl;
-    }
-    
-    private function _getPremiumTemplatesUrl() {
-    	
-    	$templatesUrl = Modules_Microweber_Config::getUpdateAppUrl();
-    	$templatesUrl .= '/?api_function=get_download_link&get_extra_content=1&name=templates_paid&license_key=' . pm_Settings::get('wl_key');
-    	
-    	$json = $this->_getJson($templatesUrl);
-    	
-    	if (isset($json['url'])) {
-    		return $json['url'];
-    	}
     }
 
     private function _getRelease() {

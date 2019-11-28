@@ -68,6 +68,7 @@ class Modules_Microweber_Config
 	{
 		return [
 			'microweber' => 'Install Microweber',
+			'microweber_without_shop' => 'Install Microweber Without Shop',
 			'microweber_lite' => 'Install Microweber Lite'
 		];
 	}

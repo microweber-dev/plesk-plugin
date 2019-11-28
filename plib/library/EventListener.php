@@ -20,9 +20,6 @@ class Modules_Microweber_EventListener implements EventListener
     		if (is_array($planItems) && count($planItems) > 0 && isset(Modules_Microweber_Config::getPlanItems()[$planItems[0]])) {
     		
     			try {
-	    			// Wait to restart web server
-	    			sleep(10);
-	    			
 		    		$newInstallation = new Modules_Microweber_Install();
 		    		$newInstallation->setDomainId($objectId);
 		    		$newInstallation->setType(pm_Settings::get('installation_type'));

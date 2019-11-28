@@ -2,32 +2,28 @@
 
 downloadUrl=$(echo "$1" | base64 -d)
 
-latestFolder=$2
-if [ ! -d "$latestFolder" ]; then
-	mkdir -p "$latestFolder"
+latestFolderTemplate=$2
+if [ ! -d "$latestFolderTemplate" ]; then
+	mkdir -p "$latestFolderTemplate"
 fi
 
-cd "$latestFolder"
-
-echo $3
-
-exit
+cd "$latestFolderTemplate"
 
 zipDownloadedFile="microweber-template.zip";
 
 echo 'Download from url...'
-wget "$downloadUrl" -O "$zipDownloadedFile"
+wget --no-check-certificate "$downloadUrl" -O "$zipDownloadedFile"
 
 # Unzip selected version
 echo 'Unzip file...'
-unzip $zipDownloadedFile -d $2 > unziping-microweber-templates.log
+unzip $zipDownloadedFile -d $2 > unziping-microweber-template.log
 
-find $latestFolder -type d -exec chmod 0755 {} \;
-find $latestFolder -type f -exec chmod 0644 {} \;
+find $latestFolderTemplate -type d -exec chmod 0755 {} \;
+find $latestFolderTemplate -type f -exec chmod 0644 {} \;
 
-chcon --user system_u --type httpd_sys_content_t -R $latestFolder
+chcon --user system_u --type httpd_sys_content_t -R $latestFolderTemplate
 
 rm -f $zipDownloadedFile
-rm -f "unziping-microweber-templates.log"
+rm -f "unziping-microweber-template.log"
 
 echo "Done!"
