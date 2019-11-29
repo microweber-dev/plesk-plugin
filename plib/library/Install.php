@@ -235,19 +235,11 @@ class Modules_Microweber_Install {
 			$installArguments[] = trim($installationLanguage);
     	}
     	
-    	if ($this->_template) {
-    		$template = $this->_template;
-    	} else {
-    		$whmcsConnector = new Modules_Microweber_WhmcsConnector();
-    		$whmcsConnector->setDomainName($domainName);
-    		$template = $whmcsConnector->getSelectedTemplate();
-    	}
-    	
         $installArguments[] = '-p'; 
         $installArguments[] = 'mw_';
         
         $installArguments[] = '-t';
-        $installArguments[] = $template;
+        $installArguments[] = $this->_template;
         
         $installArguments[] = '-d';
         $installArguments[] = '1';

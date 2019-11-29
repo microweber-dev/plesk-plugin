@@ -20,6 +20,11 @@ class Modules_Microweber_EventListener implements EventListener
     		if (is_array($planItems) && count($planItems) > 0 && isset(Modules_Microweber_Config::getPlanItems()[$planItems[0]])) {
     		
     			try {
+    				
+    				$whmcsConnector = new Modules_Microweber_WhmcsConnector();
+    				$whmcsConnector->setDomainName($domain->getName());
+    				$selectedTemplate = $whmcsConnector->getSelectedTemplate();
+    				
 		    		$newInstallation = new Modules_Microweber_Install();
 		    		$newInstallation->setDomainId($objectId);
 		    		$newInstallation->setType(pm_Settings::get('installation_type'));
@@ -27,6 +32,11 @@ class Modules_Microweber_EventListener implements EventListener
 		    		$newInstallation->setUsername($newValue['System User']);
 		    		$newInstallation->setEmail($newValue['System User']);
 		    		$newInstallation->setPassword($newValue['System User Password']);
+		    		
+		    		if (!empty($selectedTemplate)) {
+		    			$newInstallation->setTemplate($selectedTemplate);
+		    		}
+		    		
 		    		$newInstallation->run();
 		    		
 	    		} catch (pm_Exception $e) {
