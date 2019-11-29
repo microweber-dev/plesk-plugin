@@ -11,6 +11,28 @@ class MicroweberMarketplaceConnector
 		'https://private-packages.microweberapi.com/packages.json'
 	];
 
+    /**
+     * Set WHMCS Url
+     * @var bool
+     */
+	public $whmcs_url = false;
+
+	public function set_whmcs_url($url) {
+	    if (!empty($url)) {
+            $this->whmcs_url = $url;
+            $this->update_package_urls();
+        }
+    }
+
+    public function update_package_urls() {
+
+	    $whmcsUrl = $this->whmcs_url . '/index.php?m=microweber_addon&function=get_package_manager_urls';
+	    $whmcsPackageUrls = $this->_get_content_from_url($whmcsUrl);
+        $whmcsPackageUrls = json_decode($whmcsPackageUrls, TRUE);
+        if (is_array($whmcsPackageUrls) && !empty($whmcsPackageUrls)) {
+            $this->set_package_urls($whmcsPackageUrls);
+        }
+    }
 
 	public function add_package_urls($urls) {
 		if (is_array($urls) && !empty($urls)) {
