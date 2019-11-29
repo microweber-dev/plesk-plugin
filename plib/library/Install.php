@@ -238,8 +238,10 @@ class Modules_Microweber_Install {
         $installArguments[] = '-p'; 
         $installArguments[] = 'mw_';
         
-        $installArguments[] = '-t';
-        $installArguments[] = $this->_template;
+        if ($this->_template) {
+       		$installArguments[] = '-t';
+        	$installArguments[] = $this->_template;
+        }
         
         $installArguments[] = '-d';
         $installArguments[] = '1';
