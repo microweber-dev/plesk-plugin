@@ -278,9 +278,9 @@ class Modules_Microweber_Install {
         	
         	$this->addDomainEncryption($domain);
         	
-        	return array('success'=>true, 'log'=> $artisan['stdout']);
+        	return ['success'=>true, 'log'=> $artisan['stdout']];
         } catch (Exception $e) {
-        	return array('success'=>false, 'error'=>true, 'log'=> $e->getMessage());
+        	return ['success'=>false, 'error'=>true, 'log'=> $e->getMessage()];
         }
         
     }

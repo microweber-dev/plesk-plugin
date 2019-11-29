@@ -125,21 +125,21 @@ class IndexController extends pm_Controller_Action {
     		'placeholder'=> 'Enter url of your contact page'
     	]);
     	$form->addElement('checkbox', 'wl_enable_support_links', 
-    		array(
+    		[
     			'label' => 'Enable support links', 'value' => pm_Settings::get('wl_enable_support_links')
-    		)
+    		]
     	);
     	$form->addElement('textarea', 'wl_powered_by_link', 
-    		array(
+    		[
     			'label' => 'Enter "Powered by" text', 
     			'value' => pm_Settings::get('wl_powered_by_link'), 
     			'rows' => 3
-    		)
+    		]
     	);
     	$form->addElement('checkbox', 'wl_hide_powered_by_link', 
-    		array(
+    		[
     			'label' => 'Hide "Powered by" link', 'value' => pm_Settings::get('wl_hide_powered_by_link')
-    		)
+    		]
     	);
     	$form->addElement('text', 'wl_logo_admin_panel', [
     		'label' => 'Logo for Admin panel (size: 180x35px)',
@@ -157,9 +157,9 @@ class IndexController extends pm_Controller_Action {
     		'placeholder'=> ''
     	]);
     	$form->addElement('checkbox', 'wl_disable_microweber_marketplace',
-    		array(
+    		[
     			'label' => 'Disable Microweber Marketplace', 'value' => pm_Settings::get('wl_disable_microweber_marketplace')
-    		)
+    		]
     	);
     	$form->addElement('text', 'wl_external_login_server_button_text', [
     		'label' => 'External Login Server Button Text',
@@ -167,9 +167,9 @@ class IndexController extends pm_Controller_Action {
     		'placeholder'=> 'Login with Microweber Account'
     	]);
     	$form->addElement('checkbox', 'wl_external_login_server_enable',
-    		array(
+    		[
     			'label' => 'External Login Server Enable', 'value' => pm_Settings::get('wl_external_login_server_enable')
-    		)
+    		]
     	);
     	
     	$form->addControlButtons([
@@ -247,7 +247,7 @@ class IndexController extends pm_Controller_Action {
     	
         $this->view->pageTitle = $this->_moduleName . ' - Install';
 
-        $domainsSelect = array('no_select'=> 'Select domain to install..');
+        $domainsSelect = ['no_select'=> 'Select domain to install..'];
         foreach (Modules_Microweber_Domain::getDomains() as $domain) {
 
             $domainId = $domain->getId();
@@ -266,7 +266,7 @@ class IndexController extends pm_Controller_Action {
         
         $form->addElement(
         	new Zend_Form_Element_Note('create_new_domain_link', 
-        		array('value' => '<a href="/smb/web/add-domain" style="margin-left:175px;top: -15px;position:relative;">Create New Domain</a>')
+        		['value' => '<a href="/smb/web/add-domain" style="margin-left:175px;top: -15px;position:relative;">Create New Domain</a>']
         	)
         );
         
@@ -675,7 +675,7 @@ class IndexController extends pm_Controller_Action {
     	
     	foreach (Modules_Microweber_Domain::getDomains() as $domain) {
     		
-			$installationsFind = array();
+			$installationsFind = [];
 			
     		$domainDocumentRoot = $domain->getDocumentRoot();
     		$domainName = $domain->getName();
