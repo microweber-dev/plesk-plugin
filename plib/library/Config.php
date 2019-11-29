@@ -16,7 +16,7 @@ class Modules_Microweber_Config
 	public static function getSupportedTemplates()
 	{
 		
-		$templates = array();
+		$templates = [];
 		
 		try {
 			$sfm = new pm_ServerFileManager();
@@ -38,7 +38,7 @@ class Modules_Microweber_Config
 	public static function getSupportedLanguages()
 	{
 		
-		$languages = array();
+		$languages = [];
 		
 		try {
 			$sfm = new pm_ServerFileManager();

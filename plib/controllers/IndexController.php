@@ -69,11 +69,19 @@ class IndexController extends pm_Controller_Action {
 
         $release = $this->_getRelease();
         
+        $availableTemplates = Modules_Microweber_Config::getSupportedTemplates();
+        if (!empty($availableTemplates)) {
+        	$availableTemplates = implode(', ', $availableTemplates);
+        } else {
+        	$availableTemplates = 'No templates available';
+        }
+        
         $this->view->pageTitle = $this->_moduleName . ' - Versions';
 		
         $this->view->latestVersion = 'unknown';
         $this->view->currentVersion = $this->_getCurrentVersion();
         $this->view->latestDownloadDate = $this->_getCurrentVersionLastDownloadDateTime();
+        $this->view->availableTemplates = $availableTemplates;
         
         if (!empty($release)) {
         	$this->view->latestVersion = $release['version']; 

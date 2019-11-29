@@ -4,7 +4,12 @@
 <span>Your version is: </span> <b><?php echo $this->currentVersion; ?></b> <br />
 <span>Latest version is:</span> <b><?php echo $this->latestVersion; ?></b> <br />
 <span>Latest download date:</span> <b><?php echo $this->latestDownloadDate; ?></b><br />
+<br />
 
+<h3>Available Templates</h3>
+<span><?php echo $this->availableTemplates; ?></span>
+<br />
+<br />
 <br />
 <?php if ($this->currentVersion != $this->latestVersion): ?>
 <a href="<?php echo $this->updateLink; ?>" class="btn action" style="width:200px;">Update</a>
