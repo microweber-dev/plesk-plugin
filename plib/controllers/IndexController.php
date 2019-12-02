@@ -804,6 +804,8 @@ class IndexController extends pm_Controller_Action {
     private function _getTemplatesUrl() {
     	
     	$connector = new MicroweberMarketplaceConnector();
+		$connector->set_whmcs_url(Modules_Microweber_Config::getWhmcsUrl());
+		
     	$templatesUrl = $connector->get_templates_download_urls();
     	
     	return $templatesUrl;
