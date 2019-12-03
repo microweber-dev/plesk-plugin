@@ -20,6 +20,9 @@ class Modules_Microweber_EventListener implements EventListener
 			
 				if ($action == 'phys_hosting_create' && pm_Settings::get('installation_settings') == 'auto') {
 					$this->_installMicroweber($domain, $newValue);
+					
+					// Enable or disable shop
+					$this->_updateMicroweber($domain, $newValue);
 				}
 				
 				if ($action == 'phys_hosting_update') {
