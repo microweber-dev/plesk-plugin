@@ -15,11 +15,6 @@ class Modules_Microweber_WhmcsConnector
         $whmcsJson = [];
         $whmcsJson['url'] = pm_Settings::get('whmcs_url');
         $whmcsJson['whmcs_url'] = pm_Settings::get('whmcs_url');
-		
-        $whmcsPackageUrls = Modules_Microweber_Config::getWhmcsPackageManagerUrls();
-        if (!empty($whmcsPackageUrls)) {
-        	$whmcsJson['marketplace_repositories_urls'] = $whmcsPackageUrls;
-        }
         
         $whmcsJson = json_encode($whmcsJson, JSON_PRETTY_PRINT);
         

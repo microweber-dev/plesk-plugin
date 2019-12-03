@@ -42,6 +42,12 @@ class Modules_Microweber_WhiteLabel
 		$whiteLabelSettings['external_login_server_button_text'] = pm_Settings::get('wl_external_login_server_button_text');
 		$whiteLabelSettings['external_login_server_enable'] = pm_Settings::get('wl_external_login_server_enable');
 
+		
+		$whmcsPackageUrls = Modules_Microweber_Config::getWhmcsPackageManagerUrls();
+		if (!empty($whmcsPackageUrls)) {
+			$whiteLabelSettings['marketplace_repositories_urls'] = $whmcsPackageUrls;
+		}
+		
 		return json_encode($whiteLabelSettings, JSON_PRETTY_PRINT);
 	}
 }
