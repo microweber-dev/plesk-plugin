@@ -7,10 +7,7 @@ if [ ! -d "$latestFolder" ]; then
 	mkdir -p "$latestFolder"
 fi
 
-downloadCacheFolder='/tmp/microweber-module-cache'
-
-rm -rf "$downloadCacheFolder"
-mkdir "$downloadCacheFolder"
+downloadCacheFolder=$(mktemp -d)
 
 cd "$downloadCacheFolder"
 
@@ -30,6 +27,7 @@ chcon --user system_u --type httpd_sys_content_t -R $latestFolder
 
 rm -rf "$zipDownloadedFile"
 rm -rf "microweber-module-unzip.log"
+rm -rf "$downloadCacheFolder"
 
 cd *
 
