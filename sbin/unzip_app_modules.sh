@@ -14,11 +14,11 @@ cd "$downloadCacheFolder"
 zipDownloadedFile='microweber-module.zip';
 
 echo 'Download modules from url...'
-wget "$downloadUrl" -O "$zipDownloadedFile"
+wget --no-check-certificate "$downloadUrl" -O "$zipDownloadedFile"
 
 # Unzip selected version
 echo 'Unzip file...'
-unzip "$zipDownloadedFile" > microweber-module-unzip.log
+unzip -o "$zipDownloadedFile" > microweber-module-unzip.log
 
 find $latestFolder -type d -exec chmod 0755 {} \;
 find $latestFolder -type f -exec chmod 0644 {} \;
