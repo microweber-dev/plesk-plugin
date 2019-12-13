@@ -385,7 +385,7 @@ class Modules_Microweber_Install {
     private function _getFilesForSymlinking() {
     	
     	$files = [];
-    	
+    	$files[] = 'version.txt';
     	$files[] = 'vendor';
     	$files[] = 'src';
     	$files[] = 'resources';
@@ -406,7 +406,6 @@ class Modules_Microweber_Install {
     	$files = [];
     	
     	// Index
-    	$files[] = 'version.txt';
     	$files[] = 'index.php';
     	$files[] = '.htaccess';
     	$files[] = 'favicon.ico';
