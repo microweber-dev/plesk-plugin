@@ -16,7 +16,7 @@ wget --no-check-certificate "$downloadUrl" -O "$zipDownloadedFile"
 
 # Unzip selected version
 echo 'Unzip file...'
-unzip $zipDownloadedFile -d $2 > unziping-microweber-template.log
+unzip -o $zipDownloadedFile -d $2 > unziping-microweber-template.log
 
 find $latestFolderTemplate -type d -exec chmod 0755 {} \;
 find $latestFolderTemplate -type f -exec chmod 0644 {} \;
