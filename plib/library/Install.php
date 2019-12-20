@@ -177,8 +177,8 @@ class Modules_Microweber_Install {
         		// Delete domain file
         		$result = pm_ApiCli::callSbin('filemng', [$domain->getSysUserLogin(), 'rm', '-rf', $domainDirOrFile], pm_ApiCli::RESULT_FULL);
         		
-			// Create symlink 
-			$result = pm_ApiCli::callSbin('create_symlink.sh', [$domain->getSysUserLogin(), $scriptDirOrFile, $domainDirOrFile], pm_ApiCli::RESULT_FULL);
+				// Create symlink 
+				$result = pm_ApiCli::callSbin('create_symlink.sh', [$domain->getSysUserLogin(), $scriptDirOrFile, $domainDirOrFile], pm_ApiCli::RESULT_FULL);
         		
         	} else {
         		$fileManager->copyFile($scriptDirOrFile, dirname($domainDirOrFile));
