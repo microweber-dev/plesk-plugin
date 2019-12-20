@@ -12,7 +12,7 @@ cd "$latestFolderTemplate"
 zipDownloadedFile="microweber-template.zip";
 
 echo 'Download from url...'
-wget --no-check-certificate "$downloadUrl" -O "$zipDownloadedFile"
+wget "$downloadUrl" -O "$zipDownloadedFile"
 
 # Unzip selected version
 echo 'Unzip file...'
