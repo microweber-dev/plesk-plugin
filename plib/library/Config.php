@@ -3,6 +3,14 @@
 
 class Modules_Microweber_Config
 {
+	public static function getSbinVarPath() {
+		
+		$plib = trim(pm_Context::getPlibDir());
+		$sbin = str_replace('plib', 'sbin', $plib);
+		
+		return $sbin;
+	}
+	
 	public static function getModuleVarPath() 
 	{
 		return trim(pm_Context::getVarDir());
