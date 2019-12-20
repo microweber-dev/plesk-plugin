@@ -14,7 +14,7 @@ cd "$downloadCacheFolder"
 zipDownloadedFile='microweber-module.zip';
 
 echo 'Download modules from url...'
-wget --no-check-certificate "$downloadUrl" -O "$zipDownloadedFile"
+wget "$downloadUrl" -O "$zipDownloadedFile"
 
 # Unzip selected version
 echo 'Unzip file...'
