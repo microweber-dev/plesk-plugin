@@ -164,22 +164,29 @@ class Modules_Microweber_Install {
         	
         	if ($this->_type == 'symlink') {
         		
-        		/**
-        		* $result = pm_ApiCli::callSbin('filemng', [$domain->getSysUserLogin(), Modules_Microweber_Config::getSbinVarPath() . 'create_symlink.sh', $scriptDirOrFile, $domainDirOrFile], pm_ApiCli::RESULT_FULL);
-        		* output: filemng: Wrong command name or parameter number: /usr/local/psa/admin/sbin/modules/microweber/create_symlink.sh
-        		**/
-        		
-        		/**
-        		* $result = pm_ApiCli::callSbin('filemng', [$domain->getSysUserLogin(), 'ln', '-s', $scriptDirOrFile, $domainDirOrFile], pm_ApiCli::RESULT_FULL);
-        		* output: filemng: Wrong command name or parameter number: ln
-        		**/
-			
         		// Delete domain file
-        		$result = pm_ApiCli::callSbin('filemng', [$domain->getSysUserLogin(), 'rm', '-rf', $domainDirOrFile], pm_ApiCli::RESULT_FULL);
+        		pm_ApiCli::callSbin('filemng', [
+        			$domain->getSysUserLogin(),
+        			'exec',
+        			$domainDocumentRoot,
+        			'rm', 
+        			'-rf', 
+        			$domainDirOrFile
+        			
+        		], pm_ApiCli::RESULT_FULL);
         		
-				// Create symlink 
-				$result = pm_ApiCli::callSbin('create_symlink.sh', [$domain->getSysUserLogin(), $scriptDirOrFile, $domainDirOrFile], pm_ApiCli::RESULT_FULL);
-        		
+        		// Create symlink
+        		pm_ApiCli::callSbin('filemng', [
+        			$domain->getSysUserLogin(),
+        			'exec',
+        			$domainDocumentRoot,
+        			'ln',
+        			'-s',
+        			$scriptDirOrFile,
+        			$domainDirOrFile
+        			
+        		], pm_ApiCli::RESULT_FULL);
+			
         	} else {
         		$fileManager->copyFile($scriptDirOrFile, dirname($domainDirOrFile));
         	}
