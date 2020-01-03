@@ -11,3 +11,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed code style
 - Fixed code issues
 - Update microweber addon config when save new settings
+
+
+## [0.0.9] - 2019-12-19
+- Fixed code issues
+
+
+## [0.1.0] - 2020-01-03
+- Release
+- Fix symlinking
+- Fixed code issues
