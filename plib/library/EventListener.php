@@ -1,10 +1,11 @@
 <?php
-
 /**
+ * Microweber auto provision plesk plugin
  * Author: Bozhidar Slaveykov
- * @email: info@credocart.com
- * Plesk auto app installer
+ * @email: info@microweber.com
+ * Copyright: Microweber CMS
  */
+
 class Modules_Microweber_EventListener implements EventListener
 {
 

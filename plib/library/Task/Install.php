@@ -1,4 +1,10 @@
 <?php
+/**
+ * Microweber auto provision plesk plugin
+ * Author: Bozhidar Slaveykov
+ * @email: info@microweber.com
+ * Copyright: Microweber CMS
+ */
 
 class Modules_Microweber_Task_Install extends pm_LongTask_Task
 {

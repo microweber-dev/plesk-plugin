@@ -1,6 +1,11 @@
 <?php
+/**
+ * Microweber auto provision plesk plugin
+ * Author: Bozhidar Slaveykov
+ * @email: info@microweber.com
+ * Copyright: Microweber CMS
+ */
 
-// Copyright 1999-2017. Parallels IP Holdings GmbH.
 class Modules_Microweber_Domain
 {
 
