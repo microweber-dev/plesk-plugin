@@ -5,10 +5,10 @@
   <vendor>Microweber</vendor>
   <description>Automatic app installer.</description>
   <version>0.1.1</version>
+  <release>0.1.1</release>
   <category>web_app</category>
   <category>developer</category>
   <plesk_min_version>17.0.16</plesk_min_version>
   <os>unix</os>
-  <release>0.1.0</release>
   <url>http://microweber.com</url>
 </module>
