@@ -76,11 +76,23 @@ class Modules_Microweber_Install {
     	$this->setProgress(5);
     	
     	$domain = Modules_Microweber_Domain::getUserDomainById($this->_domainId);
-        
         if (empty($domain->getName())) {
             throw new \Exception('Domain not found.');
         }
-        
+	    
+	$whmcs = new Modules_Microweber_WhmcsConnector();
+        $whmcs->setDomainName($domain->getName());
+        $whiteLabelWhmcsSettings = $whmcs->getWhitelabelSettings();
+
+        if (!empty($whiteLabelWhmcsSettings)) {
+            if (isset($whiteLabelWhmcsSettings['wl_installation_language'])) {
+                $this->_language = $whiteLabelWhmcsSettings['wl_installation_language'];
+            }
+            if (isset($whiteLabelWhmcsSettings['wl_installation_template'])) {
+                $this->_template = $whiteLabelWhmcsSettings['wl_installation_template'];
+            }
+        }
+	    
         $hostingManager = new Modules_Microweber_HostingManager();
         $hostingManager->setDomainId($domain->getId());
         
