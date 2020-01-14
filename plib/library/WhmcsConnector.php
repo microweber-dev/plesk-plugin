@@ -56,4 +56,23 @@ class Modules_Microweber_WhmcsConnector
         return $template;
     }
 
+    public function getWhitelabelSettings()
+    {
+        pm_Log::debug('Get whitelabel settings for domain: ' . $this->_domainName);
+
+        $settings = array();
+
+        $url = Modules_Microweber_Config::getWhmcsUrl() . '/index.php?m=microweber_server&function=get_whitelabel_settings&domain=' . $this->_domainName;
+
+        $json = Modules_Microweber_Helper::getJsonFromUrl($url);
+
+        pm_Log::debug('Recived json for domain: ' . $this->_domainName . print_r($json, true));
+
+        if (isset($json['settings'])) {
+            $settings = $json['settings'];
+        }
+
+        return $settings;
+    }
+
 }
