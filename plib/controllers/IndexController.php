@@ -461,6 +461,36 @@ class IndexController extends pm_Controller_Action {
     	die(json_encode($json, JSON_PRETTY_PRINT));
     }
 
+    public function startupAction()
+    {
+        if (!pm_Session::getClient()->isAdmin()) {
+            throw new Exception('You don\'t have permissions to see this page.');
+        }
+
+        $release = $this->_getRelease();
+
+        $availableTemplates = Modules_Microweber_Config::getSupportedTemplates();
+        if (!empty($availableTemplates)) {
+            $availableTemplates = implode(', ', $availableTemplates);
+        } else {
+            $availableTemplates = 'No templates available';
+        }
+
+        $this->view->pageTitle = $this->_moduleName . ' - Versions';
+
+        $this->view->latestVersion = 'unknown';
+        $this->view->currentVersion = $this->_getCurrentVersion();
+        $this->view->latestDownloadDate = $this->_getCurrentVersionLastDownloadDateTime();
+        $this->view->availableTemplates = $availableTemplates;
+
+        if (!empty($release)) {
+            $this->view->latestVersion = $release['version'];
+        }
+
+        $this->view->updateLink = pm_Context::getBaseUrl() . 'index.php/index/update';
+        $this->view->updateTemplatesLink = pm_Context::getBaseUrl() . 'index.php/index/update_templates';
+    }
+
     public function settingsAction() {
 
     	if (!pm_Session::getClient()->isAdmin()) {
@@ -641,9 +671,10 @@ class IndexController extends pm_Controller_Action {
     
     private function _checkAppSettingsIsCorrect() 
     {
-    	if (empty(pm_Settings::get('installation_type'))) {
-    		$this->_status->addMessage('warning', 'First you must to fill your app settings.');
-    		header("Location: " . pm_Context::getBaseUrl() . 'index.php/index/settings');
+        $currentVersion = $this->_getCurrentVersion();
+
+    	if ($currentVersion == 'unknown') {
+    		header("Location: " . pm_Context::getBaseUrl() . 'index.php/index/startup');
     		exit;
     	}
     }
