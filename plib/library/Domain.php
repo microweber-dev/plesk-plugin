@@ -19,7 +19,7 @@ class Modules_Microweber_Domain
 	
 	public static function getDomains()
 	{
-		$httpHost = '';
+	/*	$httpHost = '';
 		if (isset($_SERVER['HTTP_HOST'])) {
 			$httpHost = $_SERVER['HTTP_HOST'];
 			$exp = explode(":", $httpHost);
@@ -28,7 +28,7 @@ class Modules_Microweber_Domain
 				
 				self::$_excludeDomains[] = $httpHost;
 			}
-		}
+		}*/
 		
 		if (pm_Session::getClient()->isAdmin()) {
 			$domains = pm_Domain::getAllDomains();
@@ -36,15 +36,15 @@ class Modules_Microweber_Domain
 			$domains = pm_Domain::getDomainsByClient(pm_Session::getClient());
 		}
 		
-		$readyDomains = [];
+		/*$readyDomains = [];
 		foreach ($domains as $domain) {
 			if (in_array($domain->getName(), self::$_excludeDomains)) {
 				continue;
 			}
 			$readyDomains[] = $domain;
-		}
+		}*/
 
-		return $readyDomains;
+		return $domains;
 	}
 
 	public static function getUserDomainById($domainId)

@@ -13,14 +13,18 @@
 
 <br />
 <br />
-
+<div class="js-microweber-install-form" style="display:none;">
 <?php echo $this->form; ?>
+</div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script>
 $.noConflict();
 jQuery(document).ready(function($) {
-	
+
+    $('.js-microweber-install-form').show();
+    $('#installation_password').attr('type', 'password');
+
 	 $(document).keyup('#installation_folder', function() { 
         if ($('#installation_folder').val().match(/[^a-zA-Z0-9 ]/g)) {
              $('#installation_folder').val($('#installation_folder').val().replace(/[^a-zA-Z0-9 ]/g, ''));
@@ -30,7 +34,7 @@ jQuery(document).ready(function($) {
 	
 	$('#installation_domain').after(' / <input type="text" name="installation_folder" id="installation_folder" value="microweber" class="input-text">');
 
-	
+
 	var show_password = '&nbsp; <a class="toggle-password">Show</a>';
 	$('#installation_password').after(show_password);
 

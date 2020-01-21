@@ -331,7 +331,7 @@ class IndexController extends pm_Controller_Action {
         ]);
         $form->addElement('text', 'installation_password', [
         	'label' => 'Admin Password',
-        	'value' => $adminPassword,
+            'value' => $adminPassword,
         ]);
 
         $form->addControlButtons([

@@ -30,19 +30,21 @@ class Modules_Microweber_Config
 	{
 		
 		$templates = [];
-		
-		try {
-			$sfm = new pm_ServerFileManager();
-			$listDir = $sfm->scandir(self::getAppSharedPath() . 'userfiles/templates/', true);
-			foreach ($listDir as $file) {
-				$upperText = $file;
-				$upperText = ucfirst($upperText);
-				$templates[trim($file)] = $upperText;
-			}
-		} catch (Exception $e) {
-			// Cant get supported languages
-			$templates['Default'] = 'Default';
-		}
+        $templatesPath = self::getAppSharedPath() . 'userfiles/templates/';
+
+        $sfm = new pm_ServerFileManager();
+        if ($sfm->fileExists($templatesPath)) {
+            $listDir = $sfm->scandir($templatesPath, true);
+            foreach ($listDir as $file) {
+                $upperText = $file;
+                $upperText = ucfirst($upperText);
+                $templates[trim($file)] = $upperText;
+            }
+        } else {
+            $templates['Default'] = 'Default';
+        }
+
+        asort($templates);
 		
 		return $templates;
 		
@@ -52,26 +54,27 @@ class Modules_Microweber_Config
 	{
 		
 		$languages = [];
-		
-		try {
-			$sfm = new pm_ServerFileManager();
-			$listDir = $sfm->scandir(self::getAppSharedPath() . 'userfiles/modules/microweber/language', true);
-			
-			foreach ($listDir as $file) {
-				$ext = Modules_Microweber_Helper::getFileExtension($file);
-				if ($ext == 'json') {
-					
-					$upperText = $file;
-					$upperText = str_replace('.json', false, $file);
-					$upperText = strtoupper($upperText);
-					
-					$languages[trim(strtolower($upperText))] = $upperText;
-				}
-			}
-		} catch (Exception $e) {
-			// Cant get supported languages
+
+		$languagesPath = self::getAppSharedPath() . 'userfiles/modules/microweber/language';
+
+        $sfm = new pm_ServerFileManager();
+        if ($sfm->fileExists($languagesPath)) {
+            $listDir = $sfm->scandir($languagesPath, true);
+            foreach ($listDir as $file) {
+                $ext = Modules_Microweber_Helper::getFileExtension($file);
+                if ($ext == 'json') {
+
+                    $upperText = str_replace('.json', false, $file);
+                    $upperText = strtoupper($upperText);
+
+                    $languages[trim(strtolower($upperText))] = $upperText;
+                }
+            }
+        } else {
 			$languages['en'] = 'EN';
 		}
+
+        asort($languages);
 		
 		return $languages;
 		
