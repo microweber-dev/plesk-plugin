@@ -316,10 +316,12 @@ class IndexController extends pm_Controller_Action {
         		$httpHost = $exp[0];
         	}
         }
-        
-        $adminUsername = 'mw_' . $this->_getRandomPassword(9);
-        $adminEmail = $adminUsername . '@' . $httpHost;
+
+        $client = pm_Session::getClient();
+        $adminEmail = $client->getProperty('email');
         $adminPassword = $this->_getRandomPassword(12, true);
+        $adminUsername = str_replace(strrchr($adminEmail, '@'), '', $adminEmail);
+        $adminUsername = $adminUsername .'_'. $this->_getRandomPassword(9);
         
         $form->addElement('text', 'installation_email', [
         	'label' => 'Admin Email',
@@ -355,7 +357,7 @@ class IndexController extends pm_Controller_Action {
             }
             
 			$domain = new pm_Domain($post['installation_domain']);
-            
+
             if (!empty($domain->getName())) {
             	
             	$task = new Modules_Microweber_TaskInstall();
