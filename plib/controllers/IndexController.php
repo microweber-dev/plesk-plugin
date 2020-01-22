@@ -356,8 +356,7 @@ class IndexController extends pm_Controller_Action {
             
 			$domain = new pm_Domain($post['installation_domain']);
 			
-			
-            if (!empty($domain->getName())) {
+			if (!empty($domain->getName())) {
             	
             	$task = new Modules_Microweber_TaskInstall();
             	$task->setParam('domainId', $domain->getId());
@@ -385,8 +384,8 @@ class IndexController extends pm_Controller_Action {
             	echo 'Please, select domain.';
             	exit;
             }
-            
-          /*   
+
+			/*
             $newInstallation = new Modules_Microweber_Install();
             $newInstallation->setDomainId($post['installation_domain']);
             $newInstallation->setType($post['installation_type']);
@@ -407,8 +406,8 @@ class IndexController extends pm_Controller_Action {
             	$newInstallation->setPassword($post['installation_password']);
             }
             
-            $newInstallation->run(); 
-             */
+            var_dump($newInstallation->run());
+            */
             
         }
 
@@ -476,7 +475,7 @@ class IndexController extends pm_Controller_Action {
             $availableTemplates = 'No templates available';
         }
 
-        $this->view->pageTitle = $this->_moduleName . ' - Versions';
+        $this->view->pageTitle = $this->_moduleName;
 
         $this->view->latestVersion = 'unknown';
         $this->view->currentVersion = $this->_getCurrentVersion();
@@ -755,7 +754,7 @@ class IndexController extends pm_Controller_Action {
 					$installationsFind[] = $domainDocumentRoot .'/config/microweber.php';
 				}
 			}
-			
+
     		if (!empty($installationsFind)) {
     			
     			foreach ($installationsFind as $appInstallationConfig) {
@@ -793,7 +792,7 @@ class IndexController extends pm_Controller_Action {
     			}
     		}
     	}
-    	
+
     	return $data;
     }
     

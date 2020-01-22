@@ -80,7 +80,7 @@ class Modules_Microweber_Install {
             throw new \Exception('Domain not found.');
         }
 	    
-	$whmcs = new Modules_Microweber_WhmcsConnector();
+	    $whmcs = new Modules_Microweber_WhmcsConnector();
         $whmcs->setDomainName($domain->getName());
         $whiteLabelWhmcsSettings = $whmcs->getWhitelabelSettings();
 
@@ -290,20 +290,19 @@ class Modules_Microweber_Install {
        		$installArguments[] = '-c';
        		$installArguments[] = '1';
         }
-        
+
         try {
         	$args = [
         		$domain->getSysUserLogin(),
         		'exec',
-        		$fileManager->getFilePath('/httpdocs/'), 
+                $domainDocumentRoot,
         		$phpHandler['clipath'],
-        		'artisan',
+                'artisan',
         		'microweber:install',
         	];
         	$args = array_merge($args, $installArguments);
-        	
         	$artisan = pm_ApiCli::callSbin('filemng', $args, pm_ApiCli::RESULT_FULL);
-			
+
         	$this->setProgress(95);
  
         	pm_Log::debug('Microweber install log for: ' . $domain->getName() . '<br />' . $artisan['stdout']. '<br /><br />');
