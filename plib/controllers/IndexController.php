@@ -506,7 +506,7 @@ class IndexController extends pm_Controller_Action {
             [
                 'auto' => 'Automaticlly install '.$this->_moduleName.' on new domains creation.',
             	'manual' => 'Allow users to Manualy install '.$this->_moduleName.' from Plesk.',
-                'manual' => 'Disabled for all users'
+                'disabled' => 'Disabled for all users'
             ],
             'value' => pm_Settings::get('installation_settings'),
             'required' => true,
@@ -518,7 +518,7 @@ class IndexController extends pm_Controller_Action {
         	'value' => pm_Settings::get('installation_template'),
         	'required' => true,
         ]);
-        
+
         $form->addElement('select', 'installation_language', [
         	'label' => 'Installation Language',
         	'multiOptions' => Modules_Microweber_Config::getSupportedLanguages(),
@@ -536,7 +536,6 @@ class IndexController extends pm_Controller_Action {
             'value' => pm_Settings::get('installation_type'),
             'required' => true,
         ]);
-
 
         $form->addElement('select', 'installation_database_driver', [
             'label' => 'Database Driver',
@@ -674,6 +673,23 @@ class IndexController extends pm_Controller_Action {
         $currentVersion = $this->_getCurrentVersion();
 
     	if ($currentVersion == 'unknown') {
+
+            if (empty(pm_Settings::get('installation_settings'))) {
+                pm_Settings::set('installation_settings', 'auto');
+            }
+
+            if (empty(pm_Settings::get('installation_language'))) {
+                pm_Settings::set('installation_language', 'en');
+            }
+
+            if (empty(pm_Settings::get('installation_type'))) {
+                pm_Settings::set('installation_type', 'symlink');
+            }
+
+            if (empty(pm_Settings::get('installation_database_driver'))) {
+                pm_Settings::set('installation_database_driver', 'sqlite');
+            }
+
     		header("Location: " . pm_Context::getBaseUrl() . 'index.php/index/startup');
     		exit;
     	}

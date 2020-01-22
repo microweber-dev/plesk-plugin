@@ -12,4 +12,16 @@
 <span>Latest available version is </span> <b><?php echo $this->latestVersion; ?></b> <br />
 <br />
 
-<a href="<?php echo $this->updateLink; ?>" class="btn action" style="width:300px;font-size:18px;padding: 15px;">Download Now</a>
+<a href="<?php echo $this->updateLink; ?>" class="btn action js-download-microweber" style="width:300px;font-size:18px;padding: 15px;">Download Now</a>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script>
+$.noConflict();
+jQuery(document).ready(function($) {
+    $('.js-download-microweber').click(function () {
+
+        $(this).html('Downloading...');
+
+    });
+});
+</script>
