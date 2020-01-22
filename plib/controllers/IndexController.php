@@ -257,7 +257,7 @@ class IndexController extends pm_Controller_Action {
         foreach (Modules_Microweber_Domain::getDomains() as $domain) {
 
             $domainId = $domain->getId();
-            $domainName = $domain->getName();
+            $domainName = $domain->getDisplayName();
 
             $domainsSelect[$domainId] = $domainName;
         }
@@ -355,8 +355,8 @@ class IndexController extends pm_Controller_Action {
             }
             
 			$domain = new pm_Domain($post['installation_domain']);
-			
-			if (!empty($domain->getName())) {
+
+            if (!empty($domain->getName())) {
             	
             	$task = new Modules_Microweber_TaskInstall();
             	$task->setParam('domainId', $domain->getId());
@@ -731,6 +731,7 @@ class IndexController extends pm_Controller_Action {
 			
     		$domainDocumentRoot = $domain->getDocumentRoot();
     		$domainName = $domain->getName();
+            $domainDisplayName = $domain->getDisplayName();
     		$domainIsActive = $domain->isActive();
     		$domainCreation = $domain->getProperty('cr_date');
     		
@@ -779,7 +780,8 @@ class IndexController extends pm_Controller_Action {
 		    		$domainNameUrl = $appInstallation;
 		    		$domainNameUrl = str_replace('/var/www/vhosts/', false, $domainNameUrl);
 		    		$domainNameUrl = str_replace($domainName . '/httpdocs', $domainName, $domainNameUrl);
-		    		
+                    $domainNameUrl = str_replace($domainName, $domainDisplayName, $domainNameUrl);
+
 		    		$data[] = [
 		    			'domain' => '<a href="http://'.$domainNameUrl.'" target="_blank">' . $domainNameUrl . '</a>',
 		    			'created_date' => $domainCreation,
