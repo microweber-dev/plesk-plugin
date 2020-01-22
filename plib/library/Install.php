@@ -155,7 +155,10 @@ class Modules_Microweber_Install {
         $domainDocumentRoot = $domain->getDocumentRoot(); 
         
         if ($this->_path) {
-        	$domainDocumentRoot = $domainDocumentRoot . '/'.$this->_path;
+            $domainDocumentRoot = $domainDocumentRoot . '/' . $this->_path;
+            if (!$fileManager->fileExists($domainDocumentRoot)) {
+                $fileManager->mkdir($domainDocumentRoot);
+            }
         }
         
         $domainName = $domain->getName();

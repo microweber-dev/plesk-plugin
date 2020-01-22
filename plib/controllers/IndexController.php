@@ -355,7 +355,7 @@ class IndexController extends pm_Controller_Action {
             }
             
 			$domain = new pm_Domain($post['installation_domain']);
-
+            
             if (!empty($domain->getName())) {
             	
             	$task = new Modules_Microweber_TaskInstall();
@@ -385,8 +385,7 @@ class IndexController extends pm_Controller_Action {
             	exit;
             }
 
-			/*
-            $newInstallation = new Modules_Microweber_Install();
+            /*$newInstallation = new Modules_Microweber_Install();
             $newInstallation->setDomainId($post['installation_domain']);
             $newInstallation->setType($post['installation_type']);
             $newInstallation->setDatabaseDriver($post['installation_database_driver']);
@@ -407,7 +406,7 @@ class IndexController extends pm_Controller_Action {
             }
             
             var_dump($newInstallation->run());
-            */
+            die();*/
             
         }
 
