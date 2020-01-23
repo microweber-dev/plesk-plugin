@@ -95,13 +95,10 @@ class Modules_Microweber_Install {
 	    
         $hostingManager = new Modules_Microweber_HostingManager();
         $hostingManager->setDomainId($domain->getId());
-        
         $hostingProperties = $hostingManager->getHostingProperties();
-
         if (!$hostingProperties['php']) {
         	throw new \Exception('PHP is not activated on selected domain.');
         }
-        
         $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
         
         $this->setProgress(10);
@@ -128,7 +125,7 @@ class Modules_Microweber_Install {
 	        $newDb = $dbManager->createDatabase($dbName);
 	        
 	        if (isset($newDb['database']['add-db']['result']['errtext'])) {
-	            throw new \Exception($newDb['database']['add-db']['result']['errtext']);
+	            throw new \Exception('You have reached the limit of your allowed databases.');
 	        }
 	        
 	        $this->setProgress(30);

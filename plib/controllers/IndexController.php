@@ -352,43 +352,54 @@ class IndexController extends pm_Controller_Action {
             
             $currentVersion = $this->_getCurrentVersion();
             if ($currentVersion == 'unknown') {
-            	$this->_status->addMessage('error', 'Can\'t install app becasue not releases found.');
+            	$this->_status->addMessage('error', 'Can\'t install app because not releases found.');
             	$this->_helper->json(['redirect' => pm_Context::getBaseUrl(). 'index.php/index/index']);
             }
             
 			$domain = new pm_Domain($post['installation_domain']);
-
-            if (!empty($domain->getName())) {
-            	
-            	$task = new Modules_Microweber_TaskInstall();
-            	$task->setParam('domainId', $domain->getId());
-            	$task->setParam('domainName', $domain->getName());
-                $task->setParam('domainDisplayName', $domain->getDisplayName());
-            	$task->setParam('type', $post['installation_type']); 
-            	$task->setParam('databaseDriver', $post['installation_database_driver']);
-            	$task->setParam('path', $post['installation_folder']);
-            	$task->setParam('template', $post['installation_template']);
-            	$task->setParam('language', $post['installation_language']);
-            	$task->setParam('email', $post['installation_email']);
-            	$task->setParam('username', $post['installation_username']);
-            	$task->setParam('password', $post['installation_password']);
-            	
-            	if (pm_Session::getClient()->isAdmin()) {
-            		// Run global
-            		$this->taskManager->start($task, NULL);
-            	} else {
-            		// Run for domain
-            		$this->taskManager->start($task, $domain);
-            	}
-            	
-            	$this->_helper->json(['redirect' => pm_Context::getBaseUrl(). 'index.php/index/index']);
-            	
-            } else {
+            if (!$domain->getName()) {
                 $this->_status->addMessage('error', 'Please, select domain to install microweber.');
                 $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/install']);
             }
 
-           /* $newInstallation = new Modules_Microweber_Install();
+            $hostingManager = new Modules_Microweber_HostingManager();
+            $hostingManager->setDomainId($domain->getId());
+            $hostingProperties = $hostingManager->getHostingProperties();
+            if (!$hostingProperties['php']) {
+                $this->_status->addMessage('error', 'PHP is not activated on selected domain.');
+                $this->_helper->json(['redirect' => pm_Context::getBaseUrl(). 'index.php/index/install']);
+            }
+
+            $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
+            if (version_compare($phpHandler['version'], '7.2', '<')) {
+                $this->_status->addMessage('error', 'PHP version '.$phpHandler['version'].' is not supported by Microweber. You must install PHP 7.2 or newer.');
+                $this->_helper->json(['redirect' => pm_Context::getBaseUrl(). 'index.php/index/install']);
+            }
+
+            $task = new Modules_Microweber_TaskInstall();
+            $task->setParam('domainId', $domain->getId());
+            $task->setParam('domainName', $domain->getName());
+            $task->setParam('domainDisplayName', $domain->getDisplayName());
+            $task->setParam('type', $post['installation_type']);
+            $task->setParam('databaseDriver', $post['installation_database_driver']);
+            $task->setParam('path', $post['installation_folder']);
+            $task->setParam('template', $post['installation_template']);
+            $task->setParam('language', $post['installation_language']);
+            $task->setParam('email', $post['installation_email']);
+            $task->setParam('username', $post['installation_username']);
+            $task->setParam('password', $post['installation_password']);
+
+            if (pm_Session::getClient()->isAdmin()) {
+                // Run global
+                $this->taskManager->start($task, NULL);
+            } else {
+                // Run for domain
+                $this->taskManager->start($task, $domain);
+            }
+
+            $this->_helper->json(['redirect' => pm_Context::getBaseUrl(). 'index.php/index/index']);
+/*
+            $newInstallation = new Modules_Microweber_Install();
             $newInstallation->setDomainId($post['installation_domain']);
             $newInstallation->setType($post['installation_type']);
             $newInstallation->setDatabaseDriver($post['installation_database_driver']);
