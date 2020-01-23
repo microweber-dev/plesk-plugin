@@ -97,7 +97,7 @@ class Modules_Microweber_Install {
         $hostingManager->setDomainId($domain->getId());
         
         $hostingProperties = $hostingManager->getHostingProperties();
-        
+
         if (!$hostingProperties['php']) {
         	throw new \Exception('PHP is not activated on selected domain.');
         }

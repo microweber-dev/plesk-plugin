@@ -1,0 +1,20 @@
+<?php
+/**
+ * Microweber auto provision plesk plugin
+ * Author: Bozhidar Slaveykov
+ * @email: info@microweber.com
+ * Copyright: Microweber CMS
+ */
+?>
+
+<?php
+if ($this->errorMessage):
+    ?>
+<div class="msg-box msg-error">
+    <div class="msg-content"><b>Error:</b>
+        <?php echo $this->errorMessage; ?>
+    </div>
+</div>
+<?php endif; ?>
+
+<a href="/modules/microweber/index.php/index" class="btn btn-primary">Click here to continue</a>

@@ -211,15 +211,15 @@ class IndexController extends pm_Controller_Action {
     		
     		} else {
     			pm_Settings::set('wl_license_data', false);
-    			$this->_status->addMessage('error', 'The license key is wrong or expired. Please, contact us at: http://microweber.org');
+    			$this->_status->addMessage('error', 'The license key is wrong or expired.');
     		}
-    		
+
     		$this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/whitelabel']);
     	}
     	
     	// Show is licensed
     	$this->_getLicensedView();
-    	
+
     	$this->view->form = $form;
     }
 
@@ -363,6 +363,7 @@ class IndexController extends pm_Controller_Action {
             	$task = new Modules_Microweber_TaskInstall();
             	$task->setParam('domainId', $domain->getId());
             	$task->setParam('domainName', $domain->getName());
+                $task->setParam('domainDisplayName', $domain->getDisplayName());
             	$task->setParam('type', $post['installation_type']); 
             	$task->setParam('databaseDriver', $post['installation_database_driver']);
             	$task->setParam('path', $post['installation_folder']);
@@ -383,11 +384,11 @@ class IndexController extends pm_Controller_Action {
             	$this->_helper->json(['redirect' => pm_Context::getBaseUrl(). 'index.php/index/index']);
             	
             } else {
-            	echo 'Please, select domain.';
-            	exit;
+                $this->_status->addMessage('error', 'Please, select domain to install microweber.');
+                $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/install']);
             }
 
-            /*$newInstallation = new Modules_Microweber_Install();
+           /* $newInstallation = new Modules_Microweber_Install();
             $newInstallation->setDomainId($post['installation_domain']);
             $newInstallation->setType($post['installation_type']);
             $newInstallation->setDatabaseDriver($post['installation_database_driver']);
@@ -494,40 +495,30 @@ class IndexController extends pm_Controller_Action {
     public function settingsAction() {
 
     	if (!pm_Session::getClient()->isAdmin()) {
-    		throw new Exception('You don\'t have permissions to see this page.');
+            header('Location: ' .  pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
+            exit;
     	}
     	
         $this->view->pageTitle = $this->_moduleName . ' - Settings';
 
         $form = new pm_Form_Simple();
-        $form->addElement('radio', 'installation_settings', [
-            'label' => 'Installation Settings',
-            'multiOptions' =>
-            [
-                'auto' => 'Automaticlly install '.$this->_moduleName.' on new domains creation.',
-            	'manual' => 'Allow users to Manualy install '.$this->_moduleName.' from Plesk.',
-                'disabled' => 'Disabled for all users'
-            ],
-            'value' => pm_Settings::get('installation_settings'),
-            'required' => true,
-        ]);
         
         $form->addElement('select', 'installation_template', [
-        	'label' => 'Installation Template',
+        	'label' => 'Default Installation template',
         	'multiOptions' => Modules_Microweber_Config::getSupportedTemplates(),
         	'value' => pm_Settings::get('installation_template'),
         	'required' => true,
         ]);
 
         $form->addElement('select', 'installation_language', [
-        	'label' => 'Installation Language',
+        	'label' => 'Default Installation language',
         	'multiOptions' => Modules_Microweber_Config::getSupportedLanguages(),
         	'value' => pm_Settings::get('installation_language'),
         	'required' => true,
         ]);
 
         $form->addElement('radio', 'installation_type', [
-            'label' => 'Installation Type',
+            'label' => 'Default Installation type',
             'multiOptions' =>
             [
                 'default' => 'Default',
@@ -566,7 +557,6 @@ class IndexController extends pm_Controller_Action {
         	
             // Form proccessing
             pm_Settings::set('installation_language', $form->getValue('installation_language'));
-            pm_Settings::set('installation_settings', $form->getValue('installation_settings'));
             pm_Settings::set('installation_template', $form->getValue('installation_template'));
             pm_Settings::set('installation_type', $form->getValue('installation_type'));
             pm_Settings::set('installation_database_driver', $form->getValue('installation_database_driver'));
@@ -591,6 +581,12 @@ class IndexController extends pm_Controller_Action {
         }
 
         $this->view->form = $form;
+    }
+
+    public function errorAction()
+    {
+        $this->view->pageTitle = $this->_moduleName . ' - Error';
+        $this->view->errorMessage = 'You don\'t have permissions to see this page.';
     }
     
     private function _getRandomPassword($length = 16, $complex = false)
@@ -671,12 +667,7 @@ class IndexController extends pm_Controller_Action {
     private function _checkAppSettingsIsCorrect() 
     {
         $currentVersion = $this->_getCurrentVersion();
-
     	if ($currentVersion == 'unknown') {
-
-            if (empty(pm_Settings::get('installation_settings'))) {
-                pm_Settings::set('installation_settings', 'auto');
-            }
 
             if (empty(pm_Settings::get('installation_language'))) {
                 pm_Settings::set('installation_language', 'en');

@@ -43,9 +43,9 @@ APICALL;
 		$readyProperties['php'] = false;
 		
 		$hostingSettings = $this->getHostingSettings();
-		
-		if (isset($hostingSettings['webspace']['get']['result']['data']['hosting']['vrt_hst']['property'])) {
-			$properties = $hostingSettings['webspace']['get']['result']['data']['hosting']['vrt_hst']['property'];
+
+		if (isset($hostingSettings['site']['get']['result']['data']['hosting']['vrt_hst']['property'])) {
+			$properties = $hostingSettings['site']['get']['result']['data']['hosting']['vrt_hst']['property'];
 			foreach($properties as $property) {
 				$readyProperties[$property['name']] = $property['value'];
 			}
@@ -58,7 +58,7 @@ APICALL;
 		
 		$apiRequest = <<<APICALL
 <packet>
-	<webspace>
+	<site>
 		<get>
 		   <filter>
 		      <id>$this->_domainId</id>
@@ -67,7 +67,7 @@ APICALL;
 		      <hosting/>
 		   </dataset>
 		</get>
-	</webspace>
+	</site>
 </packet>
 APICALL;
 		

@@ -19,7 +19,9 @@ class Modules_Microweber_EventListener implements EventListener
 			
 			if (is_array($planItems) && count($planItems) > 0 && (in_array("microweber", $planItems) || in_array("microweber_without_shop", $planItems) || in_array("microweber_lite", $planItems))) {
 			
-				if ($action == 'phys_hosting_create' && pm_Settings::get('installation_settings') == 'auto') {
+				if ($action == 'phys_hosting_create') {
+
+				    // Install microweber
 					$this->_installMicroweber($domain, $newValue);
 					
 					// Enable or disable shop
