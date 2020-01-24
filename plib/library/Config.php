@@ -102,13 +102,7 @@ class Modules_Microweber_Config
 
 	public static function getWhmcsUrl()
 	{
-		$updateWhmcsUrl = pm_Settings::get('whmcs_url');
-
-		if (empty($updateWhmcsUrl)) {
-			return 'https://members.microweber.com/';
-		}
-
-		return $updateWhmcsUrl;
+		return pm_Settings::get('whmcs_url');
 	}
 	
 	public static function getWhmcsPackageManagerUrls()

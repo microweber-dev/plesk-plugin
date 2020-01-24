@@ -554,7 +554,7 @@ class IndexController extends pm_Controller_Action {
         
         $form->addElement('text', 'whmcs_url', [
         	'label' => 'WHMCS Url',
-        	'value' => Modules_Microweber_Config::getWhmcsUrl(),
+        	'value' => pm_Settings::get('whmcs_url'),
         	//'required' => true,
         ]);
 
@@ -639,7 +639,7 @@ class IndexController extends pm_Controller_Action {
     private function _updateTemplates() {
     	
     	$templates = $this->_getTemplatesUrl();
-    	
+
     	foreach ($templates as $template) {
     		
     		$task = new Modules_Microweber_TaskTemplateDownload();
