@@ -68,7 +68,8 @@ class IndexController extends pm_Controller_Action {
     public function versionsAction() {
     	
     	if (!pm_Session::getClient()->isAdmin()) {
-    		throw new Exception('You don\'t have permissions to see this page.');
+            header('Location: ' .  pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
+            exit;
     	}
     	
     	$this->_checkAppSettingsIsCorrect();
@@ -100,7 +101,8 @@ class IndexController extends pm_Controller_Action {
     public function whitelabelAction() {
     	
     	if (!pm_Session::getClient()->isAdmin()) {
-    		throw new Exception('You don\'t have permissions to see this page.');
+            header('Location: ' .  pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
+            exit;
     	}
     	
     	$this->_checkAppSettingsIsCorrect();
@@ -226,7 +228,8 @@ class IndexController extends pm_Controller_Action {
     public function updateAction() {
     	
     	if (!pm_Session::getClient()->isAdmin()) {
-    		throw new Exception('You don\'t have permissions to see this page.');
+            header('Location: ' .  pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
+            exit;
     	}
     	
     	$this->_status->addMessage('info', $this->_updateApp());
@@ -238,7 +241,8 @@ class IndexController extends pm_Controller_Action {
     public function updatetemplatesAction() {
     	
     	if (!pm_Session::getClient()->isAdmin()) {
-    		throw new Exception('You don\'t have permissions to see this page.');
+            header('Location: ' .  pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
+            exit;
     	}
     	
     	$this->_status->addMessage('info', $this->_updateTemplates());
@@ -476,7 +480,8 @@ class IndexController extends pm_Controller_Action {
     public function startupAction()
     {
         if (!pm_Session::getClient()->isAdmin()) {
-            throw new Exception('You don\'t have permissions to see this page.');
+            header('Location: ' .  pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
+            exit;
         }
 
         $release = $this->_getRelease();
@@ -592,6 +597,68 @@ class IndexController extends pm_Controller_Action {
         }
 
         $this->view->form = $form;
+    }
+
+    public function listDataAction()
+    {
+        $list = $this->_getDomainsList();
+
+        $this->_helper->json($list->fetchData());
+    }
+
+    public function domainloginAction()
+    {
+
+        $domainFound = false;
+        $domainId = (int) $_POST['domain_id'];
+        $websiteUrl = $_POST['website_url'];
+        $domainDocumentRoot = $_POST['document_root'];
+
+        try {
+            $domain = Modules_Microweber_Domain::getUserDomainById($domainId);
+        } catch (Exception $e) {
+            $domainFound = false;
+        }
+        if ($domain) {
+            $domainFound = true;
+        }
+
+        if (!$domainFound) {
+            header('Location: ' .  pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
+            exit;
+        }
+
+        $hostingManager = new Modules_Microweber_HostingManager();
+        $hostingManager->setDomainId($domain->getId());
+        $hostingProperties = $hostingManager->getHostingProperties();
+        if (!$hostingProperties['php']) {
+            throw new \Exception('PHP is not activated on selected domain.');
+        }
+        $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
+
+        $commandResponse = pm_ApiCli::callSbin('filemng', [
+            $domain->getSysUserLogin(),
+            'exec',
+            $domainDocumentRoot,
+            $phpHandler['clipath'],
+            'artisan',
+            'microweber:generate-admin-login-token',
+
+        ], pm_ApiCli::RESULT_FULL);
+
+        if (!empty($commandResponse['stdout'])) {
+            
+            $token = $commandResponse['stdout'];
+            $token = str_replace(' ', false, $token);
+            $token = str_replace(PHP_EOL, false, $token);
+            $token = trim($token);
+
+            header('Location: http://www.' . $websiteUrl . '/api/user_login?secret_key=' . $token);
+            exit;
+        }
+
+        header('Location: ' .  pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
+        exit;
     }
 
     public function errorAction()
@@ -785,13 +852,21 @@ class IndexController extends pm_Controller_Action {
 		    		$domainNameUrl = str_replace($domainName . '/httpdocs', $domainName, $domainNameUrl);
                     $domainNameUrl = str_replace($domainName, $domainDisplayName, $domainNameUrl);
 
+                    $loginToWebsite = '<form target="_blank" method="post" action="/modules/microweber/index.php/index/domainlogin">';
+                    $loginToWebsite .= '<input type="hidden" name="website_url" value="'.$domainNameUrl.'" />';
+                    $loginToWebsite .= '<input type="hidden" name="domain_id" value="'.$domain->getId().'" />';
+                    $loginToWebsite .= '<input type="hidden" name="document_root" value="'.$appInstallation.'" />';
+                    $loginToWebsite .= '<button type="submit" class="btn btn-primary">Login to website</button>';
+                    $loginToWebsite .= '</form>';
+
 		    		$data[] = [
-		    			'domain' => '<a href="http://'.$domainNameUrl.'" target="_blank">' . $domainNameUrl . '</a>',
+		    			'domain' => '<a href="http://'.$domainNameUrl.'" target="_blank">' . $domainNameUrl . '</a> ',
 		    			'created_date' => $domainCreation,
 		    			'type' => $installationType,
 		    			'app_version' => $appVersion,
 		    			'document_root' => $appInstallation,
-		    			'active' => ($domainIsActive ? 'Yes' : 'No')
+		    			'active' => ($domainIsActive ? 'Yes' : 'No'),
+                        'login'=> $loginToWebsite
 		    		];
 		    		
     			}
@@ -843,6 +918,11 @@ class IndexController extends pm_Controller_Action {
                 'noEscape' => true,
                 'sortable' => false,
             ],
+            'login' => [
+                'title' => 'Login',
+                'noEscape' => true,
+                'searchable' => false,
+            ],
         ]);
 
         // Take into account listDataAction corresponds to the URL /list-data/
@@ -850,14 +930,7 @@ class IndexController extends pm_Controller_Action {
 
         return $list;
     }
-    
-    public function listDataAction()
-    {
-    	$list = $this->_getDomainsList();
-    	
-    	$this->_helper->json($list->fetchData());
-    }
-    
+
     private function _getTemplatesUrl() {
     	
     	$connector = new MicroweberMarketplaceConnector();
