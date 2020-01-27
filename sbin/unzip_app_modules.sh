@@ -19,14 +19,15 @@ wget "$downloadUrl" -O "$zipDownloadedFile"
 # Unzip selected version
 echo 'Unzip file...'
 unzip -o "$zipDownloadedFile" > microweber-module-unzip.log
+rm -rf "$zipDownloadedFile"
+rm -rf "microweber-module-unzip.log"
+getFirstDirectory=$(ls)
 
 find $latestFolder -type d -exec chmod 0755 {} \;
 find $latestFolder -type f -exec chmod 0644 {} \;
 
 chcon --user system_u --type httpd_sys_content_t -R $latestFolder
 
-rm -rf "$zipDownloadedFile"
-rm -rf "microweber-module-unzip.log"
 rm -rf "$downloadCacheFolder"
 
 cd *
@@ -36,6 +37,6 @@ if [ ! -d "$latestFolder" ]; then
 fi
 
 echo 'Rsync files with' "$latestFolder"
-rsync -a "userfiles" "$latestFolder"
+rsync -a "$getFirstDirectory/userfiles" "$latestFolder"
 
 echo "Done!"
