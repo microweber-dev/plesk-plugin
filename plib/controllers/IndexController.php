@@ -691,8 +691,10 @@ class IndexController extends pm_Controller_Action {
     	if (empty($release)) {
     		return 'No releases found.';
     	}
+
+        $downloadLog = '';
     	
-    	$downloadLog = pm_ApiCli::callSbin('unzip_app_version.sh', [base64_encode($release['url']), Modules_Microweber_Config::getAppSharedPath()])['stdout'];
+    	$downloadLog .= pm_ApiCli::callSbin('unzip_app_version.sh', [base64_encode($release['url']), Modules_Microweber_Config::getAppSharedPath()])['stdout'];
     	
     	// Whm Connector
     	$downloadUrl = 'https://github.com/microweber-dev/whmcs-connector/archive/master.zip';
@@ -704,7 +706,7 @@ class IndexController extends pm_Controller_Action {
 
     	Modules_Microweber_WhmcsConnector::updateWhmcsConnector();
     	
-    	return $downloadLog;
+        return $downloadLog;
     }
     
     private function _updateTemplates() {
