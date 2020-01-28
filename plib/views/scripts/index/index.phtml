@@ -6,6 +6,158 @@
  * Copyright: Microweber CMS
  */
 ?>
-
 <?php echo $this->renderTabs($this->tabs); ?>
 <?php echo $this->renderList($this->list); ?>
+
+<style>
+    .mtop15 {
+        margin-top:15px;
+    }
+</style>
+
+<script>
+    HTMLElement.prototype.decodeForm = function () {
+        var obj = {};
+        var elements = this.querySelectorAll("input, hidden, select, textarea");
+        for (var i = 0; i < elements.length; ++i) {
+            var element = elements[i];
+            var name = element.name;
+            var value = element.value;
+
+            if (name) {
+                obj[name] = value;
+            }
+        }
+        return obj;
+    }
+
+    Jsw.onReady(function() {
+        /*     Jsw.messageBox.show({
+                 type: Jsw.messageBox.TYPE_YESNO,
+                 isAjax: false,
+                 // requestUrl: 'x',
+                 // requestParams: {'ids[]': false},
+                 subtype: 'toggle',
+                 text: 'fawfwa',
+                 // onYesClick: onYesClick,
+                 buttonTitles: {
+                   //  yes: locale.lmsg('updatesConfirmYes'),
+                   //  no: locale.lmsg('updatesConfirmNo')
+                 }
+             });*/
+
+
+        /* new Jsw.DynamicPopupHint.Instance({
+             title: 'afwfwa',
+             placement: 'right',
+             target: $('.js-basi-basi'),
+             content: 'afwaf'
+         });*/
+
+        /* new Jsw.Hint({
+             renderTo: 'main',
+             renderMode: 'top',
+             hint: 'This is where you set up and manage websites.',
+             expandable: true
+         });*/
+
+        /* var form = new Jsw.PopupForm({
+             singleRowButtons: true
+         });
+
+         form.setBoxType('form-box');
+         form.setTitle('Change Microweber Website Password');
+         form.setHint('fawfwawafwfawaf');
+
+         form.addRightButton('Change Password', function (event) {
+
+
+         }, true, true, {id: 'btn-send'});
+
+         form.addRightButton('Close', function() {
+             form.hide();
+         }, false, false, {id: 'btn-cancel'});*/
+
+    });
+
+    function openSetupForm(instance) {
+
+        var form = new Jsw.PopupForm({
+            singleRowButtons: true
+        });
+
+        form.setBoxType('form-box');
+        form.setTitle('General Settings');
+        form.setHint('Loading...');
+
+
+        var domainFormData = instance.parentNode.decodeForm();
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('post', '<?php echo pm_Context::getBaseUrl(); ?>index.php/index/domaindetails')
+        xhr.send(new FormData(instance.parentNode));
+
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+
+                var responseDataJson = JSON.parse(this.responseText);
+
+                var html_form_filed = '<form class="" method="post">';
+
+                html_form_filed += '<div class="mtop15">';
+                html_form_filed += '<small>Admin url</small><br />';
+                html_form_filed += '<input type="text" value="'+responseDataJson.admin_url+'" name="" class="form-control" style="width:100%">';
+                html_form_filed += '</div>';
+
+                html_form_filed += '<div class="mtop15">';
+                html_form_filed += '<small>Administrator</small> <br />';
+                html_form_filed +=  responseDataJson.admin_username;
+                html_form_filed += '</div>';
+
+                html_form_filed += '<div class="mtop15">';
+                html_form_filed += '<small>Current password</small> <br />';
+                html_form_filed +=  responseDataJson.admin_password;
+                html_form_filed += '</div>';
+
+                html_form_filed += '<div class="mtop15">';
+                html_form_filed += '<small>New password</small><br />';
+                html_form_filed += '<input type="password" value="'+responseDataJson.admin_password+'" name="" class="form-control" style="width:325px">';
+                html_form_filed += '<button class="btn btn-info">show</button>';
+                html_form_filed += '<button class="btn btn-info">Generate Password</button>';
+                html_form_filed += '</div>';
+
+                html_form_filed += '<div class="mtop15">';
+                html_form_filed += '<small>Administrator\'s email</small><br />';
+                html_form_filed += '<input type="text" value="'+responseDataJson.admin_email+'" name="" class="form-control" style="width:100%">';
+                html_form_filed += '</div>';
+
+
+                html_form_filed += '<div class="mtop15">';
+                html_form_filed += '<small>Website Language</small><br />';
+                html_form_filed += '<select type="text" value="" name="" class="form-control" style="width:100%">';
+
+                for (let [key, value] of Object.entries(responseDataJson.languages)) {
+                    html_form_filed += '<option name="'+key+'">'+value+'</option>';
+                }
+
+                html_form_filed += '</select>';
+                html_form_filed += '</div>';
+
+                html_form_filed += '<button class="btn action" type="submit" value="" style="width:200px;margin-top:15px;height:40px;">Change</button>';
+                html_form_filed += '</form>';
+
+               ///  console.log(responseDataJson);
+
+                form.setHint(html_form_filed);
+
+               /* form.addRightButton('Change', function (event) {
+                }, true, true, {id: 'btn-send'});
+
+                form.addRightButton('Close', function() {
+                    form.hide();
+                }, false, false, {id: 'btn-cancel'});*/
+            }
+        }
+
+    }
+</script>

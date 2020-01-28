@@ -606,6 +606,40 @@ class IndexController extends pm_Controller_Action {
         $this->_helper->json($list->fetchData());
     }
 
+    public function domaindetailsAction()
+    {
+
+        $json = array();
+        $domainFound = false;
+        $domainId = (int) $_POST['domain_id'];
+        $websiteUrl = $_POST['website_url'];
+        $domainDocumentRoot = $_POST['document_root'];
+
+        try {
+            $domain = Modules_Microweber_Domain::getUserDomainById($domainId);
+        } catch (Exception $e) {
+            $domainFound = false;
+        }
+        if ($domain) {
+            $domainFound = true;
+        }
+
+        if ($domainFound) {
+
+            $json['admin_email'] = 'ebasi@abv.bg';
+            $json['admin_username'] = 'ebasi_admina';
+            $json['admin_password'] = 'ebasi_admina';
+            $json['admin_url'] = 'ebasi_admina';
+            $json['languages'] = Modules_Microweber_Config::getSupportedLanguages();
+
+        } else {
+            $json['message'] = 'Domain not found.';
+            $json['status'] = 'error';
+        }
+
+        $this->_helper->json($json);
+    }
+
     public function domainloginAction()
     {
 
@@ -858,11 +892,12 @@ class IndexController extends pm_Controller_Action {
 		    		$domainNameUrl = str_replace($domainName . '/httpdocs', $domainName, $domainNameUrl);
                     $domainNameUrl = str_replace($domainName, $domainDisplayName, $domainNameUrl);
 
-                    $loginToWebsite = '<form target="_blank" method="post" action="/modules/microweber/index.php/index/domainlogin">';
+                    $loginToWebsite = '<form method="post" class="js-open-settings-domain">';
                     $loginToWebsite .= '<input type="hidden" name="website_url" value="'.$domainNameUrl.'" />';
                     $loginToWebsite .= '<input type="hidden" name="domain_id" value="'.$domain->getId().'" />';
                     $loginToWebsite .= '<input type="hidden" name="document_root" value="'.$appInstallation.'" />';
-                    $loginToWebsite .= '<button type="submit" class="btn btn-primary">Login to website</button>';
+                    $loginToWebsite .= '<button type="submit" name="login" value="1" class="btn btn-info"><img src="/modules/catalog/images/open-in-browser-a3af024.png" alt=""> Login to website</button>';
+                    $loginToWebsite .= '<button type="button" onclick="openSetupForm(this)" name="setup" value="1" class="btn btn-info"><i class="icon-manage" style="color:#000;"></i> Setup</button>';
                     $loginToWebsite .= '</form>';
 
 		    		$data[] = [
@@ -872,7 +907,7 @@ class IndexController extends pm_Controller_Action {
 		    			'app_version' => $appVersion,
 		    			'document_root' => $appInstallation,
 		    			'active' => ($domainIsActive ? 'Yes' : 'No'),
-                        'login'=> $loginToWebsite
+                        'action'=> $loginToWebsite
 		    		];
 		    		
     			}
@@ -924,11 +959,11 @@ class IndexController extends pm_Controller_Action {
                 'noEscape' => true,
                 'sortable' => false,
             ],
-            'login' => [
-                'title' => 'Login',
+            'action' => [
+                'title' => 'Action',
                 'noEscape' => true,
                 'searchable' => false,
-            ],
+            ]
         ]);
 
         // Take into account listDataAction corresponds to the URL /list-data/
