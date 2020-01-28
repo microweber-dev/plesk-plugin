@@ -608,8 +608,7 @@ class IndexController extends pm_Controller_Action {
 
     public function domaindetailsAction()
     {
-
-        $json = array();
+        $json = [];
         $domainFound = false;
         $domainId = (int) $_POST['domain_id'];
         $websiteUrl = $_POST['website_url'];
@@ -626,11 +625,37 @@ class IndexController extends pm_Controller_Action {
 
         if ($domainFound) {
 
-            $json['admin_email'] = 'ebasi@abv.bg';
-            $json['admin_username'] = 'ebasi_admina';
-            $json['admin_password'] = 'ebasi_admina';
-            $json['admin_url'] = 'ebasi_admina';
             $json['languages'] = Modules_Microweber_Config::getSupportedLanguages();
+
+            $json['admin_email'] = 'No information';
+            $json['admin_username'] = 'No information';
+            $json['admin_password'] = 'No information';
+            $json['admin_url'] = 'admin';
+            $json['language'] = 'en';
+
+            $domainSettings = pm_Settings::get('mw_domain_settings_' . $domain->getId());
+            $domainSettings = unserialize($domainSettings);
+
+            if (isset($domainSettings['admin_email']) && !empty($domainSettings['admin_email'])) {
+                $json['admin_email'] = $domainSettings['admin_email'];
+            }
+
+            if (isset($domainSettings['admin_username']) && !empty($domainSettings['admin_username'])) {
+                $json['admin_username'] = $domainSettings['admin_username'];
+            }
+
+            if (isset($domainSettings['admin_password']) && !empty($domainSettings['admin_password'])) {
+                $json['admin_password'] = $domainSettings['admin_password'];
+            }
+
+            if (isset($domainSettings['admin_url']) && !empty($domainSettings['admin_url'])) {
+                $json['admin_url'] = $domainSettings['admin_url'];
+            }
+
+            if (isset($domainSettings['language']) && !empty($domainSettings['language'])) {
+                $json['language'] = $domainSettings['language'];
+            }
+
 
         } else {
             $json['message'] = 'Domain not found.';
@@ -638,6 +663,12 @@ class IndexController extends pm_Controller_Action {
         }
 
         $this->_helper->json($json);
+    }
+
+    public function domainupdateAction()
+    {
+        echo 1;
+        die();
     }
 
     public function domainloginAction()
@@ -892,7 +923,7 @@ class IndexController extends pm_Controller_Action {
 		    		$domainNameUrl = str_replace($domainName . '/httpdocs', $domainName, $domainNameUrl);
                     $domainNameUrl = str_replace($domainName, $domainDisplayName, $domainNameUrl);
 
-                    $loginToWebsite = '<form method="post" class="js-open-settings-domain">';
+                    $loginToWebsite = '<form method="post" class="js-open-settings-domain" action="'.pm_Context::getBaseUrl().'index.php/index/domainlogin" target="_blank">';
                     $loginToWebsite .= '<input type="hidden" name="website_url" value="'.$domainNameUrl.'" />';
                     $loginToWebsite .= '<input type="hidden" name="domain_id" value="'.$domain->getId().'" />';
                     $loginToWebsite .= '<input type="hidden" name="document_root" value="'.$appInstallation.'" />';

@@ -13,6 +13,9 @@
     .mtop15 {
         margin-top:15px;
     }
+    .mbottom25 {
+        margin-bottom:25px;
+    }
 </style>
 
 <script>
@@ -31,65 +34,18 @@
         return obj;
     }
 
-    Jsw.onReady(function() {
-        /*     Jsw.messageBox.show({
-                 type: Jsw.messageBox.TYPE_YESNO,
-                 isAjax: false,
-                 // requestUrl: 'x',
-                 // requestParams: {'ids[]': false},
-                 subtype: 'toggle',
-                 text: 'fawfwa',
-                 // onYesClick: onYesClick,
-                 buttonTitles: {
-                   //  yes: locale.lmsg('updatesConfirmYes'),
-                   //  no: locale.lmsg('updatesConfirmNo')
-                 }
-             });*/
-
-
-        /* new Jsw.DynamicPopupHint.Instance({
-             title: 'afwfwa',
-             placement: 'right',
-             target: $('.js-basi-basi'),
-             content: 'afwaf'
-         });*/
-
-        /* new Jsw.Hint({
-             renderTo: 'main',
-             renderMode: 'top',
-             hint: 'This is where you set up and manage websites.',
-             expandable: true
-         });*/
-
-        /* var form = new Jsw.PopupForm({
-             singleRowButtons: true
-         });
-
-         form.setBoxType('form-box');
-         form.setTitle('Change Microweber Website Password');
-         form.setHint('fawfwawafwfawaf');
-
-         form.addRightButton('Change Password', function (event) {
-
-
-         }, true, true, {id: 'btn-send'});
-
-         form.addRightButton('Close', function() {
-             form.hide();
-         }, false, false, {id: 'btn-cancel'});*/
-
-    });
-
     function openSetupForm(instance) {
 
-        var form = new Jsw.PopupForm({
+        domainSetupPopup = new Jsw.PopupForm({
             singleRowButtons: true
         });
 
-        form.setBoxType('form-box');
-        form.setTitle('General Settings');
-        form.setHint('Loading...');
+        domainSetupPopup.setBoxType('form-box');
+        domainSetupPopup.setTitle('General Settings');
 
+        closeButtonHtml = '<button class="btn pull-right" onclick="domainSetupPopup.hide();" type="button" value="" style="width:200px;margin-top:15px;height:40px;">Close</button>';
+
+        domainSetupPopup.setHint('<div style="height:250px;">Loading...</div>' + closeButtonHtml);
 
         var domainFormData = instance.parentNode.decodeForm();
 
@@ -102,7 +58,7 @@
 
                 var responseDataJson = JSON.parse(this.responseText);
 
-                var html_form_filed = '<form class="" method="post">';
+                var html_form_filed = '<form method="post">';
 
                 html_form_filed += '<div class="mtop15">';
                 html_form_filed += '<small>Admin url</small><br />';
@@ -121,9 +77,9 @@
 
                 html_form_filed += '<div class="mtop15">';
                 html_form_filed += '<small>New password</small><br />';
-                html_form_filed += '<input type="password" value="'+responseDataJson.admin_password+'" name="" class="form-control" style="width:325px">';
-                html_form_filed += '<button class="btn btn-info">show</button>';
-                html_form_filed += '<button class="btn btn-info">Generate Password</button>';
+                html_form_filed += '<input type="password" value="'+responseDataJson.admin_password+'" name="" class="form-control js-mw-admin-password" style="width:325px">';
+                html_form_filed += '<button type="button" onclick="togglePassword(this);" class="btn btn-info">show</button>';
+                html_form_filed += '<button type="button" onclick="generatePassword();" class="btn btn-info">Generate Password</button>';
                 html_form_filed += '</div>';
 
                 html_form_filed += '<div class="mtop15">';
@@ -132,30 +88,74 @@
                 html_form_filed += '</div>';
 
 
-                html_form_filed += '<div class="mtop15">';
+                html_form_filed += '<div class="mtop15 mbottom25">';
                 html_form_filed += '<small>Website Language</small><br />';
                 html_form_filed += '<select type="text" value="" name="" class="form-control" style="width:100%">';
 
                 for (let [key, value] of Object.entries(responseDataJson.languages)) {
-                    html_form_filed += '<option name="'+key+'">'+value+'</option>';
+                    if (responseDataJson.language == key) {
+                        html_form_filed += '<option name="'+key+'" selected="selected">'+value+'</option>';
+                    } else {
+                        html_form_filed += '<option name="'+key+'">'+value+'</option>';
+                    }
                 }
 
                 html_form_filed += '</select>';
                 html_form_filed += '</div>';
 
-                html_form_filed += '<button class="btn action" type="submit" value="" style="width:200px;margin-top:15px;height:40px;">Change</button>';
+                html_form_filed += '<button class="btn action" onclick="submitDomainChanges(this)" type="button" value="" style="width:200px;margin-top:15px;height:40px;">Change</button>';
+                html_form_filed +=  closeButtonHtml;
                 html_form_filed += '</form>';
 
-               ///  console.log(responseDataJson);
+                domainSetupPopup.setHint(html_form_filed);
+            }
+        }
 
-                form.setHint(html_form_filed);
+    }
 
-               /* form.addRightButton('Change', function (event) {
-                }, true, true, {id: 'btn-send'});
+    function togglePassword(instance) {
 
-                form.addRightButton('Close', function() {
-                    form.hide();
-                }, false, false, {id: 'btn-cancel'});*/
+        var getPasswordInput = document.getElementsByClassName("js-mw-admin-password")[0];
+        if (getPasswordInput.getAttribute('type') == 'password') {
+            instance.innerHTML = 'hide';
+            getPasswordInput.setAttribute('type','text')
+        } else {
+            instance.innerHTML = 'show';
+            getPasswordInput.setAttribute('type','password')
+        }
+
+    }
+
+    function generatePassword() {
+
+        var length = 9,
+            charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+            retVal = "";
+        for (var i = 0, n = charset.length; i < length; ++i) {
+            retVal += charset.charAt(Math.floor(Math.random() * n));
+        }
+
+        var getPasswordInput = document.getElementsByClassName("js-mw-admin-password")[0];
+        getPasswordInput.setAttribute('value', retVal);
+
+    }
+    
+    function submitDomainChanges(instance) {
+
+        instance.setAttribute('disabled', 'disabled');
+        instance.innerHTML = 'Changing...';
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('post', '<?php echo pm_Context::getBaseUrl(); ?>index.php/index/domainupdate')
+        xhr.send(new FormData(instance.parentNode));
+
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+
+                var responseDataJson = JSON.parse(this.responseText);
+
+
+
             }
         }
 

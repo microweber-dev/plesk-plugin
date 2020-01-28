@@ -310,6 +310,18 @@ class Modules_Microweber_Install {
         	Modules_Microweber_WhiteLabel::updateWhiteLabelDomainById($domain->getId()); 
         	
         	$this->addDomainEncryption($domain);
+
+        	// Save domain settings
+            $saveDomainSettings = [
+                'admin_email'=>$adminEmail,
+                'admin_password'=>$adminPassword,
+                'admin_username'=>$adminUsername,
+                'admin_url'=>'admin',
+                'language'=>$this->_language,
+                'created_at'=> date('Y-m-d H:i:s')
+            ];
+            $saveDomainSettings = serialize($saveDomainSettings);
+            pm_Settings::set('mw_domain_settings_' . $domain->getId(), $saveDomainSettings);
         	
         	return ['success'=>true, 'log'=> $artisan['stdout']];
         } catch (Exception $e) {
