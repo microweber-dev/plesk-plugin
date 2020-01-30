@@ -656,6 +656,7 @@ class IndexController extends pm_Controller_Action {
                 $json['language'] = $domainSettings['language'];
             }
 
+            $json['domain_id'] = $domainId;
 
         } else {
             $json['message'] = 'Domain not found.';
@@ -667,8 +668,81 @@ class IndexController extends pm_Controller_Action {
 
     public function domainupdateAction()
     {
-        echo 1;
-        die();
+        $json = [];
+        $domainFound = false;
+        $domainId = (int) $_POST['domain_id'];
+        $adminUsername = $_POST['admin_username'];
+        $adminPassword = $_POST['admin_password'];
+        $adminEmail = $_POST['admin_email'];
+        $adminUrl = $_POST['admin_url'];
+        $websiteUrl = $_POST['website_url'];
+        $websiteLanguage = $_POST['website_language'];
+        $domainDocumentRoot = $_POST['document_root'];
+
+        try {
+            $domain = Modules_Microweber_Domain::getUserDomainById($domainId);
+        } catch (Exception $e) {
+            $domainFound = false;
+        }
+        if ($domain) {
+            $domainFound = true;
+        }
+
+        if ($domainFound) {
+
+            $hostingManager = new Modules_Microweber_HostingManager();
+            $hostingManager->setDomainId($domain->getId());
+            $hostingProperties = $hostingManager->getHostingProperties();
+            if (!$hostingProperties['php']) {
+                throw new \Exception('PHP is not activated on selected domain.');
+            }
+            $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
+
+            $commandResponse = pm_ApiCli::callSbin('filemng', [
+                $domain->getSysUserLogin(),
+                'exec',
+                $domainDocumentRoot,
+                $phpHandler['clipath'],
+                'artisan',
+                'microweber:change-admin-details',
+                '--username='.$adminUsername,
+                '--newPassword=' . $adminPassword,
+                '--newEmail=' . $adminEmail,
+
+            ], pm_ApiCli::RESULT_FULL);
+
+
+            $successChange = false;
+            if (isset($commandResponse['stdout'])) {
+                if (strpos(strtolower($commandResponse['stdout']), 'done') !== false) {
+                    $successChange = true;
+                }
+            }
+
+            if ($successChange) {
+
+                $domainSettings = pm_Settings::get('mw_domain_settings_' . $domain->getId());
+                $domainSettings = unserialize($domainSettings);
+
+                $domainSettings['admin_email'] = $adminEmail;
+                $domainSettings['admin_password'] = $adminPassword;
+                $domainSettings['admin_url'] = $adminUrl;
+                $domainSettings['website_language'] = $websiteLanguage;
+
+                pm_Settings::set('mw_domain_settings_' . $domain->getId(), serialize($domainSettings));
+
+                $json['message'] = 'Domain settings are updated successfully.';
+                $json['status'] = 'success';
+            } else {
+                $json['message'] = 'Can\'t change domain settings.';
+                $json['status'] = 'error';
+            }
+        } else {
+            $json['message'] = 'Domain not found.';
+            $json['status'] = 'error';
+        }
+
+        $this->_helper->json($json);
     }
 
     public function domainloginAction()
