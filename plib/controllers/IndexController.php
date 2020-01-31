@@ -14,6 +14,7 @@ class IndexController extends pm_Controller_Action {
 	
     protected $_accessLevel = [
         'admin',
+	'reseller',
     	'client'
     ];
     protected $_moduleName = 'Microweber';
