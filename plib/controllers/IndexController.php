@@ -675,7 +675,7 @@ class IndexController extends pm_Controller_Action {
         $adminPassword = $_POST['admin_password'];
         $adminEmail = $_POST['admin_email'];
         $adminUrl = $_POST['admin_url'];
-        $websiteUrl = $_POST['website_url'];
+        // $websiteUrl = $_POST['website_url'];
         $websiteLanguage = $_POST['website_language'];
         $domainDocumentRoot = $_POST['document_root'];
 
@@ -690,31 +690,47 @@ class IndexController extends pm_Controller_Action {
 
         if ($domainFound) {
 
-            $hostingManager = new Modules_Microweber_HostingManager();
-            $hostingManager->setDomainId($domain->getId());
-            $hostingProperties = $hostingManager->getHostingProperties();
-            if (!$hostingProperties['php']) {
-                throw new \Exception('PHP is not activated on selected domain.');
-            }
-            $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
+            $artisan = new Modules_Microweber_ArtisanExecutor();
+            $artisan->setDomainId($domain->getId());
+            $artisan->setDomainDocumentRoot($domainDocumentRoot);
 
-            $commandResponse = pm_ApiCli::callSbin('filemng', [
-                $domain->getSysUserLogin(),
-                'exec',
-                $domainDocumentRoot,
-                $phpHandler['clipath'],
-                'artisan',
+            // Change Language
+            $artisan->exec([
+                'microweber:option',
+                'language',
+                $websiteLanguage,
+                'website'
+            ]);
+
+            // Change Admin Details
+            $commandAdminDetailsResponse = $artisan->exec([
                 'microweber:change-admin-details',
                 '--username='.$adminUsername,
                 '--newPassword=' . $adminPassword,
-                '--newEmail=' . $adminEmail,
+                '--newEmail=' . $adminEmail
+            ]);
 
-            ], pm_ApiCli::RESULT_FULL);
+            // Update Server details
+            $artisan->exec([
+                'microweber:server-set-config',
+                '--key=admin_url',
+                '--value=' . $adminUrl
+            ]);
 
+            $artisan->exec([
+                'microweber:server-set-config',
+                '--key=site_lang',
+                '--value=' . $websiteLanguage
+            ]);
+
+            // Cache clear
+            $artisan->exec([
+                'microweber:server-clear-cache'
+            ]);
 
             $successChange = false;
-            if (isset($commandResponse['stdout'])) {
-                if (strpos(strtolower($commandResponse['stdout']), 'done') !== false) {
+            if (isset($commandAdminDetailsResponse['stdout'])) {
+                if (strpos(strtolower($commandAdminDetailsResponse['stdout']), 'done') !== false) {
                     $successChange = true;
                 }
             }
@@ -767,23 +783,11 @@ class IndexController extends pm_Controller_Action {
             exit;
         }
 
-        $hostingManager = new Modules_Microweber_HostingManager();
-        $hostingManager->setDomainId($domain->getId());
-        $hostingProperties = $hostingManager->getHostingProperties();
-        if (!$hostingProperties['php']) {
-            throw new \Exception('PHP is not activated on selected domain.');
-        }
-        $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
+        $artisan = new Modules_Microweber_ArtisanExecutor();
+        $artisan->setDomainId($domain->getId());
+        $artisan->setDomainDocumentRoot($domainDocumentRoot);
 
-        $commandResponse = pm_ApiCli::callSbin('filemng', [
-            $domain->getSysUserLogin(),
-            'exec',
-            $domainDocumentRoot,
-            $phpHandler['clipath'],
-            'artisan',
-            'microweber:generate-admin-login-token',
-
-        ], pm_ApiCli::RESULT_FULL);
+        $commandResponse = $artisan->exec(['microweber:generate-admin-login-token']);
 
         if (!empty($commandResponse['stdout'])) {
             
