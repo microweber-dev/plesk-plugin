@@ -30,8 +30,22 @@ APICALL;
 		
 		$result = $this->_makeRequest($apiRequest);
 		
-		if (isset($result['php-handler']['get']['result'])) {
-			return $result['php-handler']['get']['result'];
+		if (isset($requestResult['php-handler']['get']['result'])) {
+			$result = $requestResult['php-handler']['get']['result'];
+			if ($result['status'] !== 'error') {
+			    return $result;
+           		}
+		}
+
+		for ($i = 5; $i <= 10; $i++) {
+		    for ($i2 = 1; $i2 <= 10; $i2++) {
+			if (strpos($phpId, 'php' . $i . $i2) !== false) {
+			    return [
+				'version' => $i.'.'. $i2,
+				'clipath' => '/opt/plesk/php/'.$i.'.'. $i2 . '/bin/php',
+			    ];
+			}
+		    }
 		}
 		
 		return false;
