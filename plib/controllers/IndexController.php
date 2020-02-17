@@ -46,11 +46,11 @@ class IndexController extends pm_Controller_Action {
         	$this->view->tabs[] = [
         		'title' => 'Versions',
         		'action' => 'versions'
-        	];
-        	$this->view->tabs[] = [
+        	]; 
+        	/*$this->view->tabs[] = [
         		'title' => 'White Label',
         		'action' => 'whitelabel'
-        	];
+        	];*/ 
         	$this->view->tabs[] = [
         		'title' => 'Settings',
         		'action' => 'settings',
