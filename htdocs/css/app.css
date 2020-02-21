@@ -1,0 +1,28 @@
+.mtop15 {
+    margin-top:15px;
+}
+.mbottom25 {
+    margin-bottom:25px;
+}
+.input-text {
+    width:550px;
+}
+.form-row .field-name {
+    width: 210px;
+}
+textarea {
+    width:550px;
+}
+#installation_folder {
+    width: 340px;
+}
+.license-active {
+    padding:15px;
+    border-color: #c1e3ee #a3d1e2;
+    background:#bcdf94;
+    width:820px;
+}
+.panel {
+    padding: 15px;
+    margin-bottom: 25px;
+}

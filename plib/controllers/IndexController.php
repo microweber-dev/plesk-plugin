@@ -57,8 +57,8 @@ class IndexController extends pm_Controller_Action {
         	];
     	}
 
-       $this->view->headLink()->appendStylesheet(pm_Context::getBaseUrl() . 'app.css');
-       $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'app.js');
+       $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
+       $this->view->headLink()->appendStylesheet(pm_Context::getBaseUrl() . 'css/app.css');
     }
 
     public function indexAction() {
@@ -67,6 +67,7 @@ class IndexController extends pm_Controller_Action {
     	
         $this->view->pageTitle = $this->_moduleName . ' - Domains';
         $this->view->list = $this->_getDomainsList();
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/index.js');
     }
     
     public function versionsAction() {
@@ -427,6 +428,7 @@ class IndexController extends pm_Controller_Action {
         }
 
         $this->view->form = $form;
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/install.js');
     }
     
     public function checkinstallpathAction() {
@@ -503,6 +505,8 @@ class IndexController extends pm_Controller_Action {
 
         $this->view->updateLink = pm_Context::getBaseUrl() . 'index.php/index/update';
         $this->view->updateTemplatesLink = pm_Context::getBaseUrl() . 'index.php/index/update_templates';
+
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/startup.js');
     }
 
     public function settingsAction() {
