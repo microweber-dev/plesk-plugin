@@ -613,6 +613,7 @@ class IndexController extends pm_Controller_Action {
         $domainId = (int) $_POST['domain_id'];
         $websiteUrl = $_POST['website_url'];
         $domainDocumentRoot = $_POST['document_root'];
+        $domainDocumentRootHash = md5($domainDocumentRoot);
 
         try {
             $domain = Modules_Microweber_Domain::getUserDomainById($domainId);
@@ -633,7 +634,7 @@ class IndexController extends pm_Controller_Action {
             $json['admin_url'] = 'admin';
             $json['language'] = 'en';
 
-            $domainSettings = pm_Settings::get('mw_domain_settings_' . $domain->getId());
+            $domainSettings = $domain->getSetting('mw_settings_' . $domainDocumentRootHash);
             $domainSettings = unserialize($domainSettings);
 
             if (isset($domainSettings['admin_email']) && !empty($domainSettings['admin_email'])) {
@@ -678,6 +679,7 @@ class IndexController extends pm_Controller_Action {
         // $websiteUrl = $_POST['website_url'];
         $websiteLanguage = $_POST['website_language'];
         $domainDocumentRoot = $_POST['document_root'];
+        $domainDocumentRootHash = md5($domainDocumentRoot);
 
         try {
             $domain = Modules_Microweber_Domain::getUserDomainById($domainId);
@@ -737,7 +739,7 @@ class IndexController extends pm_Controller_Action {
 
             if ($successChange) {
 
-                $domainSettings = pm_Settings::get('mw_domain_settings_' . $domain->getId());
+                $domainSettings = $domain->getSetting('mw_settings_' . $domainDocumentRootHash);
                 $domainSettings = unserialize($domainSettings);
 
                 $domainSettings['admin_email'] = $adminEmail;
@@ -745,7 +747,7 @@ class IndexController extends pm_Controller_Action {
                 $domainSettings['admin_url'] = $adminUrl;
                 $domainSettings['website_language'] = $websiteLanguage;
 
-                pm_Settings::set('mw_domain_settings_' . $domain->getId(), serialize($domainSettings));
+                $domain->setSetting('mw_settings_' . $domainDocumentRootHash, serialize($domainSettings));
 
                 $json['message'] = 'Domain settings are updated successfully.';
                 $json['status'] = 'success';

@@ -320,8 +320,7 @@ class Modules_Microweber_Install {
                 'language'=>$this->_language,
                 'created_at'=> date('Y-m-d H:i:s')
             ];
-            $saveDomainSettings = serialize($saveDomainSettings);
-            pm_Settings::set('mw_domain_settings_' . $domain->getId(), $saveDomainSettings);
+            $domain->setSetting('mw_settings_' . md5($domainDocumentRoot), serialize($saveDomainSettings));
         	
         	return ['success'=>true, 'log'=> $artisan['stdout']];
         } catch (Exception $e) {
