@@ -56,6 +56,9 @@ class IndexController extends pm_Controller_Action {
         		'action' => 'settings',
         	];
     	}
+
+       $this->view->headLink()->appendStylesheet(pm_Context::getBaseUrl() . 'app.css');
+       $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'app.js');
     }
 
     public function indexAction() {
@@ -69,8 +72,7 @@ class IndexController extends pm_Controller_Action {
     public function versionsAction() {
     	
     	if (!pm_Session::getClient()->isAdmin()) {
-            header('Location: ' .  pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
-            exit;
+            return $this->_redirect(pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
     	}
     	
     	$this->_checkAppSettingsIsCorrect();
@@ -102,8 +104,7 @@ class IndexController extends pm_Controller_Action {
     public function whitelabelAction() {
     	
     	if (!pm_Session::getClient()->isAdmin()) {
-            header('Location: ' .  pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
-            exit;
+            return $this->_redirect(pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
     	}
     	
     	$this->_checkAppSettingsIsCorrect();
@@ -229,27 +230,23 @@ class IndexController extends pm_Controller_Action {
     public function updateAction() {
     	
     	if (!pm_Session::getClient()->isAdmin()) {
-            header('Location: ' .  pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
-            exit;
-    	}
+            return $this->_redirect(pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
+        }
     	
     	$this->_status->addMessage('info', $this->_updateApp());
     	
-    	header("Location: " . pm_Context::getBaseUrl() . 'index.php/index/versions');
-    	exit;
+    	return $this->_redirect(pm_Context::getBaseUrl() . 'index.php/index/versions');
     }
     
     public function updatetemplatesAction() {
     	
     	if (!pm_Session::getClient()->isAdmin()) {
-            header('Location: ' .  pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
-            exit;
+            return $this->_redirect(pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
     	}
     	
     	$this->_status->addMessage('info', $this->_updateTemplates());
     	
-    	header("Location: " . pm_Context::getBaseUrl() . 'index.php/index/versions');
-    	exit;
+    	return $this->_redirect(pm_Context::getBaseUrl() . 'index.php/index/versions');
     }
 	
     public function installAction() {
@@ -481,8 +478,7 @@ class IndexController extends pm_Controller_Action {
     public function startupAction()
     {
         if (!pm_Session::getClient()->isAdmin()) {
-            header('Location: ' .  pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
-            exit;
+            return $this->_redirect(pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
         }
 
         $release = $this->_getRelease();
@@ -512,8 +508,7 @@ class IndexController extends pm_Controller_Action {
     public function settingsAction() {
 
     	if (!pm_Session::getClient()->isAdmin()) {
-            header('Location: ' .  pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
-            exit;
+            return $this->_redirect(pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
     	}
     	
         $this->view->pageTitle = $this->_moduleName . ' - Settings';
@@ -780,8 +775,7 @@ class IndexController extends pm_Controller_Action {
         }
 
         if (!$domainFound) {
-            header('Location: ' .  pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
-            exit;
+            return $this->_redirect(pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
         }
 
         $artisan = new Modules_Microweber_ArtisanExecutor();
@@ -797,12 +791,10 @@ class IndexController extends pm_Controller_Action {
             $token = str_replace(PHP_EOL, false, $token);
             $token = trim($token);
 
-            header('Location: http://www.' . $websiteUrl . '/api/user_login?secret_key=' . $token);
-            exit;
+            return $this->_redirect('http://www.' . $websiteUrl . '/api/user_login?secret_key=' . $token);
         }
 
-        header('Location: ' .  pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
-        exit;
+        return $this->_redirect(pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
     }
 
     public function errorAction()
