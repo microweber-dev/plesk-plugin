@@ -48,10 +48,13 @@ class IndexController extends pm_Controller_Action
                 'title' => 'Versions',
                 'action' => 'versions'
             ];
-            /*$this->view->tabs[] = [
-                'title' => 'White Label',
-                'action' => 'whitelabel'
-            ];*/
+            $pmLicense = pm_License::getAdditionalKey();
+            if ($pmLicense) {
+                $this->view->tabs[] = [
+                    'title' => 'White Label',
+                    'action' => 'whitelabel'
+                ];
+            }
             $this->view->tabs[] = [
                 'title' => 'Settings',
                 'action' => 'settings',
@@ -74,7 +77,6 @@ class IndexController extends pm_Controller_Action
 
     public function versionsAction()
     {
-
         if (!pm_Session::getClient()->isAdmin()) {
             return $this->_redirect(pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
         }
@@ -119,11 +121,11 @@ class IndexController extends pm_Controller_Action
         // WL - white label
 
         $form = new pm_Form_Simple();
-        $form->addElement('text', 'wl_key', [
+      /*  $form->addElement('text', 'wl_key', [
             'label' => 'White Label Key',
             'value' => pm_Settings::get('wl_key'),
             'placeholder' => 'Place your microweber white label key.'
-        ]);
+        ]);*/
         $form->addElement('text', 'wl_brand_name', [
             'label' => 'Brand Name',
             'value' => pm_Settings::get('wl_brand_name'),
@@ -193,14 +195,14 @@ class IndexController extends pm_Controller_Action
 
         if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
 
-            // Check license and save it to pm settings
+          /*  // Check license and save it to pm settings
             $licenseCheck = Modules_Microweber_LicenseData::getLicenseData($form->getValue('wl_key'));
 
             pm_Settings::set('wl_key', $form->getValue('wl_key'));
 
-            if (isset($licenseCheck['status']) && $licenseCheck['status'] == 'active') {
+            if (isset($licenseCheck['status']) && $licenseCheck['status'] == 'active') {*/
 
-                pm_Settings::set('wl_license_data', json_encode($licenseCheck));
+               // pm_Settings::set('wl_license_data', json_encode($licenseCheck));
                 pm_Settings::set('wl_brand_name', $form->getValue('wl_brand_name'));
                 pm_Settings::set('wl_admin_login_url', $form->getValue('wl_admin_login_url'));
                 pm_Settings::set('wl_contact_page', $form->getValue('wl_contact_page'));
@@ -216,12 +218,12 @@ class IndexController extends pm_Controller_Action
 
                 Modules_Microweber_WhiteLabel::updateWhiteLabelDomains();
 
-                $this->_status->addMessage('info', 'Settings was successfully saved.');
+                $this->_status->addMessage('info', 'Settings was successfully saved.'); 
 
-            } else {
+          /*  } else {
                 pm_Settings::set('wl_license_data', false);
                 $this->_status->addMessage('error', 'The license key is wrong or expired.');
-            }
+            }*/
 
             $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/whitelabel']);
         }
