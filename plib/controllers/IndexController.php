@@ -48,13 +48,6 @@ class IndexController extends pm_Controller_Action
                 'title' => 'Versions',
                 'action' => 'versions'
             ];
-            $pmLicense = pm_License::getAdditionalKey();
-            if ($pmLicense) {
-                $this->view->tabs[] = [
-                    'title' => 'White Label',
-                    'action' => 'whitelabel'
-                ];
-            }
             $this->view->tabs[] = [
                 'title' => 'White Label',
                 'action' => 'whitelabel'
@@ -891,7 +884,6 @@ class IndexController extends pm_Controller_Action
         $this->view->isLicensed = false;
 
         $licenseData = pm_Settings::get('wl_license_data');
-
         if (!empty($licenseData)) {
 
             $licenseData = json_decode($licenseData, TRUE);
@@ -906,6 +898,13 @@ class IndexController extends pm_Controller_Action
                 $this->view->billingCycle = $licenseData['billing_cycle'];
 
             }
+        }
+
+        $this->view->buyLink = pm_Context::getBuyUrl();
+
+        $pmLicense = pm_License::getAdditionalKey();
+        if ($pmLicense) {
+            $this->view->isLicensed = true;
         }
     }
 
