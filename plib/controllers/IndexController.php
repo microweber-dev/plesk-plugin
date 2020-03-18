@@ -65,7 +65,6 @@ class IndexController extends pm_Controller_Action
             ];
         }
 
-        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
         $this->view->headLink()->appendStylesheet(pm_Context::getBaseUrl() . 'css/app.css');
     }
 
@@ -76,13 +75,14 @@ class IndexController extends pm_Controller_Action
 
         $this->view->pageTitle = $this->_moduleName . ' - Domains';
         $this->view->list = $this->_getDomainsList();
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/index.js');
     }
 
     public function versionsAction()
     {
         if (!pm_Session::getClient()->isAdmin()) {
-            return $this->_redirect(pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
+            return $this->_redirect('index.php/index/error?type=permission');
         }
 
         $this->_checkAppSettingsIsCorrect();
@@ -115,7 +115,7 @@ class IndexController extends pm_Controller_Action
     {
 
         if (!pm_Session::getClient()->isAdmin()) {
-            return $this->_redirect(pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
+            return $this->_redirect('index.php/index/error?type=permission');
         }
 
         $this->_checkAppSettingsIsCorrect();
@@ -242,24 +242,24 @@ class IndexController extends pm_Controller_Action
     {
 
         if (!pm_Session::getClient()->isAdmin()) {
-            return $this->_redirect(pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
+            return $this->_redirect('index.php/index/error?type=permission');
         }
 
         $this->_status->addMessage('info', $this->_updateApp());
 
-        return $this->_redirect(pm_Context::getBaseUrl() . 'index.php/index/versions');
+        return $this->_redirect('index.php/index/versions');
     }
 
     public function updatetemplatesAction()
     {
 
         if (!pm_Session::getClient()->isAdmin()) {
-            return $this->_redirect(pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
+            return $this->_redirect('index.php/index/error?type=permission');
         }
 
         $this->_status->addMessage('info', $this->_updateTemplates());
 
-        return $this->_redirect(pm_Context::getBaseUrl() . 'index.php/index/versions');
+        return $this->_redirect('index.php/index/versions');
     }
 
     public function installAction()
@@ -441,6 +441,7 @@ class IndexController extends pm_Controller_Action
         }
 
         $this->view->form = $form;
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/install.js');
     }
 
@@ -494,7 +495,7 @@ class IndexController extends pm_Controller_Action
     public function startupAction()
     {
         if (!pm_Session::getClient()->isAdmin()) {
-            return $this->_redirect(pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
+            return $this->_redirect('index.php/index/error?type=permission');
         }
 
         $release = $this->_getRelease();
@@ -520,6 +521,7 @@ class IndexController extends pm_Controller_Action
         $this->view->updateLink = pm_Context::getBaseUrl() . 'index.php/index/update';
         $this->view->updateTemplatesLink = pm_Context::getBaseUrl() . 'index.php/index/update_templates';
 
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/startup.js');
     }
 
@@ -527,7 +529,7 @@ class IndexController extends pm_Controller_Action
     {
 
         if (!pm_Session::getClient()->isAdmin()) {
-            return $this->_redirect(pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
+            return $this->_redirect('index.php/index/error?type=permission');
         }
 
         $this->view->pageTitle = $this->_moduleName . ' - Settings';
@@ -796,7 +798,7 @@ class IndexController extends pm_Controller_Action
         }
 
         if (!$domainFound) {
-            return $this->_redirect(pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
+            return $this->_redirect('index.php/index/error?type=permission');
         }
 
         $artisan = new Modules_Microweber_ArtisanExecutor();
@@ -815,7 +817,7 @@ class IndexController extends pm_Controller_Action
             return $this->_redirect('http://www.' . $websiteUrl . '/api/user_login?secret_key=' . $token);
         }
 
-        return $this->_redirect(pm_Context::getBaseUrl() . 'index.php/index/error?type=permission');
+        return $this->_redirect('index.php/index/error?type=permission');
     }
 
     public function errorAction()
