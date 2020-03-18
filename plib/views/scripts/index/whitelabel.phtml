@@ -11,13 +11,18 @@
 
 <div class="panel">
     <h2>Use White Label license to grow your business!</h2>
+    <p>The white label gives you the right to rebrand Microweber CMS with your own logo. You can sell it to your clients under your own brand. There is no limitation of number of installations.</p>
+</div>
+
+<div class="panel" style="display: none;">
+    <h2>Use White Label license to grow your business!</h2>
     <p>The white label license gives you the right to rebrand Microweber CMS with your own logo. You can sell it to your clients under your own brand. There is no limitation of number of installations.</p>
     <p><a href="https://microweber.org/modules/mw-internal/white_label" target="_blank">Get your White Label license here</a></p>
 </div>
 
 
 <?php if ($this->isLicensed): ?>
-<div class="license-active">
+<div class="license-active" style="display: none;">
 Registered Name: <?php echo $this->registeredName; ?> <br />
 Plan: <?php echo $this->relName; ?> <br />
 Billing Cycle: <?php echo $this->billingCycle; ?> <br />

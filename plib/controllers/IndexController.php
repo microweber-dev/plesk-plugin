@@ -56,6 +56,10 @@ class IndexController extends pm_Controller_Action
                 ];
             }
             $this->view->tabs[] = [
+                'title' => 'White Label',
+                'action' => 'whitelabel'
+            ];
+            $this->view->tabs[] = [
                 'title' => 'Settings',
                 'action' => 'settings',
             ];
@@ -218,7 +222,7 @@ class IndexController extends pm_Controller_Action
 
                 Modules_Microweber_WhiteLabel::updateWhiteLabelDomains();
 
-                $this->_status->addMessage('info', 'Settings was successfully saved.'); 
+                $this->_status->addMessage('info', 'Settings was successfully saved.');
 
           /*  } else {
                 pm_Settings::set('wl_license_data', false);

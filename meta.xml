@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <module>
-  <id>microweber</id>
+  <id>ext-microweber</id>
   <name>Microweber</name>
   <vendor>Microweber</vendor>
   <description>Automatic app installer.</description>
