@@ -7,6 +7,9 @@
  */
 ?>
 
+
+
+
 <?php echo $this->renderTabs($this->tabs); ?>
 
 <div class="panel">
@@ -17,6 +20,7 @@
     if($this->isLicensed == false) {
     ?>
     <p><a href="<?php echo $this->buyLink; ?>" target="_blank">Get your White Label license here</a></p>
+    <p><a href="<?php echo $this->newLicenseLink; ?>">Allready have a license?</a></p>
     <?php
     }
     ?>

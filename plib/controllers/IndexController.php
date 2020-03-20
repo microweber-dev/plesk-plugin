@@ -49,7 +49,7 @@ class IndexController extends pm_Controller_Action
                 'action' => 'versions'
             ];
             $this->view->tabs[] = [
-                'title' => 'White Label',
+                'title' => 'White Label <img src="" />',
                 'action' => 'whitelabel'
             ];
             $this->view->tabs[] = [
@@ -899,6 +899,7 @@ class IndexController extends pm_Controller_Action
             }
         }
 
+        $this->view->newLicenseLink = '/server/additional_keys.php?key_type=additional';
         $this->view->buyLink = pm_Context::getBuyUrl();
 
         $pmLicense = pm_License::getAdditionalKey();
