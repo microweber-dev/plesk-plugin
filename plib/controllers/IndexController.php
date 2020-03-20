@@ -903,7 +903,7 @@ class IndexController extends pm_Controller_Action
         $this->view->buyLink = pm_Context::getBuyUrl();
 
         $pmLicense = pm_License::getAdditionalKey();
-        if (isset($pmLicense->getProperties('product')['name'])) {
+        if ($pmLicense && isset($pmLicense->getProperties('product')['name'])) {
             if (strpos($pmLicense->getProperties('product')['name'], 'microweber') !== false) {
                 $this->view->isLicensed = true;
             }
