@@ -49,7 +49,7 @@ class IndexController extends pm_Controller_Action
                 'action' => 'versions'
             ];
             $this->view->tabs[] = [
-                'title' => 'White Label <img src="" />',
+                'title' => 'White Label',
                 'action' => 'whitelabel'
             ];
             $this->view->tabs[] = [
