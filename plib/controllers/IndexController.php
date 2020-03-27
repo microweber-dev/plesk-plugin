@@ -904,9 +904,7 @@ class IndexController extends pm_Controller_Action
 
         $pmLicense = pm_License::getAdditionalKey();
         if ($pmLicense && isset($pmLicense->getProperties('product')['name'])) {
-            if (strpos($pmLicense->getProperties('product')['name'], 'microweber') !== false) {
-                $this->view->isLicensed = true;
-            }
+            $this->view->isLicensed = true;
         }
     }
 
@@ -1116,9 +1114,15 @@ class IndexController extends pm_Controller_Action
 
     private function _getRelease()
     {
+        $licenseKey = '';
+
+        $pmLicense = pm_License::getAdditionalKey();
+        if ($pmLicense && isset($pmLicense->getProperties('product')['name'])) {
+            $licenseKey = $pmLicense->getProperties('product')['number'];
+        }
 
         $releaseUrl = Modules_Microweber_Config::getUpdateAppUrl();
-        $releaseUrl .= '?api_function=get_download_link&get_last_version=';
+        $releaseUrl .= '?api_function=get_download_link&get_last_version=1&license_key='.$licenseKey.'&license_type=plesk';
 
         return $this->_getJson($releaseUrl);
     }
