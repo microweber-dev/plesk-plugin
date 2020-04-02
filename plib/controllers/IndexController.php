@@ -80,7 +80,7 @@ class IndexController extends pm_Controller_Action
 
         $this->_checkAppSettingsIsCorrect();
 
-        $release = $this->_getRelease();
+        $release = Modules_Microweber_Config::getRelease();
 
         $availableTemplates = Modules_Microweber_Config::getSupportedTemplates();
         if (!empty($availableTemplates)) {
@@ -490,7 +490,7 @@ class IndexController extends pm_Controller_Action
             return $this->_redirect('index/error?type=permission');
         }
 
-        $release = $this->_getRelease();
+        $release = Modules_Microweber_Config::getRelease();
 
         $availableTemplates = Modules_Microweber_Config::getSupportedTemplates();
         if (!empty($availableTemplates)) {
@@ -590,7 +590,7 @@ class IndexController extends pm_Controller_Action
             pm_Settings::set('whmcs_url', $form->getValue('whmcs_url'));
 
 
-            $release = $this->_getRelease();
+            $release = Modules_Microweber_Config::getRelease();
             if (empty($release)) {
                 $this->_status->addMessage('error', 'Can\'t get latest version from selected download url.');
                 $success = false;
@@ -838,25 +838,23 @@ class IndexController extends pm_Controller_Action
     private function _updateApp()
     {
 
-        $release = $this->_getRelease();
+        $release = Modules_Microweber_Config::getRelease();
 
         if (empty($release)) {
             return 'No releases found.';
         }
 
-        $downloadLog = '';
+        $downloadLog = 'Downloading task has been started..';
 
-        $downloadLog .= pm_ApiCli::callSbin('unzip_app_version.sh', [base64_encode($release['url']), Modules_Microweber_Config::getAppSharedPath()])['stdout'];
+        $task = new Modules_Microweber_TaskAppDownload();
 
-        // Whm Connector
-        $downloadUrl = 'https://github.com/microweber-dev/whmcs-connector/archive/master.zip';
-        $downloadLog .= pm_ApiCli::callSbin('unzip_app_modules.sh', [base64_encode($downloadUrl), Modules_Microweber_Config::getAppSharedPath()])['stdout'];
-
-        // Login with token
-        $downloadUrl = 'https://github.com/microweber-modules/login_with_token/archive/master.zip';
-        $downloadLog .= pm_ApiCli::callSbin('unzip_app_modules.sh', [base64_encode($downloadUrl), Modules_Microweber_Config::getAppSharedPath()])['stdout'];
-
-        Modules_Microweber_WhmcsConnector::updateWhmcsConnector();
+        if (pm_Session::getClient()->isAdmin()) {
+            // Run global
+            $this->taskManager->start($task, NULL);
+        } else {
+            // Run for domain
+            $this->taskManager->start($task, NULL);
+        }
 
         return $downloadLog;
     }
@@ -1111,44 +1109,4 @@ class IndexController extends pm_Controller_Action
 
         return $templatesUrl;
     }
-
-    private function _getRelease()
-    {
-        $licenseKey = '';
-
-        $pmLicense = pm_License::getAdditionalKey();
-        if ($pmLicense && isset($pmLicense->getProperties('product')['name'])) {
-            $licenseKey = $pmLicense->getProperties('product')['number'];
-        }
-
-        $releaseUrl = Modules_Microweber_Config::getUpdateAppUrl();
-        $releaseUrl .= '?api_function=get_download_link&get_last_version=1&license_key='.$licenseKey.'&license_type=plesk';
-
-        return $this->_getJson($releaseUrl);
-    }
-
-    private function _getJson($url)
-    {
-
-        $tuCurl = curl_init();
-        curl_setopt($tuCurl, CURLOPT_URL, $url);
-        curl_setopt($tuCurl, CURLOPT_VERBOSE, 0);
-        curl_setopt($tuCurl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($tuCurl, CURLOPT_SSL_VERIFYPEER, false);
-
-        $tuData = curl_exec($tuCurl);
-        if (!curl_errno($tuCurl)) {
-            $info = curl_getinfo($tuCurl);
-            $debug = 'Took ' . $info['total_time'] . ' seconds to send a request to ' . $info['url'];
-        } else {
-            $debug = 'Curl error: ' . curl_error($tuCurl);
-        }
-
-        curl_close($tuCurl);
-
-        $json = json_decode($tuData, TRUE);
-
-        return $json;
-    }
-
 }

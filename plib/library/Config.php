@@ -111,5 +111,19 @@ class Modules_Microweber_Config
 		
 		return Modules_Microweber_Helper::getJsonFromUrl($whmcsUrl . '/index.php?m=microweber_addon&function=get_package_manager_urls');
 	}
-	
+
+    public static function getRelease()
+    {
+        $licenseKey = '';
+
+        $pmLicense = pm_License::getAdditionalKey();
+        if ($pmLicense && isset($pmLicense->getProperties('product')['name'])) {
+            $licenseKey = $pmLicense->getProperties('product')['number'];
+        }
+
+        $releaseUrl = Modules_Microweber_Config::getUpdateAppUrl();
+        $releaseUrl .= '?api_function=get_download_link&get_last_version=1&license_key='.$licenseKey.'&license_type=plesk';
+
+        return Modules_Microweber_Helper::getJsonFromUrl($releaseUrl);
+    }
 }
