@@ -311,7 +311,7 @@ class IndexController extends pm_Controller_Action
 
         $form->addElement('select', 'installation_database_driver', [
             'label' => 'Database Driver',
-            'multiOptions' => ['mysql' => 'MySQL', 'sqlite' => 'SQL Lite'],
+            'multiOptions' => ['mysql' => 'MySQL', 'sqlite' => 'SQLite'],
             'value' => pm_Settings::get('installation_database_driver'),
             'required' => true,
         ]);
@@ -550,8 +550,8 @@ class IndexController extends pm_Controller_Action
 
         $form->addElement('select', 'installation_database_driver', [
             'label' => 'Database Driver',
-            'multiOptions' => ['mysql' => 'MySQL', 'sqlite' => 'SQL Lite'],
-            'value' => pm_Settings::get('installation_database_driver'),
+            'multiOptions' => ['mysql' => 'MySQL', 'sqlite' => 'SQLite'],
+            'value' => pm_Settings::get('installation_database_driver'), 
             'required' => true,
         ]);
 
