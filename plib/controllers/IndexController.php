@@ -492,28 +492,23 @@ class IndexController extends pm_Controller_Action
 
         $release = Modules_Microweber_Config::getRelease();
 
-        $availableTemplates = Modules_Microweber_Config::getSupportedTemplates();
-        if (!empty($availableTemplates)) {
-            $availableTemplates = implode(', ', $availableTemplates);
-        } else {
-            $availableTemplates = 'No templates available';
-        }
-
         $this->view->pageTitle = $this->_moduleName;
 
         $this->view->latestVersion = 'unknown';
         $this->view->currentVersion = $this->_getCurrentVersion();
         $this->view->latestDownloadDate = $this->_getCurrentVersionLastDownloadDateTime();
-        $this->view->availableTemplates = $availableTemplates;
+
+        if ($this->view->currentVersion !== 'unknown') {
+            return $this->_redirect('index');
+        }
 
         if (!empty($release)) {
             $this->view->latestVersion = $release['version'];
         }
 
         $this->view->updateLink = pm_Context::getBaseUrl() . 'index.php/index/update';
-        $this->view->updateTemplatesLink = pm_Context::getBaseUrl() . 'index.php/index/update_templates';
 
-        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
+        ///$this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/startup.js');
     }
 
