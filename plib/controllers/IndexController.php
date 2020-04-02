@@ -68,7 +68,7 @@ class IndexController extends pm_Controller_Action
 
         $this->view->pageTitle = $this->_moduleName . ' - Domains';
         $this->view->list = $this->_getDomainsList();
-        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
+       // $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/index.js');
     }
 
