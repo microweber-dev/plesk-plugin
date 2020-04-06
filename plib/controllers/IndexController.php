@@ -1018,7 +1018,7 @@ class IndexController extends pm_Controller_Action
                     $loginToWebsite .= '<input type="hidden" name="website_url" value="' . $domainNameUrl . '" />';
                     $loginToWebsite .= '<input type="hidden" name="domain_id" value="' . $domain->getId() . '" />';
                     $loginToWebsite .= '<input type="hidden" name="document_root" value="' . $appInstallation . '" />';
-                    $loginToWebsite .= '<button type="submit" name="login" value="1" class="btn btn-info"><img src="'.pm_Context::getBaseUrl() . 'open-in-browser.png" alt=""> Login to website</button>';
+                    $loginToWebsite .= '<button type="submit" name="login" value="1" class="btn btn-info"><img src="'.pm_Context::getBaseUrl() . 'images/open-in-browser.png" alt=""> Login to website</button>';
                     $loginToWebsite .= '<button type="button" onclick="openSetupForm(this)" name="setup" value="1" class="btn btn-info"><img src="'.pm_Context::getBaseUrl() . 'images/setup.png" /> Setup</button>';
                     $loginToWebsite .= '</form>';
 
