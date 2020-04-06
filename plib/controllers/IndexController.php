@@ -1014,12 +1014,12 @@ class IndexController extends pm_Controller_Action
                     $domainNameUrl = str_replace($domainName, $domainDisplayName, $domainNameUrl);
 
                     $loginToWebsite = '<form method="post" class="js-open-settings-domain" action="' . pm_Context::getBaseUrl() . 'index.php/index/domainlogin" target="_blank">';
-                    $loginToWebsite .= '<a href="/smb/web/overview/id/d:'.$domain->getId().'" class="btn btn-info"><img src="/theme/icons/16/plesk/publish.png" alt=""> Manage Domain</a>';
+                    $loginToWebsite .= '<a href="/smb/web/overview/id/d:'.$domain->getId().'" class="btn btn-info"><img src="'.pm_Context::getBaseUrl() . 'images/publish.png" alt=""> Manage Domain</a>';
                     $loginToWebsite .= '<input type="hidden" name="website_url" value="' . $domainNameUrl . '" />';
                     $loginToWebsite .= '<input type="hidden" name="domain_id" value="' . $domain->getId() . '" />';
                     $loginToWebsite .= '<input type="hidden" name="document_root" value="' . $appInstallation . '" />';
-                    $loginToWebsite .= '<button type="submit" name="login" value="1" class="btn btn-info"><img src="/modules/catalog/images/open-in-browser-a3af024.png" alt=""> Login to website</button>';
-                    $loginToWebsite .= '<button type="button" onclick="openSetupForm(this)" name="setup" value="1" class="btn btn-info"><i class="icon-manage" style="color:#000;"></i> Setup</button>';
+                    $loginToWebsite .= '<button type="submit" name="login" value="1" class="btn btn-info"><img src="'.pm_Context::getBaseUrl() . 'open-in-browser.png" alt=""> Login to website</button>';
+                    $loginToWebsite .= '<button type="button" onclick="openSetupForm(this)" name="setup" value="1" class="btn btn-info"><img src="'.pm_Context::getBaseUrl() . 'images/setup.png" /> Setup</button>';
                     $loginToWebsite .= '</form>';
 
                     $data[] = [
