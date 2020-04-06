@@ -1014,6 +1014,7 @@ class IndexController extends pm_Controller_Action
                     $domainNameUrl = str_replace($domainName, $domainDisplayName, $domainNameUrl);
 
                     $loginToWebsite = '<form method="post" class="js-open-settings-domain" action="' . pm_Context::getBaseUrl() . 'index.php/index/domainlogin" target="_blank">';
+                    $loginToWebsite .= '<a href="/smb/web/overview/id/d:'.$domain->getId().'" class="btn btn-info"><img src="/theme/icons/32/plesk/hosting-setup.png" alt=""> Manage Domain</a>';
                     $loginToWebsite .= '<input type="hidden" name="website_url" value="' . $domainNameUrl . '" />';
                     $loginToWebsite .= '<input type="hidden" name="domain_id" value="' . $domain->getId() . '" />';
                     $loginToWebsite .= '<input type="hidden" name="document_root" value="' . $appInstallation . '" />';
