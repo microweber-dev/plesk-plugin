@@ -11,4 +11,5 @@
   <plesk_min_version>17.0.16</plesk_min_version>
   <os>unix</os>
   <url>http://microweber.com</url>
+  <buy_url>https://go.plesk.com/buy-plesk-ext/</buy_url>
 </module>
