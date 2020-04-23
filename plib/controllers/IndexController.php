@@ -1016,8 +1016,18 @@ class IndexController extends pm_Controller_Action
                     $domainNameUrl = str_replace($domainName . '/httpdocs', $domainName, $domainNameUrl);
                     $domainNameUrl = str_replace($domainName, $domainDisplayName, $domainNameUrl);
 
+                    $pleskMainUrl = pm_Context::getBaseUrl();
+                    $pleskMainUrl = str_replace('/modules/microweber', '', $pleskMainUrl);
+
+                    $manageDomainUrl = '/smb/web/overview/id/d:'.$domain->getId();
+                    if (pm_Session::getClient()->isAdmin()) {
+                        $manageDomainUrl = $pleskMainUrl . 'admin/subscription/login/id/'.$domain->getId().'?pageUrl='.$manageDomainUrl;
+                    } else {
+                        $manageDomainUrl = $pleskMainUrl . $manageDomainUrl;
+                    }
+
                     $loginToWebsite = '<form method="post" class="js-open-settings-domain" action="' . pm_Context::getBaseUrl() . 'index.php/index/domainlogin" target="_blank">';
-                    $loginToWebsite .= '<a href="/smb/web/overview/id/d:'.$domain->getId().'" class="btn btn-info"><img src="'.pm_Context::getBaseUrl() . 'images/publish.png" alt=""> Manage Domain</a>';
+                    $loginToWebsite .= '<a href="'. $manageDomainUrl . '" class="btn btn-info"><img src="'.pm_Context::getBaseUrl() . 'images/publish.png" alt=""> Manage Domain</a>';
                     $loginToWebsite .= '<input type="hidden" name="website_url" value="' . $domainNameUrl . '" />';
                     $loginToWebsite .= '<input type="hidden" name="domain_id" value="' . $domain->getId() . '" />';
                     $loginToWebsite .= '<input type="hidden" name="document_root" value="' . $appInstallation . '" />';
