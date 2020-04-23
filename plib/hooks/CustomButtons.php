@@ -13,20 +13,18 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
     {
         $places = [];
 
-        $sessionDomain = pm_Session::getCurrentDomain();
-
-        if ($sessionDomain->hasHosting()) {
-            $places[] = [
-                'place' => [
-                    self::PLACE_DOMAIN,
-                    self::PLACE_DOMAIN_PROPERTIES
-                ],
-                'title' => 'Microweber',
-                'description' => 'View all microweber websites.',
-                'icon' => pm_Context::getBaseUrl() . 'images/logo_small.svg',
-                'link' => pm_Context::getBaseUrl() . 'index.php/index/index',
-            ];
-        }
+        $places[] = [
+            'place' => [
+                self::PLACE_DOMAIN,
+                self::PLACE_DOMAIN_PROPERTIES
+            ],
+            'title' => 'Microweber',
+            'description' => 'View all microweber websites.',
+            'icon' => pm_Context::getBaseUrl() . 'images/logo_small.svg',
+            'link' => pm_Context::getBaseUrl() . 'index.php/index/index',
+            'contextParams' => true,
+            'visibility' => [$this, 'isDomainPropertiesButtonVisible'],
+        ];
 
         $places[] = [
             'place' => self::PLACE_ADMIN_NAVIGATION,
@@ -61,5 +59,16 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
         ];
 
         return $places;
+    }
+
+    public function isDomainPropertiesButtonVisible(array $params)
+    {
+        if (!isset($params['site_id'])) {
+            return false;
+        }
+
+        $domain = pm_Domain::getByDomainId($params['site_id']);
+
+        return $domain->hasHosting();
     }
 }
