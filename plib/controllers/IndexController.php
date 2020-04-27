@@ -264,6 +264,10 @@ class IndexController extends pm_Controller_Action
         $domainsSelect = ['no_select' => 'Select domain to install..'];
         foreach (Modules_Microweber_Domain::getDomains() as $domain) {
 
+            if (!$domain->hasHosting()) {
+                continue;
+            }
+
             $domainId = $domain->getId();
             $domainName = $domain->getDisplayName();
 

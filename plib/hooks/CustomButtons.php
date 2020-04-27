@@ -67,6 +67,10 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
             return false;
         }
 
+        if (isset($params['alias_id']) && !empty($params['alias_id'])) {
+            return false;
+        }
+
         $domain = pm_Domain::getByDomainId($params['site_id']);
 
         return $domain->hasHosting();
