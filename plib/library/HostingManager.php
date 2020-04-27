@@ -17,7 +17,6 @@ class Modules_Microweber_HostingManager
 	public function getPhpHandler($phpId) {
 
 		$apiRequest = <<<APICALL
-<packet>
 	<php-handler>
 		<get>
 		   <filter>
@@ -25,10 +24,9 @@ class Modules_Microweber_HostingManager
 		   </filter>
 		</get>
 	</php-handler>
-</packet>
 APICALL;
-		
-		$result = $this->_makeRequest($apiRequest);
+
+        $requestResult = $this->_makeRequest($apiRequest);
 		
 		if (isset($requestResult['php-handler']['get']['result'])) {
 			$result = $requestResult['php-handler']['get']['result'];
@@ -71,18 +69,16 @@ APICALL;
 	public function getHostingSettings() {
 		
 		$apiRequest = <<<APICALL
-<packet>
-	<site>
-		<get>
-		   <filter>
-		      <id>$this->_domainId</id>
-		   </filter>
-		   <dataset>
-		      <hosting/>
-		   </dataset>
-		</get>
-	</site>
-</packet>
+<site>
+    <get>
+       <filter>
+          <id>$this->_domainId</id>
+       </filter>
+       <dataset>
+          <hosting/>
+       </dataset>
+    </get>
+</site>
 APICALL;
 		
 		return $this->_makeRequest($apiRequest);
@@ -93,7 +89,7 @@ APICALL;
 		if (empty($this->_domainId)) {
 			throw new Exception('Domain id is not set.');
 		}
-		
+
 		return json_decode(json_encode(pm_ApiRpc::getService()->call($apiRequest)), TRUE);
 	}
 }

@@ -411,28 +411,28 @@ class IndexController extends pm_Controller_Action
 
             $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/index']);
             /*
-                        $newInstallation = new Modules_Microweber_Install();
-                        $newInstallation->setDomainId($post['installation_domain']);
-                        $newInstallation->setType($post['installation_type']);
-                        $newInstallation->setDatabaseDriver($post['installation_database_driver']);
-                        $newInstallation->setPath($post['installation_folder']);
-                        $newInstallation->setTemplate($post['installation_template']);
-                        $newInstallation->setLanguage($post['installation_language']);
+            $newInstallation = new Modules_Microweber_Install();
+            $newInstallation->setDomainId($post['installation_domain']);
+            $newInstallation->setType($post['installation_type']);
+            $newInstallation->setDatabaseDriver($post['installation_database_driver']);
+            $newInstallation->setPath($post['installation_folder']);
+            $newInstallation->setTemplate($post['installation_template']);
+            $newInstallation->setLanguage($post['installation_language']);
 
-                        if (!empty($post['installation_email'])) {
-                            $newInstallation->setEmail($post['installation_email']);
-                        }
+            if (!empty($post['installation_email'])) {
+                $newInstallation->setEmail($post['installation_email']);
+            }
 
-                        if (!empty($post['installation_username'])) {
-                            $newInstallation->setUsername($post['installation_username']);
-                        }
+            if (!empty($post['installation_username'])) {
+                $newInstallation->setUsername($post['installation_username']);
+            }
 
-                        if (!empty($post['installation_password'])) {
-                            $newInstallation->setPassword($post['installation_password']);
-                        }
+            if (!empty($post['installation_password'])) {
+                $newInstallation->setPassword($post['installation_password']);
+            }
 
-                        var_dump($newInstallation->run());
-                        die();*/
+            var_dump($newInstallation->run());
+            die();*/
 
         }
 
