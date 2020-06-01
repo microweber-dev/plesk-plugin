@@ -1020,12 +1020,10 @@ class IndexController extends pm_Controller_Action
                     $domainNameUrl = str_replace($domainName . '/httpdocs', $domainName, $domainNameUrl);
                     $domainNameUrl = str_replace($domainName, $domainDisplayName, $domainNameUrl);
 
-                    $pleskMainUrl = pm_Context::getBaseUrl();
-                    $pleskMainUrl = str_replace('/modules/microweber', '', $pleskMainUrl);
-
+                    $pleskMainUrl = '//' . $_SERVER['HTTP_HOST'];
                     $manageDomainUrl = '/smb/web/overview/id/d:'.$domain->getId();
                     if (pm_Session::getClient()->isAdmin()) {
-                        $manageDomainUrl = $pleskMainUrl . 'admin/subscription/login/id/'.$domain->getId().'?pageUrl='.$manageDomainUrl;
+                        $manageDomainUrl = $pleskMainUrl . '/admin/subscription/login/id/'.$domain->getId().'?pageUrl='.$manageDomainUrl;
                     } else {
                         $manageDomainUrl = $pleskMainUrl . $manageDomainUrl;
                     }
