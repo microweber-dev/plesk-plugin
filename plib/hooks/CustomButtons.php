@@ -11,6 +11,20 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
 
     public function getButtons()
     {
+        $showButtons = false;
+        $domains = pm_Domain::getDomainsByClient(pm_Session::getClient());
+        foreach ($domains as $domain) {
+            if (!$domain->hasHosting()) {
+                continue;
+            }
+            $showButtons = true;
+            break;
+        }
+
+        if (!$showButtons) {
+            return false;
+        }
+
         $places = [];
 
         $places[] = [
