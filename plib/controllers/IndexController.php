@@ -12,12 +12,6 @@ class IndexController extends pm_Controller_Action
 {
 
     private $taskManager = NULL;
-
-    protected $_accessLevel = [
-        'admin',
-        'reseller',
-        'client'
-    ];
     protected $_moduleName = 'Microweber';
 
     public function init()
