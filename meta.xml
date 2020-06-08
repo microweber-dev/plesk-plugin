@@ -4,8 +4,8 @@
   <name>Microweber</name>
   <vendor>Microweber</vendor>
   <description>Automatic app installer.</description>
-  <version>0.2.7</version>
-  <release>0.2.7</release>
+  <version>0.2.8</version>
+  <release>0.2.8</release>
   <category>web_app</category>
   <category>developer</category>
   <plesk_min_version>18.0.26</plesk_min_version>
