@@ -8,7 +8,7 @@
   <release>0.2.7</release>
   <category>web_app</category>
   <category>developer</category>
-  <plesk_min_version>17.0.16</plesk_min_version>
+  <plesk_min_version>18.0.26</plesk_min_version>
   <os>unix</os>
   <url>http://microweber.com</url>
   <buy_url>https://go.plesk.com/buy-plesk-ext/</buy_url>
