@@ -21,6 +21,10 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
             break;
         }
 
+        if (pm_Session::getClient()->isAdmin()) {
+            $showButtons = true;
+        }
+
         if (!$showButtons) {
             return false;
         }

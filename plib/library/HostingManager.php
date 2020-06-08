@@ -13,6 +13,39 @@ class Modules_Microweber_HostingManager
 	public function setDomainId($id) {
 		$this->_domainId = $id;
 	}
+
+
+    public function getDomainSubscription($domainName) {
+
+        $apiRequest = <<<APICALL
+<webspace>
+    <get>
+       <filter>
+          <name>$domainName</name>
+       </filter>
+       <dataset>
+          <hosting/>
+       </dataset>
+    </get>
+</webspace>
+APICALL;
+
+        $requestResult = $this->_makeRequest($apiRequest);
+
+        $webspace = false;
+
+        if (isset($requestResult['webspace']['get']['result']['status']) && $requestResult['webspace']['get']['result']['status'] == 'error') {
+            $webspace = false;
+        }
+
+        if (isset($requestResult['webspace']['get']['result']['status']) && $requestResult['webspace']['get']['result']['status'] == 'ok') {
+            $webspace = true;
+        }
+
+        return [
+          'webspace'=>$webspace
+        ];
+    }
 	
 	public function getPhpHandler($phpId) {
 

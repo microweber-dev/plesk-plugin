@@ -1022,8 +1022,16 @@ class IndexController extends pm_Controller_Action
                         $manageDomainUrl = $pleskMainUrl . $manageDomainUrl;
                     }
 
+                    $hostingManager = new Modules_Microweber_HostingManager();
+                    $hostingManager->setDomainId($domain->getId());
+
+                    $subscription = $hostingManager->getDomainSubscription($domain->getName());
+                    if ($subscription['webspace'] == false) {
+                        $manageDomainUrl = $pleskMainUrl . '/smb/web/view/id/'.$domain->getId().'/type/domain';
+                    }
+
                     $loginToWebsite = '<form method="post" class="js-open-settings-domain" action="' . pm_Context::getBaseUrl() . 'index.php/index/domainlogin" target="_blank">';
-                    $loginToWebsite .= '<a href="'. $manageDomainUrl . '" class="btn btn-info"><img src="'.pm_Context::getBaseUrl() . 'images/publish.png" alt=""> Manage Domain</a>';
+                    $loginToWebsite .= '<a href="' . $manageDomainUrl . '" class="btn btn-info"><img src="' . pm_Context::getBaseUrl() . 'images/publish.png" alt=""> Manage Domain</a>';
                     $loginToWebsite .= '<input type="hidden" name="website_url" value="' . $domainNameUrl . '" />';
                     $loginToWebsite .= '<input type="hidden" name="domain_id" value="' . $domain->getId() . '" />';
                     $loginToWebsite .= '<input type="hidden" name="document_root" value="' . $appInstallation . '" />';
