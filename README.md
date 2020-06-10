@@ -2,15 +2,23 @@
 
 /opt/psa/admin/sbin/modules/microweber
 
-# Panel.ini
-[ext-catalog]
+
+## Ho to install the plugin
+1. Open Plesk Panel
+1. Go to Extensions Catalog and install "Panel.ini Editor"
+1. Open the Panel.ini Editor
+1. Add these lines & save
+
+```
+[license]
+fileUpload=true
+
+[ext-catalog] 
 extensionUpload = true
 
-[php]
+[php] 
 settings.general.open_basedir.default="none"
-
-
-
+```
 
 ## How to use 
 
@@ -25,10 +33,6 @@ settings.general.open_basedir.default="none"
 **For manual install**: Click the Microweber icon in the sidebar under *Server management->Microweber* and then click on *Install* and select *Domain* from the dropdown box. 
  
 ![plan.png](assets/install.png "") 
-
-
-
-
 
 
 ## Settings
