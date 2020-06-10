@@ -7,10 +7,18 @@
  */
 ?>
 
-
-
-
 <?php echo $this->renderTabs($this->tabs); ?>
+
+<script>
+    function enterpriseWhitelabelKey() {
+        var x = document.getElementById("mw-license-form");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>
 
 <div class="panel">
     <h2>Use White Label license to grow your business!</h2>
@@ -21,6 +29,11 @@
     ?>
     <p><a href="<?php echo $this->buyLink; ?>" target="_blank">Get your White Label license here</a></p>
     <p><a href="<?php echo $this->newLicenseLink; ?>">Already have a license?</a></p>
+    <p><a href="#" onclick="enterpriseWhitelabelKey();">Already have an enterprise whitelabel key?</a></p>
+
+        <div id="mw-license-form" style="display: none;">
+            <?php echo $this->formMwKey; ?>
+        </div>
     <?php
     }
     ?>
@@ -33,21 +46,28 @@
 </div>
 
 
-<?php if ($this->isLicensed): ?>
-<div class="license-active" style="display: none;">
+<?php if ($this->isLicensed && $this->isMwLicensed): ?>
+<div class="license-active">
 Registered Name: <?php echo $this->registeredName; ?> <br />
 Plan: <?php echo $this->relName; ?> <br />
 Billing Cycle: <?php echo $this->billingCycle; ?> <br />
 Due on: <?php echo $this->dueOn; ?> <br />
 Registraion on: <?php echo $this->regOn; ?> <br />
+    <p><a href="?change_whitelabel_key=1">Change enterprise whitelabel key</a></p>
+
+    <?php if ($this->change_whitelabel_key): ?>
+    <div id="mw-license-form">
+        <?php echo $this->formMwKey; ?>
+    </div>
+    <?php endif; ?>
+
 </div>
 <?php endif; ?>
 
 <?php
-if($this->isLicensed) {
+if($this->isLicensed && !$this->change_whitelabel_key) {
     ?>
-<?php echo $this->form;?>
-
+    <?php echo $this->form; ?>
 <?php
 }
 ?>

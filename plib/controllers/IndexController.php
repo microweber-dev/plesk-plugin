@@ -62,7 +62,7 @@ class IndexController extends pm_Controller_Action
 
         $this->view->pageTitle = $this->_moduleName . ' - Domains';
         $this->view->list = $this->_getDomainsList();
-       // $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
+        // $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/index.js');
     }
 
@@ -112,11 +112,7 @@ class IndexController extends pm_Controller_Action
         // WL - white label
 
         $form = new pm_Form_Simple();
-      /*  $form->addElement('text', 'wl_key', [
-            'label' => 'White Label Key',
-            'value' => pm_Settings::get('wl_key'),
-            'placeholder' => 'Place your microweber white label key.'
-        ]);*/
+
         $form->addElement('text', 'wl_brand_name', [
             'label' => 'Brand Name',
             'value' => pm_Settings::get('wl_brand_name'),
@@ -181,48 +177,68 @@ class IndexController extends pm_Controller_Action
         );
 
         $form->addControlButtons([
-            'cancelLink' => pm_Context::getModulesListUrl(),
+            'cancelLink' =>pm_Context::getBaseUrl() . 'index.php/index/whitelabel',
         ]);
 
-        if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
+        if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost()) && !empty($form->getValue('wl_brand_name'))) {
 
-          /*  // Check license and save it to pm settings
-            $licenseCheck = Modules_Microweber_LicenseData::getLicenseData($form->getValue('wl_key'));
+            pm_Settings::set('wl_brand_name', $form->getValue('wl_brand_name'));
+            pm_Settings::set('wl_admin_login_url', $form->getValue('wl_admin_login_url'));
+            pm_Settings::set('wl_contact_page', $form->getValue('wl_contact_page'));
+            pm_Settings::set('wl_enable_support_links', $form->getValue('wl_enable_support_links'));
+            pm_Settings::set('wl_powered_by_link', $form->getValue('wl_powered_by_link'));
+            pm_Settings::set('wl_hide_powered_by_link', $form->getValue('wl_hide_powered_by_link'));
+            pm_Settings::set('wl_logo_admin_panel', $form->getValue('wl_logo_admin_panel'));
+            pm_Settings::set('wl_logo_live_edit_toolbar', $form->getValue('wl_logo_live_edit_toolbar'));
+            pm_Settings::set('wl_logo_login_screen', $form->getValue('wl_logo_login_screen'));
+            pm_Settings::set('wl_disable_microweber_marketplace', $form->getValue('wl_disable_microweber_marketplace'));
+            pm_Settings::set('wl_external_login_server_button_text', $form->getValue('wl_external_login_server_button_text'));
+            pm_Settings::set('wl_external_login_server_enable', $form->getValue('wl_external_login_server_enable'));
 
-            pm_Settings::set('wl_key', $form->getValue('wl_key'));
+            Modules_Microweber_WhiteLabel::updateWhiteLabelDomains();
 
-            if (isset($licenseCheck['status']) && $licenseCheck['status'] == 'active') {*/
+            $this->_status->addMessage('info', 'Settings was successfully saved.');
 
-               // pm_Settings::set('wl_license_data', json_encode($licenseCheck));
-                pm_Settings::set('wl_brand_name', $form->getValue('wl_brand_name'));
-                pm_Settings::set('wl_admin_login_url', $form->getValue('wl_admin_login_url'));
-                pm_Settings::set('wl_contact_page', $form->getValue('wl_contact_page'));
-                pm_Settings::set('wl_enable_support_links', $form->getValue('wl_enable_support_links'));
-                pm_Settings::set('wl_powered_by_link', $form->getValue('wl_powered_by_link'));
-                pm_Settings::set('wl_hide_powered_by_link', $form->getValue('wl_hide_powered_by_link'));
-                pm_Settings::set('wl_logo_admin_panel', $form->getValue('wl_logo_admin_panel'));
-                pm_Settings::set('wl_logo_live_edit_toolbar', $form->getValue('wl_logo_live_edit_toolbar'));
-                pm_Settings::set('wl_logo_login_screen', $form->getValue('wl_logo_login_screen'));
-                pm_Settings::set('wl_disable_microweber_marketplace', $form->getValue('wl_disable_microweber_marketplace'));
-                pm_Settings::set('wl_external_login_server_button_text', $form->getValue('wl_external_login_server_button_text'));
-                pm_Settings::set('wl_external_login_server_enable', $form->getValue('wl_external_login_server_enable'));
+        }
+        $this->view->form = $form;
 
-                Modules_Microweber_WhiteLabel::updateWhiteLabelDomains();
+        $formMwKey = new pm_Form_Simple();
+        $formMwKey->addElement('text', 'wl_key', [
+            'label' => 'White Label Key',
+            'value' => pm_Settings::get('wl_key'),
+            'placeholder' => 'Place your microweber white label key.'
+        ]);
+        $formMwKey->addControlButtons([
+            'cancelLink' =>pm_Context::getBaseUrl() . 'index.php/index/whitelabel',
+        ]);
 
-                $this->_status->addMessage('info', 'Settings was successfully saved.');
+        if ($this->getRequest()->isPost() && $formMwKey->isValid($this->getRequest()->getPost()) && !empty($formMwKey->getValue('wl_key'))) {
 
-          /*  } else {
+            // Check license and save it to pm settings
+            $licenseCheck = Modules_Microweber_LicenseData::getLicenseData($formMwKey->getValue('wl_key'));
+            if (isset($licenseCheck['status']) && $licenseCheck['status'] == 'active') {
+
+                pm_Settings::set('wl_key', $formMwKey->getValue('wl_key'));
+                pm_Settings::set('wl_license_data', json_encode($licenseCheck));
+
+            } else {
                 pm_Settings::set('wl_license_data', false);
                 $this->_status->addMessage('error', 'The license key is wrong or expired.');
-            }*/
+            }
 
             $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/whitelabel']);
+        }
+
+        $this->view->formMwKey = $formMwKey;
+
+        $this->view->change_whitelabel_key = false;
+        if ($this->getRequest()->getParam('change_whitelabel_key') == '1') {
+            $this->view->change_whitelabel_key = true;
         }
 
         // Show is licensed
         $this->_getLicensedView();
 
-        $this->view->form = $form;
     }
 
     public function updateAction()
@@ -549,7 +565,7 @@ class IndexController extends pm_Controller_Action
         $form->addElement('select', 'installation_database_driver', [
             'label' => 'Database Driver',
             'multiOptions' => ['mysql' => 'MySQL', 'sqlite' => 'SQLite'],
-            'value' => pm_Settings::get('installation_database_driver'), 
+            'value' => pm_Settings::get('installation_database_driver'),
             'required' => true,
         ]);
 
@@ -872,6 +888,7 @@ class IndexController extends pm_Controller_Action
     private function _getLicensedView()
     {
         $this->view->isLicensed = false;
+        $this->view->isMwLicensed = false;
 
         $licenseData = pm_Settings::get('wl_license_data');
         if (!empty($licenseData)) {
@@ -881,6 +898,7 @@ class IndexController extends pm_Controller_Action
             if ($licenseData['status'] == 'active') {
 
                 $this->view->isLicensed = true;
+                $this->view->isMwLicensed = true;
                 $this->view->dueOn = $licenseData['due_on'];
                 $this->view->registeredName = $licenseData['registered_name'];
                 $this->view->relName = $licenseData['rel_name'];
@@ -897,6 +915,26 @@ class IndexController extends pm_Controller_Action
         if ($pmLicense && isset($pmLicense->getProperties('product')['name'])) {
             $this->view->isLicensed = true;
         }
+    }
+
+    private function _checkAppIsLicensed()
+    {
+        $isLicensed = false;
+
+        $licenseData = pm_Settings::get('wl_license_data');
+        if (!empty($licenseData)) {
+            $licenseData = json_decode($licenseData, TRUE);
+            if ($licenseData['status'] == 'active') {
+                $isLicensed = true;
+            }
+        }
+
+        $pmLicense = pm_License::getAdditionalKey();
+        if ($pmLicense && isset($pmLicense->getProperties('product')['name'])) {
+            $isLicensed = true;
+        }
+
+        return $isLicensed;
     }
 
     private function _checkAppSettingsIsCorrect()
@@ -1015,9 +1053,9 @@ class IndexController extends pm_Controller_Action
                     $domainNameUrl = str_replace($domainName, $domainDisplayName, $domainNameUrl);
 
                     $pleskMainUrl = '//' . $_SERVER['HTTP_HOST'];
-                    $manageDomainUrl = '/smb/web/overview/id/d:'.$domain->getId();
+                    $manageDomainUrl = '/smb/web/overview/id/d:' . $domain->getId();
                     if (pm_Session::getClient()->isAdmin()) {
-                        $manageDomainUrl = $pleskMainUrl . '/admin/subscription/login/id/'.$domain->getId().'?pageUrl='.$manageDomainUrl;
+                        $manageDomainUrl = $pleskMainUrl . '/admin/subscription/login/id/' . $domain->getId() . '?pageUrl=' . $manageDomainUrl;
                     } else {
                         $manageDomainUrl = $pleskMainUrl . $manageDomainUrl;
                     }
@@ -1027,7 +1065,7 @@ class IndexController extends pm_Controller_Action
 
                     $subscription = $hostingManager->getDomainSubscription($domain->getName());
                     if ($subscription['webspace'] == false) {
-                        $manageDomainUrl = $pleskMainUrl . '/smb/web/view/id/'.$domain->getId().'/type/domain';
+                        $manageDomainUrl = $pleskMainUrl . '/smb/web/view/id/' . $domain->getId() . '/type/domain';
                     }
 
                     $loginToWebsite = '<form method="post" class="js-open-settings-domain" action="' . pm_Context::getBaseUrl() . 'index.php/index/domainlogin" target="_blank">';
@@ -1035,8 +1073,8 @@ class IndexController extends pm_Controller_Action
                     $loginToWebsite .= '<input type="hidden" name="website_url" value="' . $domainNameUrl . '" />';
                     $loginToWebsite .= '<input type="hidden" name="domain_id" value="' . $domain->getId() . '" />';
                     $loginToWebsite .= '<input type="hidden" name="document_root" value="' . $appInstallation . '" />';
-                    $loginToWebsite .= '<button type="submit" name="login" value="1" class="btn btn-info"><img src="'.pm_Context::getBaseUrl() . 'images/open-in-browser.png" alt=""> Login to website</button>';
-                    $loginToWebsite .= '<button type="button" onclick="openSetupForm(this)" name="setup" value="1" class="btn btn-info"><img src="'.pm_Context::getBaseUrl() . 'images/setup.png" /> Setup</button>';
+                    $loginToWebsite .= '<button type="submit" name="login" value="1" class="btn btn-info"><img src="' . pm_Context::getBaseUrl() . 'images/open-in-browser.png" alt=""> Login to website</button>';
+                    $loginToWebsite .= '<button type="button" onclick="openSetupForm(this)" name="setup" value="1" class="btn btn-info"><img src="' . pm_Context::getBaseUrl() . 'images/setup.png" /> Setup</button>';
                     $loginToWebsite .= '</form>';
 
                     $data[] = [
