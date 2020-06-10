@@ -239,6 +239,7 @@ class IndexController extends pm_Controller_Action
         // Show is licensed
         $this->_getLicensedView();
 
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/whitelabel.js');
     }
 
     public function updateAction()
