@@ -443,8 +443,8 @@ class IndexController extends pm_Controller_Action
             }
 
             var_dump($newInstallation->run());
-            die();*/
-
+            die();
+            */
         }
 
         $this->view->form = $form;

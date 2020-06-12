@@ -14,7 +14,7 @@ class Modules_Microweber_Helper
 		$alphabet = 'ghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
 		if ($complex) {
-			$alphabet .= '-~!@#%^*()_+,./;:[]{}\|';
+			$alphabet_complex = '!@#$%^&*?_~';
 		}
 
 		$pass = [];
@@ -23,6 +23,17 @@ class Modules_Microweber_Helper
 			$n = rand(0, $alphaLength);
 			$pass[] = $alphabet[$n];
 		}
+
+        if ($complex) {
+            $alphaLength = strlen($alphabet_complex) - 1;
+            for ($i = 0; $i < $length; $i ++) {
+                $n = rand(0, $alphaLength);
+                $pass[] = $alphabet_complex[$n];
+            }
+
+            shuffle($pass);
+        }
+
 		return implode($pass);
 	}
 	

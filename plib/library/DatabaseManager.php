@@ -20,8 +20,8 @@ class Modules_Microweber_DatabaseManager
 	<database>
 		<add-db-user>
 			<db-id>$databaseId</db-id>
-			<login>$login</login>
-			<password>$password</password>
+			<login><![CDATA[$login]]></login>
+			<password><![CDATA[$password]]></password>
 			<role>$role</role>
 		</add-db-user>
 	</database>
@@ -38,7 +38,7 @@ APICALL;
 	<database>
 	<add-db>
 	   <webspace-id>$this->_domainId</webspace-id>
-	   <name>$name</name>
+	   <name><![CDATA[$name]]></name>
 	   <type>mysql</type>
 	</add-db>
 	</database>
