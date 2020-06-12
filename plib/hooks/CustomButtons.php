@@ -31,7 +31,7 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
 
         $places = [];
 
-        $places[] =  
+        $places[] = [
             'place' => [
                 self::PLACE_DOMAIN,
                 self::PLACE_DOMAIN_PROPERTIES
