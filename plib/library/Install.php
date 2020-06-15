@@ -79,7 +79,7 @@ class Modules_Microweber_Install {
         if (empty($domain->getName())) {
             throw new \Exception('Domain not found.');
         }
-	    
+
 	    $whmcs = new Modules_Microweber_WhmcsConnector();
         $whmcs->setDomainName($domain->getName());
         $whiteLabelWhmcsSettings = $whmcs->getWhitelabelSettings();
@@ -92,9 +92,13 @@ class Modules_Microweber_Install {
                 $this->_template = $whiteLabelWhmcsSettings['wl_installation_template'];
             }
         }
-	    
+
         $hostingManager = new Modules_Microweber_HostingManager();
         $hostingManager->setDomainId($domain->getId());
+
+        //  plesk bin site --update-php-settings example.com -settings /var/custom-php-settings.ini
+        // $log = pm_ApiCli::callSbin('plesk bin site --update-php-settings '.$domain->getName().' -settings');
+
         $hostingProperties = $hostingManager->getHostingProperties();
         if (!$hostingProperties['php']) {
         	throw new \Exception('PHP is not activated on selected domain.');
@@ -102,11 +106,11 @@ class Modules_Microweber_Install {
         $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
         
         $this->setProgress(10);
-        
+
         $fileManager = new \pm_FileManager($domain->getId());
-        
+
 		$this->setProgress(20);
-	    
+
         pm_Log::debug('Start installing Microweber on domain: ' . $domain->getName());
         
         $dbName =  str_replace('.', '', $domain->getName());
@@ -121,9 +125,12 @@ class Modules_Microweber_Install {
         	
         	$dbManager = new Modules_Microweber_DatabaseManager();
         	$dbManager->setDomainId($domain->getId());
-        	
-	        $newDb = $dbManager->createDatabase($dbName);
-	        
+
+        	$newDb = $dbManager->createDatabase($dbName);
+
+	        /*var_dump($dbManager->getDatabaseServers());
+	        die();*/
+
 	        if (isset($newDb['database']['add-db']['result']['errtext'])) {
 	            throw new \Exception('You have reached the limit of your allowed databases.');
 	        }

@@ -421,8 +421,8 @@ class IndexController extends pm_Controller_Action
             }
 
             $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/index']);
-            /*
-            $newInstallation = new Modules_Microweber_Install();
+
+          /*  $newInstallation = new Modules_Microweber_Install();
             $newInstallation->setDomainId($post['installation_domain']);
             $newInstallation->setType($post['installation_type']);
             $newInstallation->setDatabaseDriver($post['installation_database_driver']);
@@ -443,8 +443,8 @@ class IndexController extends pm_Controller_Action
             }
 
             var_dump($newInstallation->run());
-            die();
-            */
+            die();*/
+
         }
 
         $this->view->form = $form;
