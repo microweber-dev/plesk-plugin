@@ -71,6 +71,19 @@ class Modules_Microweber_Install {
     	$this->_password = $password;
     }
 
+    private function _generateIniFile($array, $i = 0) {
+        $str = "";
+        foreach ($array as $k => $v) {
+            if (is_array($v)) {
+                $str .= str_repeat(" ",$i*2)."[$k]".PHP_EOL;
+                $str .= $this->_generateIniFile($v, $i+1);
+            } else {
+                $str .= str_repeat(" ", $i * 2) . "$k = $v" . PHP_EOL;
+            }
+        }
+        return $str;
+    }
+
     public function run() {
     	
     	$this->setProgress(5);
@@ -80,7 +93,9 @@ class Modules_Microweber_Install {
             throw new \Exception('Domain not found.');
         }
 
-	    $whmcs = new Modules_Microweber_WhmcsConnector();
+        $domainDocumentRoot = $domain->getDocumentRoot();
+
+        $whmcs = new Modules_Microweber_WhmcsConnector();
         $whmcs->setDomainName($domain->getName());
         $whiteLabelWhmcsSettings = $whmcs->getWhitelabelSettings();
 
@@ -93,11 +108,27 @@ class Modules_Microweber_Install {
             }
         }
 
+        $fileManager = new \pm_FileManager($domain->getId());
+
         $hostingManager = new Modules_Microweber_HostingManager();
         $hostingManager->setDomainId($domain->getId());
 
-        //  plesk bin site --update-php-settings example.com -settings /var/custom-php-settings.ini
-        // $log = pm_ApiCli::callSbin('plesk bin site --update-php-settings '.$domain->getName().' -settings');
+        // Prepare php domain settings for symlinking
+        if ($this->_type == 'symlink') {
+
+            $currentPhpIni = '/var/www/vhosts/system/' . $domain->getName() . '/etc/php.ini';
+            $tempPhpIni = $domainDocumentRoot . DIRECTORY_SEPARATOR . 'php.ini';
+
+            $parseOldIniFile = parse_ini_file($currentPhpIni);
+            $parseOldIniFile['open_basedir'] = '{WEBSPACEROOT}{/}{:}{TMP}{/}{:}{/opt/psa/var/modules/microweber/}{/}';
+
+            $generateIniFile = $this->_generateIniFile($parseOldIniFile);
+            $fileManager->filePutContents($tempPhpIni, $generateIniFile);
+
+            $log = pm_ApiCli::callSbin('update_domain_phpini.sh', [$domain->getName(), $tempPhpIni])['stdout'];
+            $fileManager->removeFile($tempPhpIni);
+
+        }
 
         $hostingProperties = $hostingManager->getHostingProperties();
         if (!$hostingProperties['php']) {
@@ -106,10 +137,6 @@ class Modules_Microweber_Install {
         $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
         
         $this->setProgress(10);
-
-        $fileManager = new \pm_FileManager($domain->getId());
-
-		$this->setProgress(20);
 
         pm_Log::debug('Start installing Microweber on domain: ' . $domain->getName());
         
@@ -155,8 +182,6 @@ class Modules_Microweber_Install {
 	        
 	        $this->setProgress(40);
         }
-        
-        $domainDocumentRoot = $domain->getDocumentRoot(); 
         
         if ($this->_path) {
             $domainDocumentRoot = $domainDocumentRoot . '/' . $this->_path;
