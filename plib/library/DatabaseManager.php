@@ -51,6 +51,29 @@ APICALL;
 
     }
 
+    public function getDatabaseServerById($id)
+    {
+        $apiRequest = <<<APICALL
+<packet>
+<db_server>
+  <get>
+   <filter>
+    <id>$id</id>
+   </filter>
+   </get>
+  </db_server>
+</packet>
+APICALL;
+
+        $request =  $this->_makeRequest($apiRequest);
+
+        if (isset($request['db_server']['get']['result'])) {
+            return $request['db_server']['get']['result'];
+        }
+
+        return false;
+    }
+
     public function getDatabaseServers()
     {
         $apiRequest = <<<APICALL
@@ -63,7 +86,12 @@ APICALL;
 </packet>
 APICALL;
 
-        return $this->_makeRequest($apiRequest);
+        $request =  $this->_makeRequest($apiRequest);
+        if (isset($request['db_server']['get-local']['result'])) {
+            return $request['db_server']['get-local']['result'];
+        }
+
+        return false;
     }
 
     protected function _makeRequest($apiRequest)

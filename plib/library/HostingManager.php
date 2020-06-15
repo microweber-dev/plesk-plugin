@@ -14,7 +14,6 @@ class Modules_Microweber_HostingManager
 		$this->_domainId = $id;
 	}
 
-
     public function getDomainSubscription($domainName) {
 
         $apiRequest = <<<APICALL

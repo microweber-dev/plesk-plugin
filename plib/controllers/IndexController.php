@@ -324,6 +324,30 @@ class IndexController extends pm_Controller_Action
             'required' => true,
         ]);
 
+        $dbManager = new Modules_Microweber_DatabaseManager();
+        $dbManager->setDomainId($domain->getId());
+        $servers = $dbManager->getDatabaseServers();
+        $serversOptions = [];
+        if ($servers) {
+            foreach($servers as $server) {
+                if ($server['type'] != 'mysql') {
+                    continue;
+                }
+                $dbServerDetails = $dbManager->getDatabaseServerById($server['id']);
+                $dbServerHostAndIp = $dbServerDetails['data']['host'].':'.$dbServerDetails['data']['port'];
+                $serversOptions[$dbServerHostAndIp] = $dbServerHostAndIp;
+            }
+        } else {
+            $serversOptions['localhost:3306'] = 'localhost:3306';
+        }
+
+        $form->addElement('select', 'installation_database_server', [
+            'label' => 'Database Server',
+            'multiOptions' => $serversOptions,
+            //'value' => pm_Settings::get('installation_database_driver'),
+            'required' => true,
+        ]);
+
         $form->addElement('select', 'installation_database_driver', [
             'label' => 'Database Driver',
             'multiOptions' => ['mysql' => 'MySQL', 'sqlite' => 'SQLite'],
@@ -400,12 +424,23 @@ class IndexController extends pm_Controller_Action
             }
 
 
+            $databaseServer = 'localhost';
+            $databasePort = '3306';
+            $installationDatabaseServer = $post['installation_database_server'];
+            $installationDatabaseServer = explode(':', $installationDatabaseServer);
+            if (isset($installationDatabaseServer[0]) && isset($installationDatabaseServer[1])) {
+                $databaseServer = $installationDatabaseServer[0];
+                $databasePort = $installationDatabaseServer[1];
+            }
+
             $task = new Modules_Microweber_TaskInstall();
             $task->setParam('domainId', $domain->getId());
             $task->setParam('domainName', $domain->getName());
             $task->setParam('domainDisplayName', $domain->getDisplayName());
             $task->setParam('type', $post['installation_type']);
             $task->setParam('databaseDriver', $post['installation_database_driver']);
+            $task->setParam('databaseServer', $databaseServer);
+            $task->setParam('databasePort', $databasePort);
             $task->setParam('path', $post['installation_folder']);
             $task->setParam('template', $post['installation_template']);
             $task->setParam('language', $post['installation_language']);

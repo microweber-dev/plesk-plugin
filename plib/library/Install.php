@@ -13,6 +13,8 @@ class Modules_Microweber_Install {
     protected $_domainId;
     protected $_type = 'default';
     protected $_databaseDriver = 'mysql';
+    protected $_databaseServer = 'localhost';
+    protected $_databasePort = 3306;
     protected $_email = 'admin@microweber.com';
     protected $_username = '';
     protected $_password = '';
@@ -58,7 +60,15 @@ class Modules_Microweber_Install {
     public function setDatabaseDriver($driver) {
     	$this->_databaseDriver = $driver;
     }
-    
+
+    public function setDatabaseServer($server) {
+    	$this->_databaseServer = $server;
+    }
+
+    public function setDatabasePort($port) {
+    	$this->_databasePort = $port;
+    }
+
     public function setEmail($email) {
     	$this->_email = $email;
     }
@@ -272,8 +282,8 @@ class Modules_Microweber_Install {
         }
         
         if ($this->_databaseDriver == 'mysql') {
-	        $dbHost = '127.0.0.1';
-	        $dbPort = '3306';
+	        $dbHost = $this->_databaseServer;
+            $dbPort = $this->_databasePort;
         } else {
         	$dbHost = 'localhost';
         	$dbPort = '';
