@@ -5,7 +5,7 @@
 
 * HTTP server  
 * Database server
-* PHP >= 5.6
+* PHP >= 7.2
   * `lib-xml` must be enabled (with DOM support)
   * `GD` PHP extension
   
