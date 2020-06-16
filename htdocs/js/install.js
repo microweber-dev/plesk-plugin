@@ -54,7 +54,7 @@ function checkStrength(password) {
     var strength = 0
     if (password.length < 6) {
         $j('#btn-send').attr('disabled', 'disabled');
-        return '<i style="color:red;">The password si too short.</i>';
+        return '<i style="color:red;">The password is too short.</i>';
     }
     if (password.length > 7) strength += 1
     // If password contains both lower and uppercase characters, increase strength value.
@@ -71,10 +71,10 @@ function checkStrength(password) {
         $j('#btn-send').attr('disabled', 'disabled');
         return '<i style="color:red;">The password is too weak.</i>';
     } else if (strength == 2) {
-        return '<i style="color:yellowgreen;">The password si good.</i>';
+        return '<i style="color:yellowgreen;">The password is good.</i>';
     } else {
         $j('#btn-send').removeAttr('disabled');
-        return '<i style="color:green;">The password si strong.</i>';
+        return '<i style="color:green;">The password is strong.</i>';
     }
 }
 
