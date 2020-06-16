@@ -40,8 +40,7 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
             'description' => 'View all microweber websites.',
             'icon' => pm_Context::getBaseUrl() . 'images/logo_small.svg',
             'link' => pm_Context::getBaseUrl() . 'index.php/index/index',
-            'contextParams' => true,
-            'visibility' => [$this, 'isDomainPropertiesButtonVisible'],
+            'contextParams' => true
         ];
 
         $places[] = [
@@ -55,7 +54,7 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
         ];
 
         $places[] = [
-            'place' => self::PLACE_HOSTING_PANEL_TABS,
+            'place' => [self::PLACE_HOSTING_PANEL_TABS],
             'order' => 15,
             'title' => 'Microweber',
             'description' => 'Install last version of microweber',
