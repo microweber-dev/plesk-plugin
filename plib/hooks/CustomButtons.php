@@ -12,13 +12,19 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
     public function getButtons()
     {
         $showButtons = false;
-        $domains = pm_Domain::getDomainsByClient(pm_Session::getClient());
-        foreach ($domains as $domain) {
-            if (!$domain->hasHosting()) {
-                continue;
+
+        if (!pm_Session::getClient()->isAdmin()) {
+            $domains = pm_Domain::getDomainsByClient(pm_Session::getClient());
+            foreach ($domains as $domain) {
+                if (!$domain->hasHosting()) {
+                    continue;
+                }
+                $planItems = $domain->getPlanItems();
+                if (is_array($planItems) && count($planItems) > 0 && (in_array("microweber", $planItems) || in_array("microweber_without_shop", $planItems) || in_array("microweber_lite", $planItems))) {
+                    $showButtons = true;
+                    break;
+                }
             }
-            $showButtons = true;
-            break;
         }
 
         if (pm_Session::getClient()->isAdmin()) {
