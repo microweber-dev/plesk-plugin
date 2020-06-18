@@ -32,7 +32,7 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
         }
 
         if (!$showButtons) {
-            return false;
+            return [];
         }
 
         $places = [];
