@@ -130,7 +130,7 @@ class Modules_Microweber_Install {
             $tempPhpIni = $domainDocumentRoot . DIRECTORY_SEPARATOR . 'php.ini';
 
             $parseOldIniFile = parse_ini_file($currentPhpIni);
-            $parseOldIniFile['open_basedir'] = '{WEBSPACEROOT}{/}{:}{TMP}{/}{:}{/opt/psa/var/modules/microweber/}{/}';
+            $parseOldIniFile['open_basedir'] = 'none';
 
             $generateIniFile = $this->_generateIniFile($parseOldIniFile);
             $fileManager->filePutContents($tempPhpIni, $generateIniFile);
