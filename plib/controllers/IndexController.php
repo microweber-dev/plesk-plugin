@@ -330,7 +330,7 @@ class IndexController extends pm_Controller_Action
         $serversOptions = [];
         if ($servers) {
             foreach($servers as $server) {
-                if ($server['type'] != 'mysql') {
+                if ($server['data']['type'] != 'mysql') {
                     continue;
                 }
                 $dbServerDetails = $dbManager->getDatabaseServerById($server['id']);
