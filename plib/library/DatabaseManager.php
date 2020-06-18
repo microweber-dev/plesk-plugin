@@ -79,16 +79,16 @@ APICALL;
         $apiRequest = <<<APICALL
 <packet>
 <db_server>
-	<get-local>
-		<filter />
-	</get-local>
+	<get>
+	<filter />
+	</get>
 </db_server>
 </packet>
 APICALL;
 
         $request =  $this->_makeRequest($apiRequest);
-        if (isset($request['db_server']['get-local']['result'])) {
-            return $request['db_server']['get-local']['result'];
+        if (isset($request['db_server']['get']['result'])) {
+            return $request['db_server']['get']['result'];
         }
 
         return false;
