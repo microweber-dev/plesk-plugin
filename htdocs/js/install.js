@@ -71,6 +71,7 @@ function checkStrength(password) {
         $j('#btn-send').attr('disabled', 'disabled');
         return '<i style="color:red;">The password is too weak.</i>';
     } else if (strength == 2) {
+        j('#btn-send').removeAttr('disabled');
         return '<i style="color:yellowgreen;">The password is good.</i>';
     } else {
         $j('#btn-send').removeAttr('disabled');
