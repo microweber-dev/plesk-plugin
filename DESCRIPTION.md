@@ -112,8 +112,7 @@ The whole process from - searching domain, select domain or sub-domain, choosing
 
 We are ready to help you in this setup process and will support you in any situation.
 To work this process properly you need to have:
-**Plesk** – who is taking care for your domains, sub-domains, and installations.
-(https://www.plesk.com/)[(https://www.plesk.com/)]((https://www.plesk.com/) "")
+**Plesk** – who is taking care for your domains, sub-domains, and installations. https://www.plesk.com/
  
 **WHMCS** – responsible for billing cycles, tickets, invoices, payments, choosing domain and user administration. [(https://www.whmcs.com/)]((https://www.whmcs.com/) "")(https://www.whmcs.com/) 
 
