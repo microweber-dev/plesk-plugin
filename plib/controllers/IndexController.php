@@ -841,10 +841,38 @@ class IndexController extends pm_Controller_Action
             return $this->_redirect('index/error?type=permission');
         }
 
+        $fileManager = new pm_FileManager($domain->getId());
+
+        // Check microweber isntallation is STANDALONE
+        $loginWithTokenModulePathShared = Modules_Microweber_Config::getAppSharedPath() . 'userfiles/modules/login_with_token/';
+        $loginWithTokenModulePath = $domainDocumentRoot . '/userfiles/modules/login_with_token/';
+
+        if (!$fileManager->isDir($loginWithTokenModulePath)) {
+            // Must copy the login with token plugin
+            try {
+                if (!$fileManager->isDir('login_with_token')) {
+                    $fileManager->mkdir('login_with_token');
+                }
+                if (!$fileManager->fileExists($loginWithTokenModulePath . 'index.php')) {
+                     $fileManager->copyFile($loginWithTokenModulePathShared . 'index.php', $loginWithTokenModulePath . 'index.php');
+                }
+                if (!$fileManager->fileExists($loginWithTokenModulePath . 'config.php')) {
+                     $fileManager->copyFile($loginWithTokenModulePathShared . 'config.php', $loginWithTokenModulePath . 'config.php');
+                }
+                if (!$fileManager->fileExists($loginWithTokenModulePath . 'functions.php')) {
+                     $fileManager->copyFile($loginWithTokenModulePathShared . 'functions.php', $loginWithTokenModulePath . 'functions.php');
+                }
+
+            } catch (Exception $e) {
+                // cant copy the module
+            }
+        }
+
         $artisan = new Modules_Microweber_ArtisanExecutor();
         $artisan->setDomainId($domain->getId());
         $artisan->setDomainDocumentRoot($domainDocumentRoot);
 
+        $commandResponse = $artisan->exec(['microweber:module', 'login_with_token', '1']);
         $commandResponse = $artisan->exec(['microweber:generate-admin-login-token']);
 
         if (!empty($commandResponse['stdout'])) {
@@ -853,6 +881,10 @@ class IndexController extends pm_Controller_Action
             $token = str_replace(' ', false, $token);
             $token = str_replace(PHP_EOL, false, $token);
             $token = trim($token);
+
+            if (strpos($token, 'isnotdefined') !== false) {
+                return $this->_redirect('index/index?message=Can\'t login to this domain.'); 
+            }
 
             return $this->_redirect('http://www.' . $websiteUrl . '/api/user_login?secret_key=' . $token);
         }
