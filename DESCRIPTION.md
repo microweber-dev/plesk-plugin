@@ -115,7 +115,7 @@ To work this process properly you need to have:
 **Plesk** – who is taking care for your domains, sub-domains, and installations. https://www.plesk.com/
  
 **WHMCS** – responsible for billing cycles, tickets, invoices, payments, choosing domain and user administration. 
-https://www.whmcs.com/
+https://www.whmcs.com/members/aff.php?aff=26422
 
 **Dedicate or VPS server** – you need to have server with root access to connects the install process.
 
