@@ -114,11 +114,12 @@ We are ready to help you in this setup process and will support you in any situa
 To work this process properly you need to have:
 **Plesk** – who is taking care for your domains, sub-domains, and installations. https://www.plesk.com/
  
-**WHMCS** – responsible for billing cycles, tickets, invoices, payments, choosing domain and user administration. [(https://www.whmcs.com/)]((https://www.whmcs.com/) "")(https://www.whmcs.com/) 
+**WHMCS** – responsible for billing cycles, tickets, invoices, payments, choosing domain and user administration. 
+https://www.whmcs.com/
 
 **Dedicate or VPS server** – you need to have server with root access to connects the install process.
 
-**Hosting pro license** – giving you website builder under your brand, templates, and modules with rights for distributing them. (https://microweber.org/modules/mw-internal/white_label)
+**Hosting pro license** – giving you website builder under your brand, templates, and modules with rights for distributing them. https://microweber.org/modules/mw-internal/white_label
 
  
 **See Microweber WHMCS plugin**
@@ -143,7 +144,7 @@ We give you custom solution for your company. 24/7 professional support and unli
 Contact us on info(at)microweber.com for more information about Enterprise White Label license.
 
 
-
+ 
 ## See it in action
 
 * [Microweber Live Demo](https://demo.microweber.org/?template=dream)
