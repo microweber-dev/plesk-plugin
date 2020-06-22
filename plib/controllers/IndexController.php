@@ -19,6 +19,8 @@ class IndexController extends pm_Controller_Action
     {
         parent::init();
 
+        $this->_moduleName = Modules_Microweber_WhiteLabel::getBrandName();
+
         if (is_null($this->taskManager)) {
             $this->taskManager = new pm_LongTask_Manager();
         }
@@ -177,11 +179,22 @@ class IndexController extends pm_Controller_Action
             ]
         );
 
+        $form->addElement('text', 'wl_plesk_logo_invert', [
+            'label' => 'Plesk Logo for sidebar',
+            'value' => pm_Settings::get('wl_plesk_logo_invert'),
+            'placeholder' => ''
+        ]);
+        $form->addElement('text', 'wl_plesk_logo_app', [
+            'label' => 'Plesk Logo App',
+            'value' => pm_Settings::get('wl_plesk_logo_app'),
+            'placeholder' => ''
+        ]);
+
         $form->addControlButtons([
             'cancelLink' =>pm_Context::getBaseUrl() . 'index.php/index/whitelabel',
         ]);
 
-        if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost()) && !empty($form->getValue('wl_brand_name'))) {
+        if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
 
             pm_Settings::set('wl_brand_name', $form->getValue('wl_brand_name'));
             pm_Settings::set('wl_admin_login_url', $form->getValue('wl_admin_login_url'));
@@ -195,6 +208,8 @@ class IndexController extends pm_Controller_Action
             pm_Settings::set('wl_disable_microweber_marketplace', $form->getValue('wl_disable_microweber_marketplace'));
             pm_Settings::set('wl_external_login_server_button_text', $form->getValue('wl_external_login_server_button_text'));
             pm_Settings::set('wl_external_login_server_enable', $form->getValue('wl_external_login_server_enable'));
+            pm_Settings::set('wl_plesk_logo_invert', $form->getValue('wl_plesk_logo_invert'));
+            pm_Settings::set('wl_plesk_logo_app', $form->getValue('wl_plesk_logo_app'));
 
             Modules_Microweber_WhiteLabel::updateWhiteLabelDomains();
 
