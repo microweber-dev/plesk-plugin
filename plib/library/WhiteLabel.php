@@ -9,6 +9,39 @@
 class Modules_Microweber_WhiteLabel
 {
 
+    public static function getBrandName()
+    {
+        $name = 'Microweber';
+        $setting = pm_Settings::get('wl_brand_name');
+        if (!empty($setting)) {
+            $name = $setting;
+        }
+
+        return $name;
+    }
+
+    public static function getBrandInvertIcon()
+    {
+        $icon = pm_Context::getBaseUrl() . 'images/logo_small_white.svg';
+        $setting = pm_Settings::get('wl_plesk_logo_invert');
+        if (!empty($setting)) {
+            $icon = $setting;
+        }
+
+        return $icon;
+    }
+
+    public static function getBrandAppIcon()
+    {
+        $icon = pm_Context::getBaseUrl() . 'images/logo_small.svg';
+        $setting = pm_Settings::get('wl_plesk_logo_app');
+        if (!empty($setting)) {
+            $icon = $setting;
+        }
+
+        return $icon;
+    }
+
 	public static function updateWhiteLabelDomainById($domainId)
 	{
 		$domain = Modules_Microweber_Domain::getUserDomainById($domainId);
