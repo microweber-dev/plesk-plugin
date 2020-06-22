@@ -71,7 +71,7 @@ APICALL;
 </packet>
 APICALL;
 
-        $request =  $this->_makeRequest($apiRequest);
+        $request = $this->_makeRequest($apiRequest);
 
         if (isset($request['db_server']['get']['result'])) {
             return $request['db_server']['get']['result'];
@@ -85,14 +85,15 @@ APICALL;
         $apiRequest = <<<APICALL
 <packet>
 <db_server>
-	<get>
+	<get-default>
 	<filter />
-	</get>
+	</get-default>
 </db_server>
 </packet>
 APICALL;
 
-        $request =  $this->_makeRequest($apiRequest);
+        $request = $this->_makeRequest($apiRequest);
+
         if (isset($request['db_server']['get']['result'])) {
             return $request['db_server']['get']['result'];
         }
@@ -100,12 +101,7 @@ APICALL;
         return false;
     }
 
-    protected function _makeRequest($apiRequest)
-    {
-        if (empty($this->_domainId)) {
-            throw new Exception('Domain id is not set.');
-        }
-
+    protected function _makeRequest($apiRequest){
         return json_decode(json_encode(pm_ApiRpc::getService()->call($apiRequest)), TRUE);
     }
 }

@@ -348,27 +348,35 @@ class IndexController extends pm_Controller_Action
 
         $dbManager = new Modules_Microweber_DatabaseManager();
         $dbManager->setDomainId($domain->getId());
-        $servers = $dbManager->getDatabaseServers();
-        $serversOptions = [];
-        if ($servers) {
-            foreach($servers as $server) {
-                if ($server['data']['type'] != 'mysql') {
-                    continue;
-                }
-                $dbServerDetails = $dbManager->getDatabaseServerById($server['id']);
-                $dbServerHostAndIp = $dbServerDetails['data']['host'].':'.$dbServerDetails['data']['port'];
-                $serversOptions[$server['id']] = $dbServerHostAndIp;
-            }
-        } else {
-            $serversOptions[0] = 'localhost:3306';
-        }
 
-        $form->addElement('select', 'installation_database_server_id', [
-            'label' => 'Database Server',
-            'multiOptions' => $serversOptions,
-            //'value' => pm_Settings::get('installation_database_driver'),
-            'required' => true,
-        ]);
+        $hostingManager = new Modules_Microweber_HostingManager();
+        $hostingManager->setDomainId($domain->getId());
+
+/*
+ *      $servers = $dbManager->getDatabaseServers();
+        if (pm_Session::getClient()->isAdmin()) {
+            $serversOptions = [];
+            if ($servers) {
+                foreach ($servers as $server) {
+                    if ($server['data']['type'] != 'mysql') {
+                        continue;
+                    }
+                    $dbServerDetails = $dbManager->getDatabaseServerById($server['id']);
+                    $dbServerHostAndIp = $dbServerDetails['data']['host'] . ':' . $dbServerDetails['data']['port'];
+                    $serversOptions[$server['id']] = $dbServerHostAndIp;
+                }
+            } else {
+                $serversOptions[0] = 'localhost:3306';
+            }
+
+
+            $form->addElement('select', 'installation_database_server_id', [
+                'label' => 'Database Server',
+                'multiOptions' => $serversOptions,
+                'value' => pm_Settings::get('installation_database_server_id'),
+                'required' => true,
+            ]);
+        }*/
 
         $form->addElement('select', 'installation_database_driver', [
             'label' => 'Database Driver',
@@ -445,6 +453,15 @@ class IndexController extends pm_Controller_Action
                 $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/install']);
             }
 
+            if (!pm_Session::getClient()->isAdmin()) {
+                $dbServerIdDefault = pm_Settings::get('installation_database_server_id');
+                $dbServerIdDefault = trim($dbServerIdDefault);
+
+                if (!empty($dbServerIdDefault)) {
+                    $post['installation_database_server_id'] = $dbServerIdDefault;
+                }
+            }
+
             if (!$this->devMode) {
 
                 $task = new Modules_Microweber_TaskInstall();
@@ -453,7 +470,7 @@ class IndexController extends pm_Controller_Action
                 $task->setParam('domainDisplayName', $domain->getDisplayName());
                 $task->setParam('type', $post['installation_type']);
                 $task->setParam('databaseDriver', $post['installation_database_driver']);
-                $task->setParam('databaseServerId', $post['installation_database_server_id']);
+                //$task->setParam('databaseServerId', $post['installation_database_server_id']);
                 $task->setParam('path', $post['installation_folder']);
                 $task->setParam('template', $post['installation_template']);
                 $task->setParam('language', $post['installation_language']);
@@ -476,7 +493,7 @@ class IndexController extends pm_Controller_Action
                 $newInstallation->setDomainId($post['installation_domain']);
                 $newInstallation->setType($post['installation_type']);
                 $newInstallation->setDatabaseDriver($post['installation_database_driver']);
-                $newInstallation->setDatabaseServerId($post['installation_database_server_id']);
+                //$newInstallation->setDatabaseServerId($post['installation_database_server_id']);
                 $newInstallation->setPath($post['installation_folder']);
                 $newInstallation->setTemplate($post['installation_template']);
                 $newInstallation->setLanguage($post['installation_language']);
@@ -622,6 +639,37 @@ class IndexController extends pm_Controller_Action
             'required' => true,
         ]);
 
+        /*
+        $dbManager = new Modules_Microweber_DatabaseManager();
+
+        if (pm_Session::getClient()->isAdmin()) {
+            $servers = $dbManager->getDatabaseServers();
+        } else {
+            $servers = $dbManager->getDatabaseServersDefault();
+        }
+
+        $serversOptions = [];
+        if ($servers) {
+            foreach($servers as $server) {
+                if ($server['data']['type'] != 'mysql') {
+                    continue;
+                }
+                $dbServerDetails = $dbManager->getDatabaseServerById($server['id']);
+                $dbServerHostAndIp = $dbServerDetails['data']['host'].':'.$dbServerDetails['data']['port'];
+                $serversOptions[$server['id']] = $dbServerHostAndIp;
+            }
+        } else {
+            $serversOptions[0] = 'localhost:3306';
+        }
+
+        $form->addElement('select', 'installation_database_server_id', [
+            'label' => 'Database Server',
+            'multiOptions' => $serversOptions,
+            'value' => pm_Settings::get('installation_database_server_id'),
+            'required' => true,
+        ]);
+        */
+
         $form->addElement('text', 'update_app_url', [
             'label' => 'Update App Url',
             'value' => Modules_Microweber_Config::getUpdateAppUrl(),
@@ -647,6 +695,7 @@ class IndexController extends pm_Controller_Action
             pm_Settings::set('installation_template', $form->getValue('installation_template'));
             pm_Settings::set('installation_type', $form->getValue('installation_type'));
             pm_Settings::set('installation_database_driver', $form->getValue('installation_database_driver'));
+      //      pm_Settings::set('installation_database_server_id', $form->getValue('installation_database_server_id'));
 
             pm_Settings::set('update_app_url', $form->getValue('update_app_url'));
             pm_Settings::set('whmcs_url', $form->getValue('whmcs_url'));

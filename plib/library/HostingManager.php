@@ -24,6 +24,9 @@ class Modules_Microweber_HostingManager
        </filter>
        <dataset>
           <hosting/>
+          <gen_info/>
+          <prefs/>
+          <stat/>
        </dataset>
     </get>
 </webspace>
@@ -32,6 +35,7 @@ APICALL;
         $requestResult = $this->_makeRequest($apiRequest);
 
         $webspace = false;
+        $webspaceId = false;
 
         if (isset($requestResult['webspace']['get']['result']['status']) && $requestResult['webspace']['get']['result']['status'] == 'error') {
             $webspace = false;
@@ -39,10 +43,12 @@ APICALL;
 
         if (isset($requestResult['webspace']['get']['result']['status']) && $requestResult['webspace']['get']['result']['status'] == 'ok') {
             $webspace = true;
+            $webspaceId = $requestResult['webspace']['get']['result']['id'];
         }
 
         return [
-          'webspace'=>$webspace
+          'webspace'=>$webspace,
+          'webspaceId'=>$webspaceId,
         ];
     }
 	
@@ -115,7 +121,29 @@ APICALL;
 		
 		return $this->_makeRequest($apiRequest);
 	}
-	
+
+	public function getDatabaseServerByWebspaceId($webspaceId){
+        $apiRequest = <<<APICALL
+        <webspace>
+<db-servers>
+   <list>
+      <filter>
+          <id>$webspaceId</id>
+      </filter>
+   </list>
+</db-servers>
+</webspace>
+APICALL;
+
+        $request =  $this->_makeRequest($apiRequest);
+
+        if (isset($request['webspace']['db-servers']['list']['result']['db-server'])) {
+            return $request['webspace']['db-servers']['list']['result']['db-server'];
+        }
+
+        return false;
+    }
+
 	protected function _makeRequest($apiRequest) {
 		
 		if (empty($this->_domainId)) {

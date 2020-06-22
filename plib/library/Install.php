@@ -137,7 +137,7 @@ class Modules_Microweber_Install {
 
         $hostingProperties = $hostingManager->getHostingProperties();
         if (!$hostingProperties['php']) {
-        	throw new \Exception('PHP is not activated on selected domain.');
+            throw new \Exception('PHP is not activated on selected domain.');
         }
         $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
         
@@ -152,7 +152,20 @@ class Modules_Microweber_Install {
         $dbPassword = Modules_Microweber_Helper::getRandomPassword(12, true);
 
         if ($this->_databaseDriver == 'mysql') {
-        	
+
+
+            $domainSubscription = $hostingManager->getDomainSubscription($domain->getName());
+            if (!$domainSubscription['webspace']) {
+                throw new \Exception('Webspace is not found.');
+            }
+
+            $databaseServerDetails = $hostingManager->getDatabaseServerByWebspaceId($domainSubscription['webspaceId']);
+            if (!$databaseServerDetails) {
+                throw new \Exception('Cannot find database servers for webspace.');
+            }
+
+            $this->_databaseServerId = $databaseServerDetails['id'];
+
         	pm_Log::debug('Create database for domain: ' . $domain->getName());
         	
         	$dbManager = new Modules_Microweber_DatabaseManager();
@@ -274,14 +287,11 @@ class Modules_Microweber_Install {
         
         if ($this->_databaseDriver == 'mysql') {
 
-            $getDatabaseServerDetails = $dbManager->getDatabaseServerById($this->_databaseServerId);
-            if ($getDatabaseServerDetails && isset($getDatabaseServerDetails['data'])) {
-                $dbHost = $getDatabaseServerDetails['data']['host'];
-                $dbPort = $getDatabaseServerDetails['data']['port'];
-                $dbHost = $dbHost . ':' . $dbPort;
-            } else {
-                $dbHost = 'localhost:3306';
+            $dbHost = 'localhost:3306';
+            if (isset($databaseServerDetails['host']) && isset($databaseServerDetails['port'])) {
+                $dbHost = $databaseServerDetails['host'] . ':' . $databaseServerDetails['port'];
             }
+
         } else {
         	$dbHost = 'localhost';
         	$dbName = $domainDocumentRoot . '/storage/database1.sqlite';
