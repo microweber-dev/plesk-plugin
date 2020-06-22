@@ -11,6 +11,7 @@ include dirname(__DIR__) . '/library/MicroweberMarketplaceConnector.php';
 class IndexController extends pm_Controller_Action
 {
 
+    private $devMode = false;
     private $taskManager = NULL;
     protected $_moduleName = 'Microweber';
 
@@ -335,13 +336,13 @@ class IndexController extends pm_Controller_Action
                 }
                 $dbServerDetails = $dbManager->getDatabaseServerById($server['id']);
                 $dbServerHostAndIp = $dbServerDetails['data']['host'].':'.$dbServerDetails['data']['port'];
-                $serversOptions[$dbServerHostAndIp] = $dbServerHostAndIp;
+                $serversOptions[$server['id']] = $dbServerHostAndIp;
             }
         } else {
-            $serversOptions['localhost:3306'] = 'localhost:3306';
+            $serversOptions[0] = 'localhost:3306';
         }
 
-        $form->addElement('select', 'installation_database_server', [
+        $form->addElement('select', 'installation_database_server_id', [
             'label' => 'Database Server',
             'multiOptions' => $serversOptions,
             //'value' => pm_Settings::get('installation_database_driver'),
@@ -423,65 +424,55 @@ class IndexController extends pm_Controller_Action
                 $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/install']);
             }
 
+            if (!$this->devMode) {
+                $task = new Modules_Microweber_TaskInstall();
+                $task->setParam('domainId', $domain->getId());
+                $task->setParam('domainName', $domain->getName());
+                $task->setParam('domainDisplayName', $domain->getDisplayName());
+                $task->setParam('type', $post['installation_type']);
+                $task->setParam('databaseDriver', $post['installation_database_driver']);
+                $task->setParam('databaseServerId', $post['installation_database_server_id']);
+                $task->setParam('path', $post['installation_folder']);
+                $task->setParam('template', $post['installation_template']);
+                $task->setParam('language', $post['installation_language']);
+                $task->setParam('email', $post['installation_email']);
+                $task->setParam('username', $post['installation_username']);
+                $task->setParam('password', $post['installation_password']);
 
-            $databaseServer = 'localhost';
-            $databasePort = '3306';
-            $installationDatabaseServer = $post['installation_database_server'];
-            $installationDatabaseServer = explode(':', $installationDatabaseServer);
-            if (isset($installationDatabaseServer[0]) && isset($installationDatabaseServer[1])) {
-                $databaseServer = $installationDatabaseServer[0];
-                $databasePort = $installationDatabaseServer[1];
-            }
+                if (pm_Session::getClient()->isAdmin()) {
+                    // Run global
+                    $this->taskManager->start($task, NULL);
+                } else {
+                    // Run for domain
+                    $this->taskManager->start($task, $domain);
+                }
 
-            $task = new Modules_Microweber_TaskInstall();
-            $task->setParam('domainId', $domain->getId());
-            $task->setParam('domainName', $domain->getName());
-            $task->setParam('domainDisplayName', $domain->getDisplayName());
-            $task->setParam('type', $post['installation_type']);
-            $task->setParam('databaseDriver', $post['installation_database_driver']);
-            $task->setParam('databaseServer', $databaseServer);
-            $task->setParam('databasePort', $databasePort);
-            $task->setParam('path', $post['installation_folder']);
-            $task->setParam('template', $post['installation_template']);
-            $task->setParam('language', $post['installation_language']);
-            $task->setParam('email', $post['installation_email']);
-            $task->setParam('username', $post['installation_username']);
-            $task->setParam('password', $post['installation_password']);
-
-            if (pm_Session::getClient()->isAdmin()) {
-                // Run global
-                $this->taskManager->start($task, NULL);
+                $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/index']);
             } else {
-                // Run for domain
-                $this->taskManager->start($task, $domain);
+                $newInstallation = new Modules_Microweber_Install();
+                $newInstallation->setDomainId($post['installation_domain']);
+                $newInstallation->setType($post['installation_type']);
+                $newInstallation->setDatabaseDriver($post['installation_database_driver']);
+                $newInstallation->setDatabaseServerId($post['installation_database_server_id']);
+                $newInstallation->setPath($post['installation_folder']);
+                $newInstallation->setTemplate($post['installation_template']);
+                $newInstallation->setLanguage($post['installation_language']);
+
+                if (!empty($post['installation_email'])) {
+                    $newInstallation->setEmail($post['installation_email']);
+                }
+
+                if (!empty($post['installation_username'])) {
+                    $newInstallation->setUsername($post['installation_username']);
+                }
+
+                if (!empty($post['installation_password'])) {
+                    $newInstallation->setPassword($post['installation_password']);
+                }
+
+                var_dump($newInstallation->run());
+                die();
             }
-
-            $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/index']);
-
-
-/*
-            $newInstallation = new Modules_Microweber_Install();
-            $newInstallation->setDomainId($post['installation_domain']);
-            $newInstallation->setType($post['installation_type']);
-            $newInstallation->setDatabaseDriver($post['installation_database_driver']);
-            $newInstallation->setPath($post['installation_folder']);
-            $newInstallation->setTemplate($post['installation_template']);
-            $newInstallation->setLanguage($post['installation_language']);
-
-            if (!empty($post['installation_email'])) {
-                $newInstallation->setEmail($post['installation_email']);
-            }
-
-            if (!empty($post['installation_username'])) {
-                $newInstallation->setUsername($post['installation_username']);
-            }
-
-            if (!empty($post['installation_password'])) {
-                $newInstallation->setPassword($post['installation_password']);
-            }
-
-            var_dump($newInstallation->run());
-            die();*/
 
         }
 

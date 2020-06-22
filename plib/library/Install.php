@@ -13,8 +13,7 @@ class Modules_Microweber_Install {
     protected $_domainId;
     protected $_type = 'default';
     protected $_databaseDriver = 'mysql';
-    protected $_databaseServer = 'localhost';
-    protected $_databasePort = 3306;
+    protected $_databaseServerId = 'localhost';
     protected $_email = 'admin@microweber.com';
     protected $_username = '';
     protected $_password = '';
@@ -61,12 +60,8 @@ class Modules_Microweber_Install {
     	$this->_databaseDriver = $driver;
     }
 
-    public function setDatabaseServer($server) {
-    	$this->_databaseServer = $server;
-    }
-
-    public function setDatabasePort($port) {
-    	$this->_databasePort = $port;
+    public function setDatabaseServerId($serverId) {
+    	$this->_databaseServerId = $serverId;
     }
 
     public function setEmail($email) {
@@ -155,25 +150,21 @@ class Modules_Microweber_Install {
         $dbName .= '_'.date('His');  
         $dbUsername = $dbName;
         $dbPassword = Modules_Microweber_Helper::getRandomPassword(12, true);
-        
+
         if ($this->_databaseDriver == 'mysql') {
         	
         	pm_Log::debug('Create database for domain: ' . $domain->getName());
         	
         	$dbManager = new Modules_Microweber_DatabaseManager();
         	$dbManager->setDomainId($domain->getId());
-
-        	$newDb = $dbManager->createDatabase($dbName);
-
-	        /*var_dump($dbManager->getDatabaseServers());
-	        die();*/
+        	$newDb = $dbManager->createDatabase($dbName, $this->_databaseServerId);
 
 	        if (isset($newDb['database']['add-db']['result']['errtext'])) {
 	            throw new \Exception('You have reached the limit of your allowed databases.');
 	        }
 	        
 	        $this->setProgress(30);
-	
+
 	        if (isset($newDb['database']['add-db']['result']['id'])) {
 	            $dbId = $newDb['database']['add-db']['result']['id'];
 	        }
@@ -282,8 +273,15 @@ class Modules_Microweber_Install {
         }
         
         if ($this->_databaseDriver == 'mysql') {
-	        $dbHost = $this->_databaseServer;
-            $dbPort = $this->_databasePort;
+
+            $getDatabaseServerDetails = $dbManager->getDatabaseServerById($this->_databaseServerId);
+            if ($getDatabaseServerDetails && isset($getDatabaseServerDetails['data'])) {
+                $dbHost = $getDatabaseServerDetails['data']['host'];
+                $dbPort = $getDatabaseServerDetails['data']['port'];
+            } else {
+                $dbHost = 'localhost';
+                $dbPort = '3306';
+            }
         } else {
         	$dbHost = 'localhost';
         	$dbPort = '';
@@ -305,7 +303,7 @@ class Modules_Microweber_Install {
         $installArguments[] = $dbUsername;
         $installArguments[] = $dbPassword;
         $installArguments[] = $this->_databaseDriver;
-			
+        
 		if ($this->_language) {
 			$installationLanguage = $this->_language;
 		} else {

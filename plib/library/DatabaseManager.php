@@ -33,8 +33,13 @@ APICALL;
 
     }
 
-    public function createDatabase($name)
+    public function createDatabase($name, $dbServerId)
     {
+        $dbServerIdXml = '';
+        if ($dbServerId && $dbServerId != '0') {
+            $dbServerIdXml = "<db-server-id>$dbServerId</db-server-id>";
+        }
+
         $apiRequest = <<<APICALL
 <packet>
 	<database>
@@ -42,6 +47,7 @@ APICALL;
 	   <webspace-id>$this->_domainId</webspace-id>
 	   <name><![CDATA[$name]]></name>
 	   <type>mysql</type>
+	   $dbServerIdXml
 	</add-db>
 	</database>
 </packet>
