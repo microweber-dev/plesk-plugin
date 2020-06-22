@@ -121,6 +121,11 @@ class IndexController extends pm_Controller_Action
             'value' => pm_Settings::get('wl_brand_name'),
             'placeholder' => 'Enter the name of your company.'
         ]);
+        $form->addElement('text', 'wl_brand_favicon', [
+            'label' => 'Brand Favicon',
+            'value' => pm_Settings::get('wl_brand_favicon'),
+            'placeholder' => 'Enter favicon url of your company.'
+        ]);
         $form->addElement('text', 'wl_admin_login_url', [
             'label' => 'Admin login - White Label URL?',
             'value' => pm_Settings::get('wl_admin_login_url'),
@@ -197,6 +202,7 @@ class IndexController extends pm_Controller_Action
         if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
 
             pm_Settings::set('wl_brand_name', $form->getValue('wl_brand_name'));
+            pm_Settings::set('wl_brand_favicon', $form->getValue('wl_brand_favicon'));
             pm_Settings::set('wl_admin_login_url', $form->getValue('wl_admin_login_url'));
             pm_Settings::set('wl_contact_page', $form->getValue('wl_contact_page'));
             pm_Settings::set('wl_enable_support_links', $form->getValue('wl_enable_support_links'));
