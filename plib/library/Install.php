@@ -234,18 +234,18 @@ class Modules_Microweber_Install {
         			$domainDirOrFile
         			
         		], pm_ApiCli::RESULT_FULL);
-        		
+
         		// Create symlink
         		pm_ApiCli::callSbin('filemng', [
-        			$domain->getSysUserLogin(),
-        			'exec',
-        			$domainDocumentRoot,
-        			'ln',
-        			'-s',
-        			$scriptDirOrFile,
-        			$domainDirOrFile
-        			
-        		], pm_ApiCli::RESULT_FULL);
+                    $domain->getSysUserLogin(),
+                    'exec',
+                    $domainDocumentRoot,
+                    'ln',
+                    '-s',
+                    $scriptDirOrFile,
+                    $domainDirOrFile
+
+                ], pm_ApiCli::RESULT_FULL);
 			
         	} else {
         		$fileManager->copyFile($scriptDirOrFile, dirname($domainDirOrFile));
