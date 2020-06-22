@@ -21,7 +21,7 @@ $j(document).ready(function() {
         // console.log($j('#installation_folder').val());
     });
 
-    $j('#installation_domain').after(' / <input type="text" name="installation_folder" id="installation_folder" value="microweber" class="input-text">');
+    $j('#installation_domain').after(' / <input type="text" name="installation_folder" id="installation_folder" value="website" class="input-text">');
 
 
     var show_password = '&nbsp; <a class="toggle-password">Show</a>';
