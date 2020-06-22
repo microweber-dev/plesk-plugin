@@ -315,7 +315,7 @@ class Modules_Microweber_Install {
     	}
     	
         $installArguments[] = '-p'; 
-        $installArguments[] = 'mw_';
+        $installArguments[] = 'site_';
         
         if ($this->_template) {
        		$installArguments[] = '-t';
