@@ -13,7 +13,7 @@ class Modules_Microweber_Install {
     protected $_domainId;
     protected $_type = 'default';
     protected $_databaseDriver = 'mysql';
-    protected $_databaseServerId = 'localhost';
+    protected $_databaseServerId = false;
     protected $_email = 'admin@microweber.com';
     protected $_username = '';
     protected $_password = '';
@@ -160,9 +160,9 @@ class Modules_Microweber_Install {
         	$newDb = $dbManager->createDatabase($dbName, $this->_databaseServerId);
 
 	        if (isset($newDb['database']['add-db']['result']['errtext'])) {
-	            throw new \Exception('You have reached the limit of your allowed databases.');
+	            throw new \Exception($newDb['database']['add-db']['result']['errtext']);
 	        }
-	        
+
 	        $this->setProgress(30);
 
 	        if (isset($newDb['database']['add-db']['result']['id'])) {
@@ -278,16 +278,15 @@ class Modules_Microweber_Install {
             if ($getDatabaseServerDetails && isset($getDatabaseServerDetails['data'])) {
                 $dbHost = $getDatabaseServerDetails['data']['host'];
                 $dbPort = $getDatabaseServerDetails['data']['port'];
+                $dbHost = $dbHost . ':' . $dbPort;
             } else {
-                $dbHost = 'localhost';
-                $dbPort = '3306';
+                $dbHost = 'localhost:3306';
             }
         } else {
         	$dbHost = 'localhost';
-        	$dbPort = '';
         	$dbName = $domainDocumentRoot . '/storage/database1.sqlite';
         }
-        
+
         $this->setProgress(90);
         
         $installArguments = [];
@@ -303,7 +302,7 @@ class Modules_Microweber_Install {
         $installArguments[] = $dbUsername;
         $installArguments[] = $dbPassword;
         $installArguments[] = $this->_databaseDriver;
-        
+
 		if ($this->_language) {
 			$installationLanguage = $this->_language;
 		} else {

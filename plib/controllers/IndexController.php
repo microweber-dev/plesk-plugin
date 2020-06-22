@@ -425,6 +425,7 @@ class IndexController extends pm_Controller_Action
             }
 
             if (!$this->devMode) {
+
                 $task = new Modules_Microweber_TaskInstall();
                 $task->setParam('domainId', $domain->getId());
                 $task->setParam('domainName', $domain->getName());
@@ -449,6 +450,7 @@ class IndexController extends pm_Controller_Action
 
                 $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/index']);
             } else {
+
                 $newInstallation = new Modules_Microweber_Install();
                 $newInstallation->setDomainId($post['installation_domain']);
                 $newInstallation->setType($post['installation_type']);
