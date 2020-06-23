@@ -340,16 +340,23 @@ class IndexController extends pm_Controller_Action
             'required' => true,
         ]);
 
-        $form->addElement('radio', 'installation_type', [
-            'label' => 'Installation Type',
-            'multiOptions' =>
-                [
-                    'default' => 'Default',
-                    'symlink' => 'Sym-Linked'
-                ],
-            'value' => pm_Settings::get('installation_type'),
-            'required' => true,
-        ]);
+        $chooseInstallationType = pm_Settings::get('installation_type_allow_customers');
+        if ($chooseInstallationType == 'yes') {
+            $form->addElement('radio', 'installation_type', [
+                'label' => 'Installation Type',
+                'multiOptions' =>
+                    [
+                        'default' => 'Default',
+                        'symlink' => 'Sym-Linked'
+                    ],
+                'value' => pm_Settings::get('installation_type'),
+                'required' => true,
+            ]);
+        } else {
+            $form->addElement('hidden', 'installation_type', [
+                'value' => pm_Settings::get('installation_type')
+            ]);
+        }
 
         $dbManager = new Modules_Microweber_DatabaseManager();
         $dbManager->setDomainId($domain->getId());
@@ -637,6 +644,17 @@ class IndexController extends pm_Controller_Action
             'required' => true,
         ]);
 
+        $form->addElement('radio', 'installation_type_allow_customers', [
+            'label' => 'Allow customers to choose installation type',
+            'multiOptions' =>
+                [
+                    'yes' => 'Yes',
+                    'no' => 'No'
+                ],
+            'value' => pm_Settings::get('installation_type_allow_customers'),
+            'required' => true,
+        ]);
+
         $form->addElement('select', 'installation_database_driver', [
             'label' => 'Database Driver',
             'multiOptions' => ['mysql' => 'MySQL', 'sqlite' => 'SQLite'],
@@ -701,6 +719,7 @@ class IndexController extends pm_Controller_Action
             pm_Settings::set('installation_type', $form->getValue('installation_type'));
             pm_Settings::set('installation_database_driver', $form->getValue('installation_database_driver'));
             //      pm_Settings::set('installation_database_server_id', $form->getValue('installation_database_server_id'));
+            pm_Settings::set('installation_type_allow_customers', $form->getValue('installation_type_allow_customers'));
 
             pm_Settings::set('update_app_url', $form->getValue('update_app_url'));
             pm_Settings::set('whmcs_url', $form->getValue('whmcs_url'));
