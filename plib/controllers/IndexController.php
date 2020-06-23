@@ -1124,105 +1124,47 @@ class IndexController extends pm_Controller_Action
     private function _getAppInstalations()
     {
         $data = [];
-        
+
         foreach (Modules_Microweber_Domain::getDomains() as $domain) {
 
             if (!$domain->hasHosting()) {
                 continue;
             }
 
-            $installationsFind = [];
+            $domainInstallations = $domain->getSetting('mwAppInstallations');
+            $domainInstallations = json_decode($domainInstallations, true);
 
-            $domainDocumentRoot = $domain->getDocumentRoot();
-            $domainName = $domain->getName();
-            $domainDisplayName = $domain->getDisplayName();
-            $domainIsActive = $domain->isActive();
-            $domainCreation = $domain->getProperty('cr_date');
+            if (empty($domainInstallations)) {
 
-            $appVersion = 'unknown';
-            $installationType = 'unknown';
+                $task = new Modules_Microweber_TaskDomainAppInstallationScan();
+                $task->setParam('domainId', $domain->getId());
+                $this->taskManager->start($task, NULL);
 
-            $fileManager = new pm_FileManager($domain->getId());
-
-            $allDirs = $fileManager->scanDir($domainDocumentRoot, true);
-            foreach ($allDirs as $dir) {
-                if (!is_dir($domainDocumentRoot . '/' . $dir . '/config/')) {
-                    continue;
-                }
-                if (is_file($domainDocumentRoot . '/' . $dir . '/config/microweber.php')) {
-                    $installationsFind[] = $domainDocumentRoot . '/' . $dir . '/config/microweber.php';
-                }
+                continue;
             }
 
-            if (is_dir($domainDocumentRoot . '/config/')) {
-                if (is_file($domainDocumentRoot . '/config/microweber.php')) {
-                    $installationsFind[] = $domainDocumentRoot . '/config/microweber.php';
-                }
+            foreach ($domainInstallations as $installation) {
+
+                $loginToWebsite = '<form method="post" class="js-open-settings-domain" action="' . pm_Context::getBaseUrl() . 'index.php/index/domainlogin" target="_blank">';
+                $loginToWebsite .= '<a href="' . $installation['manageDomainUrl'] . '" class="btn btn-info"><img src="' . pm_Context::getBaseUrl() . 'images/publish.png" alt=""> Manage Domain</a>';
+                $loginToWebsite .= '<input type="hidden" name="website_url" value="' . $installation['domainNameUrl'] . '" />';
+                $loginToWebsite .= '<input type="hidden" name="domain_id" value="' . $domain->getId() . '" />';
+                $loginToWebsite .= '<input type="hidden" name="document_root" value="' . $installation['appInstallation'] . '" />';
+                $loginToWebsite .= '<button type="submit" name="login" value="1" class="btn btn-info"><img src="' . pm_Context::getBaseUrl() . 'images/open-in-browser.png" alt=""> Login to website</button>';
+                $loginToWebsite .= '<button type="button" onclick="openSetupForm(this)" name="setup" value="1" class="btn btn-info"><img src="' . pm_Context::getBaseUrl() . 'images/setup.png" /> Setup</button>';
+                $loginToWebsite .= '</form>';
+
+                $data[] = [
+                    'domain' => '<a href="http://' . $installation['domainNameUrl'] . '" target="_blank">' . $installation['domainNameUrl'] . '</a> ',
+                    'created_date' => $installation['domainCreation'],
+                    'type' => $installation['installationType'],
+                    'app_version' => $installation['appVersion'],
+                    'document_root' => $installation['appInstallation'],
+                    'active' => ($installation['domainIsActive'] ? 'Yes' : 'No'),
+                    'action' => $loginToWebsite
+                ];
             }
 
-            if (!empty($installationsFind)) {
-
-                foreach ($installationsFind as $appInstallationConfig) {
-
-                    if (strpos($appInstallationConfig, 'backup-files') !== false) {
-                        continue;
-                    }
-
-                    $appInstallation = str_replace('/config/microweber.php', false, $appInstallationConfig);
-
-                    // Find app in main folder
-                    if ($fileManager->fileExists($appInstallation . '/version.txt')) {
-                        $appVersion = $fileManager->fileGetContents($appInstallation . '/version.txt');
-                    }
-
-                    if (is_link($appInstallation . '/vendor')) {
-                        $installationType = 'Symlinked';
-                    } else {
-                        $installationType = 'Standalone';
-                    }
-
-                    $domainNameUrl = $appInstallation;
-                    $domainNameUrl = str_replace('/var/www/vhosts/', false, $domainNameUrl);
-                    $domainNameUrl = str_replace($domainName . '/httpdocs', $domainName, $domainNameUrl);
-                    $domainNameUrl = str_replace($domainName, $domainDisplayName, $domainNameUrl);
-
-                    $pleskMainUrl = '//' . $_SERVER['HTTP_HOST'];
-                    $manageDomainUrl = '/smb/web/overview/id/d:' . $domain->getId();
-                    if (pm_Session::getClient()->isAdmin()) {
-                        $manageDomainUrl = $pleskMainUrl . '/admin/subscription/login/id/' . $domain->getId() . '?pageUrl=' . $manageDomainUrl;
-                    } else {
-                        $manageDomainUrl = $pleskMainUrl . $manageDomainUrl;
-                    }
-
-                    $hostingManager = new Modules_Microweber_HostingManager();
-                    $hostingManager->setDomainId($domain->getId());
-
-                    $subscription = $hostingManager->getDomainSubscription($domain->getName());
-                    if ($subscription['webspace'] == false) {
-                        $manageDomainUrl = $pleskMainUrl . '/smb/web/view/id/' . $domain->getId() . '/type/domain';
-                    }
-
-                    $loginToWebsite = '<form method="post" class="js-open-settings-domain" action="' . pm_Context::getBaseUrl() . 'index.php/index/domainlogin" target="_blank">';
-                    $loginToWebsite .= '<a href="' . $manageDomainUrl . '" class="btn btn-info"><img src="' . pm_Context::getBaseUrl() . 'images/publish.png" alt=""> Manage Domain</a>';
-                    $loginToWebsite .= '<input type="hidden" name="website_url" value="' . $domainNameUrl . '" />';
-                    $loginToWebsite .= '<input type="hidden" name="domain_id" value="' . $domain->getId() . '" />';
-                    $loginToWebsite .= '<input type="hidden" name="document_root" value="' . $appInstallation . '" />';
-                    $loginToWebsite .= '<button type="submit" name="login" value="1" class="btn btn-info"><img src="' . pm_Context::getBaseUrl() . 'images/open-in-browser.png" alt=""> Login to website</button>';
-                    $loginToWebsite .= '<button type="button" onclick="openSetupForm(this)" name="setup" value="1" class="btn btn-info"><img src="' . pm_Context::getBaseUrl() . 'images/setup.png" /> Setup</button>';
-                    $loginToWebsite .= '</form>';
-
-                    $data[] = [
-                        'domain' => '<a href="http://' . $domainNameUrl . '" target="_blank">' . $domainNameUrl . '</a> ',
-                        'created_date' => $domainCreation,
-                        'type' => $installationType,
-                        'app_version' => $appVersion,
-                        'document_root' => $appInstallation,
-                        'active' => ($domainIsActive ? 'Yes' : 'No'),
-                        'action' => $loginToWebsite
-                    ];
-
-                }
-            }
         }
 
         return $data;

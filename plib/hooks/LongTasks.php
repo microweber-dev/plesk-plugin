@@ -17,6 +17,7 @@ class Modules_Microweber_LongTasks extends \pm_Hook_LongTasks
 			new Modules_Microweber_TaskInstall(),
 			new Modules_Microweber_TaskAppDownload(),
 			new Modules_Microweber_TaskTemplateDownload(),
+			new Modules_Microweber_TaskDomainAppInstallationScan(),
 		];
 	}
 }

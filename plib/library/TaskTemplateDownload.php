@@ -9,6 +9,7 @@
 class Modules_Microweber_TaskTemplateDownload extends \pm_LongTask_Task
 {
 
+    public $hidden = true;
 	public $trackProgress = true;
 
 	public function run()

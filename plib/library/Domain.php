@@ -16,6 +16,22 @@ class Modules_Microweber_Domain
 		'members.microweber.bg',
 		'web.microweber.bg'
 	);
+
+	public static function addAppInstallation($domain, $appInstallation)
+    {
+        $appInstallation['domainId'] = $domain->getId();
+        $appInstallation['appInstallationId'] = md5($appInstallation['appInstallation']);
+
+        $mwAppInstallations = $domain->getSetting('mwAppInstallations');
+        $mwAppInstallations = json_decode($mwAppInstallations, true);
+        if (!is_array($mwAppInstallations)) {
+            $mwAppInstallations = [];
+        }
+
+        $mwAppInstallations[$appInstallation['appInstallationId']] = $appInstallation;
+
+        $domain->setSetting('mwAppInstallations', json_encode($mwAppInstallations));
+    }
 	
 	public static function getDomains()
 	{
