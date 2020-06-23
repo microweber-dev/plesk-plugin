@@ -63,6 +63,11 @@ class IndexController extends pm_Controller_Action
 
         $this->_checkAppSettingsIsCorrect();
 
+        $this->view->errorMessage = false;
+        if (isset($_GET['message'])) {
+           $this->view->errorMessage =  $_GET['message'];
+        }
+
         $this->view->pageTitle = $this->_moduleName . ' - Domains';
         $this->view->list = $this->_getDomainsList();
         // $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
@@ -196,7 +201,7 @@ class IndexController extends pm_Controller_Action
         ]);
 
         $form->addControlButtons([
-            'cancelLink' =>pm_Context::getBaseUrl() . 'index.php/index/whitelabel',
+            'cancelLink' => pm_Context::getBaseUrl() . 'index.php/index/whitelabel',
         ]);
 
         if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
@@ -231,7 +236,7 @@ class IndexController extends pm_Controller_Action
             'placeholder' => 'Place your microweber white label key.'
         ]);
         $formMwKey->addControlButtons([
-            'cancelLink' =>pm_Context::getBaseUrl() . 'index.php/index/whitelabel',
+            'cancelLink' => pm_Context::getBaseUrl() . 'index.php/index/whitelabel',
         ]);
 
         if ($this->getRequest()->isPost() && $formMwKey->isValid($this->getRequest()->getPost()) && !empty($formMwKey->getValue('wl_key'))) {
@@ -352,31 +357,31 @@ class IndexController extends pm_Controller_Action
         $hostingManager = new Modules_Microweber_HostingManager();
         $hostingManager->setDomainId($domain->getId());
 
-/*
- *      $servers = $dbManager->getDatabaseServers();
-        if (pm_Session::getClient()->isAdmin()) {
-            $serversOptions = [];
-            if ($servers) {
-                foreach ($servers as $server) {
-                    if ($server['data']['type'] != 'mysql') {
-                        continue;
+        /*
+         *      $servers = $dbManager->getDatabaseServers();
+                if (pm_Session::getClient()->isAdmin()) {
+                    $serversOptions = [];
+                    if ($servers) {
+                        foreach ($servers as $server) {
+                            if ($server['data']['type'] != 'mysql') {
+                                continue;
+                            }
+                            $dbServerDetails = $dbManager->getDatabaseServerById($server['id']);
+                            $dbServerHostAndIp = $dbServerDetails['data']['host'] . ':' . $dbServerDetails['data']['port'];
+                            $serversOptions[$server['id']] = $dbServerHostAndIp;
+                        }
+                    } else {
+                        $serversOptions[0] = 'localhost:3306';
                     }
-                    $dbServerDetails = $dbManager->getDatabaseServerById($server['id']);
-                    $dbServerHostAndIp = $dbServerDetails['data']['host'] . ':' . $dbServerDetails['data']['port'];
-                    $serversOptions[$server['id']] = $dbServerHostAndIp;
-                }
-            } else {
-                $serversOptions[0] = 'localhost:3306';
-            }
 
 
-            $form->addElement('select', 'installation_database_server_id', [
-                'label' => 'Database Server',
-                'multiOptions' => $serversOptions,
-                'value' => pm_Settings::get('installation_database_server_id'),
-                'required' => true,
-            ]);
-        }*/
+                    $form->addElement('select', 'installation_database_server_id', [
+                        'label' => 'Database Server',
+                        'multiOptions' => $serversOptions,
+                        'value' => pm_Settings::get('installation_database_server_id'),
+                        'required' => true,
+                    ]);
+                }*/
 
         $form->addElement('select', 'installation_database_driver', [
             'label' => 'Database Driver',
@@ -695,7 +700,7 @@ class IndexController extends pm_Controller_Action
             pm_Settings::set('installation_template', $form->getValue('installation_template'));
             pm_Settings::set('installation_type', $form->getValue('installation_type'));
             pm_Settings::set('installation_database_driver', $form->getValue('installation_database_driver'));
-      //      pm_Settings::set('installation_database_server_id', $form->getValue('installation_database_server_id'));
+            //      pm_Settings::set('installation_database_server_id', $form->getValue('installation_database_server_id'));
 
             pm_Settings::set('update_app_url', $form->getValue('update_app_url'));
             pm_Settings::set('whmcs_url', $form->getValue('whmcs_url'));
@@ -916,18 +921,29 @@ class IndexController extends pm_Controller_Action
                 if (!$fileManager->isDir('login_with_token')) {
                     $fileManager->mkdir('login_with_token');
                 }
-                if (!$fileManager->fileExists($loginWithTokenModulePath . 'index.php')) {
-                     $fileManager->copyFile($loginWithTokenModulePathShared . 'index.php', $loginWithTokenModulePath . 'index.php');
-                }
-                if (!$fileManager->fileExists($loginWithTokenModulePath . 'config.php')) {
-                     $fileManager->copyFile($loginWithTokenModulePathShared . 'config.php', $loginWithTokenModulePath . 'config.php');
-                }
-                if (!$fileManager->fileExists($loginWithTokenModulePath . 'functions.php')) {
-                     $fileManager->copyFile($loginWithTokenModulePathShared . 'functions.php', $loginWithTokenModulePath . 'functions.php');
-                }
-
             } catch (Exception $e) {
-                // cant copy the module
+
+            }
+            try {
+                if (!$fileManager->fileExists($loginWithTokenModulePath . 'index.php')) {
+                    $fileManager->copyFile($loginWithTokenModulePathShared . 'index.php', $loginWithTokenModulePath . 'index.php');
+                }
+            } catch (Exception $e) {
+
+            }
+            try {
+                if (!$fileManager->fileExists($loginWithTokenModulePath . 'config.php')) {
+                    $fileManager->copyFile($loginWithTokenModulePathShared . 'config.php', $loginWithTokenModulePath . 'config.php');
+                }
+            } catch (Exception $e) {
+
+            }
+            try {
+                if (!$fileManager->fileExists($loginWithTokenModulePath . 'functions.php')) {
+                    $fileManager->copyFile($loginWithTokenModulePathShared . 'functions.php', $loginWithTokenModulePath . 'functions.php');
+                }
+            } catch (Exception $e) {
+
             }
         }
 
@@ -945,8 +961,12 @@ class IndexController extends pm_Controller_Action
             $token = str_replace(PHP_EOL, false, $token);
             $token = trim($token);
 
+            if (strpos($token, 'SQLSTATE') !== false) {
+                return $this->_redirect('index/index?message=Can\'t login to this domain. The app installation is broken.');
+            }
+
             if (strpos($token, 'isnotdefined') !== false) {
-                return $this->_redirect('index/index?message=Can\'t login to this domain.'); 
+                return $this->_redirect('index/index?message=Can\'t login to this domain.');
             }
 
             return $this->_redirect('http://www.' . $websiteUrl . '/api/user_login?secret_key=' . $token);
@@ -1145,8 +1165,10 @@ class IndexController extends pm_Controller_Action
 
             foreach ($domainInstallations as $installation) {
 
+                $pleskMainUrl = '//' . $_SERVER['HTTP_HOST'];
+
                 $loginToWebsite = '<form method="post" class="js-open-settings-domain" action="' . pm_Context::getBaseUrl() . 'index.php/index/domainlogin" target="_blank">';
-                $loginToWebsite .= '<a href="' . $installation['manageDomainUrl'] . '" class="btn btn-info"><img src="' . pm_Context::getBaseUrl() . 'images/publish.png" alt=""> Manage Domain</a>';
+                $loginToWebsite .= '<a href="' . $pleskMainUrl . $installation['manageDomainUrl'] . '" class="btn btn-info"><img src="' . pm_Context::getBaseUrl() . 'images/publish.png" alt=""> Manage Domain</a>';
                 $loginToWebsite .= '<input type="hidden" name="website_url" value="' . $installation['domainNameUrl'] . '" />';
                 $loginToWebsite .= '<input type="hidden" name="domain_id" value="' . $domain->getId() . '" />';
                 $loginToWebsite .= '<input type="hidden" name="document_root" value="' . $installation['appInstallation'] . '" />';

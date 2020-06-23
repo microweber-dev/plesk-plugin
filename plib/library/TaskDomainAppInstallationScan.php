@@ -79,12 +79,11 @@ class Modules_Microweber_TaskDomainAppInstallationScan extends \pm_LongTask_Task
                 $domainNameUrl = str_replace($domainName . '/httpdocs', $domainName, $domainNameUrl);
                 $domainNameUrl = str_replace($domainName, $domainDisplayName, $domainNameUrl);
 
-                $pleskMainUrl = '//' . $_SERVER['HTTP_HOST'];
                 $manageDomainUrl = '/smb/web/overview/id/d:' . $domain->getId();
                 if (pm_Session::getClient()->isAdmin()) {
-                    $manageDomainUrl = $pleskMainUrl . '/admin/subscription/login/id/' . $domain->getId() . '?pageUrl=' . $manageDomainUrl;
+                    $manageDomainUrl = '/admin/subscription/login/id/' . $domain->getId() . '?pageUrl=' . $manageDomainUrl;
                 } else {
-                    $manageDomainUrl = $pleskMainUrl . $manageDomainUrl;
+                    $manageDomainUrl = $manageDomainUrl;
                 }
 
                 $hostingManager = new Modules_Microweber_HostingManager();
@@ -92,7 +91,7 @@ class Modules_Microweber_TaskDomainAppInstallationScan extends \pm_LongTask_Task
 
                 $subscription = $hostingManager->getDomainSubscription($domain->getName());
                 if ($subscription['webspace'] == false) {
-                    $manageDomainUrl = $pleskMainUrl . '/smb/web/view/id/' . $domain->getId() . '/type/domain';
+                    $manageDomainUrl = '/smb/web/view/id/' . $domain->getId() . '/type/domain';
                 }
 
                 Modules_Microweber_Domain::addAppInstallation($domain, [

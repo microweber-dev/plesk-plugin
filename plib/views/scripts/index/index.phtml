@@ -7,4 +7,15 @@
  */
 ?>
 <?php echo $this->renderTabs($this->tabs); ?>
+
+<?php
+if ($this->errorMessage):
+    ?>
+    <div class="msg-box msg-error">
+        <div class="msg-content"><b>Error:</b>
+            <?php echo $this->errorMessage; ?>
+        </div>
+    </div>
+<?php endif; ?>
+
 <?php echo $this->renderList($this->list); ?>

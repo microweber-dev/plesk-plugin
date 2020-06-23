@@ -343,6 +343,8 @@ class Modules_Microweber_Install {
        		$installArguments[] = '1';
         }
 
+        var_dump($installArguments);
+
         try {
         	$args = [
         		$domain->getSysUserLogin(),
@@ -373,6 +375,7 @@ class Modules_Microweber_Install {
                 'created_at'=> date('Y-m-d H:i:s')
             ];
             $domain->setSetting('mw_settings_' . md5($domainDocumentRoot), serialize($saveDomainSettings));
+            $domain->setSetting('mwAppInstallations', false);
         	
         	return ['success'=>true, 'log'=> $artisan['stdout']];
         } catch (Exception $e) {
