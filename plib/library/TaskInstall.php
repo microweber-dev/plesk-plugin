@@ -17,7 +17,7 @@ class Modules_Microweber_TaskInstall extends \pm_LongTask_Task
 		$newInstallation->setDomainId($this->getParam('domainId'));
 		$newInstallation->setType($this->getParam('type'));
 		$newInstallation->setDatabaseDriver($this->getParam('databaseDriver'));
-		$newInstallation->setDatabaseServerId($this->getParam('databaseServerId'));
+		//$newInstallation->setDatabaseServerId($this->getParam('databaseServerId'));
 		$newInstallation->setPath($this->getParam('path'));
 		
 		if (!empty($this->getParam('email'))) {

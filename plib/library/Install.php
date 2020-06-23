@@ -105,11 +105,15 @@ class Modules_Microweber_Install {
         $whiteLabelWhmcsSettings = $whmcs->getWhitelabelSettings();
 
         if (!empty($whiteLabelWhmcsSettings)) {
-            if (isset($whiteLabelWhmcsSettings['wl_installation_language'])) {
-                $this->_language = $whiteLabelWhmcsSettings['wl_installation_language'];
+            if (!$this->_language) {
+                if (isset($whiteLabelWhmcsSettings['wl_installation_language'])) {
+                    $this->_language = $whiteLabelWhmcsSettings['wl_installation_language'];
+                }
             }
-            if (isset($whiteLabelWhmcsSettings['wl_installation_template'])) {
-                $this->_template = $whiteLabelWhmcsSettings['wl_installation_template'];
+            if (!$this->_template) {
+                if (isset($whiteLabelWhmcsSettings['wl_installation_template'])) {
+                    $this->_template = $whiteLabelWhmcsSettings['wl_installation_template'];
+                }
             }
         }
 
@@ -153,7 +157,6 @@ class Modules_Microweber_Install {
 
         if ($this->_databaseDriver == 'mysql') {
 
-
             $domainSubscription = $hostingManager->getDomainSubscription($domain->getName());
             if (!$domainSubscription['webspace']) {
                 throw new \Exception('Webspace is not found.');
@@ -161,7 +164,7 @@ class Modules_Microweber_Install {
 
             $databaseServerDetails = $hostingManager->getDatabaseServerByWebspaceId($domainSubscription['webspaceId']);
             if (!$databaseServerDetails) {
-                throw new \Exception('Cannot find database servers for webspace.');
+                throw new \Exception('Cannot find database servers for webspace. WebspaceId:' . $domainSubscription['webspaceId']);
             }
 
             $this->_databaseServerId = $databaseServerDetails['id'];
@@ -171,7 +174,7 @@ class Modules_Microweber_Install {
         	$dbManager = new Modules_Microweber_DatabaseManager();
         	$dbManager->setDomainId($domain->getId());
         	$newDb = $dbManager->createDatabase($dbName, $this->_databaseServerId);
-
+        	
 	        if (isset($newDb['database']['add-db']['result']['errtext'])) {
 	            throw new \Exception($newDb['database']['add-db']['result']['errtext']);
 	        }
@@ -334,8 +337,8 @@ class Modules_Microweber_Install {
         
         $installArguments[] = '-d';
         $installArguments[] = '1';
-        
-        if (!pm_Session::getClient()->isAdmin()) {
+
+        if (!$this->_template) {
        		$installArguments[] = '-c';
        		$installArguments[] = '1';
         }

@@ -1124,7 +1124,7 @@ class IndexController extends pm_Controller_Action
     private function _getAppInstalations()
     {
         $data = [];
-
+        
         foreach (Modules_Microweber_Domain::getDomains() as $domain) {
 
             if (!$domain->hasHosting()) {

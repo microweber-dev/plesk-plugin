@@ -61,17 +61,17 @@ APICALL;
     {
         $apiRequest = <<<APICALL
 <packet>
-<db_server>
-  <get>
-   <filter>
-    <id>$id</id>
-   </filter>
-   </get>
-  </db_server>
+<database>
+<get-db>
+     <db-server-id>$id</db-server-id>
+     </get-db>
+     </database>
 </packet>
 APICALL;
 
         $request = $this->_makeRequest($apiRequest);
+
+        var_dump($request);
 
         if (isset($request['db_server']['get']['result'])) {
             return $request['db_server']['get']['result'];
@@ -85,9 +85,9 @@ APICALL;
         $apiRequest = <<<APICALL
 <packet>
 <db_server>
-	<get-default>
+	<get>
 	<filter />
-	</get-default>
+	</get>
 </db_server>
 </packet>
 APICALL;
@@ -102,6 +102,6 @@ APICALL;
     }
 
     protected function _makeRequest($apiRequest){
-        return json_decode(json_encode(pm_ApiRpc::getService()->call($apiRequest)), TRUE);
+        return json_decode(json_encode(pm_ApiRpc::getService()->call($apiRequest, 'admin')), TRUE);
     }
 }

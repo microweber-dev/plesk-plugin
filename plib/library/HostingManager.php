@@ -124,6 +124,7 @@ APICALL;
 
 	public function getDatabaseServerByWebspaceId($webspaceId){
         $apiRequest = <<<APICALL
+        <packet>
         <webspace>
 <db-servers>
    <list>
@@ -133,6 +134,7 @@ APICALL;
    </list>
 </db-servers>
 </webspace>
+</packet>
 APICALL;
 
         $request =  $this->_makeRequest($apiRequest);
@@ -150,6 +152,6 @@ APICALL;
 			throw new Exception('Domain id is not set.');
 		}
 
-		return json_decode(json_encode(pm_ApiRpc::getService()->call($apiRequest)), TRUE);
+		return json_decode(json_encode(pm_ApiRpc::getService()->call($apiRequest, 'admin')), TRUE);
 	}
 }
