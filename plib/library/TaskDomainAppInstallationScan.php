@@ -117,7 +117,7 @@ class Modules_Microweber_TaskDomainAppInstallationScan extends \pm_LongTask_Task
 			case static::STATUS_DONE:
 				return '';
 			case static::STATUS_ERROR:
-				return 'Error scan microweber domain';
+				return 'Error scan '.Modules_Microweber_WhiteLabel::getBrandName().' domain';
 			case static::STATUS_NOT_STARTED:
 				return pm_Locale::lmsg('taskPingError', [
 					'id' => $this->getId()

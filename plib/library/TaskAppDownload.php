@@ -47,11 +47,11 @@ class Modules_Microweber_TaskAppDownload extends \pm_LongTask_Task
 	{
 		switch ($this->getStatus()) {
 			case static::STATUS_RUNNING:
-				return 'Download Microweber '.$this->getParam('targetDir').' app...';
+				return 'Download '.Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' app...';
 			case static::STATUS_DONE:
-				return 'Microweber '.$this->getParam('targetDir').' app is downloaded successfully.';
+				return Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' app is downloaded successfully.';
 			case static::STATUS_ERROR:
-				return 'Error installing microweber '.$this->getParam('targetDir').' app.';
+				return 'Error installing '.Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' app.';
 			case static::STATUS_NOT_STARTED:
 				return pm_Locale::lmsg('taskPingError', [
 					'id' => $this->getId()

@@ -51,15 +51,15 @@ class Modules_Microweber_TaskInstall extends \pm_LongTask_Task
 
 			case static::STATUS_RUNNING:
 
-				return 'Installing Microweber...';
+				return 'Installing '.Modules_Microweber_WhiteLabel::getBrandName().'...';
 
 			case static::STATUS_DONE:
 
-				return 'Microweber is installed successfully on ' . $this->getParam('domainDisplayName', 'none') .'/'.$this->getParam('path');
+				return ''.Modules_Microweber_WhiteLabel::getBrandName().' is installed successfully on ' . $this->getParam('domainDisplayName', 'none') .'/'.$this->getParam('path');
 
 			case static::STATUS_ERROR:
 
-				return 'Error installing microweber.';
+				return 'Error installing '.Modules_Microweber_WhiteLabel::getBrandName().'.';
 
 			case static::STATUS_NOT_STARTED:
 

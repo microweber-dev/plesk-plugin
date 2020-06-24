@@ -38,11 +38,11 @@ class Modules_Microweber_TaskTemplateDownload extends \pm_LongTask_Task
 	{
 		switch ($this->getStatus()) {
 			case static::STATUS_RUNNING:
-				return 'Installing Microweber '.$this->getParam('targetDir').' template...';
+				return 'Installing '.Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' template...';
 			case static::STATUS_DONE:
-				return 'Microweber '.$this->getParam('targetDir').' template is downloaded successfully.';
+				return Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' template is downloaded successfully.';
 			case static::STATUS_ERROR:
-				return 'Error installing microweber '.$this->getParam('targetDir').' template.';
+				return 'Error installing '.Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' template.';
 			case static::STATUS_NOT_STARTED:
 				return pm_Locale::lmsg('taskPingError', [
 					'id' => $this->getId()
