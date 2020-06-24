@@ -1000,10 +1000,12 @@ class IndexController extends pm_Controller_Action
             $token = trim($token);
 
             if (strpos($token, 'SQLSTATE') !== false) {
+                pm_Log::debug('Can\'t login to website: ' . $commandResponse['stdout']);
                 return $this->_redirect('index/index?message=Can\'t login to this domain. The app installation is broken.');
             }
 
             if (strpos($token, 'isnotdefined') !== false) {
+                pm_Log::debug('Can\'t login to website: ' . $commandResponse['stdout']);
                 return $this->_redirect('index/index?message=Can\'t login to this domain.');
             }
 
