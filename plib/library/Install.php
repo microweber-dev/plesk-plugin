@@ -343,8 +343,6 @@ class Modules_Microweber_Install {
        		$installArguments[] = '1';
         }
 
-        var_dump($installArguments);
-
         try {
         	$args = [
         		$domain->getSysUserLogin(),
@@ -361,7 +359,9 @@ class Modules_Microweber_Install {
  
         	pm_Log::debug('Microweber install log for: ' . $domain->getName() . '<br />' . $artisan['stdout']. '<br /><br />');
 
-        	$this->addDomainEncryption($domain);
+        	if (!$domain->hasSsl()) {
+                $this->addDomainEncryption($domain);
+            }
 
             $task = new Modules_Microweber_TaskWhiteLabelBrandingUpdate();
             $task->setParam('domainId', $domain->getId());
