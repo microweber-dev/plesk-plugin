@@ -51,21 +51,18 @@ class Modules_Microweber_WhiteLabel
         return $icon;
     }
 
-	public static function updateWhiteLabelDomainById($domainId)
-	{
-		$domain = Modules_Microweber_Domain::getUserDomainById($domainId);
-
-		$fileManager = new pm_FileManager($domain->getId());
-
-		if ($fileManager->fileExists($domain->getDocumentRoot() . '/config/microweber.php')) {
-			$fileManager->filePutContents($domain->getDocumentRoot() . '/storage/branding.json', self::getWhiteLabelJson($domain));
-		}
-	}
-
 	public static function updateWhiteLabelDomains()
 	{
+        $taskManager = new pm_LongTask_Manager();
+
 		foreach (Modules_Microweber_Domain::getDomains() as $domain) {
-			self::updateWhiteLabelDomainById($domain->getId());
+            if (!$domain->hasHosting()) {
+                continue;
+            }
+
+            $task = new Modules_Microweber_TaskWhiteLabelBrandingUpdate();
+            $task->setParam('domainId', $domain->getId());
+            $taskManager->start($task, NULL);
 		}
 	}
 	
