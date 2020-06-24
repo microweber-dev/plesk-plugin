@@ -68,10 +68,20 @@ class IndexController extends pm_Controller_Action
            $this->view->errorMessage =  $_GET['message'];
         }
 
+        $this->view->refreshDomainLink = pm_Context::getBaseUrl() . 'index.php/index/refreshdomains';
+
         $this->view->pageTitle = $this->_moduleName . ' - Domains';
         $this->view->list = $this->_getDomainsList();
         // $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/index.js');
+    }
+
+
+    public function refreshdomainsAction()
+    {
+        $this->_queueRefreshDomains();
+
+        return $this->_redirect('index/index');
     }
 
     public function versionsAction()
@@ -108,6 +118,7 @@ class IndexController extends pm_Controller_Action
 
     public function whitelabelAction()
     {
+        $savingWhiteLabelKey = false;
 
         if (!pm_Session::getClient()->isAdmin()) {
             return $this->_redirect('index/error?type=permission');
@@ -118,8 +129,8 @@ class IndexController extends pm_Controller_Action
         $this->view->pageTitle = $this->_moduleName . ' - White Label';
 
         // WL - white label
-
         $form = new pm_Form_Simple();
+        $formMwKey = new pm_Form_Simple();
 
         $form->addElement('text', 'wl_brand_name', [
             'label' => 'Brand Name',
@@ -204,7 +215,42 @@ class IndexController extends pm_Controller_Action
             'cancelLink' => pm_Context::getBaseUrl() . 'index.php/index/whitelabel',
         ]);
 
-        if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
+        $this->view->form = $form;
+
+        $formMwKey->addElement('text', 'wl_key', [
+            'label' => 'White Label Key',
+            'value' => pm_Settings::get('wl_key'),
+            'placeholder' => 'Place your microweber white label key.'
+        ]);
+        $formMwKey->addControlButtons([
+            'cancelLink' => pm_Context::getBaseUrl() . 'index.php/index/whitelabel',
+        ]);
+        $this->view->formMwKey = $formMwKey;
+
+        if ($this->getRequest()->isPost() && $formMwKey->isValid($this->getRequest()->getPost()) && !empty($formMwKey->getValue('wl_key'))) {
+            $savingWhiteLabelKey = true;
+
+            // Check license and save it to pm settings
+            $licenseCheck = Modules_Microweber_LicenseData::getLicenseData($formMwKey->getValue('wl_key'));
+            if (isset($licenseCheck['status']) && $licenseCheck['status'] == 'active') {
+
+                pm_Settings::set('wl_key', $formMwKey->getValue('wl_key'));
+                pm_Settings::set('wl_license_data', json_encode($licenseCheck));
+
+            } else {
+                pm_Settings::set('wl_license_data', false);
+                $this->_status->addMessage('error', 'The license key is wrong or expired.');
+            }
+
+            $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/whitelabel']);
+        }
+
+        $this->view->change_whitelabel_key = false;
+        if ($this->getRequest()->getParam('change_whitelabel_key') == '1') {
+            $this->view->change_whitelabel_key = true;
+        }
+
+        if (!$savingWhiteLabelKey && $this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
 
             pm_Settings::set('wl_brand_name', $form->getValue('wl_brand_name'));
             pm_Settings::set('wl_brand_favicon', $form->getValue('wl_brand_favicon'));
@@ -225,42 +271,6 @@ class IndexController extends pm_Controller_Action
             Modules_Microweber_WhiteLabel::updateWhiteLabelDomains();
 
             $this->_status->addMessage('info', 'Settings was successfully saved.');
-
-        }
-        $this->view->form = $form;
-
-        $formMwKey = new pm_Form_Simple();
-        $formMwKey->addElement('text', 'wl_key', [
-            'label' => 'White Label Key',
-            'value' => pm_Settings::get('wl_key'),
-            'placeholder' => 'Place your microweber white label key.'
-        ]);
-        $formMwKey->addControlButtons([
-            'cancelLink' => pm_Context::getBaseUrl() . 'index.php/index/whitelabel',
-        ]);
-
-        if ($this->getRequest()->isPost() && $formMwKey->isValid($this->getRequest()->getPost()) && !empty($formMwKey->getValue('wl_key'))) {
-
-            // Check license and save it to pm settings
-            $licenseCheck = Modules_Microweber_LicenseData::getLicenseData($formMwKey->getValue('wl_key'));
-            if (isset($licenseCheck['status']) && $licenseCheck['status'] == 'active') {
-
-                pm_Settings::set('wl_key', $formMwKey->getValue('wl_key'));
-                pm_Settings::set('wl_license_data', json_encode($licenseCheck));
-
-            } else {
-                pm_Settings::set('wl_license_data', false);
-                $this->_status->addMessage('error', 'The license key is wrong or expired.');
-            }
-
-            $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/whitelabel']);
-        }
-
-        $this->view->formMwKey = $formMwKey;
-
-        $this->view->change_whitelabel_key = false;
-        if ($this->getRequest()->getParam('change_whitelabel_key') == '1') {
-            $this->view->change_whitelabel_key = true;
         }
 
         // Show is licensed
@@ -1167,6 +1177,20 @@ class IndexController extends pm_Controller_Action
         }
 
         return $version;
+    }
+
+    private function _queueRefreshDomains()
+    {
+        foreach (Modules_Microweber_Domain::getDomains() as $domain) {
+
+            if (!$domain->hasHosting()) {
+                continue;
+            }
+
+            $task = new Modules_Microweber_TaskDomainAppInstallationScan();
+            $task->setParam('domainId', $domain->getId());
+            $this->taskManager->start($task, NULL);
+        }
     }
 
     private function _getAppInstalations()

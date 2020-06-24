@@ -40,8 +40,29 @@ class Modules_Microweber_TaskAppDownload extends \pm_LongTask_Task
 
         Modules_Microweber_WhmcsConnector::updateWhmcsConnector();
 
+        $this->updateProgress(90);
+
+        $this->_queueRefreshDomains();
+
         $this->updateProgress(100);
 	}
+
+    private function _queueRefreshDomains()
+    {
+        foreach (Modules_Microweber_Domain::getDomains() as $domain) {
+
+            if (!$domain->hasHosting()) {
+                continue;
+            }
+
+            $taskManager = new pm_LongTask_Manager();
+
+            $task = new Modules_Microweber_TaskDomainAppInstallationScan();
+            $task->setParam('domainId', $domain->getId());
+
+            $taskManager->start($task, NULL);
+        }
+    }
 
 	public function statusMessage()
 	{
