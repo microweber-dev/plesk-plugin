@@ -341,6 +341,15 @@ class IndexController extends pm_Controller_Action
         ]);
 
         $chooseInstallationType = pm_Settings::get('installation_type_allow_customers');
+        $chooseInstallationType = trim($chooseInstallationType);
+
+        if (pm_Session::getClient()->isAdmin()) {
+            $chooseInstallationType = 'yes';
+        }
+        if ($chooseInstallationType == '' || !$chooseInstallationType) {
+            $chooseInstallationType = 'yes';
+        }
+
         if ($chooseInstallationType == 'yes') {
             $form->addElement('radio', 'installation_type', [
                 'label' => 'Installation Type',
