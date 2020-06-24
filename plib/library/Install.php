@@ -95,7 +95,7 @@ class Modules_Microweber_Install {
     	
     	$domain = Modules_Microweber_Domain::getUserDomainById($this->_domainId);
         if (empty($domain->getName())) {
-            throw new \Exception('Domain not found.');
+            throw new \Exception($domain->getName() . ' domain not found.');
         }
 
         $domainDocumentRoot = $domain->getDocumentRoot();
@@ -159,7 +159,7 @@ class Modules_Microweber_Install {
 
             $domainSubscription = $hostingManager->getDomainSubscription($domain->getName());
             if (!$domainSubscription['webspace']) {
-                throw new \Exception('Webspace is not found.');
+                throw new \Exception('Webspace is not found. Domain: ' . $domain->getName());
             }
 
             $databaseServerDetails = $hostingManager->getDatabaseServerByWebspaceId($domainSubscription['webspaceId']);
@@ -360,10 +360,14 @@ class Modules_Microweber_Install {
         	$this->setProgress(95);
  
         	pm_Log::debug('Microweber install log for: ' . $domain->getName() . '<br />' . $artisan['stdout']. '<br /><br />');
-        	
-        	Modules_Microweber_WhiteLabel::updateWhiteLabelDomainById($domain->getId()); 
-        	
+
         	$this->addDomainEncryption($domain);
+
+            $task = new Modules_Microweber_TaskWhiteLabelBrandingUpdate();
+            $task->setParam('domainId', $domain->getId());
+
+            $taskManager = new pm_LongTask_Manager();
+            $taskManager->start($task, NULL);
 
         	// Save domain settings
             $saveDomainSettings = [

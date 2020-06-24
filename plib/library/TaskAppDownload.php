@@ -42,8 +42,6 @@ class Modules_Microweber_TaskAppDownload extends \pm_LongTask_Task
 
         $this->updateProgress(90);
 
-        $this->_queueRefreshDomains();
-
         $this->updateProgress(100);
 	}
 
@@ -90,5 +88,7 @@ class Modules_Microweber_TaskAppDownload extends \pm_LongTask_Task
 	public function onDone()
 	{
 		$this->setParam('onDone', 1);
+
+        $this->_queueRefreshDomains();
 	}
 }

@@ -51,7 +51,7 @@ class Modules_Microweber_TaskInstall extends \pm_LongTask_Task
 
 			case static::STATUS_RUNNING:
 
-				return 'Installing '.Modules_Microweber_WhiteLabel::getBrandName().'...';
+				return 'Installing '.Modules_Microweber_WhiteLabel::getBrandName().' on ' .  $this->getParam('domainDisplayName', 'none') .'/'.$this->getParam('path');
 
 			case static::STATUS_DONE:
 
@@ -59,7 +59,7 @@ class Modules_Microweber_TaskInstall extends \pm_LongTask_Task
 
 			case static::STATUS_ERROR:
 
-				return 'Error installing '.Modules_Microweber_WhiteLabel::getBrandName().'.';
+				return 'Error installing '.Modules_Microweber_WhiteLabel::getBrandName().' on ' . $this->getParam('domainDisplayName', 'none') .'/'.$this->getParam('path');
 
 			case static::STATUS_NOT_STARTED:
 
@@ -79,5 +79,16 @@ class Modules_Microweber_TaskInstall extends \pm_LongTask_Task
 	public function onDone()
 	{
 		$this->setParam('onDone', 1);
+
+        $this->_queueRefreshDomain();
 	}
+
+	private function _queueRefreshDomain()
+    {
+        $task = new Modules_Microweber_TaskDomainAppInstallationScan();
+        $task->setParam('domainId', $this->getParam('domainId'));
+
+        $taskManager = new pm_LongTask_Manager();
+        $taskManager->start($task, NULL);
+    }
 }
