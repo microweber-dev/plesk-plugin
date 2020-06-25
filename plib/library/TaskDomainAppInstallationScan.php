@@ -94,8 +94,16 @@ class Modules_Microweber_TaskDomainAppInstallationScan extends \pm_LongTask_Task
                     $manageDomainUrl = '/smb/web/view/id/' . $domain->getId() . '/type/domain';
                 }
 
+                $domainNameAppUrlPath = $domainName;
+                $appInstallationExpByDomain = explode($domainName, $appInstallation);
+                if($appInstallationExpByDomain){
+                    $domainNameAppUrlPath = end($appInstallationExpByDomain);
+                    $domainNameAppUrlPath = str_replace( '/httpdocs', '', $domainNameAppUrlPath);
+                    $domainNameAppUrlPath = $domainName . $domainNameAppUrlPath;
+                }
+
                 Modules_Microweber_Domain::addAppInstallation($domain, [
-                    'domainNameUrl'=>$domainNameUrl,
+                    'domainNameUrl'=>$domainNameAppUrlPath,
                     'domainCreation'=>$domainCreation,
                     'installationType'=>$installationType,
                     'appVersion'=>$appVersion,
