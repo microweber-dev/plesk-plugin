@@ -1005,8 +1005,13 @@ class IndexController extends pm_Controller_Action
             }
 
             if (strpos($token, 'isnotdefined') !== false) {
-                pm_Log::debug('Can\'t login to website: ' . $commandResponse['stdout']);
-                return $this->_redirect('index/index?message=Can\'t login to this domain.');
+
+                $task = new Modules_Microweber_TaskDomainAppInstallationRepair();
+                $task->setParam('domainId', $domainId);
+                $task->setParam('domainDocumentRoot', $domainDocumentRoot);
+                $this->taskManager->start($task, NULL);
+
+                return $this->_redirect('index/index?message=Login module is not found. Reinstalling login module... please, try again after one minute.');
             }
 
             return $this->_redirect('http://www.' . $websiteUrl . '/api/user_login?secret_key=' . $token);
