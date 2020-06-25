@@ -8,7 +8,7 @@
 
 class Modules_Microweber_Install {
 
-    protected $_appLatestVersionFolder = false;
+    protected $appLatestVersionFolder = false;
     protected $_overwrite = true;
     protected $_domainId;
     protected $_type = 'default';
@@ -23,9 +23,10 @@ class Modules_Microweber_Install {
     protected $_language = false;
     
     public function __construct() {
-    	$this->_appLatestVersionFolder = Modules_Microweber_Config::getAppSharedPath();
+    	$this->appLatestVersionFolder = Modules_Microweber_Config::getAppSharedPath();
     }
-    
+
+
     public function setProgressLogger($logger) {
     	$this->_progressLogger = $logger;
     }
@@ -219,14 +220,14 @@ class Modules_Microweber_Install {
         $this->setProgress(60);
         
         // First we will make a directories
-        foreach ($this->_getDirsToMake() as $dir) {
+        foreach (self::_getDirsToMake() as $dir) {
         	$fileManager->mkdir($domainDocumentRoot . '/' . $dir, '0755', true);
         }
         	
         $this->setProgress(65);
 
-        foreach ($this->_getFilesForSymlinking($this->_appLatestVersionFolder) as $folder) {
-        	$scriptDirOrFile = $this->_appLatestVersionFolder . $folder;
+        foreach (self::_getFilesForSymlinking($this->appLatestVersionFolder) as $folder) {
+        	$scriptDirOrFile = $this->appLatestVersionFolder . $folder;
         	$domainDirOrFile = $domainDocumentRoot .'/'. $folder;
         	
         	if ($this->_type == 'symlink') {
@@ -263,7 +264,7 @@ class Modules_Microweber_Install {
         	
         // And then we will copy files
         foreach ($this->_getFilesForCopy() as $file) {
-        	$fileManager->copyFile($this->_appLatestVersionFolder . $file, dirname($domainDocumentRoot . '/' . $file));
+        	$fileManager->copyFile($this->appLatestVersionFolder . $file, dirname($domainDocumentRoot . '/' . $file));
         }
         	
         $this->setProgress(75);
@@ -387,6 +388,56 @@ class Modules_Microweber_Install {
         }
         
     }
+
+    public static function reinstallApplication($domainId, $appInstallationPath)
+    {
+        $domain = Modules_Microweber_Domain::getUserDomainById($domainId);
+        if (empty($domain->getName())) {
+            throw new \Exception($domain->getName() . ' domain not found.');
+        }
+
+        $appLatestVersionFolder = Modules_Microweber_Config::getAppSharedPath();
+
+        // Repair domain permission
+        // pm_ApiCli::callSbin('repair_domain_permissions.sh', [$domain->getName()], pm_ApiCli::RESULT_FULL);
+
+        $fileManager = new \pm_FileManager($domain->getId());
+
+        // First we will make a directories
+        foreach (self::_getDirsToMake() as $dir) {
+            $fileManager->mkdir($appInstallationPath . '/' . $dir, '0755', true);
+        }
+
+        foreach (self::_getFilesForSymlinking($appLatestVersionFolder) as $folder) {
+
+            $scriptDirOrFile = $appLatestVersionFolder . $folder;
+            $domainDirOrFile = $appInstallationPath . '/' . $folder;
+
+            // Delete domain file
+            $deleteFileOrPath = pm_ApiCli::callSbin('filemng', [
+                $domain->getSysUserLogin(),
+                'exec',
+                $domain->getDocumentRoot(),
+                'rm',
+                '-rf',
+                $domainDirOrFile
+
+            ], pm_ApiCli::RESULT_FULL);
+
+            // Create symlink
+            pm_ApiCli::callSbin('filemng', [
+                $domain->getSysUserLogin(),
+                'exec',
+                $domain->getDocumentRoot(),
+                'ln',
+                '-s',
+                $scriptDirOrFile,
+                $domainDirOrFile
+
+            ], pm_ApiCli::RESULT_FULL);
+
+        }
+    }
     
     private function addDomainEncryption($domain)
     {
@@ -462,7 +513,7 @@ class Modules_Microweber_Install {
     	
     }
     
-    private function _getDirsToMake() {
+    private static function _getDirsToMake() {
     	
     	$dirs = [];
     	
