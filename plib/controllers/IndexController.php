@@ -1018,7 +1018,7 @@ class IndexController extends pm_Controller_Action
                 return $this->_redirect('index/index?message=Can\'t login to this domain. The app installation is broken.');
             }
 
-            if (strpos($token, 'isnotdefined') !== false) {
+            if ((strpos($token, 'isnotdefined') !== false) || (strpos($token, 'Couldnotopeninputfile') !== false)) {
 
                 $task = new Modules_Microweber_TaskDomainAppInstallationRepair();
                 $task->setParam('domainId', $domainId);
