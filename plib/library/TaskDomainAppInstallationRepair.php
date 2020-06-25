@@ -25,7 +25,7 @@ class Modules_Microweber_TaskDomainAppInstallationRepair extends \pm_LongTask_Ta
             return;
         }
 
-        Modules_Microweber_Install::reinstallApplication($this->domain->getId(), $this->getParam('domainDocumentRoot'));
+        Modules_Microweber_Reinstall::run($this->domain->getId(), $this->getParam('domainDocumentRoot'));
 
         $this->updateProgress(100);
     }

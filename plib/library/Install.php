@@ -220,13 +220,13 @@ class Modules_Microweber_Install {
         $this->setProgress(60);
         
         // First we will make a directories
-        foreach (self::_getDirsToMake() as $dir) {
+        foreach ($this->_getDirsToMake() as $dir) {
         	$fileManager->mkdir($domainDocumentRoot . '/' . $dir, '0755', true);
         }
         	
         $this->setProgress(65);
 
-        foreach (self::_getFilesForSymlinking($this->appLatestVersionFolder) as $folder) {
+        foreach ($this->_getFilesForSymlinking($this->appLatestVersionFolder) as $folder) {
         	$scriptDirOrFile = $this->appLatestVersionFolder . $folder;
         	$domainDirOrFile = $domainDocumentRoot .'/'. $folder;
         	
@@ -388,56 +388,6 @@ class Modules_Microweber_Install {
         }
         
     }
-
-    public static function reinstallApplication($domainId, $appInstallationPath)
-    {
-        $domain = Modules_Microweber_Domain::getUserDomainById($domainId);
-        if (empty($domain->getName())) {
-            throw new \Exception($domain->getName() . ' domain not found.');
-        }
-
-        $appLatestVersionFolder = Modules_Microweber_Config::getAppSharedPath();
-
-        // Repair domain permission
-        pm_ApiCli::callSbin('repair_domain_permissions.sh', [$domain->getName()], pm_ApiCli::RESULT_FULL);
-
-        $fileManager = new \pm_FileManager($domain->getId());
-
-        // First we will make a directories
-        foreach (self::_getDirsToMake() as $dir) {
-            $fileManager->mkdir($appInstallationPath . '/' . $dir, '0755', true);
-        }
-
-        foreach (self::_getFilesForSymlinking($appLatestVersionFolder) as $folder) {
-
-            $scriptDirOrFile = $appLatestVersionFolder . $folder;
-            $domainDirOrFile = $appInstallationPath . '/' . $folder;
-
-            // Delete domain file
-            $deleteFileOrPath = pm_ApiCli::callSbin('filemng', [
-                $domain->getSysUserLogin(),
-                'exec',
-                $domain->getDocumentRoot(),
-                'rm',
-                '-rf',
-                $domainDirOrFile
-
-            ], pm_ApiCli::RESULT_FULL);
-
-            // Create symlink
-            pm_ApiCli::callSbin('filemng', [
-                $domain->getSysUserLogin(),
-                'exec',
-                $domain->getDocumentRoot(),
-                'ln',
-                '-s',
-                $scriptDirOrFile,
-                $domainDirOrFile
-
-            ], pm_ApiCli::RESULT_FULL);
-
-        }
-    }
     
     private function addDomainEncryption($domain)
     {
@@ -513,7 +463,7 @@ class Modules_Microweber_Install {
     	
     }
     
-    private static function _getDirsToMake() {
+    private function _getDirsToMake() {
     	
     	$dirs = [];
     	
