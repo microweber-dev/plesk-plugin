@@ -987,9 +987,9 @@ class IndexController extends pm_Controller_Action
 
         $artisan = new Modules_Microweber_ArtisanExecutor();
         $artisan->setDomainId($domain->getId());
-        $artisan->setDomainDocumentRoot($domainDocumentRoot);
+        $artisan->setDomainDocumentRoot($domainDocumentRoot); 
 
-      //   Modules_Microweber_Install::reinstallApplication($domain->getId(), $domainDocumentRoot);
+      //  Modules_Microweber_Install::reinstallApplication($domain->getId(), $domainDocumentRoot);
 
         $commandResponse = $artisan->exec(['microweber:module', 'login_with_token', '1']);
         if (!empty($commandResponse['stdout'])) {

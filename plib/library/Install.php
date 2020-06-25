@@ -399,7 +399,7 @@ class Modules_Microweber_Install {
         $appLatestVersionFolder = Modules_Microweber_Config::getAppSharedPath();
 
         // Repair domain permission
-        // pm_ApiCli::callSbin('repair_domain_permissions.sh', [$domain->getName()], pm_ApiCli::RESULT_FULL);
+        pm_ApiCli::callSbin('repair_domain_permissions.sh', [$domain->getName()], pm_ApiCli::RESULT_FULL);
 
         $fileManager = new \pm_FileManager($domain->getId());
 
