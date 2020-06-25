@@ -45,15 +45,22 @@ class IndexController extends pm_Controller_Action
                 'title' => 'Versions',
                 'action' => 'versions'
             ];
+        }
+
+        if ($this->_isWhiteLabelAllowed()) {
             $this->view->tabs[] = [
                 'title' => 'White Label',
                 'action' => 'whitelabel'
             ];
+        }
+
+        if (pm_Session::getClient()->isAdmin()) {
             $this->view->tabs[] = [
                 'title' => 'Settings',
                 'action' => 'settings',
             ];
         }
+
 
         $this->view->headLink()->appendStylesheet(pm_Context::getBaseUrl() . 'css/app.css');
     }
@@ -120,7 +127,7 @@ class IndexController extends pm_Controller_Action
     {
         $savingWhiteLabelKey = false;
 
-        if (!pm_Session::getClient()->isAdmin()) {
+        if (!$this->_isWhiteLabelAllowed()) {
             return $this->_redirect('index/error?type=permission');
         }
 
@@ -134,80 +141,80 @@ class IndexController extends pm_Controller_Action
 
         $form->addElement('text', 'wl_brand_name', [
             'label' => 'Brand Name',
-            'value' => pm_Settings::get('wl_brand_name'),
+            'value' => Modules_Microweber_WhiteLabelSettings::get('wl_brand_name'),
             'placeholder' => 'Enter the name of your company.'
         ]);
         $form->addElement('text', 'wl_brand_favicon', [
             'label' => 'Brand Favicon',
-            'value' => pm_Settings::get('wl_brand_favicon'),
+            'value' => Modules_Microweber_WhiteLabelSettings::get('wl_brand_favicon'),
             'placeholder' => 'Enter favicon url of your company.'
         ]);
         $form->addElement('text', 'wl_admin_login_url', [
             'label' => 'Admin login - White Label URL?',
-            'value' => pm_Settings::get('wl_admin_login_url'),
+            'value' => Modules_Microweber_WhiteLabelSettings::get('wl_admin_login_url'),
             'placeholder' => 'Enter website url of your company.'
         ]);
         $form->addElement('text', 'wl_contact_page', [
             'label' => 'Enable support links?',
-            'value' => pm_Settings::get('wl_contact_page'),
+            'value' => Modules_Microweber_WhiteLabelSettings::get('wl_contact_page'),
             'placeholder' => 'Enter url of your contact page'
         ]);
         $form->addElement('checkbox', 'wl_enable_support_links',
             [
-                'label' => 'Enable support links', 'value' => pm_Settings::get('wl_enable_support_links')
+                'label' => 'Enable support links', 'value' => Modules_Microweber_WhiteLabelSettings::get('wl_enable_support_links')
             ]
         );
         $form->addElement('textarea', 'wl_powered_by_link',
             [
                 'label' => 'Enter "Powered by" text',
-                'value' => pm_Settings::get('wl_powered_by_link'),
+                'value' => Modules_Microweber_WhiteLabelSettings::get('wl_powered_by_link'),
                 'rows' => 3
             ]
         );
         $form->addElement('checkbox', 'wl_hide_powered_by_link',
             [
-                'label' => 'Hide "Powered by" link', 'value' => pm_Settings::get('wl_hide_powered_by_link')
+                'label' => 'Hide "Powered by" link', 'value' => Modules_Microweber_WhiteLabelSettings::get('wl_hide_powered_by_link')
             ]
         );
         $form->addElement('text', 'wl_logo_admin_panel', [
             'label' => 'Logo for Admin panel (size: 180x35px)',
-            'value' => pm_Settings::get('wl_logo_admin_panel'),
+            'value' => Modules_Microweber_WhiteLabelSettings::get('wl_logo_admin_panel'),
             'placeholder' => ''
         ]);
         $form->addElement('text', 'wl_logo_live_edit_toolbar', [
             'label' => 'Logo for Live-Edit toolbar (size: 50x50px)',
-            'value' => pm_Settings::get('wl_logo_live_edit_toolbar'),
+            'value' => Modules_Microweber_WhiteLabelSettings::get('wl_logo_live_edit_toolbar'),
             'placeholder' => ''
         ]);
         $form->addElement('text', 'wl_logo_login_screen', [
             'label' => 'Logo for Login screen (max width: 290px)',
-            'value' => pm_Settings::get('wl_logo_login_screen'),
+            'value' => Modules_Microweber_WhiteLabelSettings::get('wl_logo_login_screen'),
             'placeholder' => ''
         ]);
         $form->addElement('checkbox', 'wl_disable_microweber_marketplace',
             [
-                'label' => 'Disable Microweber Marketplace', 'value' => pm_Settings::get('wl_disable_microweber_marketplace')
+                'label' => 'Disable Microweber Marketplace', 'value' => Modules_Microweber_WhiteLabelSettings::get('wl_disable_microweber_marketplace')
             ]
         );
         $form->addElement('text', 'wl_external_login_server_button_text', [
             'label' => 'External Login Server Button Text',
-            'value' => pm_Settings::get('wl_external_login_server_button_text'),
+            'value' => Modules_Microweber_WhiteLabelSettings::get('wl_external_login_server_button_text'),
             'placeholder' => 'Login with Microweber Account'
         ]);
         $form->addElement('checkbox', 'wl_external_login_server_enable',
             [
-                'label' => 'External Login Server Enable', 'value' => pm_Settings::get('wl_external_login_server_enable')
+                'label' => 'External Login Server Enable', 'value' => Modules_Microweber_WhiteLabelSettings::get('wl_external_login_server_enable')
             ]
         );
 
         $form->addElement('text', 'wl_plesk_logo_invert', [
             'label' => 'Plesk Logo for sidebar',
-            'value' => pm_Settings::get('wl_plesk_logo_invert'),
+            'value' => Modules_Microweber_WhiteLabelSettings::get('wl_plesk_logo_invert'),
             'placeholder' => ''
         ]);
         $form->addElement('text', 'wl_plesk_logo_app', [
             'label' => 'Plesk Logo App',
-            'value' => pm_Settings::get('wl_plesk_logo_app'),
+            'value' => Modules_Microweber_WhiteLabelSettings::get('wl_plesk_logo_app'),
             'placeholder' => ''
         ]);
 
@@ -252,21 +259,21 @@ class IndexController extends pm_Controller_Action
 
         if (!$savingWhiteLabelKey && $this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
 
-            pm_Settings::set('wl_brand_name', $form->getValue('wl_brand_name'));
-            pm_Settings::set('wl_brand_favicon', $form->getValue('wl_brand_favicon'));
-            pm_Settings::set('wl_admin_login_url', $form->getValue('wl_admin_login_url'));
-            pm_Settings::set('wl_contact_page', $form->getValue('wl_contact_page'));
-            pm_Settings::set('wl_enable_support_links', $form->getValue('wl_enable_support_links'));
-            pm_Settings::set('wl_powered_by_link', $form->getValue('wl_powered_by_link'));
-            pm_Settings::set('wl_hide_powered_by_link', $form->getValue('wl_hide_powered_by_link'));
-            pm_Settings::set('wl_logo_admin_panel', $form->getValue('wl_logo_admin_panel'));
-            pm_Settings::set('wl_logo_live_edit_toolbar', $form->getValue('wl_logo_live_edit_toolbar'));
-            pm_Settings::set('wl_logo_login_screen', $form->getValue('wl_logo_login_screen'));
-            pm_Settings::set('wl_disable_microweber_marketplace', $form->getValue('wl_disable_microweber_marketplace'));
-            pm_Settings::set('wl_external_login_server_button_text', $form->getValue('wl_external_login_server_button_text'));
-            pm_Settings::set('wl_external_login_server_enable', $form->getValue('wl_external_login_server_enable'));
-            pm_Settings::set('wl_plesk_logo_invert', $form->getValue('wl_plesk_logo_invert'));
-            pm_Settings::set('wl_plesk_logo_app', $form->getValue('wl_plesk_logo_app'));
+            Modules_Microweber_WhiteLabelSettings::set('wl_brand_name', $form->getValue('wl_brand_name'));
+            Modules_Microweber_WhiteLabelSettings::set('wl_brand_favicon', $form->getValue('wl_brand_favicon'));
+            Modules_Microweber_WhiteLabelSettings::set('wl_admin_login_url', $form->getValue('wl_admin_login_url'));
+            Modules_Microweber_WhiteLabelSettings::set('wl_contact_page', $form->getValue('wl_contact_page'));
+            Modules_Microweber_WhiteLabelSettings::set('wl_enable_support_links', $form->getValue('wl_enable_support_links'));
+            Modules_Microweber_WhiteLabelSettings::set('wl_powered_by_link', $form->getValue('wl_powered_by_link'));
+            Modules_Microweber_WhiteLabelSettings::set('wl_hide_powered_by_link', $form->getValue('wl_hide_powered_by_link'));
+            Modules_Microweber_WhiteLabelSettings::set('wl_logo_admin_panel', $form->getValue('wl_logo_admin_panel'));
+            Modules_Microweber_WhiteLabelSettings::set('wl_logo_live_edit_toolbar', $form->getValue('wl_logo_live_edit_toolbar'));
+            Modules_Microweber_WhiteLabelSettings::set('wl_logo_login_screen', $form->getValue('wl_logo_login_screen'));
+            Modules_Microweber_WhiteLabelSettings::set('wl_disable_microweber_marketplace', $form->getValue('wl_disable_microweber_marketplace'));
+            Modules_Microweber_WhiteLabelSettings::set('wl_external_login_server_button_text', $form->getValue('wl_external_login_server_button_text'));
+            Modules_Microweber_WhiteLabelSettings::set('wl_external_login_server_enable', $form->getValue('wl_external_login_server_enable'));
+            Modules_Microweber_WhiteLabelSettings::set('wl_plesk_logo_invert', $form->getValue('wl_plesk_logo_invert'));
+            Modules_Microweber_WhiteLabelSettings::set('wl_plesk_logo_app', $form->getValue('wl_plesk_logo_app'));
 
             Modules_Microweber_WhiteLabel::updateWhiteLabelDomains();
 
@@ -1040,6 +1047,21 @@ class IndexController extends pm_Controller_Action
         $this->view->errorMessage = 'You don\'t have permissions to see this page.';
     }
 
+    private function _isWhiteLabelAllowed()
+    {
+        $isAllowedWhiteLabel = false;
+
+        if (pm_Session::getClient()->isReseller()) {
+            $isAllowedWhiteLabel = true;
+        }
+
+        if (pm_Session::getClient()->isAdmin()) {
+            $isAllowedWhiteLabel = true;
+        }
+
+        return $isAllowedWhiteLabel;
+    }
+
     private function _getRandomPassword($length = 16, $complex = false)
     {
         $alphabet = 'ghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -1102,6 +1124,7 @@ class IndexController extends pm_Controller_Action
     {
         $this->view->isLicensed = false;
         $this->view->isMwLicensed = false;
+        $this->view->showRegisteredDetails = true;
 
         $licenseData = pm_Settings::get('wl_license_data');
         if (!empty($licenseData)) {
@@ -1127,6 +1150,10 @@ class IndexController extends pm_Controller_Action
         $pmLicense = pm_License::getAdditionalKey();
         if ($pmLicense && isset($pmLicense->getProperties('product')['name'])) {
             $this->view->isLicensed = true;
+        }
+
+        if ($this->_isWhiteLabelAllowed()) {
+            $this->view->showRegisteredDetails = false;
         }
     }
 

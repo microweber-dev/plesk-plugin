@@ -13,7 +13,7 @@ class Modules_Microweber_WhiteLabel
     {
         $name = 'Microweber';
 
-        $setting = pm_Settings::get('wl_brand_name');
+        $setting = Modules_Microweber_WhiteLabelSettings::get('wl_brand_name');
         $setting = trim($setting);
 
         if (!empty($setting)) {
@@ -27,7 +27,7 @@ class Modules_Microweber_WhiteLabel
     {
         $icon = pm_Context::getBaseUrl() . 'images/logo_small_white.svg';
 
-        $setting = pm_Settings::get('wl_plesk_logo_invert');
+        $setting = Modules_Microweber_WhiteLabelSettings::get('wl_plesk_logo_invert');
         $setting = trim($setting);
 
         if (!empty($setting)) {
@@ -41,7 +41,7 @@ class Modules_Microweber_WhiteLabel
     {
         $icon = pm_Context::getBaseUrl() . 'images/logo_small.svg';
 
-        $setting = pm_Settings::get('wl_plesk_logo_app');
+        $setting = Modules_Microweber_WhiteLabelSettings::get('wl_plesk_logo_app');
         $setting = trim($setting);
 
         if (!empty($setting)) {
@@ -129,24 +129,24 @@ class Modules_Microweber_WhiteLabel
             }
 
         } else {
-            $whiteLabelSettings['brand_name'] = pm_Settings::get('wl_brand_name');
-            $whiteLabelSettings['brand_favicon'] = pm_Settings::get('wl_brand_favicon');
-            $whiteLabelSettings['admin_logo_login_link'] = pm_Settings::get('wl_admin_login_url');
-            $whiteLabelSettings['custom_support_url'] = pm_Settings::get('wl_contact_page');
+            $whiteLabelSettings['brand_name'] = Modules_Microweber_WhiteLabelSettings::get('wl_brand_name');
+            $whiteLabelSettings['brand_favicon'] = Modules_Microweber_WhiteLabelSettings::get('wl_brand_favicon');
+            $whiteLabelSettings['admin_logo_login_link'] = Modules_Microweber_WhiteLabelSettings::get('wl_admin_login_url');
+            $whiteLabelSettings['custom_support_url'] = Modules_Microweber_WhiteLabelSettings::get('wl_contact_page');
 
-            $whiteLabelSettings['logo_admin'] = pm_Settings::get('wl_logo_admin_panel');
-            $whiteLabelSettings['logo_live_edit'] = pm_Settings::get('wl_logo_live_edit_toolbar');
-            $whiteLabelSettings['logo_login'] = pm_Settings::get('wl_logo_login_screen');
+            $whiteLabelSettings['logo_admin'] = Modules_Microweber_WhiteLabelSettings::get('wl_logo_admin_panel');
+            $whiteLabelSettings['logo_live_edit'] = Modules_Microweber_WhiteLabelSettings::get('wl_logo_live_edit_toolbar');
+            $whiteLabelSettings['logo_login'] = Modules_Microweber_WhiteLabelSettings::get('wl_logo_login_screen');
 
-            $whiteLabelSettings['powered_by_link'] = pm_Settings::get('wl_powered_by_link');
+            $whiteLabelSettings['powered_by_link'] = Modules_Microweber_WhiteLabelSettings::get('wl_powered_by_link');
 
-            $whiteLabelSettings['disable_marketplace'] = pm_Settings::get('wl_disable_microweber_marketplace');
-            $whiteLabelSettings['disable_powered_by_link'] = pm_Settings::get('wl_hide_powered_by_link');
+            $whiteLabelSettings['disable_marketplace'] = Modules_Microweber_WhiteLabelSettings::get('wl_disable_microweber_marketplace');
+            $whiteLabelSettings['disable_powered_by_link'] = Modules_Microweber_WhiteLabelSettings::get('wl_hide_powered_by_link');
 
-            $whiteLabelSettings['enable_service_links'] = pm_Settings::get('wl_enable_support_links');
+            $whiteLabelSettings['enable_service_links'] = Modules_Microweber_WhiteLabelSettings::get('wl_enable_support_links');
 
-            $whiteLabelSettings['external_login_server_button_text'] = pm_Settings::get('wl_external_login_server_button_text');
-            $whiteLabelSettings['external_login_server_enable'] = pm_Settings::get('wl_external_login_server_enable');
+            $whiteLabelSettings['external_login_server_button_text'] = Modules_Microweber_WhiteLabelSettings::get('wl_external_login_server_button_text');
+            $whiteLabelSettings['external_login_server_enable'] = Modules_Microweber_WhiteLabelSettings::get('wl_external_login_server_enable');
 
             $whmcsPackageUrls = Modules_Microweber_Config::getWhmcsPackageManagerUrls();
             if (!empty($whmcsPackageUrls)) {

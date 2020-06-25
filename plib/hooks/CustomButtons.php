@@ -31,6 +31,10 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
             $showButtons = true;
         }
 
+        if (pm_Session::getClient()->isReseller()) {
+            $showButtons = true;
+        }
+
         if (!$showButtons) {
             return [];
         }
@@ -39,7 +43,8 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
         $places[] = [
             'place' => [
                 self::PLACE_DOMAIN,
-                self::PLACE_DOMAIN_PROPERTIES
+                self::PLACE_DOMAIN_PROPERTIES,
+                self::PLACE_RESELLER_TOOLS_AND_SETTINGS
             ],
             'title' => Modules_Microweber_WhiteLabel::getBrandName(),
             'description' => 'View all ' . Modules_Microweber_WhiteLabel::getBrandName() . ' websites.',
@@ -69,9 +74,9 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
 
         $places[] = [
             'place' => [
+                self::PLACE_RESELLER_NAVIGATION,
                 self::PLACE_HOSTING_PANEL_NAVIGATION,
                 self::PLACE_ADMIN_TOOLS_AND_SETTINGS,
-                self::PLACE_RESELLER_TOOLS_AND_SETTINGS,
             ],
             'order' => 15,
             'title' => Modules_Microweber_WhiteLabel::getBrandName(),

@@ -35,7 +35,7 @@
 </div>
 
 
-<?php if ($this->isLicensed && $this->isMwLicensed): ?>
+<?php if ($this->isLicensed && $this->isMwLicensed && $this->showRegisteredDetails): ?>
 <div class="license-active">
 Registered Name: <?php echo $this->registeredName; ?> <br />
 Plan: <?php echo $this->relName; ?> <br />
