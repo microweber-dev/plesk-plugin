@@ -53,6 +53,10 @@ class Modules_Microweber_TaskDomainAppInstallationScan extends \pm_LongTask_Task
             }
         }
 
+        if (empty($installationsFind)) {
+            $domain->setSetting('mwAppInstallations', false);
+        }
+
         if (!empty($installationsFind)) {
 
             foreach ($installationsFind as $appInstallationConfig) {
@@ -113,6 +117,12 @@ class Modules_Microweber_TaskDomainAppInstallationScan extends \pm_LongTask_Task
                 ]);
             }
         }
+
+        $taskManager = new pm_LongTask_Manager();
+
+        $task = new Modules_Microweber_TaskWhiteLabelBrandingUpdate();
+        $task->setParam('domainId', $domain->getId());
+        $taskManager->start($task, NULL);
 		
 		$this->updateProgress(100);
 	}

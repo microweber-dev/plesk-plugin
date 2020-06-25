@@ -85,10 +85,10 @@ class Modules_Microweber_TaskInstall extends \pm_LongTask_Task
 
 	private function _queueRefreshDomain()
     {
+        $taskManager = new pm_LongTask_Manager();
+
         $task = new Modules_Microweber_TaskDomainAppInstallationScan();
         $task->setParam('domainId', $this->getParam('domainId'));
-
-        $taskManager = new pm_LongTask_Manager();
         $taskManager->start($task, NULL);
     }
 }
