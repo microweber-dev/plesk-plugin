@@ -989,7 +989,22 @@ class IndexController extends pm_Controller_Action
         $artisan->setDomainId($domain->getId());
         $artisan->setDomainDocumentRoot($domainDocumentRoot);
 
+      //   Modules_Microweber_Install::reinstallApplication($domain->getId(), $domainDocumentRoot);
+
         $commandResponse = $artisan->exec(['microweber:module', 'login_with_token', '1']);
+        if (!empty($commandResponse['stdout'])) {
+            if (strpos($commandResponse['stdout'], 'PHP Warning:') !== false) {
+
+                $task = new Modules_Microweber_TaskDomainAppInstallationRepair();
+                $task->setParam('domainId', $domainId);
+                $task->setParam('domainDocumentRoot', $domainDocumentRoot);
+                $this->taskManager->start($task, NULL);
+
+                return $this->_redirect('index/index?message=Application is broken. Reinstalling app... please, try again later.');
+            }
+        }
+
+        $commandResponse = $artisan->exec(['cache:clear']);
         $commandResponse = $artisan->exec(['microweber:generate-admin-login-token']);
 
         if (!empty($commandResponse['stdout'])) {
@@ -1017,7 +1032,7 @@ class IndexController extends pm_Controller_Action
             return $this->_redirect('http://www.' . $websiteUrl . '/api/user_login?secret_key=' . $token);
         }
 
-        return $this->_redirect('index/error?type=permission');
+        return $this->_redirect('index/index');
     }
 
     public function errorAction()
