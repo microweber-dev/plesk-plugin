@@ -384,11 +384,11 @@ class IndexController extends pm_Controller_Action
             ]);
         }
 
-        $dbManager = new Modules_Microweber_DatabaseManager();
+        /*$dbManager = new Modules_Microweber_DatabaseManager();
         $dbManager->setDomainId($domain->getId());
 
         $hostingManager = new Modules_Microweber_HostingManager();
-        $hostingManager->setDomainId($domain->getId());
+        $hostingManager->setDomainId($domain->getId());*/
 
         /*
          *      $servers = $dbManager->getDatabaseServers();
