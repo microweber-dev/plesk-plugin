@@ -731,6 +731,13 @@ class IndexController extends pm_Controller_Action
             //'required' => true,
         ]);
 
+        $form->addElement('select', 'allow_reseller_whitelabel', [
+            'label' => 'Allow resellers to use their own White Label?',
+            'multiOptions' => ['yes' => 'Yes', 'no' => 'No'],
+            'value' => pm_Settings::get('allow_reseller_whitelabel'),
+            'required' => true,
+        ]);
+
         $form->addControlButtons([
             'cancelLink' => pm_Context::getModulesListUrl(),
         ]);
@@ -749,6 +756,7 @@ class IndexController extends pm_Controller_Action
 
             pm_Settings::set('update_app_url', $form->getValue('update_app_url'));
             pm_Settings::set('whmcs_url', $form->getValue('whmcs_url'));
+            pm_Settings::set('allow_reseller_whitelabel', $form->getValue('allow_reseller_whitelabel'));
 
 
             $release = Modules_Microweber_Config::getRelease();
@@ -1052,7 +1060,16 @@ class IndexController extends pm_Controller_Action
         $isAllowedWhiteLabel = false;
 
         if (pm_Session::getClient()->isReseller()) {
-            $isAllowedWhiteLabel = true;
+
+            $allowResellerWhiteLabel = pm_Settings::get('allow_reseller_whitelabel');
+
+            if (!$allowResellerWhiteLabel || empty($allowResellerWhiteLabel)) {
+                $allowResellerWhiteLabel = 'yes';
+            }
+
+            if ($allowResellerWhiteLabel == 'yes') {
+                $isAllowedWhiteLabel = true;
+            }
         }
 
         if (pm_Session::getClient()->isAdmin()) {
@@ -1154,6 +1171,10 @@ class IndexController extends pm_Controller_Action
 
         if ($this->_isWhiteLabelAllowed()) {
             $this->view->showRegisteredDetails = false;
+        }
+
+        if (pm_Session::getClient()->isAdmin()) {
+            $this->view->showRegisteredDetails = true;
         }
     }
 
