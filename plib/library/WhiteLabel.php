@@ -128,6 +128,10 @@ class Modules_Microweber_WhiteLabel
                 $whiteLabelSettings['external_login_server_enable'] = $whiteLabelWhmcsSettings['wl_external_login_server_enable'];
             }
 
+            if (isset($whiteLabelWhmcsSettings['wl_enable_service_links'])) {
+                $whiteLabelSettings['enable_service_links'] = $whiteLabelWhmcsSettings['wl_enable_service_links'];
+            }
+
         } else {
             $whiteLabelSettings['brand_name'] = Modules_Microweber_WhiteLabelSettings::get('wl_brand_name');
             $whiteLabelSettings['brand_favicon'] = Modules_Microweber_WhiteLabelSettings::get('wl_brand_favicon');
