@@ -203,7 +203,12 @@ class IndexController extends pm_Controller_Action
         ]);
         $form->addElement('checkbox', 'wl_external_login_server_enable',
             [
-                'label' => 'External Login Server Enable', 'value' => Modules_Microweber_WhiteLabelSettings::get('wl_external_login_server_enable')
+                'label' => 'Enable External Login Server', 'value' => Modules_Microweber_WhiteLabelSettings::get('wl_external_login_server_enable')
+            ]
+        );
+        $form->addElement('checkbox', 'wl_enable_service_links',
+            [
+                'label' => 'Enable Microweber Service Links', 'value' => Modules_Microweber_WhiteLabelSettings::get('wl_enable_service_links')
             ]
         );
 
@@ -272,6 +277,7 @@ class IndexController extends pm_Controller_Action
             Modules_Microweber_WhiteLabelSettings::set('wl_disable_microweber_marketplace', $form->getValue('wl_disable_microweber_marketplace'));
             Modules_Microweber_WhiteLabelSettings::set('wl_external_login_server_button_text', $form->getValue('wl_external_login_server_button_text'));
             Modules_Microweber_WhiteLabelSettings::set('wl_external_login_server_enable', $form->getValue('wl_external_login_server_enable'));
+            Modules_Microweber_WhiteLabelSettings::set('wl_enable_service_links', $form->getValue('wl_enable_service_links'));
             Modules_Microweber_WhiteLabelSettings::set('wl_plesk_logo_invert', $form->getValue('wl_plesk_logo_invert'));
             Modules_Microweber_WhiteLabelSettings::set('wl_plesk_logo_app', $form->getValue('wl_plesk_logo_app'));
 
