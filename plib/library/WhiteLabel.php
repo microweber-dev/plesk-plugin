@@ -117,7 +117,7 @@ class Modules_Microweber_WhiteLabel
             }
 
             if (isset($whiteLabelWhmcsSettings['wl_enable_support_links'])) {
-                $whiteLabelSettings['enable_service_links'] = $whiteLabelWhmcsSettings['wl_enable_support_links'];
+                $whiteLabelSettings['enable_support_links'] = $whiteLabelWhmcsSettings['wl_enable_support_links'];
             }
 
             if (isset($whiteLabelWhmcsSettings['wl_external_login_server_button_text'])) {
@@ -147,7 +147,8 @@ class Modules_Microweber_WhiteLabel
             $whiteLabelSettings['disable_marketplace'] = Modules_Microweber_WhiteLabelSettings::get('wl_disable_microweber_marketplace');
             $whiteLabelSettings['disable_powered_by_link'] = Modules_Microweber_WhiteLabelSettings::get('wl_hide_powered_by_link');
 
-            $whiteLabelSettings['enable_service_links'] = Modules_Microweber_WhiteLabelSettings::get('wl_enable_support_links');
+            $whiteLabelSettings['enable_support_links'] = Modules_Microweber_WhiteLabelSettings::get('wl_enable_support_links');
+            $whiteLabelSettings['enable_service_links'] = Modules_Microweber_WhiteLabelSettings::get('wl_enable_service_links');
 
             $whiteLabelSettings['external_login_server_button_text'] = Modules_Microweber_WhiteLabelSettings::get('wl_external_login_server_button_text');
             $whiteLabelSettings['external_login_server_enable'] = Modules_Microweber_WhiteLabelSettings::get('wl_external_login_server_enable');

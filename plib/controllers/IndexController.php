@@ -208,10 +208,10 @@ class IndexController extends pm_Controller_Action
         );
         $form->addElement('checkbox', 'wl_enable_service_links',
             [
-                'label' => 'Enable Microweber Service Links', 'value' => Modules_Microweber_WhiteLabelSettings::get('wl_enable_service_links')
+                'label' => 'Enable Microweber Service Links',
+                'value' => Modules_Microweber_WhiteLabelSettings::get('wl_enable_service_links'),
             ]
         );
-
         $form->addElement('text', 'wl_plesk_logo_invert', [
             'label' => 'Plesk Logo for sidebar',
             'value' => Modules_Microweber_WhiteLabelSettings::get('wl_plesk_logo_invert'),
