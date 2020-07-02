@@ -416,12 +416,28 @@ class IndexController extends pm_Controller_Action
                     ]);
                 }*/
 
-        $form->addElement('select', 'installation_database_driver', [
-            'label' => 'Database Driver',
-            'multiOptions' => ['mysql' => 'MySQL', 'sqlite' => 'SQLite'],
-            'value' => pm_Settings::get('installation_database_driver'),
-            'required' => true,
-        ]);
+        $chooseInstallationDatabaseDriver = pm_Settings::get('installation_database_driver_allow_customers');
+        $chooseInstallationDatabaseDriver = trim($chooseInstallationDatabaseDriver);
+
+        if (pm_Session::getClient()->isAdmin()) {
+            $chooseInstallationDatabaseDriver = 'yes';
+        }
+        if ($chooseInstallationDatabaseDriver == '' || !$chooseInstallationDatabaseDriver) {
+            $chooseInstallationDatabaseDriver = 'yes';
+        }
+
+        if ($chooseInstallationDatabaseDriver == 'yes') {
+            $form->addElement('select', 'installation_database_driver', [
+                'label' => 'Database Driver',
+                'multiOptions' => ['mysql' => 'MySQL', 'sqlite' => 'SQLite'],
+                'value' => pm_Settings::get('installation_database_driver'),
+                'required' => true,
+            ]);
+        } else {
+            $form->addElement('hidden', 'installation_database_driver', [
+                'value' => pm_Settings::get('installation_database_driver')
+            ]);
+        }
 
         $httpHost = '';
         if (isset($_SERVER['HTTP_HOST'])) {
@@ -681,6 +697,17 @@ class IndexController extends pm_Controller_Action
             'required' => true,
         ]);
 
+        $form->addElement('radio', 'installation_database_driver_allow_customers', [
+            'label' => 'Allow customers to choose installation database driver',
+            'multiOptions' =>
+                [
+                    'yes' => 'Yes',
+                    'no' => 'No'
+                ],
+            'value' => pm_Settings::get('installation_database_driver_allow_customers'),
+            'required' => true,
+        ]);
+
         $form->addElement('select', 'installation_database_driver', [
             'label' => 'Database Driver',
             'multiOptions' => ['mysql' => 'MySQL', 'sqlite' => 'SQLite'],
@@ -753,6 +780,7 @@ class IndexController extends pm_Controller_Action
             pm_Settings::set('installation_database_driver', $form->getValue('installation_database_driver'));
             //      pm_Settings::set('installation_database_server_id', $form->getValue('installation_database_server_id'));
             pm_Settings::set('installation_type_allow_customers', $form->getValue('installation_type_allow_customers'));
+            pm_Settings::set('installation_database_driver_allow_customers', $form->getValue('installation_database_driver_allow_customers'));
 
             pm_Settings::set('update_app_url', $form->getValue('update_app_url'));
             pm_Settings::set('whmcs_url', $form->getValue('whmcs_url'));
