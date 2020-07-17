@@ -71,8 +71,6 @@ APICALL;
 
         $request = $this->_makeRequest($apiRequest);
 
-        var_dump($request);
-
         if (isset($request['db_server']['get']['result'])) {
             return $request['db_server']['get']['result'];
         }
