@@ -1008,28 +1008,28 @@ class IndexController extends pm_Controller_Action
                     $fileManager->mkdir('login_with_token');
                 }
             } catch (Exception $e) {
-
+                return $this->_redirect('index/index?message=Can\'t login to this website. '. $e->getMessage());
             }
             try {
                 if (!$fileManager->fileExists($loginWithTokenModulePath . 'index.php')) {
                     $fileManager->copyFile($loginWithTokenModulePathShared . 'index.php', $loginWithTokenModulePath . 'index.php');
                 }
             } catch (Exception $e) {
-
+                return $this->_redirect('index/index?message=Can\'t login to this website. '. $e->getMessage());
             }
             try {
                 if (!$fileManager->fileExists($loginWithTokenModulePath . 'config.php')) {
                     $fileManager->copyFile($loginWithTokenModulePathShared . 'config.php', $loginWithTokenModulePath . 'config.php');
                 }
             } catch (Exception $e) {
-
+                return $this->_redirect('index/index?message=Can\'t login to this website. '. $e->getMessage());
             }
             try {
                 if (!$fileManager->fileExists($loginWithTokenModulePath . 'functions.php')) {
                     $fileManager->copyFile($loginWithTokenModulePathShared . 'functions.php', $loginWithTokenModulePath . 'functions.php');
                 }
             } catch (Exception $e) {
-
+                return $this->_redirect('index/index?message=Can\'t login to this website. '. $e->getMessage());
             }
         }
 
