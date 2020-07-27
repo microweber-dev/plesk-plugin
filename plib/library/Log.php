@@ -11,6 +11,6 @@ class Modules_Microweber_Log
     public static function debug($log) {
 
         \pm_Log::debug($log);
-        //file_put_contents('/var/microweber-log.txt', $log.PHP_EOL , FILE_APPEND | LOCK_EX);
+        file_put_contents('/tmp/microweber-log.txt', $log.PHP_EOL , FILE_APPEND | LOCK_EX);
     }
 }

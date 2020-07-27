@@ -362,6 +362,8 @@ class Modules_Microweber_Install {
 
         	if (!$domain->hasSsl()) {
                 $this->addDomainEncryption($domain);
+            } else {
+                Modules_Microweber_Log::debug('Domain allready have a SSL.');
             }
 
             $task = new Modules_Microweber_TaskWhiteLabelBrandingUpdate();
