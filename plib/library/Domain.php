@@ -46,7 +46,7 @@ class Modules_Microweber_Domain
 			}
 		}*/
 		
-		if (pm_Session::getClient()->isAdmin()) {
+		if (pm_Session::getClient()->isAdmin() || pm_Session::getClient()->isReseller()) {
 			$domains = pm_Domain::getAllDomains();
 		} else {
 			$domains = pm_Domain::getDomainsByClient(pm_Session::getClient());
