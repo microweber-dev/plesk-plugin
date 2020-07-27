@@ -394,10 +394,10 @@ class Modules_Microweber_Install {
 
     private function checkSsl($domainName)
     {
-        $g = stream_context_create (array("ssl" => array("capture_peer_cert" => true)));
-        $r = stream_socket_client("ssl://www.".$domainName.":443", $errno, $errstr, 30,
+        $g = @stream_context_create (array("ssl" => array("capture_peer_cert" => true)));
+        $r = @stream_socket_client("ssl://www.".$domainName.":443", $errno, $errstr, 30,
             STREAM_CLIENT_CONNECT, $g);
-        $cont = stream_context_get_params($r);
+        $cont = @stream_context_get_params($r);
         if (isset($cont["options"]["ssl"]["peer_certificate"])) {
             return true;
         }
