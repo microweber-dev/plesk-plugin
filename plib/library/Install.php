@@ -148,7 +148,7 @@ class Modules_Microweber_Install {
         
         $this->setProgress(10);
 
-        pm_Log::debug('Start installing Microweber on domain: ' . $domain->getName());
+        Modules_Microweber_Log::debug('Start installing Microweber on domain: ' . $domain->getName());
         
         $dbName =  str_replace('.', '', $domain->getName());
         $dbName = substr($dbName, 0, 9);
@@ -170,7 +170,7 @@ class Modules_Microweber_Install {
 
             $this->_databaseServerId = $databaseServerDetails['id'];
 
-        	pm_Log::debug('Create database for domain: ' . $domain->getName());
+        	Modules_Microweber_Log::debug('Create database for domain: ' . $domain->getName());
         	
         	$dbManager = new Modules_Microweber_DatabaseManager();
         	$dbManager->setDomainId($domain->getId());
@@ -212,7 +212,7 @@ class Modules_Microweber_Install {
         $domainIsActive = $domain->isActive();
         $domainCreation = $domain->getProperty('cr_date');
         
-        pm_Log::debug('Clear old folder on domain: ' . $domain->getName());
+        Modules_Microweber_Log::debug('Clear old folder on domain: ' . $domain->getName());
         
         // Clear domain files if exists
         $this->_prepairDomainFolder($fileManager, $domainDocumentRoot, $domain->getHomePath());
@@ -358,7 +358,7 @@ class Modules_Microweber_Install {
 
         	$this->setProgress(95);
  
-        	pm_Log::debug('Microweber install log for: ' . $domain->getName() . '<br />' . $artisan['stdout']. '<br /><br />');
+        	Modules_Microweber_Log::debug('Microweber install log for: ' . $domain->getName() . '<br />' . $artisan['stdout']. '<br /><br />');
 
         	if (!$domain->hasSsl()) {
                 $this->addDomainEncryption($domain);
@@ -403,17 +403,17 @@ class Modules_Microweber_Install {
     	
     	 // Add SSL
     	 try {
-    	 	pm_Log::debug('Start installign SSL for domain: ' . $domain->getName() . '; SSL Email: ' . $sslEmail);
+    	 	Modules_Microweber_Log::debug('Start installign SSL for domain: ' . $domain->getName() . '; SSL Email: ' . $sslEmail);
     	 	
     	 	$artisan = \pm_ApiCli::call('extension', array_merge(['--exec', 'letsencrypt', 'cli.php'], $encryptOptions), \pm_ApiCli::RESULT_FULL);
     	 	
-    		pm_Log::debug('Encrypt domain log for: ' . $domain->getName() . '<br />' . $artisan['stdout']. '<br /><br />');
-    	 	pm_Log::debug('Success instalation SSL for domain: ' . $domain->getName());
+    		Modules_Microweber_Log::debug('Encrypt domain log for: ' . $domain->getName() . '<br />' . $artisan['stdout']. '<br /><br />');
+    	 	Modules_Microweber_Log::debug('Success instalation SSL for domain: ' . $domain->getName());
     	 	
     	 } catch(\Exception $e) {
     	 	
-    	 	pm_Log::debug('Can\'t install SSL for domain: ' . $domain->getName());
-    	 	pm_Log::debug('Error: ' . $e->getMessage());
+    	 	Modules_Microweber_Log::debug('Can\'t install SSL for domain: ' . $domain->getName());
+    	 	Modules_Microweber_Log::debug('Error: ' . $e->getMessage());
     	 	
     	 }
     	 

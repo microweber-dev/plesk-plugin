@@ -39,7 +39,7 @@ class Modules_Microweber_WhmcsConnector
     public function getSelectedTemplate()
     {
 
-        pm_Log::debug('Get selected template for domain: ' . $this->_domainName);
+        Modules_Microweber_Log::debug('Get selected template for domain: ' . $this->_domainName);
 
         $template = 'dream';
 
@@ -47,7 +47,7 @@ class Modules_Microweber_WhmcsConnector
 
         $json = Modules_Microweber_Helper::getJsonFromUrl($url);
 
-        pm_Log::debug('Recived json for domain: ' . $this->_domainName . print_r($json, true));
+        Modules_Microweber_Log::debug('Recived json for domain: ' . $this->_domainName . print_r($json, true));
 
         if (isset($json['template'])) {
             $template = $json['template'];
@@ -58,7 +58,7 @@ class Modules_Microweber_WhmcsConnector
 
     public function getWhitelabelSettings()
     {
-        pm_Log::debug('Get whitelabel settings for domain: ' . $this->_domainName);
+        Modules_Microweber_Log::debug('Get whitelabel settings for domain: ' . $this->_domainName);
 
         $settings = array();
 
@@ -66,7 +66,7 @@ class Modules_Microweber_WhmcsConnector
 
         $json = Modules_Microweber_Helper::getJsonFromUrl($url);
 
-        pm_Log::debug('Recived json for domain: ' . $this->_domainName . print_r($json, true));
+        Modules_Microweber_Log::debug('Recived json for domain: ' . $this->_domainName . print_r($json, true));
 
         if (isset($json['settings'])) {
             $settings = $json['settings'];
