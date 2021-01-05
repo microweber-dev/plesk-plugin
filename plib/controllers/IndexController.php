@@ -317,7 +317,9 @@ class IndexController extends pm_Controller_Action
 
     public function activatesymlinkingAction()
     {
-        $enableSymlinking = pm_ApiCli::callSbin('symlinking_enable.sh',[]);
+
+        $task = new Modules_Microweber_TaskDisableSelinux();
+        $this->taskManager->start($task, NULL);
 
         return $this->_redirect('index/install');
     }
