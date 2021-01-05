@@ -22,7 +22,9 @@ if ($this->selinuxError):
     function confirmSelinux() {
         if (confirm('Are you sure want to disable SELinux?')) {
             if (confirm('This will reboot your server, please confirm.')) {
-                window.location.href = "<?php echo $this->activateSymlinking; ?>";
+                if (confirm('Reboot server can take more than 5 minutes, click ok to continue with server reboot.')) {
+                    window.location.href = "<?php echo $this->activateSymlinking; ?>";
+                }
             }
         }
     }
