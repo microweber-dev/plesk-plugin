@@ -328,15 +328,19 @@ class IndexController extends pm_Controller_Action
     {
 
         $this->view->selinuxError = false;
-        $checkSymlinkIsAllowed = pm_ApiCli::callSbin('symlinking_status.sh',[]);
-        if (stripos($checkSymlinkIsAllowed['stdout'], 'enforcing') !== false) {
-            $this->view->selinuxError = true;
-        }
-        if (stripos($checkSymlinkIsAllowed['stdout'], 'permissive') !== false) {
-            $this->view->selinuxError = true;
-        }
+        $this->view->activateSymlinking = false;
 
-        $this->view->activateSymlinking = pm_Context::getBaseUrl() . 'index.php/index/activatesymlinking';
+        $fileManager = new pm_ServerFileManager();
+        if ($fileManager->fileExists('/usr/sbin/getenforce')) {
+            $checkSymlinkIsAllowed = pm_ApiCli::callSbin('symlinking_status.sh', []);
+            if (stripos($checkSymlinkIsAllowed['stdout'], 'enforcing') !== false) {
+                $this->view->selinuxError = true;
+            }
+            if (stripos($checkSymlinkIsAllowed['stdout'], 'permissive') !== false) {
+                $this->view->selinuxError = true;
+            }
+            $this->view->activateSymlinking = pm_Context::getBaseUrl() . 'index.php/index/activatesymlinking';
+        }
 
         $this->_checkAppSettingsIsCorrect();
 
