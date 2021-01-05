@@ -315,8 +315,26 @@ class IndexController extends pm_Controller_Action
         return $this->_redirect('index/versions');
     }
 
+    public function activatesymlinkingAction()
+    {
+        $enableSymlinking = pm_ApiCli::callSbin('symlinking_enable.sh',[]);
+
+        return $this->_redirect('index/install');
+    }
+
     public function installAction()
     {
+
+        $this->view->selinuxError = false;
+        $checkSymlinkIsAllowed = pm_ApiCli::callSbin('symlinking_status.sh',[]);
+        if (stripos($checkSymlinkIsAllowed['stdout'], 'enforcing') !== false) {
+            $this->view->selinuxError = true;
+        }
+        if (stripos($checkSymlinkIsAllowed['stdout'], 'permissive') !== false) {
+            $this->view->selinuxError = true;
+        }
+
+        $this->view->activateSymlinking = pm_Context::getBaseUrl() . 'index.php/index/activatesymlinking';
 
         $this->_checkAppSettingsIsCorrect();
 

@@ -8,6 +8,19 @@
 ?>
 <?php echo $this->renderTabs($this->tabs); ?>
 
+<?php
+if ($this->selinuxError):
+?>
+<div class="alert alert-danger">
+    <i class="fa fa-times"></i> SELinux is enabled on your server and symliked installations will not work <br />
+    <a href="<?php echo $this->activateSymlinking; ?>">Click here to disable SELinux, so you can use symliked installations</a>
+    <br />
+    OR to disable SELinux manually follow this <a href="https://support.plesk.com/hc/en-us/articles/213947705-How-to-enable-disable-SELinux-on-a-server#:~:text=To%20temporary%20change%20SELinux%20mode,Commonly%20used%20for%20troubleshooting" target="_blank">guide</a>.
+</div>
+<?php
+endif;
+?>
+
 <h3>Choose installation options</h3>
 <b>Random values will be generated if fields are left blank.</b>
 
