@@ -137,6 +137,9 @@ class Modules_Microweber_Install {
 
             $log = pm_ApiCli::callSbin('update_domain_phpini.sh', [$domain->getName(), $tempPhpIni])['stdout'];
             $fileManager->removeFile($tempPhpIni);
+			
+			// Symlink domain enable
+			$log = pm_ApiCli::callSbin('update_domain_server_settings.sh', [$domain->getName(), ['-apache-restrict-follow-sym-links','false'])['stdout'];
 
         }
 
