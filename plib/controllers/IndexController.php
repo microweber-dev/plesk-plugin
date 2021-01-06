@@ -314,7 +314,7 @@ class IndexController extends pm_Controller_Action
 
         return $this->_redirect('index/versions');
     }
-
+/*
     public function activatesymlinkingAction()
     {
 
@@ -322,12 +322,12 @@ class IndexController extends pm_Controller_Action
         $this->taskManager->start($task, NULL);
 
         return $this->_redirect('index/install');
-    }
+    }*/
 
     public function installAction()
     {
 
-        $this->view->selinuxError = false;
+   /*     $this->view->selinuxError = false;
         $this->view->activateSymlinking = false;
 
         $fileManager = new pm_ServerFileManager();
@@ -340,7 +340,7 @@ class IndexController extends pm_Controller_Action
                 $this->view->selinuxError = true;
             }
             $this->view->activateSymlinking = pm_Context::getBaseUrl() . 'index.php/index/activatesymlinking';
-        }
+        }*/
 
         $this->_checkAppSettingsIsCorrect();
 
