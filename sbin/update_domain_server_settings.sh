@@ -1,3 +1,3 @@
 #!/bin/bash
 
-plesk bin domain --update-web-server-settings $1
+plesk bin subscription --update-web-server-settings $1 $2 $3
