@@ -263,7 +263,15 @@ class Modules_Microweber_Install {
         }
         
         $this->setProgress(70);
-        	
+
+
+        // And then we will copy folders
+        foreach ($this->_getDirsToCopy() as $folder) {
+            $scriptDirOrFile = $this->appLatestVersionFolder . $folder;
+            $domainDirOrFile = $domainDocumentRoot .'/'. $folder;
+            $fileManager->copyFile($scriptDirOrFile, dirname($domainDirOrFile));
+        }
+
         // And then we will copy files
         foreach ($this->_getFilesForCopy() as $file) {
         	$fileManager->copyFile($this->appLatestVersionFolder . $file, dirname($domainDocumentRoot . '/' . $file));
@@ -480,13 +488,10 @@ class Modules_Microweber_Install {
     	}
     	
     }
-    
+
     private function _getDirsToMake() {
-    	
+
     	$dirs = [];
-    	
-    	// Config dir
-    	$dirs[] = 'config';
     	
     	// Storage dirs
     	$dirs[] = 'storage';
@@ -509,7 +514,17 @@ class Modules_Microweber_Install {
     	
     	return $dirs;
     }
-    
+
+    private function _getDirsToCopy() {
+
+        $dirs = [];
+
+        // Config dir
+        $dirs[] = 'config';
+
+        return $dirs;
+    }
+
     private function _getFilesForSymlinking($appLatestFolder) {
     	
     	$files = [];
@@ -558,22 +573,22 @@ class Modules_Microweber_Install {
     	$files[] = 'favicon.ico';
     	$files[] = 'composer.json';
     	$files[] = 'artisan';
-    	
-    	// Config folder
-    	$files[] = 'config/.htaccess';
-    	$files[] = 'config/database.php';
-    	$files[] = 'config/app.php';
-    	$files[] = 'config/auth.php';
-    	$files[] = 'config/cache.php';
-    	$files[] = 'config/compile.php';
-    	$files[] = 'config/filesystems.php';
-    	$files[] = 'config/queue.php';
-    	$files[] = 'config/services.php';
-    	$files[] = 'config/view.php';
-    	$files[] = 'config/workbench.php';
-    	$files[] = 'config/hashing.php';
-    	$files[] = 'config/mail.php';
-    	$files[] = 'config/session.php';
+    	/*
+        // Config folder
+        $files[] = 'config/.htaccess';
+        $files[] = 'config/database.php';
+        $files[] = 'config/app.php';
+        $files[] = 'config/auth.php';
+        $files[] = 'config/cache.php';
+        $files[] = 'config/compile.php';
+        $files[] = 'config/filesystems.php';
+        $files[] = 'config/queue.php';
+        $files[] = 'config/services.php';
+        $files[] = 'config/view.php';
+        $files[] = 'config/workbench.php';
+        $files[] = 'config/hashing.php';
+        $files[] = 'config/mail.php';
+        $files[] = 'config/session.php';*/
     	
     	// Bootstrap folder
     	$files[] = 'bootstrap/.htaccess';
