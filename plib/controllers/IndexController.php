@@ -326,8 +326,8 @@ class IndexController extends pm_Controller_Action
 
     public function installAction()
     {
-
-   /*     $this->view->selinuxError = false;
+        /*
+        $this->view->selinuxError = false;
         $this->view->activateSymlinking = false;
 
         $fileManager = new pm_ServerFileManager();
