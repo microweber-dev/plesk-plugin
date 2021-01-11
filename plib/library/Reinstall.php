@@ -40,8 +40,11 @@ class Modules_Microweber_Reinstall
 
             ], pm_ApiCli::RESULT_FULL);
 			
-			$fileManager->copyFile($scriptDirOrFile, $domainDirOrFile);
-			
+			try {
+				$fileManager->copyFile($scriptDirOrFile, $domainDirOrFile);
+			} catch (Exception $e) {
+				//
+			}
         }
 
         foreach (self::_getFilesForSymlinking($appLatestVersionFolder) as $folder) {

@@ -23,6 +23,19 @@ class Modules_Microweber_TaskAppDownload extends \pm_LongTask_Task
 
         $downloadLog .= pm_ApiCli::callSbin('unzip_app_version.sh', [base64_encode($release['url']), Modules_Microweber_Config::getAppSharedPath()])['stdout'];
 
+        $this->updateProgress(30);
+		
+		foreach (Modules_Microweber_Domain::getDomains() as $domain) {
+
+            if (!$domain->hasHosting()) {
+                continue;
+            }
+
+			$domainDocumentRoot = $domain->getDocumentRoot();
+			
+			Modules_Microweber_Reinstall::run($domain->getId(), $domainDocumentRoot);
+		}
+		
         $this->updateProgress(60);
 
         // Whm Connector
