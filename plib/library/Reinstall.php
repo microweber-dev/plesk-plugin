@@ -14,30 +14,34 @@ class Modules_Microweber_Reinstall
         $domain = Modules_Microweber_Domain::getUserDomainById($domainId);
         if (empty($domain->getName())) {
             throw new \Exception($domain->getName() . ' domain not found.');
-        }
+        } 
 
         $appLatestVersionFolder = Modules_Microweber_Config::getAppSharedPath();
 
         // Repair domain permission
-        pm_ApiCli::callSbin('repair_domain_permissions.sh', [$domain->getName()], pm_ApiCli::RESULT_FULL);
+        // pm_ApiCli::callSbin('repair_domain_permissions.sh', [$domain->getName()], pm_ApiCli::RESULT_FULL);
 
         $fileManager = new \pm_FileManager($domain->getId());
 
-        // First we will make a directories
-        foreach (self::_getDirsToMake() as $dir) {
+        // First we will make a recopy files
+        foreach (self::_getDirsOrFilesToRecopy() as $dirOrFilesToCopy) {
+
+			$scriptDirOrFile = $appLatestVersionFolder . $dirOrFilesToCopy;
+        	$domainDirOrFile = $appInstallationPath .'/'. $dirOrFilesToCopy;
 
             // Delete domain file
-            $deleteFileOrPath = pm_ApiCli::callSbin('filemng', [
+            pm_ApiCli::callSbin('filemng', [
                 $domain->getSysUserLogin(),
                 'exec',
                 $domain->getDocumentRoot(),
                 'rm',
                 '-rf',
-                $dir
+                $dirOrFilesToCopy
 
             ], pm_ApiCli::RESULT_FULL);
-
-            $fileManager->mkdir($appInstallationPath . '/' . $dir, '0755', true);
+			
+			$fileManager->copyFile($scriptDirOrFile, $domainDirOrFile);
+			
         }
 
         foreach (self::_getFilesForSymlinking($appLatestVersionFolder) as $folder) {
@@ -99,20 +103,16 @@ class Modules_Microweber_Reinstall
             }
         }
 
-        return $files;
+        return $files; 
     }
 
-    private static function _getDirsToMake()
+    private static function _getDirsOrFilesToRecopy()
     {
-        $dirs = [];
+        $files = [];
+		$files[] = 'bootstrap';
+		$files[] = 'config/cors.php';
 
-        // Storage dirs
-        $dirs[] = 'storage/cache';
 
-        // User files dirs
-        $dirs[] = 'userfiles/modules';
-        $dirs[] = 'userfiles/templates';
-
-        return $dirs;
+        return $files;
     }
 }
