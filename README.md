@@ -21,11 +21,11 @@ settings.general.open_basedir.default="none"
 ```
 
 
-1. Now, open the created /etc/nginx/conf.d/directives.conf file in a text editor
+5. Now, open the created /etc/nginx/conf.d/directives.conf file in a text editor
 ```
 nano /etc/nginx/conf.d/directives.conf
 ```
-1. Add required directives. For example:
+6. Add required directives. For example:
 ```
 proxy_buffer_size          128k;
 proxy_buffers              4 256k;
