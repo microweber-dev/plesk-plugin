@@ -14,14 +14,24 @@ class Modules_Microweber_Reinstall
         $domain = Modules_Microweber_Domain::getUserDomainById($domainId);
         if (empty($domain->getName())) {
             throw new \Exception($domain->getName() . ' domain not found.');
-        } 
+        }
+		
+		$fileManager = new \pm_FileManager($domain->getId());
+		
+		if (!$fileManager->isDir($appInstallationPath)) {
+			// Dir not exists
+			return;
+		}
+		
+		if (!$fileManager->fileExists($appInstallationPath . '/config/microweber.php')) {
+			// This is not microweber installation
+			return;
+        }
 
         $appLatestVersionFolder = Modules_Microweber_Config::getAppSharedPath();
 
         // Repair domain permission
         // pm_ApiCli::callSbin('repair_domain_permissions.sh', [$domain->getName()], pm_ApiCli::RESULT_FULL);
-
-        $fileManager = new \pm_FileManager($domain->getId());
 
 		// Delete files
 		foreach (self::_getFilesForDelete() as $deleteDirOrFile) {

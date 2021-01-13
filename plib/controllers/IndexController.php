@@ -324,10 +324,11 @@ class IndexController extends pm_Controller_Action
         return $this->_redirect('index/install');
     }*/
 
+/*
 	public function reinstallAction()
 	{
 		
-		$domainId = 100;
+		$domainId = 39;
 		
 		$domain = Modules_Microweber_Domain::getUserDomainById($domainId);
         if (empty($domain->getName())) { 
@@ -340,7 +341,7 @@ class IndexController extends pm_Controller_Action
 		
 		
 		die(); 
-	}
+	}*/
 
     public function installAction()
     {
