@@ -23,7 +23,28 @@ class Modules_Microweber_Reinstall
 
         $fileManager = new \pm_FileManager($domain->getId());
 
-        // First we will make a recopy files
+		// Delete files
+		foreach (self::_getFilesForDelete() as $deleteDirOrFile) {
+
+            // Delete domain file
+            pm_ApiCli::callSbin('filemng', [
+                $domain->getSysUserLogin(),
+                'exec',
+                $domain->getDocumentRoot(),
+                'rm',
+                '-rf',
+                $deleteDirOrFile
+
+            ], pm_ApiCli::RESULT_FULL);
+			
+		}
+		
+		// Make dirs
+		foreach (self::_getDirsToMake() as $dir) {
+        	$fileManager->mkdir($appInstallationPath . '/' . $dir, '0755', true);
+        }
+		
+        // Recopy files
         foreach (self::_getDirsOrFilesToRecopy() as $dirOrFilesToCopy) {
 
 			$scriptDirOrFile = $appLatestVersionFolder . $dirOrFilesToCopy;
@@ -81,10 +102,13 @@ class Modules_Microweber_Reinstall
     private static function _getFilesForSymlinking($appLatestFolder) {
 
         $files = [];
-        $files[] = 'version.txt';
-        $files[] = 'vendor';
-        $files[] = 'src';
-
+    	$files[] = 'version.txt';
+    	$files[] = 'vendor';
+    	$files[] = 'src';
+    	$files[] = 'resources';
+    	$files[] = 'database';
+    	$files[] = 'userfiles/elements';
+		
         $sfm = new \pm_ServerFileManager();
         $listTemplates = $sfm->scanDir($appLatestFolder . '/userfiles/templates');
         if (!empty($listTemplates)) {
@@ -92,7 +116,7 @@ class Modules_Microweber_Reinstall
                 if ($template == '.' || $template == '..') {
                     continue;
                 }
-                $files[] = '/userfiles/templates/' . $template;
+                $files[] = 'userfiles/templates/' . $template;
             }
         }
 
@@ -102,17 +126,54 @@ class Modules_Microweber_Reinstall
                 if ($module == '.' || $module == '..') {
                     continue;
                 }
-                $files[] = '/userfiles/modules/' . $module;
+                $files[] = 'userfiles/modules/' . $module;
             }
         }
-
+		
         return $files; 
+    }
+	
+	private static function _getFilesForDelete()
+	{
+		$files = [];
+		$files[] = 'bootstrap';
+		$files[] = 'vendor';
+		$files[] = 'src';
+		$files[] = 'resources';
+		$files[] = 'database';
+		$files[] = 'userfiles/templates';
+		$files[] = 'userfiles/modules';
+
+        return $files;
+	}
+
+	private function _getDirsToMake() {
+
+    	$dirs = [];
+    	
+    	// Storage dirs
+    	$dirs[] = 'storage';
+    	$dirs[] = 'storage/framework';
+    	$dirs[] = 'storage/framework/sessions';
+    	$dirs[] = 'storage/framework/views';
+    	$dirs[] = 'storage/cache';
+    	$dirs[] = 'storage/logs';
+    	$dirs[] = 'storage/app';
+    	
+    	// User files dirs
+    	$dirs[] = 'userfiles/media';
+    	$dirs[] = 'userfiles/modules';
+    	$dirs[] = 'userfiles/templates';
+    	
+    	return $dirs;
     }
 
     private static function _getDirsOrFilesToRecopy()
     {
         $files = [];
-		$files[] = 'bootstrap';
+		$files[] = 'index.php';
+		$files[] = 'composer.json';
+		$files[] = 'bootstrap'; 
 		$files[] = 'config/cors.php';
 
 

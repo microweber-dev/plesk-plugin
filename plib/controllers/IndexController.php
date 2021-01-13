@@ -324,6 +324,24 @@ class IndexController extends pm_Controller_Action
         return $this->_redirect('index/install');
     }*/
 
+	public function reinstallAction()
+	{
+		
+		$domainId = 100;
+		
+		$domain = Modules_Microweber_Domain::getUserDomainById($domainId);
+        if (empty($domain->getName())) { 
+            throw new \Exception($domain->getName() . ' domain not found.');
+        }
+
+        $domainDocumentRoot = $domain->getDocumentRoot();
+		
+		Modules_Microweber_Reinstall::run($domainId, $domainDocumentRoot);
+		
+		
+		die(); 
+	}
+
     public function installAction()
     {
         /*
