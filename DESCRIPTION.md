@@ -45,7 +45,7 @@ Live Edit view is the manifestation of the Real-Time Text Writing & Editing core
 
 You can add dynamic pages, posts, products. All of these can be organized in custom categories in order to achieve a better navigation and showcase of a website's content. New pages can be created using different layouts and all pages, posts and products come with a preset number layouts and modules to get users started. These modules can be changed and you can of course add your own custom set of modules as to create the most suitable content for your needs.
 
-![Powerful Admin Panel](https://microweber.com/cdn/2019_version/2.jpg "")
+![Powerful Admin Panel]
 
 
 
@@ -53,7 +53,7 @@ You can add dynamic pages, posts, products. All of these can be organized in cus
 
 Perhaps the main focus of Microweber CMS is E-commerce. A rising number of people have grown fond of the idea of online entrepreneurship and we aspire to cover their needs. The software has some built-in features that will help online shop founders see their business grow and excel.
 
-![E-commerce Solution](https://microweber.com/cdn/2019_version/3.jpg "")
+![E-commerce Solution]
 
 
 
