@@ -795,10 +795,17 @@ class IndexController extends pm_Controller_Action
         ]);
         */
 
-        $form->addElement('text', 'update_app_url', [
+      /*  $form->addElement('text', 'update_app_url', [
             'label' => 'Update App Url',
             'value' => Modules_Microweber_Config::getUpdateAppUrl(),
             //'required' => true,
+        ]);*/
+
+        $form->addElement('select', 'update_app_channel', [
+            'label' => 'Update App Channel',
+            'multiOptions' => ['stable' => 'Last stable version', 'dev' => 'Last developer version'],
+            'value' => pm_Settings::get('update_app_channel'),
+            'required' => true,
         ]);
 
         $form->addElement('text', 'whmcs_url', [
@@ -831,7 +838,8 @@ class IndexController extends pm_Controller_Action
             pm_Settings::set('installation_type_allow_customers', $form->getValue('installation_type_allow_customers'));
             pm_Settings::set('installation_database_driver_allow_customers', $form->getValue('installation_database_driver_allow_customers'));
 
-            pm_Settings::set('update_app_url', $form->getValue('update_app_url'));
+            //pm_Settings::set('update_app_url', $form->getValue('update_app_url'));
+            pm_Settings::set('update_app_channel', $form->getValue('update_app_channel'));
             pm_Settings::set('whmcs_url', $form->getValue('whmcs_url'));
             pm_Settings::set('allow_reseller_whitelabel', $form->getValue('allow_reseller_whitelabel'));
 

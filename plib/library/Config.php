@@ -121,9 +121,18 @@ class Modules_Microweber_Config
             $licenseKey = $pmLicense->getProperties('product')['number'];
         }
 
-        $releaseUrl = Modules_Microweber_Config::getUpdateAppUrl();
-        $releaseUrl .= '?api_function=get_download_link&get_last_version=1&license_key='.$licenseKey.'&license_type=plesk';
+        if (pm_Settings::get('update_app_channel') == 'dev') {
 
-        return Modules_Microweber_Helper::getJsonFromUrl($releaseUrl);
+            return [
+                'version'=>'Latest development version',
+                'url'=>'http://updater.microweberapi.com/microweber-dev.zip'
+            ];
+
+        } else {
+            $releaseUrl = Modules_Microweber_Config::getUpdateAppUrl();
+            $releaseUrl .= '?api_function=get_download_link&get_last_version=1&license_key=' . $licenseKey . '&license_type=plesk';
+
+            return Modules_Microweber_Helper::getJsonFromUrl($releaseUrl);
+        }
     }
 }
