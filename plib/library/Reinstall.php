@@ -151,8 +151,6 @@ class Modules_Microweber_Reinstall
 		$files[] = 'src';
 		$files[] = 'resources';
 		$files[] = 'database';
-		$files[] = 'userfiles/templates';
-		$files[] = 'userfiles/modules';
 
         return $files;
 	}

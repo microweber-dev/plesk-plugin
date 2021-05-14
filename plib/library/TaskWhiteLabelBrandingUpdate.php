@@ -30,7 +30,20 @@ class Modules_Microweber_TaskWhiteLabelBrandingUpdate extends \pm_LongTask_Task
                 $fileManager = new pm_FileManager($domain->getId());
 
                 if ($fileManager->fileExists($installation['appInstallation'] . '/config/microweber.php')) {
-                    $fileManager->filePutContents($installation['appInstallation'] . '/storage/branding.json', Modules_Microweber_WhiteLabel::getWhiteLabelJson($domain));
+
+                    $whitelabelSettings = [];
+                    $currentBranding = $installation['appInstallation'] . '/storage/branding.json';
+                    $currentBranding = $fileManager->fileGetContents($currentBranding);
+                    $currentBranding = json_decode($currentBranding, true);
+                    if (is_array($currentBranding)) {
+                        $whitelabelSettings = $currentBranding;
+                    }
+
+                    foreach(Modules_Microweber_WhiteLabel::getWhiteLabelJson($domain) as $key=>$setting) {
+                        $whitelabelSettings[$key] = $setting;
+                    }
+
+                    $fileManager->filePutContents($installation['appInstallation'] . '/storage/branding.json', $whitelabelSettings);
                 }
             }
         } catch (Exception $e) {
