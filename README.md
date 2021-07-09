@@ -20,17 +20,15 @@ extensionUpload = true
 settings.general.open_basedir.default="none"
 ```
 
+### Uploading
 
-5. Now, open the created /etc/nginx/conf.d/directives.conf file in a text editor
-```
-nano /etc/nginx/conf.d/directives.conf
-```
-6. Add required directives. For example:
-```
-proxy_buffer_size          128k;
-proxy_buffers              4 256k;
-proxy_busy_buffers_size    256k;
-```
+After activation of `extensionUpload` go to Server Management > Extensions
+
+Then upload the zip file fron the upload button
+
+![upload_extension.png](assets/upload_extension.png "") 
+
+
 
 ## How to use 
 
@@ -61,3 +59,25 @@ proxy_busy_buffers_size    256k;
 **For templates setup**: Go to *Server management->Microweber->Versions* and you will be able update the plugin and download templates 
  
 ![plan.png](assets/versions.png "") 
+
+
+##  Web server setting
+
+
+If your server is slow you can improve the speed by editting some server setting
+
+### Nginx setting 
+
+-  open the created /etc/nginx/conf.d/directives.conf file in a text editor
+
+
+```
+nano /etc/nginx/conf.d/directives.conf
+```
+
+-  Add required directives. For example:
+```
+proxy_buffer_size          128k;
+proxy_buffers              4 256k;
+proxy_busy_buffers_size    256k;
+```
