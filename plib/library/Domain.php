@@ -8,7 +8,7 @@
 
 class Modules_Microweber_Domain
 {
-	public static function addAppInstallation($domain, $appInstallation)
+    public static function addAppInstallation($domain, $appInstallation)
     {
         $appInstallation['domainId'] = $domain->getId();
         $appInstallation['appInstallationId'] = md5($appInstallation['appInstallation']);
@@ -23,22 +23,22 @@ class Modules_Microweber_Domain
 
         $domain->setSetting('mwAppInstallations', json_encode($mwAppInstallations));
     }
-	
-	public static function getDomains()
-	{
 
-		if (pm_Session::getClient()->isAdmin()) {
-			$domains = pm_Domain::getAllDomains();
-		} else if(pm_Session::getClient()->isReseller()) {
-		    $domains = self::getResellerDomains(pm_Session::getClient()->getId());
+    public static function getDomains()
+    {
+
+        if (pm_Session::getClient()->isAdmin()) {
+            $domains = pm_Domain::getAllDomains();
+        } else if (pm_Session::getClient()->isReseller()) {
+            $domains = self::getResellerDomains(pm_Session::getClient()->getId());
         } else {
-			$domains = pm_Domain::getDomainsByClient(pm_Session::getClient());
-		}
+            $domains = pm_Domain::getDomainsByClient(pm_Session::getClient());
+        }
 
-		return $domains;
-	}
+        return $domains;
+    }
 
-	public static function getResellerDomains($resellerId)
+    public static function getResellerDomains($resellerId)
     {
         $domains = [];
 
@@ -82,16 +82,16 @@ APICALL;
         return $domains;
     }
 
-	public static function getUserDomainById($domainId)
-	{
-		foreach (self::getDomains() as $domain) {
-			if ($domain->getId() == $domainId) {
-				return $domain;
-			}
-		}
+    public static function getUserDomainById($domainId)
+    {
+        foreach (self::getDomains() as $domain) {
+            if ($domain->getId() == $domainId) {
+                return $domain;
+            }
+        }
 
-		throw new Exception('You don\'t have permission to manage this domain');
-	}
+        throw new Exception('You don\'t have permission to manage this domain');
+    }
 
     public static function _xmlApi($request)
     {
