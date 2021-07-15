@@ -42,6 +42,14 @@ class Modules_Microweber_Domain
     {
         $domains = [];
 
+        $reselerDomains = pm_Domain::getDomainsByClient(pm_Client::getByClientId($resellerId));
+        if (!empty($reselerDomains)) {
+            foreach ($reselerDomains as $reselerDomain) {
+                $domains[] = $reselerDomain;
+            }
+        }
+
+        // Get customer domains by reseller id
         $request = <<<APICALL
 <customer>
     <get>
