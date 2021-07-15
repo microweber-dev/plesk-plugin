@@ -8,16 +8,7 @@
 
 class Modules_Microweber_Domain
 {
-
-	protected static $_excludeDomains = array(
-		'microweber.com', 
-		'microweberapi.com',
-		'microweber.bg',
-		'members.microweber.bg',
-		'web.microweber.bg'
-	);
-
-	public static function addAppInstallation($domain, $appInstallation)
+    public static function addAppInstallation($domain, $appInstallation)
     {
         $appInstallation['domainId'] = $domain->getId();
         $appInstallation['appInstallationId'] = md5($appInstallation['appInstallation']);
@@ -32,45 +23,96 @@ class Modules_Microweber_Domain
 
         $domain->setSetting('mwAppInstallations', json_encode($mwAppInstallations));
     }
-	
-	public static function getDomains()
-	{
-	/*	$httpHost = '';
-		if (isset($_SERVER['HTTP_HOST'])) {
-			$httpHost = $_SERVER['HTTP_HOST'];
-			$exp = explode(":", $httpHost);
-			if (isset($exp[0])) {
-				$httpHost = $exp[0];
-				
-				self::$_excludeDomains[] = $httpHost;
-			}
-		}*/
-		
-		if (pm_Session::getClient()->isAdmin() || pm_Session::getClient()->isReseller()) {
-			$domains = pm_Domain::getAllDomains();
-		} else {
-			$domains = pm_Domain::getDomainsByClient(pm_Session::getClient());
-		}
-		
-		/*$readyDomains = [];
-		foreach ($domains as $domain) {
-			if (in_array($domain->getName(), self::$_excludeDomains)) {
-				continue;
-			}
-			$readyDomains[] = $domain;
-		}*/
 
-		return $domains;
-	}
+    public static function getDomains()
+    {
 
-	public static function getUserDomainById($domainId)
-	{
-		foreach (self::getDomains() as $domain) {
-			if ($domain->getId() == $domainId) {
-				return $domain;
-			}
-		}
+        if (pm_Session::getClient()->isAdmin()) {
+            $domains = pm_Domain::getAllDomains();
+        } else if(pm_Session::getClient()->isReseller()) {
+            $domains = self::getResellerDomains(pm_Session::getClient()->getId());
+        } else {
+            $domains = pm_Domain::getDomainsByClient(pm_Session::getClient());
+        }
 
-		throw new Exception('You don\'t have permission to manage this domain');
-	}
+        return $domains;
+    }
+
+    public static function getResellerDomains($resellerId)
+    {
+        $domains = [];
+
+        $request = <<<APICALL
+<customer>
+    <get>
+      <filter>
+          <owner-id>$resellerId</owner-id>
+      </filter>
+      <dataset>
+        <gen_info>
+        </gen_info>
+      </dataset>
+    </get>
+</customer>
+APICALL;
+
+        $response = self::_xmlApi($request);
+
+        if ('ok' == $response->customer->get->result->status) {
+
+            $filter = [];
+
+            foreach ($response->customer->get->result as $customer) {
+                if (isset($customer->id)) {
+                    $filter[] = "<get-domain-list><filter><id>" . $customer->id->__toString() . "</id></filter></get-domain-list>";
+                }
+            }
+
+            if (!empty($filter)) {
+                $filter = implode("", $filter);
+
+                $request = <<<APICALL
+<customer>
+    $filter
+</customer>
+APICALL;
+
+                $response = self::_xmlApi($request);
+
+                if ("ok" == $response->customer->{"get-domain-list"}->{result}->{status}) {
+                    foreach ($response->customer->children() as $customerDomains) {
+                        foreach ($customerDomains->result->domains as $domain) {
+                            foreach ($domain->children() as $item) {
+                                $domains[] = pm_Domain::getByDomainId($item->id->__toString());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $domains;
+    }
+
+    public static function getUserDomainById($domainId)
+    {
+        foreach (self::getDomains() as $domain) {
+            if ($domain->getId() == $domainId) {
+                return $domain;
+            }
+        }
+
+        throw new Exception('You don\'t have permission to manage this domain');
+    }
+
+    public static function _xmlApi($request)
+    {
+        pm_Log::debug("Ready to make a request to XML API: $request");
+
+        $response = pm_ApiRpc::getService()->call($request);
+
+        pm_Log::debug("Request is finished, response is: " . $response->asXML());
+
+        return $response;
+    }
 }
