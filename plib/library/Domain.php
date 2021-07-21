@@ -26,56 +26,12 @@ class Modules_Microweber_Domain
 
     public static function getDomains()
     {
-
-        if (pm_Session::getClient()->isAdmin()) {
-            $domains = pm_Domain::getAllDomains();
-        } else if (pm_Session::getClient()->isReseller()) {
-            $domains = self::getResellerDomains(pm_Session::getClient()->getId());
-        } else {
-            $domains = pm_Domain::getDomainsByClient(pm_Session::getClient());
-        }
-
-        return $domains;
-    }
-
-    public static function getResellerDomains($resellerId)
-    {
         $domains = [];
 
-        $reselerDomains = pm_Domain::getDomainsByClient(pm_Client::getByClientId($resellerId));
-        if (!empty($reselerDomains)) {
-            foreach ($reselerDomains as $reselerDomain) {
-                $domains[] = $reselerDomain;
-            }
-        }
-
-        // Get customer domains by reseller id
-        $request = <<<APICALL
-<customer>
-    <get>
-      <filter>
-          <owner-id>$resellerId</owner-id>
-      </filter>
-      <dataset>
-        <gen_info>
-        </gen_info>
-      </dataset>
-    </get>
-</customer>
-APICALL;
-
-        $response = self::_xmlApi($request);
-
-        if ($response->customer->get->result->status == 'ok') {
-            foreach ($response->customer->get->result as $customer) {
-                if (isset($customer->id)) {
-                    $clientDomains = pm_Domain::getDomainsByClient(pm_Client::getByClientId($customer->id));
-                    if (!empty($clientDomains)) {
-                        foreach ($clientDomains as $clientDomain) {
-                            $domains[] = $clientDomain;
-                        }
-                    }
-                }
+        $allDomains = pm_Domain::getAllDomains();
+        foreach ($allDomains as $domain) {
+            if (pm_Session::getClient()->hasAccessToDomain($domain->getId())) {
+                $domains[] = $domain;
             }
         }
 
