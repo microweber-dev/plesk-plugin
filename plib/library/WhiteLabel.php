@@ -132,6 +132,10 @@ class Modules_Microweber_WhiteLabel
                 $whiteLabelSettings['enable_service_links'] = $whiteLabelWhmcsSettings['wl_enable_service_links'];
             }
 
+            if (isset($whiteLabelWhmcsSettings['wl_admin_colors_sass'])) {
+                $whiteLabelSettings['admin_colors_sass'] = $whiteLabelWhmcsSettings['wl_admin_colors_sass'];
+            }
+
         } else {
             $whiteLabelSettings['brand_name'] = Modules_Microweber_WhiteLabelSettings::get('wl_brand_name');
             $whiteLabelSettings['brand_favicon'] = Modules_Microweber_WhiteLabelSettings::get('wl_brand_favicon');
@@ -152,6 +156,7 @@ class Modules_Microweber_WhiteLabel
 
             $whiteLabelSettings['external_login_server_button_text'] = Modules_Microweber_WhiteLabelSettings::get('wl_external_login_server_button_text');
             $whiteLabelSettings['external_login_server_enable'] = Modules_Microweber_WhiteLabelSettings::get('wl_external_login_server_enable');
+            $whiteLabelSettings['admin_colors_sass'] = Modules_Microweber_WhiteLabelSettings::get('wl_admin_colors_sass');
 
             $whmcsPackageUrls = Modules_Microweber_Config::getWhmcsPackageManagerUrls();
             if (!empty($whmcsPackageUrls)) {
