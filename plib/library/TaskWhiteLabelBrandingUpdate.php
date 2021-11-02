@@ -42,8 +42,8 @@ class Modules_Microweber_TaskWhiteLabelBrandingUpdate extends \pm_LongTask_Task
                     foreach(Modules_Microweber_WhiteLabel::getWhiteLabelJson($domain) as $key=>$setting) {
                         $whitelabelSettings[$key] = $setting;
                     }
-
-                    $fileManager->filePutContents($installation['appInstallation'] . '/storage/branding.json', $whitelabelSettings);
+		    $whitelabelSettingsEncoded = json_encode($whitelabelSettings);
+                    $fileManager->filePutContents($installation['appInstallation'] . '/storage/branding.json', $whitelabelSettingsEncoded);
                 }
             }
         } catch (Exception $e) {
