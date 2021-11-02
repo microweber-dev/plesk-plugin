@@ -222,6 +222,13 @@ class IndexController extends pm_Controller_Action
             'value' => Modules_Microweber_WhiteLabelSettings::get('wl_plesk_logo_app'),
             'placeholder' => ''
         ]);
+$form->addElement('textarea', 'wl_admin_colors_sass',
+            [
+                'label' => 'Enter "Admin colors" sass',
+                'value' => Modules_Microweber_WhiteLabelSettings::get('wl_admin_colors_sass'),
+                'rows' => 6
+            ]
+        );
 
         $form->addControlButtons([
             'cancelLink' => pm_Context::getBaseUrl() . 'index.php/index/whitelabel',
@@ -280,7 +287,8 @@ class IndexController extends pm_Controller_Action
             Modules_Microweber_WhiteLabelSettings::set('wl_enable_service_links', $form->getValue('wl_enable_service_links'));
             Modules_Microweber_WhiteLabelSettings::set('wl_plesk_logo_invert', $form->getValue('wl_plesk_logo_invert'));
             Modules_Microweber_WhiteLabelSettings::set('wl_plesk_logo_app', $form->getValue('wl_plesk_logo_app'));
-
+		Modules_Microweber_WhiteLabelSettings::set('wl_admin_colors_sass', $form->getValue('wl_admin_colors_sass'));
+		
             Modules_Microweber_WhiteLabel::updateWhiteLabelDomains();
 
             $this->_status->addMessage('info', 'Settings was successfully saved.');
