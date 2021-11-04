@@ -377,12 +377,6 @@ class Modules_Microweber_Install {
                 Modules_Microweber_Log::debug('Domain allready have a SSL.');
             }
 
-            $task = new Modules_Microweber_TaskWhiteLabelBrandingUpdate();
-            $task->setParam('domainId', $domain->getId());
-
-            $taskManager = new pm_LongTask_Manager();
-            $taskManager->start($task, NULL);
-
         	// Save domain settings
             $saveDomainSettings = [
                 'admin_email'=>$adminEmail,
@@ -394,6 +388,15 @@ class Modules_Microweber_Install {
             ];
             $domain->setSetting('mw_settings_' . md5($domainDocumentRoot), serialize($saveDomainSettings));
             $domain->setSetting('mwAppInstallations', false);
+
+            sleep(1);
+
+            // Set branding json
+            $task = new Modules_Microweber_TaskWhiteLabelBrandingUpdate();
+            $task->setParam('domainId', $domain->getId());
+
+            $taskManager = new pm_LongTask_Manager();
+            $taskManager->start($task, NULL);
         	
         	return ['success'=>true, 'log'=> $artisan['stdout']];
         } catch (Exception $e) {
