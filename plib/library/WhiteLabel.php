@@ -163,6 +163,8 @@ class Modules_Microweber_WhiteLabel
                 $whiteLabelSettings['marketplace_repositories_urls'] = $whmcsPackageUrls;
             }
         }
+		
+		$whiteLabelSettings['whmcs_url'] = Modules_Microweber_Config::getWhmcsUrl();
 
 		return json_encode($whiteLabelSettings, JSON_PRETTY_PRINT);
 	}
