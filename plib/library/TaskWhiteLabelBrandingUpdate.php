@@ -26,31 +26,7 @@ class Modules_Microweber_TaskWhiteLabelBrandingUpdate extends \pm_LongTask_Task
 
         try {
             foreach ($installations as $installation) {
-
-                $fileManager = new pm_FileManager($domain->getId());
-
-                if ($fileManager->fileExists($installation['appInstallation'] . '/config/microweber.php')) {
-
-                    $whitelabelSettings = [];
-                    $currentBranding = $installation['appInstallation'] . '/storage/branding.json';
-                    if ($fileManager->fileExists($currentBranding)) {
-                        $currentBranding = $fileManager->fileGetContents($currentBranding);
-                        $currentBranding = json_decode($currentBranding, true);
-                        if (is_array($currentBranding)) {
-                            $whitelabelSettings = $currentBranding;
-                        }
-                    }
-
-                    $whiteLabelJson = Modules_Microweber_WhiteLabel::getWhiteLabelJson($domain);
-                    $whiteLabelJson = json_decode($whiteLabelJson, true);
-                    if (!empty($whiteLabelJson)) {
-                        foreach ($whiteLabelJson as $key => $setting) {
-                            $whitelabelSettings[$key] = $setting;
-                        }
-                    }
-		            $whitelabelSettingsEncoded = json_encode($whitelabelSettings);
-                    $fileManager->filePutContents($installation['appInstallation'] . '/storage/branding.json', $whitelabelSettingsEncoded);
-                }
+                Modules_Microweber_WhiteLabelBranding::applyToInstallation($domain, $installation['appInstallation']);
             }
         } catch (Exception $e) {
             // Broken domain permissions
