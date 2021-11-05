@@ -41,7 +41,7 @@ class Modules_Microweber_WhmcsConnector
 
         Modules_Microweber_Log::debug('Get selected template for domain: ' . $this->_domainName);
 
-        $template = 'dream';
+        $template = 'new-world';
 
         $url = Modules_Microweber_Config::getWhmcsUrl() . '/index.php?m=microweber_addon&function=get_domain_template_config&domain=' . $this->_domainName;
 
