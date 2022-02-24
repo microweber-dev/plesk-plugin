@@ -1494,7 +1494,7 @@ class IndexController extends pm_Controller_Action
         $pmLicense = pm_License::getAdditionalKey('microweber');
         if (!empty($pmLicense)) {
             $pmLicense = json_encode($pmLicense->getProperties('product'));
-            $licenses[] = 'plesk:' . base64_encode($pmLicense);
+            $licenses[] = 'plesk|' . base64_encode($pmLicense);
         }
 
         $connector = new MicroweberMarketplaceConnector();
