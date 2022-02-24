@@ -1239,7 +1239,6 @@ class IndexController extends pm_Controller_Action
 
     private function _updateTemplates()
     {
-
         $templates = $this->_getTemplatesUrl();
 
         foreach ($templates as $template) {
@@ -1485,9 +1484,22 @@ class IndexController extends pm_Controller_Action
 
     private function _getTemplatesUrl()
     {
+        $licenses = [];
+
+        $whiteLabelKey =  pm_Settings::get('wl_key');;
+        if (!empty($whiteLabelKey)) {
+            $licenses[] = $whiteLabelKey;
+        }
+
+        $pmLicense = pm_License::getAdditionalKey('microweber');
+        if (!empty($pmLicense)) {
+            $pmLicense = json_encode($pmLicense->getProperties('product'));
+            $licenses[] = 'plesk:' . base64_encode($pmLicense);
+        }
 
         $connector = new MicroweberMarketplaceConnector();
         $connector->set_whmcs_url(Modules_Microweber_Config::getWhmcsUrl());
+        $connector->set_license($licenses);
 
         $templatesUrl = $connector->get_templates_download_urls();
 

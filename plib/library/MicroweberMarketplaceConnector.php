@@ -14,17 +14,23 @@ class MicroweberMarketplaceConnector
 	 * @var array
 	 */
 	public $package_urls = [
-		'https://packages.microweberapi.com/packages.json',
-		'https://private-packages.microweberapi.com/packages.json'
+		'http://packages.microweberapi.com/packages.json'
 	];
-	
+
 	/**
 	 * Set WHMCS Url
 	 * @var bool
 	 */
 	public $whmcs_url = false;
-	
-	public function set_whmcs_url($url) {
+
+    public $licenses = [];
+
+    public function set_license($license)
+    {
+        $this->licenses[] = $license;
+    }
+
+    public function set_whmcs_url($url) {
 		if (!empty($url)) {
 			$this->whmcs_url = $url;
 			$this->update_package_urls();
@@ -183,7 +189,11 @@ class MicroweberMarketplaceConnector
 		if (is_array($templates) && !empty($templates)) {
 			foreach ($templates as $template) {
 				if (isset($template['latest_version'])) {
-					
+
+                    if (isset($template['latest_version']['dist']['type']) && $template['latest_version']['dist']['type'] == 'license_key') {
+                        continue;
+                    }
+
 					$download_urls[] = [
 						'name'=>$template['latest_version']['name'],
 						'target_dir'=>$template['latest_version']['target-dir'],
@@ -196,27 +206,48 @@ class MicroweberMarketplaceConnector
 		
 		return $download_urls;
 	}
-	
-	/**
-	 * Get content from url
-	 * @param unknown $url
-	 * @return unknown
-	 */
-	private function _get_content_from_url($url)
-	{
-		if (in_array('curl', get_loaded_extensions())) {
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_HEADER, 0);
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // Return data inplace of echoing on screen
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0); // Skip SSL Verification
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-			$data = curl_exec($ch);
-			curl_close($ch);
-			return $data;
-		} else {
-			return @file_get_contents($url);
-		}
-	}
+
+    /**
+     * Get content from url
+     * @param unknown $url
+     * @return unknown
+     */
+    private function _get_content_from_url($url)
+    {
+        if (in_array('curl', get_loaded_extensions())) {
+            $ch = curl_init();
+
+            $headers = [];
+            if (defined('MW_VERSION')) {
+                $headers[] = "MW_VERSION: " . MW_VERSION;
+            }
+
+            if (!empty($this->licenses)) {
+                $headers[] = "Authorization: Basic " . base64_encode(json_encode($this->licenses));
+            }
+
+            $opts = [
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_POSTFIELDS => "",
+            ];
+            if (!empty($headers)) {
+                $opts[CURLOPT_HTTPHEADER] = $headers;
+            }
+
+            curl_setopt_array($ch, $opts);
+
+            $data = curl_exec($ch);
+            
+            curl_close($ch);
+            return $data;
+        } else {
+            return @file_get_contents($url);
+        }
+    }
 }

@@ -8,7 +8,6 @@
 
 class Modules_Microweber_Helper
 {
-
 	public static function getRandomPassword($length = 16, $complex = false)
 	{
 		$alphabet = 'ghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';

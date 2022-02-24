@@ -19,9 +19,7 @@ class Modules_Microweber_TaskTemplateDownload extends \pm_LongTask_Task
 		if (!empty($this->getParam('downloadUrl')) && !empty($this->getParam('targetDir'))) {
 		
 			$this->updateProgress(30);
-			
 			$this->updateProgress(40);
-			
 			$this->updateProgress(60);
 			
 			$downloadLog = pm_ApiCli::callSbin('unzip_app_template.sh',[
