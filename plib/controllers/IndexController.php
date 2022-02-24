@@ -125,6 +125,20 @@ class IndexController extends pm_Controller_Action
 
     public function whitelabelAction()
     {
+        $showLimitMessage = false;
+        $license = pm_License::getAdditionalKey('microweber');
+        $keyBody = json_decode($license->getProperty('key-body'), true);
+        if (!empty($keyBody)) {
+            if (isset($keyBody['limit'])) {
+                $showLimitMessage = $keyBody['limit'];
+            }
+        }
+        $this->view->show_limit_message = $showLimitMessage;
+
+        $appInstalations = $this->_getAppInstalations();
+
+        $this->view->count_app_installations = count($appInstalations);
+
         $savingWhiteLabelKey = false;
 
         if (!$this->_isWhiteLabelAllowed()) {
@@ -222,7 +236,7 @@ class IndexController extends pm_Controller_Action
             'value' => Modules_Microweber_WhiteLabelSettings::get('wl_plesk_logo_app'),
             'placeholder' => ''
         ]);
-$form->addElement('textarea', 'wl_admin_colors_sass',
+        $form->addElement('textarea', 'wl_admin_colors_sass',
             [
                 'label' => 'Enter "Admin colors" sass',
                 'value' => Modules_Microweber_WhiteLabelSettings::get('wl_admin_colors_sass'),
@@ -287,8 +301,8 @@ $form->addElement('textarea', 'wl_admin_colors_sass',
             Modules_Microweber_WhiteLabelSettings::set('wl_enable_service_links', $form->getValue('wl_enable_service_links'));
             Modules_Microweber_WhiteLabelSettings::set('wl_plesk_logo_invert', $form->getValue('wl_plesk_logo_invert'));
             Modules_Microweber_WhiteLabelSettings::set('wl_plesk_logo_app', $form->getValue('wl_plesk_logo_app'));
-		Modules_Microweber_WhiteLabelSettings::set('wl_admin_colors_sass', $form->getValue('wl_admin_colors_sass'));
-		
+		    Modules_Microweber_WhiteLabelSettings::set('wl_admin_colors_sass', $form->getValue('wl_admin_colors_sass'));
+
             Modules_Microweber_WhiteLabel::updateWhiteLabelDomains();
 
             $this->_status->addMessage('info', 'Settings was successfully saved.');
@@ -302,7 +316,6 @@ $form->addElement('textarea', 'wl_admin_colors_sass',
 
     public function updateAction()
     {
-
         if (!pm_Session::getClient()->isAdmin()) {
             return $this->_redirect('index/error?type=permission');
         }
