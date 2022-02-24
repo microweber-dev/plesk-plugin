@@ -19,11 +19,15 @@ class IndexController extends pm_Controller_Action
     {
         parent::init();
 
-        $this->_moduleName = Modules_Microweber_WhiteLabel::getBrandName();
-
         if (is_null($this->taskManager)) {
             $this->taskManager = new pm_LongTask_Manager();
         }
+
+        $this->view->newLicenseLink = '/server/additional_keys.php?key_type=additional';
+        $this->view->buyLink = pm_Context::getBuyUrl();
+
+        $this->view->limitations = Modules_Microweber_LicenseData::getLimitations();
+        $this->_moduleName = Modules_Microweber_WhiteLabel::getBrandName();
 
         // Set module name to views
         $this->view->moduleName = $this->_moduleName;
@@ -33,11 +37,12 @@ class IndexController extends pm_Controller_Action
             [
                 'title' => 'Domains',
                 'action' => 'index'
-            ],
-            [
-                'title' => 'Install',
-                'action' => 'install'
             ]
+        ];
+
+        $this->view->tabs[] = [
+            'title' => 'Install',
+            'action' => 'install'
         ];
 
         if (pm_Session::getClient()->isAdmin()) {
@@ -61,7 +66,6 @@ class IndexController extends pm_Controller_Action
             ];
         }
 
-
         $this->view->headLink()->appendStylesheet(pm_Context::getBaseUrl() . 'css/app.css');
     }
 
@@ -76,9 +80,10 @@ class IndexController extends pm_Controller_Action
         }
 
         $this->view->refreshDomainLink = pm_Context::getBaseUrl() . 'index.php/index/refreshdomains';
-
         $this->view->pageTitle = $this->_moduleName . ' - Domains';
+
         $this->view->list = $this->_getDomainsList();
+
         // $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/index.js');
     }
@@ -93,6 +98,10 @@ class IndexController extends pm_Controller_Action
 
     public function versionsAction()
     {
+        if ($this->view->limitations['app_installations_freeze']) {
+            return $this->_redirect('index/index');
+        }
+
         if (!pm_Session::getClient()->isAdmin()) {
             return $this->_redirect('index/error?type=permission');
         }
@@ -125,19 +134,9 @@ class IndexController extends pm_Controller_Action
 
     public function whitelabelAction()
     {
-        $showLimitMessage = false;
-        $license = pm_License::getAdditionalKey('microweber');
-        $keyBody = json_decode($license->getProperty('key-body'), true);
-        if (!empty($keyBody)) {
-            if (isset($keyBody['limit'])) {
-                $showLimitMessage = $keyBody['limit'];
-            }
+        if ($this->view->limitations['app_installations_freeze']) {
+            return $this->_redirect('index/index');
         }
-        $this->view->show_limit_message = $showLimitMessage;
-
-        $appInstalations = $this->_getAppInstalations();
-
-        $this->view->count_app_installations = count($appInstalations);
 
         $savingWhiteLabelKey = false;
 
@@ -366,6 +365,10 @@ class IndexController extends pm_Controller_Action
 
     public function installAction()
     {
+        if ($this->view->limitations['app_installations_freeze']) {
+            return $this->_redirect('index/index');
+        }
+
         /*
         $this->view->selinuxError = false;
         $this->view->activateSymlinking = false;
@@ -722,6 +725,9 @@ class IndexController extends pm_Controller_Action
 
     public function settingsAction()
     {
+        if ($this->view->limitations['app_installations_freeze']) {
+            return $this->_redirect('index/index');
+        }
 
         if (!pm_Session::getClient()->isAdmin()) {
             return $this->_redirect('index/error?type=permission');
@@ -1267,9 +1273,6 @@ class IndexController extends pm_Controller_Action
             }
         }
 
-        $this->view->newLicenseLink = '/server/additional_keys.php?key_type=additional';
-        $this->view->buyLink = pm_Context::getBuyUrl();
-
         $pmLicense = pm_License::getAdditionalKey();
         if ($pmLicense && isset($pmLicense->getProperties('product')['name'])) {
             $this->view->isLicensed = true;
@@ -1368,7 +1371,7 @@ class IndexController extends pm_Controller_Action
         }
     }
 
-    private function _getAppInstalations()
+    private function _getAppInstallations()
     {
         $data = [];
 
@@ -1429,7 +1432,7 @@ class IndexController extends pm_Controller_Action
         ];
 
         $list = new pm_View_List_Simple($this->view, $this->_request, $options);
-        $list->setData($this->_getAppInstalations());
+        $list->setData($this->_getAppInstallations());
         $list->setColumns([
             // pm_View_List_Simple::COLUMN_SELECTION,
             'domain' => [

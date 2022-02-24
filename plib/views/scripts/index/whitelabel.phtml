@@ -15,12 +15,9 @@
        <h2>Your plan limit: unlimited websites</h2>
         <h2>You have <?php echo $this->count_app_installations; ?> active installations.</h2>
       <?php else: ?>
-         <?php if ($this->count_app_installations > $this->show_limit_message): ?>
-            <h2 style="color:red;">You have reached your plan limit.</h2>
-            <h2>Active installations: <?php echo $this->count_app_installations; ?></h2>
-         <?php else: ?>
-            <h1>Your plan limit: <?php echo $this->show_limit_message; ?> websites</h1>
-         <?php endif; ?>
+        <h1>Your plan limit: <?php echo $this->limitations['app_installations_limit']; ?> websites</h1>
+        <h2>Active installations: <?php echo $this->limitations['app_installations_count']; ?> websites</h2>
+
     <?php endif; ?>
 
     <h3>Use White Label license to grow your business!</h3>
