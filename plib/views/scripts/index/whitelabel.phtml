@@ -11,14 +11,13 @@
 
 <div class="panel">
 
-    <?php if ($this->show_limit_message == 'nolimit'): ?>
-       <h2>Your plan limit: unlimited websites</h2>
-        <h2>You have <?php echo $this->count_app_installations; ?> active installations.</h2>
+    <?php if ($this->limitations['app_installations_limit'] == 'nolimit'): ?>
+       <h2>Your plan limit: unlimited</h2>
       <?php else: ?>
         <h1>Your plan limit: <?php echo $this->limitations['app_installations_limit']; ?> websites</h1>
-        <h2>Active installations: <?php echo $this->limitations['app_installations_count']; ?> websites</h2>
-
     <?php endif; ?>
+
+    <h2>Active installations: <?php echo $this->limitations['app_installations_count']; ?> websites</h2>
 
     <h3>Use White Label license to grow your business!</h3>
     <p>The white label gives you the right to rebrand Microweber CMS with your own logo. You can sell it to your clients under your own brand. There is no limitation of number of installations.</p>
@@ -26,7 +25,7 @@
     <?php
     if($this->isLicensed == false) {
     ?>
-    <p><a href="<?php echo $this->buyLink; ?>" target="_blank">Get your White Label license here</a></p>
+    <p><a href="<?php echo $this->buyLink; ?>" class="btn btn-primary" target="_blank">Get your White Label license here</a></p>
     <p><a href="<?php echo $this->newLicenseLink; ?>">Already have a license?</a></p>
     <p><a href="#" onclick="enterpriseWhitelabelKey();">Already have an enterprise whitelabel key?</a></p>
 
@@ -47,12 +46,16 @@
 
 <?php if ($this->isLicensed && $this->isMwLicensed && $this->showRegisteredDetails): ?>
 <div class="license-active">
+    <p>
 Registered Name: <?php echo $this->registeredName; ?> <br />
 Plan: <?php echo $this->relName; ?> <br />
 Billing Cycle: <?php echo $this->billingCycle; ?> <br />
 Due on: <?php echo $this->dueOn; ?> <br />
 Registraion on: <?php echo $this->regOn; ?> <br />
-    <p><a href="?change_whitelabel_key=1">Change enterprise whitelabel key</a></p>
+</p>
+
+   <a href="?change_whitelabel_key=1">Change enterprise whitelabel key</a> <br />
+   <a href="?delete_whitelabel_key=1" onclick="return confirm('Are you sure want to delete whitelabel license key?');">Remove whitelabel key</a>
 
     <?php if ($this->change_whitelabel_key): ?>
     <div id="mw-license-form">

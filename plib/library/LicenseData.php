@@ -42,10 +42,15 @@ class Modules_Microweber_LicenseData
         $appInstallationsLimit = 'nolimit';
 
         $license = pm_License::getAdditionalKey('microweber');
-        $keyBody = json_decode($license->getProperty('key-body'), true);
-        if (!empty($keyBody)) {
-            if (isset($keyBody['limit'])) {
-                $appInstallationsLimit = $keyBody['limit'];
+        if (!empty($license)) {
+            $keyBody = $license->getProperty('key-body');
+            if (!empty($keyBody)) {
+                $keyBody = json_decode($keyBody, true);
+                if (!empty($keyBody)) {
+                    if (isset($keyBody['limit'])) {
+                        $appInstallationsLimit = $keyBody['limit'];
+                    }
+                }
             }
         }
 

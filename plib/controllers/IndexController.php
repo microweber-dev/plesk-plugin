@@ -282,6 +282,11 @@ class IndexController extends pm_Controller_Action
             $this->view->change_whitelabel_key = true;
         }
 
+        if ($this->getRequest()->getParam('delete_whitelabel_key') == '1') {
+            pm_Settings::set('wl_key', false);
+            pm_Settings::set('wl_license_data', false);
+        }
+
         if (!$savingWhiteLabelKey && $this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
 
             Modules_Microweber_WhiteLabelSettings::set('wl_brand_name', $form->getValue('wl_brand_name'));
