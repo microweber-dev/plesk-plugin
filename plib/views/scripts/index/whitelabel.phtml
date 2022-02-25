@@ -11,13 +11,10 @@
 
 <div class="panel">
 
-    <?php if ($this->limitations['app_installations_limit'] == 'nolimit'): ?>
-       <h2>Your plan limit: unlimited</h2>
-      <?php else: ?>
+    <?php if ($this->limitations['app_installations_limit'] != 'nolimit'): ?>
         <h1>Your plan limit: <?php echo $this->limitations['app_installations_limit']; ?> websites</h1>
+        <h2>Active installations: <?php echo $this->limitations['app_installations_count']; ?> websites</h2>
     <?php endif; ?>
-
-    <h2>Active installations: <?php echo $this->limitations['app_installations_count']; ?> websites</h2>
 
     <h3>Use White Label license to grow your business!</h3>
     <p>The white label gives you the right to rebrand Microweber CMS with your own logo. You can sell it to your clients under your own brand. There is no limitation of number of installations.</p>
