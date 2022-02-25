@@ -1,6 +1,6 @@
 # plesk-microweber-plugin
 
-Folders where the pljugin will be installed:
+Folders where the plugin will be installed:
 ```
 /opt/psa/admin/sbin/modules/microweber
 /usr/local/psa/admin/plib/modules/microweber
