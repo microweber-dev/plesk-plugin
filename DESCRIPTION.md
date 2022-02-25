@@ -1,25 +1,31 @@
-
 # Microweber: Drag-and-Drop CMS
 
-## System Requirements  
+**Current version: 1.3 running on Laravel 8!**
 
-* HTTP server  
-* Database server
-* PHP >= 7.3
-  * `lib-xml` must be enabled (with DOM support)
-  * `GD` PHP extension
-  
+
+**[Download](https://microweber.com/download.php) |
+[What is Microweber?](#what-is) |
+[Core features of Microweber](#core-features) |
+[Requirements](#requirements) |
+[Installation](#installation) |
+[Getting Started](#getting-started) |
+[Contribute](#contribute)**
+
+
+---
+
+
 ## What is Microweber?  
 
 
 ![admin panel](https://microweber.org/userfiles/media/microweber.org/dashboard-1_17.jpg "")
 
 
-Microweber is a Drag and Drop website builder and powerful CMS of new generation. It's based on PHP Laravel Framework. You can use Microweber to make a any kind of website, online store and blog. The Drag and Drop technology allows you to build your website without any technical knowledge.
+Microweber is a Drag and Drop website builder and a powerful next generation CMS. It's based on the PHP Laravel Framework. You can use Microweber to make any kind of website, online store, and blog. The Drag and Drop technology allows you to build your website without any technical knowledge.
 
-The core idea of the software is to let you create your own website, online shop or blog. From this moment of creation on, your journey towards success begins. Tagging all along will be different modules, customizations and features of the CMS, among them many specifically tailored for e-commerce enthusiasts and bloggers.
+The core idea of the software is to let you create your own website, online shop or blog. From this moment of creation, your journey towards success begins. Supporting you along the way will be different modules, customizations and features of the CMS. Many of them are specifically tailored for e-commerce enthusiasts and bloggers.
 
-The most important thing you need to know is that Microweber pairs the latest CMS trend the unique Drag & Drop technology, with a revolutionary Real-Time Text Writing & Editing feature. Talking in user benefit, this pair of features means improved user experience, easier and quicker content management, visually highly appealing environment and flexibility.
+The most important thing you need to know is that Microweber pairs the latest Drag & Drop technology, with a revolutionary Real-Time Text Writing & Editing feature. This pair of features delivers an improved user experience, easier and quicker content management, a visually appealing environment, and flexibility.
 
 
 ## Core features of Microweber  
@@ -27,7 +33,7 @@ The most important thing you need to know is that Microweber pairs the latest CM
 
 #### Drag & Drop
 
-Microweber operates on the Drag & Drop technology. This means that users can manage their content and arrange elements with just a click of the mouse, dragging and dropping them across the screen. Drag & Drop applies to all types of content: images, text fields, videos, and the whole variety of modules and additional customization options you have as a user. The default template “Dream” comes with more than 75+ prepared layouts that you can use via drag and drop.
+Microweber implements Drag & Drop technology. This means that users can manage their content and arrange elements with just a click of the mouse, dragging and dropping them across the screen. Drag & Drop applies to all types of content: images, text fields, videos, and the various modules and customization options you have as a user. The default template “Dream” comes with more than 75+ prepared layouts that you can use via drag and drop.
 
 ![Drag And Drop](https://microweber.com/cdn/2019_version/Drag_Drop_CMS_Microweber.gif "")
 
@@ -35,7 +41,7 @@ Microweber operates on the Drag & Drop technology. This means that users can man
 
 #### Real Time Text Editing
 
-Live Edit view is the manifestation of the Real-Time Text Writing & Editing core feature of Microweber CMS. Working in Live Edit view is in fact working on your website’s interface in real time.
+Live Edit view is the manifestation of the Real-Time Text Writing & Editing core feature of Microweber CMS. Live Edit view changes your website’s interface in real time.
 
 ![E-commerce solution](https://sitestatic.microweber.com/cdn/gh_readme/homepage-2018-third-section.gif "")
 
@@ -43,110 +49,132 @@ Live Edit view is the manifestation of the Real-Time Text Writing & Editing core
 
 #### Powerful Admin Panel
 
-You can add dynamic pages, posts, products. All of these can be organized in custom categories in order to achieve a better navigation and showcase of a website's content. New pages can be created using different layouts and all pages, posts and products come with a preset number layouts and modules to get users started. These modules can be changed and you can of course add your own custom set of modules as to create the most suitable content for your needs.
+You can add dynamic pages, posts, and products. All of these can be organized in custom categories in order to achieve a better navigation and showcase of a website's content. New pages can be created using different layouts. In addition, all pages, posts and products come with a number of preset layouts and modules to get users started. These modules can be changed and you can add your own custom set of modules in order to create the most suitable content for your needs.
 
-![Powerful Admin Panel]
+![Powerful Admin Panel](https://microweber.com/cdn/2019_version/2.jpg "")
 
 
 
 #### E-commerce Solution
 
-Perhaps the main focus of Microweber CMS is E-commerce. A rising number of people have grown fond of the idea of online entrepreneurship and we aspire to cover their needs. The software has some built-in features that will help online shop founders see their business grow and excel.
+The main focus of Microweber CMS is E-commerce. A rising number of people have grown fond of the idea of online entrepreneurship and we aspire to cover their needs. The software has some built-in features that will help online shop founders see their business grow and excel.
 
-![E-commerce Solution]
+![E-commerce Solution](https://microweber.com/cdn/2019_version/3.jpg "")
 
-
-
-#### Microweber White Label Licenses
-
-**GET A WHITE LABEL LICENSE**
-
-Use White Label license to grow your business!
-
-The white label license gives you the right to rebrand Microweber CMS with your own logo. You can sell it to your clients under your own brand. There is no limitation of numbers of installation and sales number.
-
-**WHAT ARE THE BENEFITS OF IT FOR YOU?**
-
-*Microweber, website builder & CMS system is here to take care for your success.* 
-
-This powerful open source CMS gives you everything you always need. Learn about the unlimited and awesome features of Microweber CMS awesome features of Microweber CMS.
-
-Using Microweber you actually saving a lot of time for creating websites or online shops for clients or just for the needs of your business to reach more sales channels and target groups.
- 
-
-You have more power to support the business and to sell more. 
-Focus your time on the real needs of your clients using and offering them the most ease, secure and user-friendly drag and drop website builder on the market.
-
-**WHITE LABEL LICENSES**
-
-We offer 4 versions of White Label License of Microweber website builder and CMS.
-or each of our white label licenses we provide top level support, immediately bug fixing and fast developing of new features requests. Our focus is to give you and to your clients the comfort and inspiration to grow the businesses, intuitive editing websites, full set of beautifull templates and modules.
-
-**HOW TO CHOOSE THE RIGHT WHITE LABEL LICENSE?**
-
-Very often our customers ask us what is the difference between one license or another. Here we will try to explain each of the licenses separately, how you can use them, what is allowed and what is not with the use of a license.
-
-We offer 4 versions of White Label License of Microweber website builder and CMS.
-
-**1. Basic White Label – Best for Personal Use**
-
-Basic White Label license allows you to re-brand Microweber system (the admin and live edit part) with your own logo. You can also change the link on the footer on the template that you are using. You can use it on your own domain. This license is for single domain only! 
+![Give a star to Microweber](https://microweber.com/cdn/2019_version/Star-Microweber.gif "")
 
 
-**2. Pro White Label – Best for Web Agency**
-
-Change the logo of Microweber with your own. You're able to upload your own logo which will replace the Microweber logo in the admin panel, live edit, login form and other places. You also can put your own link in the footer of each template.
-When you buy “Pro White Label” license and change the logo on your own it will be saved for all the next update of Microweber CMS. Microweber will be updated with the latest version, however your logos, links will stay as is.
-This license also gives you the right to download and use all the premium themes from our marketplace for commercial purposes. You are not allowed to re-sell the template directly to clients or give them for free.
-
-
-
-
-**3. Hosting Pro White Label license – Best for hosting companies**
-
-Hosting pro license is perfect for hosting companies. You are getting powerful and easy for use website builder with professional templates and modules that we have including the new one that we releasing each month.
-Under this license, you have the rights to distribute and re-sell all our templates and modules unlimited and at a price you want. As a hosting company, you want to give the clients the ability to create own website or online store. Start with hosting pro white label license and use the website builder on your servers. 
-
-**How does it work?**
-The whole process from - searching domain, select domain or sub-domain, choosing a website template, selecting hosting plan, user registration, checkout, and payment and then installing the website.
-
-We are ready to help you in this setup process and will support you in any situation.
-To work this process properly you need to have:
-**Plesk** – who is taking care for your domains, sub-domains, and installations. https://www.plesk.com/
- 
-**WHMCS** – responsible for billing cycles, tickets, invoices, payments, choosing domain and user administration. 
-https://www.whmcs.com/members/aff.php?aff=26422
-
-**Dedicate or VPS server** – you need to have server with root access to connects the install process.
-
-**Hosting pro license** – giving you website builder under your brand, templates, and modules with rights for distributing them. https://microweber.org/modules/mw-internal/white_label
-
- 
-**See Microweber WHMCS plugin**
-
-What are the benefits of Microweber website builder and CMS:
-
-    •	You are getting the templates and modules from our marketplace
-    •	10+ Different languages Support
-    •	Use own domain and subdomains, ex: (sitename.yourdomain.com )
-    •	Remove the Microweber logo and put up your own logo.
-    •	Change the Microweber link on the footer on each Template with your own.
-    •	Access to all themes, modules, and skins with extended license for commercial use.
-    •	Integrated eCommerce solution which Microweber has, payments, checkout, shipping, etc...
-    •	Support for the installation process.
-    •	Additional costs for the full setup process.
-    
-**Allow your clients to create and edit their own website, online shop or blog on your hosting servers! Purchase Hosting Pro license and boost your business now.**
-
-4. Enterprise White Label License - Best for companies that require managed solutions.
-
-We give you custom solution for your company. 24/7 professional support and unlimited templates, modules and features. You are getting also our training program, right to certification and more.
-Contact us on info(at)microweber.com for more information about Enterprise White Label license.
-
-
- 
 ## See it in action
 
 * [Microweber Live Demo](https://demo.microweber.org/?template=dream)
 * [Microweber Video](https://sitestatic.microweber.com/userfiles/templates/mw/videos/1.mp4)
+* [Deploy as DigitalOcean 1-Click App](https://marketplace.digitalocean.com/apps/microweber?action=deploy&refcode=83e0646738fe)
 
+
+
+## Requirements  
+
+* HTTP server  
+* Database server
+* PHP >= 7.3
+  * `lib-xml` must be enabled (with DOM support)
+  * `GD` PHP extension
+
+### HTTP Server
+
+#### Apache
+The `mod_rewrite` module must be enabled in your Apache configuration. Microweber creates the necessary `.htaccess` files during installation, including one with `Deny All` directive in each folder to ensure that there are no entry points other than `index.php`.
+
+#### nginx
+Add this `location` directive to your `server` configuration block. The `root` directive must point to the base folder of your Microweber website (which by default is where this readme is located).
+```
+server {
+  location / {
+    try_files $uri $uri/ /index.php$is_args$args;
+  }
+}
+```
+
+### IIS
+
+You can easily [import the `.htaccess` rewrite rules](http://www.iis.net/learn/extensions/url-rewrite-module/importing-apache-modrewrite-rules). Make sure you have enabled [the URL Rewrite module](http://www.iis.net/learn/extensions/url-rewrite-module/using-the-url-rewrite-module) for your website.
+
+### Database
+You have several choices for database engine: MySQL, SQLite, Microsoft SQL Server and PostgreSQL.
+For small websites we highly recommend SQLite.
+However, you can connect to more storage services (like [MongoDB](https://github.com/jenssegers/laravel-mongodb) or [Neo4j](https://github.com/Vinelab/NeoEloquent)) and take advantage of the Laravel framework.
+
+On the installation screen you can only choose from databases enabled in your PHP configuration.
+If you don't see your server of choice in the list you have to enable the corresponding [PDO](http://php.net/manual/en/book.pdo.php) extension for your database server. [An example for Microsoft SQL Server](http://php.net/manual/en/mssql.installation.php). PHP usually comes with PDO enabled by default but you might have to uncomment or add `extension` directives to your `php.ini`.
+
+## Installation  
+
+### The fast way: [Download](https://microweber.com/download.php) and unzip.
+
+### Via Composer
+
+#### Installing dependencies
+
+You need to [have Composer installed](https://getcomposer.org/doc/00-intro.md) in order to download Microweber's dependencies.
+
+You can clone and install Microweber with one command:
+
+```
+composer create-project microweber/microweber my_site dev-master --prefer-dist --no-dev
+```
+
+
+This will install Microweber in a folder named `my_site`.
+
+Another way is to first clone the repository and then run `composer install` in the base directory.
+
+#### File permissions
+Make sure these folders, and everything inside, is writeable by the user executing the PHP scripts:
+* config/
+* storage/
+* userfiles/
+
+## Getting Started  
+
+See the [online guides](http://microweber.com/docs/guides/README.md) for developers.
+
+## Contribute
+We are looking for people who want to help us improve Microweber.
+
+If you are a developer, submitting fixes is easy. Just fork the Microweber repository, make your changes, submit a pull request, and be sure all tests are passing.
+
+## Build Status
+
+![PHP Unit Tests](https://github.com/microweber/microweber/actions/workflows/ci.yml/badge.svg)
+[![codecov](https://codecov.io/gh/microweber/microweber/branch/dev/graph/badge.svg?token=aLAgaSMcbZ)](https://codecov.io/gh/microweber/microweber)
+
+
+## Contributors
+
+### Code Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/microweber/microweber/graphs/contributors"><img src="https://opencollective.com/microweber/contributors.svg?width=890&button=false" /></a>
+
+### Financial Contributors
+
+Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/microweber/contribute)]
+
+#### Individuals
+
+<a href="https://opencollective.com/microweber"><img src="https://opencollective.com/microweber/individuals.svg?width=890"></a>
+
+#### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/microweber/contribute)]
+
+<a href="https://opencollective.com/microweber/organization/0/website"><img src="https://opencollective.com/microweber/organization/0/avatar.svg"></a>
+<a href="https://opencollective.com/microweber/organization/1/website"><img src="https://opencollective.com/microweber/organization/1/avatar.svg"></a>
+<a href="https://opencollective.com/microweber/organization/2/website"><img src="https://opencollective.com/microweber/organization/2/avatar.svg"></a>
+<a href="https://opencollective.com/microweber/organization/3/website"><img src="https://opencollective.com/microweber/organization/3/avatar.svg"></a>
+<a href="https://opencollective.com/microweber/organization/4/website"><img src="https://opencollective.com/microweber/organization/4/avatar.svg"></a>
+<a href="https://opencollective.com/microweber/organization/5/website"><img src="https://opencollective.com/microweber/organization/5/avatar.svg"></a>
+<a href="https://opencollective.com/microweber/organization/6/website"><img src="https://opencollective.com/microweber/organization/6/avatar.svg"></a>
+<a href="https://opencollective.com/microweber/organization/7/website"><img src="https://opencollective.com/microweber/organization/7/avatar.svg"></a>
+<a href="https://opencollective.com/microweber/organization/8/website"><img src="https://opencollective.com/microweber/organization/8/avatar.svg"></a>
+<a href="https://opencollective.com/microweber/organization/9/website"><img src="https://opencollective.com/microweber/organization/9/avatar.svg"></a>
