@@ -5,7 +5,6 @@ Folders where the plugin will be installed:
 /opt/psa/admin/sbin/modules/microweber
 /usr/local/psa/admin/plib/modules/microweber
 /usr/local/psa/admin/share/modules/microweber
-/usr/share/microweber/latest
 ```
 
 ## Ho to install the plugin
