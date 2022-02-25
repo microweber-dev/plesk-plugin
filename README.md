@@ -1,16 +1,18 @@
 # plesk-microweber-plugin
 
-
+Folders where the pljugin will be installed:
+```
 /opt/psa/admin/sbin/modules/microweber
 /usr/local/psa/admin/plib/modules/microweber
 /usr/local/psa/admin/share/modules/microweber
 /usr/share/microweber/latest
+```
 
 ## Ho to install the plugin
 1. Open Plesk Panel
-1. Go to Extensions Catalog and install "Panel.ini Editor"
-1. Open the Panel.ini Editor
-1. Add these lines & save
+2. Go to Extensions Catalog and install "Panel.ini Editor"
+3. Open the Panel.ini Editor
+4. Add these lines & save
 
 ```
 [license]
