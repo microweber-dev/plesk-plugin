@@ -8,7 +8,7 @@ Module based architecture with 75+ modules allows you to expand unlimited your w
 
 ## FEATURES OF MICROWEBER 
 
-![live.jpg](live.jpg "")
+![https://raw.githubusercontent.com/microweber-dev/plesk-plugin/master/_meta/descriptions/live.jpg](live.jpg "")
 
 ### 450+ Predefined Layouts in 20 categories (ready for click and drop)
 - Titles (8)
@@ -34,7 +34,7 @@ Module based architecture with 75+ modules allows you to expand unlimited your w
 
 ### 40+ Modern Templates
 
-![templates2.jpg](templates2.jpg "")
+![https://raw.githubusercontent.com/microweber-dev/plesk-plugin/master/_meta/descriptions/templates2.jpg](templates2.jpg "")
 
  - Professional templates each of it contains more than 450+ layouts
  - Fully responsive templates
@@ -44,7 +44,7 @@ Module based architecture with 75+ modules allows you to expand unlimited your w
 
 ### 75+ Modules
 
-![modules.jpg](modules.jpg "")
+![https://raw.githubusercontent.com/microweber-dev/plesk-plugin/master/_meta/descriptions/modules.jpg](modules.jpg "")
  - Upload Images
  - Text and Paragraphs
  - Headings
@@ -89,7 +89,7 @@ Module based architecture with 75+ modules allows you to expand unlimited your w
  - Full control of product display (search, filters, tags, rating, reviews, etc.)
  - Statistics
 
-![Shop-settings-Microweber.jpg](Shop-settings-Microweber.jpg "Online Store Microweber")
+![https://raw.githubusercontent.com/microweber-dev/plesk-plugin/master/_meta/descriptions/Shop-settings-Microweber.jpg](Shop-settings-Microweber.jpg "Online Store Microweber")
 
 
 ## BENEFITS OF WHITE LABEL (for Hosting companies)
@@ -120,9 +120,9 @@ For Hosting Companies we have a special offer
 
 No-code platform for creating websites of all sorts. Make it easy, with 450 + pre-designed layouts created for you.
 
-
-[![Microweber video](video_youtube.jpg)](https://youtu.be/EKiaLcZkReM)
-
+[![Microweber video](https://raw.githubusercontent.com/microweber-dev/plesk-plugin/master/_meta/descriptions/video_youtube.jpg)](https://youtu.be/EKiaLcZkReM)
 
 
+
+ 
 
