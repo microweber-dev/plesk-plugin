@@ -1,14 +1,6 @@
 # plesk-microweber-plugin
 
-Folders where the plugin will be installed:
-```
-/opt/psa/admin/sbin/modules/microweber
-/usr/local/psa/admin/plib/modules/microweber
-/usr/local/psa/admin/share/modules/microweber
-/usr/local/psa/var/modules/microweber
-```
-
-## Ho to install the plugin
+## How to install the plugin
 1. Open Plesk Panel
 2. Go to Extensions Catalog and install "Panel.ini Editor"
 3. Open the Panel.ini Editor
@@ -85,4 +77,14 @@ nano /etc/nginx/conf.d/directives.conf
 proxy_buffer_size          128k;
 proxy_buffers              4 256k;
 proxy_busy_buffers_size    256k;
+```
+
+### Folders where the plugin are installed
+ 
+Folders where the plugin will be installed:
+```
+/opt/psa/admin/sbin/modules/microweber
+/usr/local/psa/admin/plib/modules/microweber
+/usr/local/psa/admin/share/modules/microweber
+/usr/local/psa/var/modules/microweber
 ```
