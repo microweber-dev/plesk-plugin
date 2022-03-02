@@ -1,138 +1,128 @@
-# Microweber: Drag-and-Drop CMS
+# DESCRIPTION
 
-**Current version: 1.3 running on Laravel 8!**
+Microweber is one of the best website builder and CMS on the market.
+You can create any kind of website, blog or online store with Drag and Drop technology without need of any coding.
+It contains 450 + pre-designed layouts in 20 categories, which are mobile ready and ready for use with a single click of the mouse.
+Module based architecture with 75+ modules allows you to expand unlimited your website.
+[Microweber Website Builder Video](https://youtu.be/JwUj6mGZ20I "Short Video of how it's work")
 
+## FEATURES OF MICROWEBER 
 
-**[Download](https://microweber.com/download.php) |
-[What is Microweber?](#what-is) |
-[Core features of Microweber](#core-features) |
-[Requirements](#requirements) |
-[Installation](#installation) |
-[Getting Started](#getting-started) 
+![live.jpg](live.jpg "")
 
+### 450+ Predefined Layouts in 20 categories (ready for click and drop)
+- Titles (8)
+- Text Block (15)
+- Content (72)
+- Features (43)
+- Gallery (23)
+- Call To Action (22)
+- Blog (13)
+- Team (16)
+- Testimonials (20)
+- Contact Us (17)
+- Grids (14)
+- Misc. (11)
+- Price Lists (7)
+- Video (7)
+- Ecommerce (8)
+- Header (25)
+- Menu (7)
+- Footers (28)
+- Other (3)
+- Default layouts (26)
 
----
+### 40+ Modern Templates
 
+![templates2.jpg](templates2.jpg "")
 
-## What is Microweber?  
-
-
-![admin panel](https://microweber.org/userfiles/media/microweber.org/dashboard-1_17.jpg "")
-
-
-Microweber is a Drag and Drop website builder and a powerful next generation CMS. It's based on the PHP Laravel Framework. You can use Microweber to make any kind of website, online store, and blog. The Drag and Drop technology allows you to build your website without any technical knowledge.
-
-The core idea of the software is to let you create your own website, online shop or blog. From this moment of creation, your journey towards success begins. Supporting you along the way will be different modules, customizations and features of the CMS. Many of them are specifically tailored for e-commerce enthusiasts and bloggers.
-
-The most important thing you need to know is that Microweber pairs the latest Drag & Drop technology, with a revolutionary Real-Time Text Writing & Editing feature. This pair of features delivers an improved user experience, easier and quicker content management, a visually appealing environment, and flexibility.
-
-
-## Core features of Microweber  
-
-
-#### Drag & Drop
-
-Microweber implements Drag & Drop technology. This means that users can manage their content and arrange elements with just a click of the mouse, dragging and dropping them across the screen. Drag & Drop applies to all types of content: images, text fields, videos, and the various modules and customization options you have as a user. The default template “Dream” comes with more than 75+ prepared layouts that you can use via drag and drop.
-
-![Drag And Drop](https://microweber.com/cdn/2019_version/Drag_Drop_CMS_Microweber.gif "")
-
-
-
-#### Real Time Text Editing
-
-Live Edit view is the manifestation of the Real-Time Text Writing & Editing core feature of Microweber CMS. Live Edit view changes your website’s interface in real time.
-
-![E-commerce solution](https://sitestatic.microweber.com/cdn/gh_readme/homepage-2018-third-section.gif "")
+ - Professional templates each of it contains more than 450+ layouts
+ - Fully responsive templates
+ - Last design trends
+ - New templates are adding each week
 
 
+### 75+ Modules
 
-#### Powerful Admin Panel
+![modules.jpg](modules.jpg "")
+ - Upload Images
+ - Text and Paragraphs
+ - Headings
+ - Galleries
+ - Contact Forms
+ - Google Maps
+ - Social Medias
+ - Videos
+ - Products
+ - Registration
+ - Backups
+ - Standalone updater
+ - Taxes 
+ - Discount
+ - And may more...
 
-You can add dynamic pages, posts, and products. All of these can be organized in custom categories in order to achieve a better navigation and showcase of a website's content. New pages can be created using different layouts. In addition, all pages, posts and products come with a number of preset layouts and modules to get users started. These modules can be changed and you can add your own custom set of modules in order to create the most suitable content for your needs.
+### Fully Customizable Web Templates and Layouts
 
-![Powerful Admin Panel](https://microweber.com/cdn/2019_version/2.jpg "")
+![visual-editor.jpg](visual-editor.jpg "")
+ - Change anything of your website or Layout 
+ - Color scheme
+ - Font family
+ - Icon Sets (1000+ icons integrated)
+ - Layout grids and sizes
+ - Borders 
+ - Add spacing
+ - Control typography
+ - and more
 
+### Multilanguage with 35 languages support
 
+### Full Online Store functionality
+ - Adding products (with galleries)
+ - Track orders (detailed information about the order and customer)
+ - Customer information
+ - Adding discounts of the products (products on sale)
+ - 10+ famous payment methods
+ - Shipping settings
+ - Custom Fields for each product
+ - Auto respond order email
+ - Products variants (coming soon)
+ - Full control of product display (search, filters, tags, rating, reviews, etc.)
+ - Statistics
 
-#### E-commerce Solution
-
-The main focus of Microweber CMS is E-commerce. A rising number of people have grown fond of the idea of online entrepreneurship and we aspire to cover their needs. The software has some built-in features that will help online shop founders see their business grow and excel.
-
-![E-commerce Solution](https://microweber.com/cdn/2019_version/3.jpg "")
-
-![Give a star to Microweber](https://microweber.com/cdn/2019_version/Star-Microweber.gif "")
-
-
-## See it in action
-
-* [Microweber Live Demo](https://demo.microweber.org/?template=dream)
-* [Microweber Video](https://sitestatic.microweber.com/userfiles/templates/mw/videos/1.mp4)
-* [Deploy as DigitalOcean 1-Click App](https://marketplace.digitalocean.com/apps/microweber?action=deploy&refcode=83e0646738fe)
-
-
-
-## Requirements  
-
-* HTTP server  
-* Database server
-* PHP >= 7.3
-  * `lib-xml` must be enabled (with DOM support)
-  * `GD` PHP extension
-
-### HTTP Server
-
-#### Apache
-The `mod_rewrite` module must be enabled in your Apache configuration. Microweber creates the necessary `.htaccess` files during installation, including one with `Deny All` directive in each folder to ensure that there are no entry points other than `index.php`.
-
-#### nginx
-Add this `location` directive to your `server` configuration block. The `root` directive must point to the base folder of your Microweber website (which by default is where this readme is located).
-```
-server {
-  location / {
-    try_files $uri $uri/ /index.php$is_args$args;
-  }
-}
-```
-
-### IIS
-
-You can easily [import the `.htaccess` rewrite rules](http://www.iis.net/learn/extensions/url-rewrite-module/importing-apache-modrewrite-rules). Make sure you have enabled [the URL Rewrite module](http://www.iis.net/learn/extensions/url-rewrite-module/using-the-url-rewrite-module) for your website.
-
-### Database
-You have several choices for database engine: MySQL, SQLite, Microsoft SQL Server and PostgreSQL.
-For small websites we highly recommend SQLite.
-However, you can connect to more storage services (like [MongoDB](https://github.com/jenssegers/laravel-mongodb) or [Neo4j](https://github.com/Vinelab/NeoEloquent)) and take advantage of the Laravel framework.
-
-On the installation screen you can only choose from databases enabled in your PHP configuration.
-If you don't see your server of choice in the list you have to enable the corresponding [PDO](http://php.net/manual/en/book.pdo.php) extension for your database server. [An example for Microsoft SQL Server](http://php.net/manual/en/mssql.installation.php). PHP usually comes with PDO enabled by default but you might have to uncomment or add `extension` directives to your `php.ini`.
-
-## Installation  
-
-### The fast way: [Download](https://microweber.com/download.php) and unzip.
-
-### Via Composer
-
-#### Installing dependencies
-
-You need to [have Composer installed](https://getcomposer.org/doc/00-intro.md) in order to download Microweber's dependencies.
-
-You can clone and install Microweber with one command:
-
-```
-composer create-project microweber/microweber my_site dev-master --prefer-dist --no-dev
-```
+![Shop-settings-Microweber.jpg](Shop-settings-Microweber.jpg "Online Store Microweber")
 
 
-This will install Microweber in a folder named `my_site`.
+## BENEFITS OF WHITE LABEL (for Hosting companies)
 
-Another way is to first clone the repository and then run `composer install` in the base directory.
+ - Modern and intuitive control panel with admin and live edit mode
+ - Admin Color Scheme
+ - Change Logo
+ - Own links on the templates
+ - Start / Stop Online Store
+ - Plesk and cPanel Plugins
+ - WHMCS Plugin
+ - Automatic Installation
 
-#### File permissions
-Make sure these folders, and everything inside, is writeable by the user executing the PHP scripts:
-* config/
-* storage/
-* userfiles/
 
-## Getting Started  
+### HOW TO ORDER 
+You can start with the smaller plan of Microweber to test it.
 
-See the [online guides](http://microweber.com/docs/guides/README.md) for developers.
+> - * $10 per month for 10 websites *
+
+If you are a a Web design Studio you can start with 
+> - * $30 per month for 30 websites *
+
+For Hosting Companies we have a special offer
+
+> - * $100 per month = unlimited websites *
+
+#### MICROWEBER VIDEO
+
+No-code platform for creating websites of all sorts. Make it easy, with 450 + pre-designed layouts created for you.
+
+
+[![Microweber video](video_youtube.jpg)](https://youtu.be/EKiaLcZkReM)
+
+
+
+
