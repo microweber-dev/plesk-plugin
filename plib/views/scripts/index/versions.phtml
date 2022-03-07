@@ -15,8 +15,18 @@
 <span>Latest download date:</span> <b><?php echo $this->latestDownloadDate; ?></b><br />
 <br />
 
-<h3>Available Templates</h3>
-<span><?php echo $this->availableTemplates; ?></span>
+<?php if ($this->availableTemplates): ?>
+    <h3>Available Templates (<?php echo count($this->availableTemplates); ?>)</h3>
+    <?php foreach ($this->availableTemplates as $template): ?>
+        <?php echo $template['name']; ?><?php if ($template['version']): ?>(<?php echo $template['version']; ?>)
+        <?php endif; ?>, &nbsp;
+
+    <?php endforeach; ?>
+
+<?php else: ?>
+    <span>No templates available</span>
+<?php endif; ?>
+
 <br />
 <br />
 <?php if ($this->currentVersion != $this->latestVersion): ?>

@@ -24,7 +24,7 @@ class Modules_Microweber_TaskAppVersionCheck extends \pm_LongTask_Task
         if (!empty($mwRelease)) {
             $task = new Modules_Microweber_TaskAppDownload();
             $taskManager->start($task, NULL);
-        }*/ 
+        }*/
 
         $this->updateProgress(50);
 

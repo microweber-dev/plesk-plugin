@@ -28,7 +28,6 @@ class Modules_Microweber_Config
 	
 	public static function getSupportedTemplates()
 	{
-		
 		$templates = [];
         $templatesPath = self::getAppSharedPath() . 'userfiles/templates/';
 
@@ -47,7 +46,6 @@ class Modules_Microweber_Config
         asort($templates);
 		
 		return $templates;
-		
 	}
 	
 	public static function getSupportedLanguages()

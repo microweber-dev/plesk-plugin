@@ -43,6 +43,11 @@ class Modules_Microweber_TaskTemplateDownload extends \pm_LongTask_Task
                 $updateTemplate = true;
             }
 
+            $sfm = new pm_ServerFileManager();
+            if (!$sfm->fileExists($localTemplatePath)) {
+                $updateTemplate = true;
+            }
+
             if ($updateTemplate) {
                 $unzip = pm_ApiCli::callSbin('unzip_app_template.sh', [
                     base64_encode($this->getParam('downloadUrl')),
@@ -51,7 +56,7 @@ class Modules_Microweber_TaskTemplateDownload extends \pm_LongTask_Task
                 if ($unzip == 0) {
 
                     // Update to required version
-                    $templateVersions[$templateTargetDir] = $templateTargetDir;
+                    $templateVersions[$templateTargetDir] = $templateRequiredVersion;
                     pm_Settings::set('mw_templates_versions', json_encode($templateVersions));
                 }
             }

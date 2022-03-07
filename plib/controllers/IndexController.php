@@ -106,15 +106,33 @@ class IndexController extends pm_Controller_Action
             return $this->_redirect('index/error?type=permission');
         }
 
+        $templateVersions = pm_Settings::get('mw_templates_versions');
+        if (!empty($templateVersions)) {
+            $templateVersions = json_decode($templateVersions, true);
+        } else {
+            $templateVersions = [];
+        }
+
         $this->_checkAppSettingsIsCorrect();
 
         $release = Modules_Microweber_Config::getRelease();
 
+        $availableTemplatesWithVersions = [];
         $availableTemplates = Modules_Microweber_Config::getSupportedTemplates();
         if (!empty($availableTemplates)) {
-            $availableTemplates = implode(', ', $availableTemplates);
-        } else {
-            $availableTemplates = 'No templates available';
+            foreach ($availableTemplates as $availableTemplateTargetDir=>$availableTemplate){
+                if (isset($templateVersions[$availableTemplateTargetDir])) {
+                    $availableTemplatesWithVersions[$availableTemplateTargetDir] = [
+                        'version'=>$templateVersions[$availableTemplateTargetDir],
+                        'name'=>$availableTemplate
+                    ];
+                } else {
+                    $availableTemplatesWithVersions[$availableTemplateTargetDir] = [
+                        'version'=>false,
+                        'name'=>$availableTemplate
+                    ];
+                }
+            }
         }
 
         $this->view->pageTitle = $this->_moduleName . ' - Versions';
@@ -122,7 +140,7 @@ class IndexController extends pm_Controller_Action
         $this->view->latestVersion = 'unknown';
         $this->view->currentVersion = $this->_getCurrentVersion();
         $this->view->latestDownloadDate = $this->_getCurrentVersionLastDownloadDateTime();
-        $this->view->availableTemplates = $availableTemplates;
+        $this->view->availableTemplates = $availableTemplatesWithVersions;
 
         if (!empty($release)) {
             $this->view->latestVersion = $release['version'];
