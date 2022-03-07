@@ -8,7 +8,7 @@ Module based architecture with 75+ modules allows you to expand unlimited your w
 
 ## FEATURES OF MICROWEBER 
 
-[![Microweber](https://raw.githubusercontent.com/microweber-dev/plesk-plugin/master/_meta/descriptions/live.jpg)](https://youtu.be/EKiaLcZkReM)
+[![Microweber](https://microweber.com/cdn/partners/plesk/live.jpg)](https://youtu.be/EKiaLcZkReM)
 
 ### 450+ Predefined Layouts in 20 categories (ready for click and drop)
 - Titles (8)
@@ -22,7 +22,7 @@ Module based architecture with 75+ modules allows you to expand unlimited your w
 - Testimonials (20)
 - Contact Us (17)
 - Grids (14)
-- Misc. (11)
+- Misc.. (11)
 - Price Lists (7)
 - Video (7)
 - Ecommerce (8)
@@ -34,7 +34,7 @@ Module based architecture with 75+ modules allows you to expand unlimited your w
 
 ### 40+ Modern Templates
 
-[![Microweber](https://raw.githubusercontent.com/microweber-dev/plesk-plugin/master/_meta/descriptions/templates2.jpg)](https://youtu.be/EKiaLcZkReM)
+[![Microweber](https://microweber.com/cdn/partners/plesk/templates2.jpg)](https://youtu.be/EKiaLcZkReM)
 
 
  - Professional templates each of it contains more than 450+ layouts
@@ -46,7 +46,7 @@ Module based architecture with 75+ modules allows you to expand unlimited your w
 ### 75+ Modules
 
 
-[![Microweber](https://raw.githubusercontent.com/microweber-dev/plesk-plugin/master/_meta/descriptions/modules.jpg)](https://youtu.be/EKiaLcZkReM)
+[![Microweber](https://microweber.com/cdn/partners/plesk/modules.jpg)](https://youtu.be/EKiaLcZkReM)
 
 
  - Upload Images
@@ -67,7 +67,7 @@ Module based architecture with 75+ modules allows you to expand unlimited your w
 
 ### Fully Customizable Web Templates and Layouts
 
-[![Microweber](https://raw.githubusercontent.com/microweber-dev/plesk-plugin/master/_meta/descriptions/visual-editor.jpg)](https://youtu.be/EKiaLcZkReM)
+[![Microweber](https://microweber.com/cdn/partners/plesk/visual-editor.jpg)](https://youtu.be/EKiaLcZkReM)
 
  - Change anything of your website or Layout 
  - Color scheme
@@ -95,7 +95,7 @@ Module based architecture with 75+ modules allows you to expand unlimited your w
  - Statistics
 
 
-[![Online Store Microweber](https://raw.githubusercontent.com/microweber-dev/plesk-plugin/master/_meta/descriptions/Shop-settings-Microweber.jpg)](https://youtu.be/EKiaLcZkReM)
+[![Online Store Microweber](https://microweber.com/cdn/partners/plesk/shop-settings-microweber.jpg)](https://youtu.be/EKiaLcZkReM)
 
 
 
@@ -129,7 +129,7 @@ For Hosting Companies we have a special offer
 
 No-code platform for creating websites of all sorts. Make it easy, with 450 + pre-designed layouts created for you.
 
-[![Microweber video](https://raw.githubusercontent.com/microweber-dev/plesk-plugin/master/_meta/descriptions/video_youtube.jpg)](https://youtu.be/EKiaLcZkReM)
+[![Microweber video](https://microweber.com/cdn/partners/plesk/video-youtube.jpg)](https://youtu.be/EKiaLcZkReM)
 
 
 
