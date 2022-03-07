@@ -326,21 +326,14 @@ class IndexController extends pm_Controller_Action
             return $this->_redirect('index/error?type=permission');
         }
 
-        $this->_status->addMessage('info', $this->_updateApp());
+        $task = new Modules_Microweber_TaskAppVersionCheck();
+        $this->taskManager->start($task, NULL);
+
+        $this->_status->addMessage('info', 'Update task has been started');
 
         return $this->_redirect('index/versions');
     }
 
-    public function updatetemplatesAction()
-    {
-        if (!pm_Session::getClient()->isAdmin()) {
-            return $this->_redirect('index/error?type=permission');
-        }
-
-        $this->_status->addMessage('info', $this->_updateTemplates());
-
-        return $this->_redirect('index/versions');
-    }
 /*
     public function activatesymlinkingAction()
     {
@@ -842,6 +835,13 @@ class IndexController extends pm_Controller_Action
             'required' => true,
         ]);
 
+        $form->addElement('select', 'update_app_automatically', [
+            'label' => 'Update App Automatically',
+            'multiOptions' => ['no' => 'No', 'yes' => 'Yes, when new version is available'],
+            'value' => pm_Settings::get('update_app_automatically'),
+            'required' => true,
+        ]);
+
         $form->addElement('text', 'whmcs_url', [
             'label' => 'WHMCS Url',
             'value' => pm_Settings::get('whmcs_url'),
@@ -874,6 +874,7 @@ class IndexController extends pm_Controller_Action
 
             //pm_Settings::set('update_app_url', $form->getValue('update_app_url'));
             pm_Settings::set('update_app_channel', $form->getValue('update_app_channel'));
+            pm_Settings::set('update_app_automatically', $form->getValue('update_app_automatically'));
             pm_Settings::set('whmcs_url', $form->getValue('whmcs_url'));
             pm_Settings::set('allow_reseller_whitelabel', $form->getValue('allow_reseller_whitelabel'));
 
@@ -1215,46 +1216,6 @@ class IndexController extends pm_Controller_Action
         return implode($pass);
     }
 
-    private function _updateApp()
-    {
-
-        $release = Modules_Microweber_Config::getRelease();
-
-        if (empty($release)) {
-            return 'No releases found.';
-        }
-
-        $downloadLog = 'Downloading task has been started..';
-
-        $task = new Modules_Microweber_TaskAppDownload();
-
-        if (pm_Session::getClient()->isAdmin()) {
-            // Run global
-            $this->taskManager->start($task, NULL);
-        } else {
-            // Run for domain
-            $this->taskManager->start($task, NULL);
-        }
-
-        return $downloadLog;
-    }
-
-    private function _updateTemplates()
-    {
-        $templates = $this->_getTemplatesUrl();
-
-        foreach ($templates as $template) {
-
-            $task = new Modules_Microweber_TaskTemplateDownload();
-            $task->setParam('downloadUrl', $template['download_url']);
-            $task->setParam('targetDir', $template['target_dir']);
-
-            $this->taskManager->start($task, NULL);
-        }
-
-        return 'Downloading templates task started.';
-    }
-
     private function _getLicensedView()
     {
         $this->view->isLicensed = false;
@@ -1482,27 +1443,5 @@ class IndexController extends pm_Controller_Action
         return $list;
     }
 
-    private function _getTemplatesUrl()
-    {
-        $licenses = [];
 
-        $whiteLabelKey =  pm_Settings::get('wl_key');;
-        if (!empty($whiteLabelKey)) {
-            $licenses[] = $whiteLabelKey;
-        }
-
-        $pmLicense = pm_License::getAdditionalKey('microweber');
-        if (!empty($pmLicense)) {
-            $pmLicense = json_encode($pmLicense->getProperties('product'));
-            $licenses[] = 'plesk|' . base64_encode($pmLicense);
-        }
-
-        $connector = new MicroweberMarketplaceConnector();
-        $connector->set_whmcs_url(Modules_Microweber_Config::getWhmcsUrl());
-        $connector->set_license($licenses);
-
-        $templatesUrl = $connector->get_templates_download_urls();
-
-        return $templatesUrl;
-    }
 }

@@ -2,7 +2,7 @@
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
 pm_Context::init('microweber');
 
- $taskManager = new pm_LongTask_Manager();
+$taskManager = new pm_LongTask_Manager();
 
  foreach (Modules_Microweber_Domain::getDomains() as $domain) {
 
