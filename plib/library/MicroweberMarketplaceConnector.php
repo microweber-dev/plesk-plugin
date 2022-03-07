@@ -195,6 +195,7 @@ class MicroweberMarketplaceConnector
                     }
 
 					$download_urls[] = [
+						'version'=>$template['latest_version']['version'],
 						'name'=>$template['latest_version']['name'],
 						'target_dir'=>$template['latest_version']['target-dir'],
 						'download_url'=>$template['latest_version']['dist']['url']

@@ -19,12 +19,11 @@
 <span><?php echo $this->availableTemplates; ?></span>
 <br />
 <br />
-<br />
 <?php if ($this->currentVersion != $this->latestVersion): ?>
 <a href="<?php echo $this->updateLink; ?>" class="btn action" style="width:200px;">Update</a>
 <?php else: ?>
 <h3 style="color:green;">Everything is up to date!</h3>
-<a href="<?php echo $this->updateLink; ?>" class="btn action" style="width:200px;">Force Update</a>
+<a href="<?php echo $this->updateLink; ?>" class="btn action" style="width:200px;">Check for updates</a>
 <?php endif; ?>
-
-<a href="<?php echo $this->updateTemplatesLink; ?>" class="btn action" style="width:200px;background:green;">Update Templates</a>
+<!--
+<a href="<?php /*echo $this->updateTemplatesLink; */?>" class="btn action" style="xwidth:200px;background:green;">Update Templates</a>-->

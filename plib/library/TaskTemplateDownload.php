@@ -14,6 +14,13 @@ class Modules_Microweber_TaskTemplateDownload extends \pm_LongTask_Task
 
 	public function run()
 	{
+        $templateVersions = pm_Settings::get('mw_templates_versions');
+        if (!empty($templateVersions)) {
+            $templateVersions = json_decode($templateVersions, true);
+        } else {
+            $templateVersions = [];
+        }
+
 		$this->updateProgress(10);
 		
 		if (!empty($this->getParam('downloadUrl')) && !empty($this->getParam('targetDir'))) {
@@ -21,11 +28,33 @@ class Modules_Microweber_TaskTemplateDownload extends \pm_LongTask_Task
 			$this->updateProgress(30);
 			$this->updateProgress(40);
 			$this->updateProgress(60);
-			
-			$downloadLog = pm_ApiCli::callSbin('unzip_app_template.sh',[
-				base64_encode($this->getParam('downloadUrl')),
-				Modules_Microweber_Config::getAppSharedPath() . '/userfiles/templates/' . $this->getParam('targetDir') . '/'
-			])['stdout'];
+
+            $templateTargetDir = $this->getParam('targetDir');
+            $templateRequiredVersion = $this->getParam('version');
+
+            $localTemplatePath = Modules_Microweber_Config::getAppSharedPath() . '/userfiles/templates/' . $templateTargetDir . '/';
+            $localTemplateVersion = 0;
+            if (isset($templateVersions[$templateTargetDir])) {
+                $localTemplateVersion = $templateVersions[$templateTargetDir];
+            }
+
+            $updateTemplate = false;
+            if ($localTemplateVersion != $templateRequiredVersion) {
+                $updateTemplate = true;
+            }
+
+            if ($updateTemplate) {
+                $unzip = pm_ApiCli::callSbin('unzip_app_template.sh', [
+                    base64_encode($this->getParam('downloadUrl')),
+                    $localTemplatePath
+                ])['code'];
+                if ($unzip == 0) {
+
+                    // Update to required version
+                    $templateVersions[$templateTargetDir] = $templateTargetDir;
+                    pm_Settings::set('mw_templates_versions', json_encode($templateVersions));
+                }
+            }
 			
 		}
 		

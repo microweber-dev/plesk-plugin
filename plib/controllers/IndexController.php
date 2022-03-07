@@ -6,8 +6,6 @@
  * Copyright: Microweber CMS
  */
 
-include dirname(__DIR__) . '/library/MicroweberMarketplaceConnector.php';
-
 class IndexController extends pm_Controller_Action
 {
 
@@ -131,7 +129,7 @@ class IndexController extends pm_Controller_Action
         }
 
         $this->view->updateLink = pm_Context::getBaseUrl() . 'index.php/index/update';
-        $this->view->updateTemplatesLink = pm_Context::getBaseUrl() . 'index.php/index/update_templates';
+       // $this->view->updateTemplatesLink = pm_Context::getBaseUrl() . 'index.php/index/update_templates';
     }
 
     public function whitelabelAction()

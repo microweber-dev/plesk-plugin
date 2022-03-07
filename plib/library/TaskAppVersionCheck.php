@@ -6,23 +6,27 @@
  * Copyright: Microweber CMS
  */
 
+include dirname(__DIR__) . '/library/MicroweberMarketplaceConnector.php';
+
 class Modules_Microweber_TaskAppVersionCheck extends \pm_LongTask_Task
 {
-    public $hidden = true;
+    public $hidden = false;
 	public $trackProgress = true;
 
 	public function run()
 	{
-		$this->updateProgress(30);
+		$this->updateProgress(10);
 
         $taskManager = new pm_LongTask_Manager();
 
-        // Update app
+      /*  // Update app
         $mwRelease = Modules_Microweber_Config::getRelease();
         if (!empty($mwRelease)) {
             $task = new Modules_Microweber_TaskAppDownload();
             $taskManager->start($task, NULL);
-        }
+        }*/ 
+
+        $this->updateProgress(50);
 
         // Update templates
         $templates = $this->_getTemplatesUrl();
@@ -31,6 +35,7 @@ class Modules_Microweber_TaskAppVersionCheck extends \pm_LongTask_Task
             $task = new Modules_Microweber_TaskTemplateDownload();
             $task->setParam('downloadUrl', $template['download_url']);
             $task->setParam('targetDir', $template['target_dir']);
+            $task->setParam('version', $template['version']);
 
             $taskManager->start($task, NULL);
         }
