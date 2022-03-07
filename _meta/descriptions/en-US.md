@@ -6,11 +6,11 @@ It contains 450 + pre-designed layouts in 20 categories, which are mobile ready 
 Module based architecture with 75+ modules allows you to expand unlimited your website.
 [Microweber Website Builder Video](https://youtu.be/JwUj6mGZ20I "Short Video of how it's work")
 
-## FEATURES OF MICROWEBER 
+# FEATURES OF MICROWEBER 
 
 [![Microweber](https://microweber.com/cdn/partners/plesk/live.jpg)](https://youtu.be/EKiaLcZkReM)
 
-### 450+ Predefined Layouts in 20 categories (ready for click and drop)
+# 450+ Predefined Layouts in 20 categories (ready for click and drop)
 - Titles (8)
 - Text Block (15)
 - Content (72)
@@ -32,7 +32,7 @@ Module based architecture with 75+ modules allows you to expand unlimited your w
 - Other (3)
 - Default layouts (26)
 
-### 40+ Modern Templates
+# 40+ Modern Templates
 
 [![Microweber](https://microweber.com/cdn/partners/plesk/templates2.jpg)](https://youtu.be/EKiaLcZkReM)
 
@@ -43,7 +43,7 @@ Module based architecture with 75+ modules allows you to expand unlimited your w
  - New templates are adding each week
 
 
-### 75+ Modules
+# 75+ Modules
 
 
 [![Microweber](https://microweber.com/cdn/partners/plesk/modules.jpg)](https://youtu.be/EKiaLcZkReM)
@@ -65,7 +65,7 @@ Module based architecture with 75+ modules allows you to expand unlimited your w
  - Discount
  - And may more...
 
-### Fully Customizable Web Templates and Layouts
+# Fully Customizable Web Templates and Layouts
 
 [![Microweber](https://microweber.com/cdn/partners/plesk/visual-editor.jpg)](https://youtu.be/EKiaLcZkReM)
 
@@ -79,9 +79,9 @@ Module based architecture with 75+ modules allows you to expand unlimited your w
  - Control typography
  - and more
 
-### Multilanguage with 35 languages support
+# Multilanguage with 35 languages support
 
-### Full Online Store functionality
+# Full Online Store functionality
  - Adding products (with galleries)
  - Track orders (detailed information about the order and customer)
  - Customer information
@@ -101,7 +101,7 @@ Module based architecture with 75+ modules allows you to expand unlimited your w
 
 
 
-## BENEFITS OF WHITE LABEL (for Hosting companies)
+# BENEFITS OF WHITE LABEL (for Hosting companies)
 
  - Modern and intuitive control panel with admin and live edit mode
  - Admin Color Scheme
@@ -113,7 +113,7 @@ Module based architecture with 75+ modules allows you to expand unlimited your w
  - Automatic Installation
 
 
-### HOW TO ORDER 
+# HOW TO ORDER 
 You can start with the smaller plan of Microweber to test it.
 
 > - * $10 per month for 10 websites *
@@ -125,7 +125,7 @@ For Hosting Companies we have a special offer
 
 > - * $100 per month = unlimited websites *
 
-#### MICROWEBER VIDEO
+# MICROWEBER VIDEO
 
 No-code platform for creating websites of all sorts. Make it easy, with 450 + pre-designed layouts created for you.
 
