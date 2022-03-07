@@ -10,7 +10,7 @@ class Modules_Microweber_LicenseData
 {
     private static function _getAppInstallationsCount()
     {
-        return pm_Settings::get('mw_installations_count');
+        return (int) pm_Settings::get('mw_installations_count');
     }
 
     public static function getLimitations()
