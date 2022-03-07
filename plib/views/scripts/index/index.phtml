@@ -19,30 +19,6 @@ if ($this->errorMessage):
 <?php endif; ?>
 
 <?php if($this->limitations['app_installations_freeze']): ?>
-<style>
-    #pm-list-microweber {
-        filter: blur(2px);
-    }
-    #pm-list-microweber:before {
-        content: " ";
-        width: 100% !important;
-        height: 100% !important;
-        position: absolute;
-       /* background: rgba(0, 0, 0, 0.81);*/
-    }
-    .microweber-license-message {
-        text-align: center;
-        padding: 31px;
-        background: rgb(255, 233, 233);
-        color: #c15656;
-    }
-    .microweber-license-message h2 {
-        color: #bf4242;
-    }
-    .microweber-license-message h3 {
-        color: #c46161;
-    }
-</style>
 
 <div class="microweber-license-message">
     <h2>You have reached your plan limit.</h2>
