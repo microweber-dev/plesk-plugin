@@ -25,7 +25,7 @@ class IndexController extends pm_Controller_Action
 
         $this->view->newLicenseLink = '/server/additional_keys.php?key_type=additional';
         $this->view->buyLink = pm_Context::getBuyUrl();
-	$this->view->upgradeLink = pm_Context::getUpgradeLicenseUrl();
+        $this->view->upgradeLink = pm_Context::getUpgradeLicenseUrl();
 
         $this->view->limitations = Modules_Microweber_LicenseData::getLimitations();
         $this->_moduleName = Modules_Microweber_WhiteLabel::getBrandName();
@@ -68,11 +68,14 @@ class IndexController extends pm_Controller_Action
         }
 
         $this->view->headLink()->appendStylesheet(pm_Context::getBaseUrl() . 'css/app.css');
+
+        if ($this->view->limitations['app_installations_freeze']) {
+            $this->view->headLink()->appendStylesheet(pm_Context::getBaseUrl() . 'css/reached-plan.css');
+        }
     }
 
     public function indexAction()
     {
-
         $this->_checkAppSettingsIsCorrect();
 
         $this->view->errorMessage = false;
@@ -82,10 +85,8 @@ class IndexController extends pm_Controller_Action
 
         $this->view->refreshDomainLink = pm_Context::getBaseUrl() . 'index.php/index/refreshdomains';
         $this->view->pageTitle = $this->_moduleName . ' - Domains';
-
         $this->view->list = $this->_getDomainsList();
 
-        // $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/index.js');
     }
 
@@ -1262,9 +1263,7 @@ class IndexController extends pm_Controller_Action
 
         $licenseData = pm_Settings::get('wl_license_data');
         if (!empty($licenseData)) {
-
             $licenseData = json_decode($licenseData, TRUE);
-
             if ($licenseData['status'] == 'active') {
 
                 $this->view->isLicensed = true;
@@ -1278,8 +1277,7 @@ class IndexController extends pm_Controller_Action
             }
         }
 
-        $pmLicense = pm_License::getAdditionalKey();
-        if ($pmLicense && isset($pmLicense->getProperties('product')['name'])) {
+        if(!empty($this->view->limitations)) {
             $this->view->isLicensed = true;
         }
 
