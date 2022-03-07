@@ -1277,7 +1277,8 @@ class IndexController extends pm_Controller_Action
             }
         }
 
-        if(!empty($this->view->limitations)) {
+        $pmLicense = pm_License::getAdditionalKey();
+        if ($pmLicense && isset($pmLicense->getProperties('product')['name'])) {
             $this->view->isLicensed = true;
         }
 
