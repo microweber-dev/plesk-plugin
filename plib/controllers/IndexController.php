@@ -25,6 +25,7 @@ class IndexController extends pm_Controller_Action
 
         $this->view->newLicenseLink = '/server/additional_keys.php?key_type=additional';
         $this->view->buyLink = pm_Context::getBuyUrl();
+	$this->view->upgradeLink = pm_Context::getUpgradeLicenseUrl();
 
         $this->view->limitations = Modules_Microweber_LicenseData::getLimitations();
         $this->_moduleName = Modules_Microweber_WhiteLabel::getBrandName();
