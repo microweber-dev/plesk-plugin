@@ -10,19 +10,7 @@ class Modules_Microweber_LicenseData
 {
     private static function _getAppInstallationsCount()
     {
-        $installations = 0;
-        foreach (Modules_Microweber_Domain::getDomains() as $domain) {
-            if (!$domain->hasHosting()) {
-                continue;
-            }
-            $domainInstallations = $domain->getSetting('mwAppInstallations');
-            $domainInstallations = json_decode($domainInstallations, true);
-            if (empty($domainInstallations)) {
-                continue;
-            }
-            $installations++;
-        }
-        return $installations;
+        return pm_Settings::get('mw_installations_count');
     }
 
     public static function getLimitations()
