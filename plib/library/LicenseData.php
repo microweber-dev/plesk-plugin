@@ -8,31 +8,20 @@
 
 class Modules_Microweber_LicenseData
 {
-
     private static function _getAppInstallationsCount()
     {
-        $taskManager = new pm_LongTask_Manager();
-
         $installations = 0;
         foreach (Modules_Microweber_Domain::getDomains() as $domain) {
-
             if (!$domain->hasHosting()) {
                 continue;
             }
-
             $domainInstallations = $domain->getSetting('mwAppInstallations');
             $domainInstallations = json_decode($domainInstallations, true);
-
             if (empty($domainInstallations)) {
-                $task = new Modules_Microweber_TaskDomainAppInstallationScan();
-                $task->setParam('domainId', $domain->getId());
-                $taskManager->start($task, NULL);
                 continue;
             }
-
             $installations++;
         }
-
         return $installations;
     }
 
