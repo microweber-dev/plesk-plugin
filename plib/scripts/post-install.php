@@ -1,6 +1,6 @@
 <?php
 // Copyright 1999-2016. Parallels IP Holdings GmbH.
-pm_Context::init('microweber-app');
+pm_Context::init('microweber');
 
 $tasks = pm_Scheduler::getInstance()->listTasks();
 foreach ($tasks as $task) {
