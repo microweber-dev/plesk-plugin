@@ -22,6 +22,9 @@ class Modules_Microweber_TaskAppVersionCheck extends \pm_LongTask_Task
 
         // Update app
         $status = Modules_Microweber_Helper::canIUpdateNewVersionOfApp();
+
+        $this->updateProgress(30);
+
         if ($status['update_app']) {
             $mwRelease = Modules_Microweber_Config::getRelease();
             if (!empty($mwRelease)) {
@@ -30,13 +33,9 @@ class Modules_Microweber_TaskAppVersionCheck extends \pm_LongTask_Task
             }
         } else {
             $msg = 'There are domains with old php versions that prevent updating.';
-            $msg .= implode(', ', $status['outdated_domains']);
+            $msg .= ' ' . implode(', ', $status['outdated_domains']);
 
-            $notifier = new pm_Notification();
-            $notifier->send('updateFailed', ['error' => $msg], null);
-            $this->setParam('onError', $msg);
-
-            throw new pm_Exception();
+            throw new pm_Exception($msg);
         }
 
         $this->updateProgress(50);
@@ -85,7 +84,7 @@ class Modules_Microweber_TaskAppVersionCheck extends \pm_LongTask_Task
 	{
 		switch ($this->getStatus()) {
 			case static::STATUS_RUNNING:
-				return 'Check server compatibility with new version...';
+				return 'Checking server compatibility with new version...';
 			case static::STATUS_DONE:
 				return 'Done!';
 			case static::STATUS_ERROR:
