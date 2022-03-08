@@ -54,7 +54,6 @@ class Modules_Microweber_TaskTemplateDownload extends \pm_LongTask_Task
                     $localTemplatePath
                 ])['code'];
                 if ($unzip == 0) {
-
                     // Update to required version
                     $templateVersions[$templateTargetDir] = $templateRequiredVersion;
                     pm_Settings::set('mw_templates_versions', json_encode($templateVersions));

@@ -74,6 +74,13 @@ class IndexController extends pm_Controller_Action
 
     public function indexAction()
     {
+
+      /*  $status = Modules_Microweber_Helper::canIUpdateNewVersionOfApp();
+        if ($status['update_app']) {
+
+        }
+        var_dump($status);*/
+
         $this->_checkAppSettingsIsCorrect();
 
         $this->view->errorMessage = false;

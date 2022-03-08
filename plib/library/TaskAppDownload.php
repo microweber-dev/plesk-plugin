@@ -8,7 +8,6 @@
 
 class Modules_Microweber_TaskAppDownload extends \pm_LongTask_Task
 {
-
 	public $trackProgress = true;
 
 	public function run()
@@ -21,7 +20,9 @@ class Modules_Microweber_TaskAppDownload extends \pm_LongTask_Task
 
         $this->updateProgress(20);
 
-        $downloadLog .= pm_ApiCli::callSbin('unzip_app_version.sh', [base64_encode($release['url']), Modules_Microweber_Config::getAppSharedPath()])['stdout'];
+        $appSharedPath = Modules_Microweber_Config::getAppSharedPath();
+
+        $downloadLog .= pm_ApiCli::callSbin('unzip_app_version.sh', [base64_encode($release['url']), $appSharedPath])['stdout'];
 
         $this->updateProgress(30);
 		

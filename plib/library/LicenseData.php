@@ -56,8 +56,7 @@ class Modules_Microweber_LicenseData
 			$whiteLabelKey = trim($whiteLabelKey);
 
 			$checkUrl = Modules_Microweber_Config::getUpdateAppUrl() . "/?api_function=validate_licenses&local_key=$whiteLabelKey&rel_type=$relType";
-			$data = file_get_contents($checkUrl);
-			$data = @json_decode($data, true);
+            $data = Modules_Microweber_Helper::getJsonFromUrl($checkUrl);
 
 			if ($data and isset($data[$relType])) {
 				$keyData = $data[$relType];

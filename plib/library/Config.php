@@ -105,32 +105,25 @@ class Modules_Microweber_Config
 	
 	public static function getWhmcsPackageManagerUrls()
 	{
-		$whmcsUrl = self::getWhmcsUrl();
-		
-		return Modules_Microweber_Helper::getJsonFromUrl($whmcsUrl . '/index.php?m=microweber_addon&function=get_package_manager_urls');
+		return Modules_Microweber_Helper::getJsonFromUrl(self::getWhmcsUrl() . '/index.php?m=microweber_addon&function=get_package_manager_urls');
 	}
 
     public static function getRelease()
     {
-        $licenseKey = '';
-
-        $pmLicense = pm_License::getAdditionalKey();
-        if ($pmLicense && isset($pmLicense->getProperties('product')['name'])) {
-            $licenseKey = $pmLicense->getProperties('product')['number'];
-        }
-
         if (pm_Settings::get('update_app_channel') == 'dev') {
-
             return [
                 'version'=>'Latest development version',
+                'composer_url'=>'http://updater.microweberapi.com/microweber-dev.composer.json',
+                'version_url'=>'http://updater.microweberapi.com/microweber-dev.version.txt',
                 'url'=>'http://updater.microweberapi.com/microweber-dev.zip'
             ];
-
-        } else {
-            $releaseUrl = Modules_Microweber_Config::getUpdateAppUrl();
-            $releaseUrl .= '?api_function=get_download_link&get_last_version=1&license_key=' . $licenseKey . '&license_type=plesk';
-
-            return Modules_Microweber_Helper::getJsonFromUrl($releaseUrl);
         }
+
+        return [
+            'version'=>'Latest production version',
+            'composer_url'=>'http://updater.microweberapi.com/microweber-master.composer.json',
+            'version_url'=>'http://updater.microweberapi.com/microweber-master.version.txt',
+            'url'=>'http://updater.microweberapi.com/microweber-master.zip'
+        ];
     }
 }
