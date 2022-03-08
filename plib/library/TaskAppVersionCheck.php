@@ -86,7 +86,7 @@ class Modules_Microweber_TaskAppVersionCheck extends \pm_LongTask_Task
 			case static::STATUS_RUNNING:
 				return 'Checking server compatibility with new version...';
 			case static::STATUS_DONE:
-				return 'Done!';
+				return 'Checking is complete!';
 			case static::STATUS_ERROR:
 				return $this->statusErrorMessage;
 			case static::STATUS_NOT_STARTED:

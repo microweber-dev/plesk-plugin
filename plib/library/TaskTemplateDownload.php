@@ -71,7 +71,7 @@ class Modules_Microweber_TaskTemplateDownload extends \pm_LongTask_Task
 			case static::STATUS_RUNNING:
 				return 'Installing '.Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' template...';
 			case static::STATUS_DONE:
-				return Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' template is downloaded successfully.';
+				return Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' template is updated successfully.';
 			case static::STATUS_ERROR:
 				return 'Error installing '.Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' template.';
 			case static::STATUS_NOT_STARTED:

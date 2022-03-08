@@ -82,7 +82,7 @@ class Modules_Microweber_TaskAppDownload extends \pm_LongTask_Task
 			case static::STATUS_RUNNING:
 				return 'Download '.Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' app...';
 			case static::STATUS_DONE:
-				return Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' app is downloaded successfully.';
+				return Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' app is updated successfully.';
 			case static::STATUS_ERROR:
 				return 'Error installing '.Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' app.';
 			case static::STATUS_NOT_STARTED:

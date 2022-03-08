@@ -122,7 +122,8 @@ class IndexController extends pm_Controller_Action
 
         $this->_checkAppSettingsIsCorrect();
 
-        $release = Modules_Microweber_Config::getRelease();
+        $mwRelease = Modules_Microweber_Config::getRelease();
+        $mwReleaseVersion = Modules_Microweber_Helper::getContentFromUrl($mwRelease['version_url']);
 
         $availableTemplatesWithVersions = [];
         $availableTemplates = Modules_Microweber_Config::getSupportedTemplates();
@@ -149,8 +150,8 @@ class IndexController extends pm_Controller_Action
         $this->view->latestDownloadDate = $this->_getCurrentVersionLastDownloadDateTime();
         $this->view->availableTemplates = $availableTemplatesWithVersions;
 
-        if (!empty($release)) {
-            $this->view->latestVersion = $release['version'];
+        if (!empty($mwReleaseVersion)) {
+            $this->view->latestVersion = $mwReleaseVersion;
         }
 
         $this->view->updateLink = pm_Context::getBaseUrl() . 'index.php/index/update';
