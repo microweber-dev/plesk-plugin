@@ -1,5 +1,11 @@
 <?php
-// Copyright 1999-2016. Parallels IP Holdings GmbH.
+/**
+ * Microweber auto provision plesk plugin
+ * Author: Bozhidar Slaveykov
+ * @email: info@microweber.com
+ * Copyright: Microweber CMS
+ */
+
 pm_Context::init('microweber');
 
 if (pm_Settings::get('update_app_automatically') != 'yes') {
