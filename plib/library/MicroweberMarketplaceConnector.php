@@ -25,12 +25,12 @@ class MicroweberMarketplaceConnector
 
     public $licenses = [];
 
-    public function setLicense($license)
+    public function set_license($license)
     {
         $this->licenses = $license;
     }
     
-    public function addLicense($license)
+    public function add_license($license)
     {
         $this->licenses[] = $license;
     }
