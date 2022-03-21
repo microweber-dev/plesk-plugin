@@ -6,7 +6,6 @@
  * Copyright: Microweber CMS
  */
 
-include dirname(__DIR__) . '/library/MicroweberMarketplaceConnector.php';
 
 class Modules_Microweber_TaskAppVersionCheck extends \pm_LongTask_Task
 {
@@ -20,7 +19,7 @@ class Modules_Microweber_TaskAppVersionCheck extends \pm_LongTask_Task
 
         $taskManager = new pm_LongTask_Manager();
 
-        // Update app
+      /*  // Update app
         $status = Modules_Microweber_Helper::canIUpdateNewVersionOfApp();
 
         $this->updateProgress(30);
@@ -38,43 +37,15 @@ class Modules_Microweber_TaskAppVersionCheck extends \pm_LongTask_Task
             throw new pm_Exception($msg);
         }
 
-        $this->updateProgress(50);
+        $this->updateProgress(50);*/
 
         // Update templates
-        $templatesUrls = $this->_getTemplatesUrl();
-
         $task = new Modules_Microweber_TaskTemplatesDownload();
-        $task->setParam('templatesUrls', $templatesUrls);
-
         $taskManager->start($task, NULL);
 
         $this->updateProgress(100);
 
 	}
-
-    private function _getTemplatesUrl()
-    {
-        $licenses = [];
-
-        $whiteLabelKey =  pm_Settings::get('wl_key');;
-        if (!empty($whiteLabelKey)) {
-            $licenses[] = $whiteLabelKey;
-        }
-
-        $pmLicense = pm_License::getAdditionalKey('microweber');
-        if (!empty($pmLicense)) {
-            $pmLicense = json_encode($pmLicense->getProperties('product'));
-            $licenses[] = 'plesk|' . base64_encode($pmLicense);
-        }
-
-        $connector = new MicroweberMarketplaceConnector();
-        $connector->set_whmcs_url(Modules_Microweber_Config::getWhmcsUrl());
-        $connector->set_license($licenses);
-
-        $templatesUrl = $connector->get_templates_download_urls();
-
-        return $templatesUrl;
-    }
 
 	public function statusMessage()
 	{
