@@ -36,11 +36,11 @@ class Modules_Microweber_TaskTemplatesDownload extends \pm_LongTask_Task
             if (empty($templateData['download_url']) || empty($templateData['target_dir'])) {
                 continue;
             }
-            
-            $this->runningLog = 'Downloading template ' . $templateData['name'] . '...';
 
             $templateTargetDir = $templateData['target_dir'];
             $templateRequiredVersion = $templateData['version'];
+
+            $this->runningLog = 'Downloading template: ' . $templateTargetDir. ' ...';
 
             $localTemplatePath = Modules_Microweber_Config::getAppSharedPath() . '/userfiles/templates/' . $templateTargetDir . '/';
             $localTemplateVersion = 0;
@@ -70,7 +70,7 @@ class Modules_Microweber_TaskTemplatesDownload extends \pm_LongTask_Task
                 }
             }
 
-            $this->runningLog = 'Unzipping template ' . $templateData['name'] . '...';
+            $this->runningLog = 'Unzipping template: ' . $templateTargetDir . ' ...';
 
             $updateProgress++;
             $this->updateProgress($updateProgress);
