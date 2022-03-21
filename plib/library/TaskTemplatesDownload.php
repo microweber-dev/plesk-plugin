@@ -6,7 +6,7 @@
  * Copyright: Microweber CMS
  */
 
-class Modules_Microweber_TaskTemplateDownload extends \pm_LongTask_Task
+class Modules_Microweber_TaskTemplatesDownload extends \pm_LongTask_Task
 {
 
     public $hidden = true;
@@ -21,16 +21,22 @@ class Modules_Microweber_TaskTemplateDownload extends \pm_LongTask_Task
             $templateVersions = [];
         }
 
-		$this->updateProgress(10);
-		
-		if (!empty($this->getParam('downloadUrl')) && !empty($this->getParam('targetDir'))) {
-		
-			$this->updateProgress(30);
-			$this->updateProgress(40);
-			$this->updateProgress(60);
+        $templatesUrls = $this->getParam('templatesUrls');
+        if (empty($templatesUrls)) {
+            return;
+        }
 
-            $templateTargetDir = $this->getParam('targetDir');
-            $templateRequiredVersion = $this->getParam('version');
+        $updateProgress = 1;
+        $this->updateProgress($updateProgress);
+
+        foreach ($templatesUrls as $templateData) {
+
+            if (empty($templateData['downloadUrl']) || empty($templateData['targetDir'])) {
+                continue;
+            }
+
+            $templateTargetDir = $templateData['targetDir'];
+            $templateRequiredVersion = $templateData['version'];
 
             $localTemplatePath = Modules_Microweber_Config::getAppSharedPath() . '/userfiles/templates/' . $templateTargetDir . '/';
             $localTemplateVersion = 0;
@@ -50,7 +56,7 @@ class Modules_Microweber_TaskTemplateDownload extends \pm_LongTask_Task
 
             if ($updateTemplate) {
                 $unzip = pm_ApiCli::callSbin('unzip_app_template.sh', [
-                    base64_encode($this->getParam('downloadUrl')),
+                    base64_encode($templateData['downloadUrl']),
                     $localTemplatePath
                 ])['code'];
                 if ($unzip == 0) {
@@ -59,21 +65,23 @@ class Modules_Microweber_TaskTemplateDownload extends \pm_LongTask_Task
                     pm_Settings::set('mw_templates_versions', json_encode($templateVersions));
                 }
             }
-			
-		}
-		
-		$this->updateProgress(100);
+
+            $updateProgress++;
+            $this->updateProgress($updateProgress);
+        }
+
+        $this->updateProgress(100);
 	}
 
 	public function statusMessage()
 	{
 		switch ($this->getStatus()) {
 			case static::STATUS_RUNNING:
-				return 'Installing '.Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' template...';
+				return 'Downloading '.Modules_Microweber_WhiteLabel::getBrandName().' templates...';
 			case static::STATUS_DONE:
-				return Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' template is updated successfully.';
+				return Modules_Microweber_WhiteLabel::getBrandName().' templates is up to date.';
 			case static::STATUS_ERROR:
-				return 'Error installing '.Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' template.';
+				return 'Error downloading '.Modules_Microweber_WhiteLabel::getBrandName().' templates.';
 			case static::STATUS_NOT_STARTED:
 				return pm_Locale::lmsg('taskPingError', [
 					'id' => $this->getId()

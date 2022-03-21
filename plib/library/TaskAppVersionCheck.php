@@ -41,16 +41,12 @@ class Modules_Microweber_TaskAppVersionCheck extends \pm_LongTask_Task
         $this->updateProgress(50);
 
         // Update templates
-        $templates = $this->_getTemplatesUrl();
-        foreach ($templates as $template) {
+        $templatesUrls = $this->_getTemplatesUrl();
 
-            $task = new Modules_Microweber_TaskTemplateDownload();
-            $task->setParam('downloadUrl', $template['download_url']);
-            $task->setParam('targetDir', $template['target_dir']);
-            $task->setParam('version', $template['version']);
+        $task = new Modules_Microweber_TaskTemplatesDownload();
+        $task->setParam('templatesUrls', $templatesUrls);
 
-            $taskManager->start($task, NULL);
-        }
+        $taskManager->start($task, NULL);
 
         $this->updateProgress(100);
 
