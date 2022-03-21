@@ -12,8 +12,23 @@ class Modules_Microweber_EventListener implements EventListener
 	public function handleEvent($objectType, $objectId, $action, $oldValue, $newValue)
 	{
 		
+		if ($action == 'domain_delete' || $action == 'domain_alias_delete' || $action == 'site_delete') {
+
+            $domain = new pm_Domain($objectId);
+
+            $taskManager = new pm_LongTask_Manager(); 
+
+            $task = new Modules_Microweber_TaskDomainAppInstallationScan();
+            $task->setParam('domainId', $domain->getId());
+            $taskManager->start($task, NULL);
+
+            $task = new Modules_Microweber_TaskDomainAppInstallationCount();
+            $taskManager->start($task, NULL);
+
+        }
+
 		if ($action == 'phys_hosting_create' || $action == 'phys_hosting_update') {
-			
+
 			$domain = new pm_Domain($objectId);
 			$planItems = $domain->getPlanItems();
 			
