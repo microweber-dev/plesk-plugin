@@ -99,31 +99,18 @@ Module based architecture with 75+ modules allows you to expand unlimited your w
 
 
 
-
-
-# BENEFITS OF WHITE LABEL (for Hosting companies)
-
+# BENEFITS OF GETTING A LICENSE
+ - Unlimited website builder
+ - Create any kind of website
  - Modern and intuitive control panel with admin and live edit mode
  - Admin Color Scheme
  - Change Logo
  - Own links on the templates
- - Start / Stop Online Store
  - Plesk and cPanel Plugins
  - WHMCS Plugin
  - Automatic Installation
 
 
-# HOW TO ORDER 
-You can start with the smaller plan of Microweber to test it.
-
-> - * $10 per month for 10 websites *
-
-If you are a a Web design Studio you can start with 
-> - * $30 per month for 30 websites *
-
-For Hosting Companies we have a special offer
-
-> - * $100 per month = unlimited websites *
 
 # MICROWEBER VIDEO
 
