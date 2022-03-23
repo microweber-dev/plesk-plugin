@@ -1,4 +1,4 @@
-function openPhpUpgradeWizard(instance) {
+function openPhpUpgradeWizard() {
 
     domainSetupPopup = new Jsw.PopupForm({
         singleRowButtons: true
