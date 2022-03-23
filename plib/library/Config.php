@@ -111,19 +111,21 @@ class Modules_Microweber_Config
     public static function getRelease()
     {
         if (pm_Settings::get('update_app_channel') == 'dev') {
+           // $dev = 'dev';
+            $dev = 'laravel9-php8';
             return [
                 'version'=>'Latest development version',
-                'composer_url'=>'http://updater.microweberapi.com/microweber-dev.composer.json',
-                'version_url'=>'http://updater.microweberapi.com/microweber-dev.version.txt',
-                'url'=>'http://updater.microweberapi.com/microweber-dev.zip'
+                'composer_url'=>'http://updater.microweberapi.com/builds/'.$dev.'/composer.json',
+                'version_url'=>'http://updater.microweberapi.com/builds/'.$dev.'/version.txt',
+                'url'=>'http://updater.microweberapi.com/builds/'.$dev.'/microweber.zip'
             ];
         }
 
         return [
             'version'=>'Latest production version',
-            'composer_url'=>'http://updater.microweberapi.com/microweber-master.composer.json',
-            'version_url'=>'http://updater.microweberapi.com/microweber-master.version.txt',
-            'url'=>'http://updater.microweberapi.com/microweber-master.zip'
+            'composer_url'=>'http://updater.microweberapi.com/builds/master/composer.json',
+            'version_url'=>'http://updater.microweberapi.com/builds/master/version.txt',
+            'url'=>'http://updater.microweberapi.com/builds/master/microweber.zip'
         ];
     }
 }
