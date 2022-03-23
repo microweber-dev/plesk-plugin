@@ -114,6 +114,9 @@ class IndexController extends pm_Controller_Action
         }
 
         $this->view->showPhpVersionWizard = pm_Settings::get('show_php_version_wizard', false);
+        if ($this->view->showPhpVersionWizard) {
+            $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/php-upgrade-wizard.js');
+        }
 
         $templateVersions = pm_Settings::get('mw_templates_versions');
         if (!empty($templateVersions)) {

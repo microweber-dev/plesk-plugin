@@ -11,7 +11,8 @@ function openPhpUpgradeWizard() {
     domainSetupPopup.setHint('<div style="height:250px;">Loading...</div>' + closeButtonHtml);
 
 
-    var xhr = new XMLHttpRequest();
+
+   /* var xhr = new XMLHttpRequest();
     xhr.open('get', '/modules/microweber/index.php/index/index')
     xhr.send();
 
@@ -20,6 +21,6 @@ function openPhpUpgradeWizard() {
 
             domainSetupPopup.setHint(this.responseText);
         }
-    }
+    }*/
 
 }
