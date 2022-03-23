@@ -31,9 +31,9 @@ class Modules_Microweber_TaskAppVersionCheck extends \pm_LongTask_Task
                 $taskManager->start($task, NULL);
             }
         } else {
+            pm_Settings::set('show_php_version_wizard', true);
             $msg = 'There are domains with old php versions that prevent updating.';
             $msg .= ' ' . implode(', ', $status['outdated_domains']);
-
             throw new pm_Exception($msg);
         }
 
