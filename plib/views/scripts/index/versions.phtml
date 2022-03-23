@@ -27,6 +27,35 @@
     <span>No templates available</span>
 <?php endif; ?>
 
+
+<?php if ($this->showPhpVersionWizard): ?>
+<br />
+<br />
+    <div class="pul-card pul-card--extended">
+        <div class="pul-card__inner">
+            <div class="pul-card__body">
+                <div class="pul-card__main">
+                    <div class="pul-card__main-content">
+                        <div>
+                            <h3>Warnning!</h3>
+                            Your PHP version is not compatible with the next version of app.
+                            <br />
+                            Please update your PHP version to install new updates
+                            <br />
+                            <br />
+                            <a href="" class="btn action">
+                                Click here to upgrade
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<?php else: ?>
+
 <br />
 <br />
 <?php if ($this->currentVersion != $this->latestVersion): ?>
@@ -35,5 +64,5 @@
 <h3 style="color:green;">Everything is up to date!</h3>
 <a href="<?php echo $this->updateLink; ?>" class="btn action" style="width:200px;">Check for updates</a>
 <?php endif; ?>
-<!--
-<a href="<?php /*echo $this->updateTemplatesLink; */?>" class="btn action" style="xwidth:200px;background:green;">Update Templates</a>-->
+
+<?php endif; ?>

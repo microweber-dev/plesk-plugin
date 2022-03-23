@@ -9,7 +9,11 @@
 
 <?php echo $this->renderTabs($this->tabs); ?>
 
-<div class="panel">
+<div class="pul-card pul-card--extended">
+    <div class="pul-card__inner">
+        <div class="pul-card__body">
+            <div class="pul-card__main">
+                <div class="pul-card__main-content">
 
     <?php if ($this->limitations['app_installations_limit'] != 'nolimit'): ?>
         <h1>Your plan limit: <?php echo $this->limitations['app_installations_limit']; ?> websites</h1>
@@ -33,7 +37,12 @@
     }
     ?>
 </div>
+</div>
+</div>
+</div>
+</div>
 
+<br />
 <div class="panel" style="display: none;">
     <h2>Use White Label license to grow your business!</h2>
     <p>The white label license gives you the right to rebrand Microweber CMS with your own logo. You can sell it to your clients under your own brand. There is no limitation of number of installations.</p>

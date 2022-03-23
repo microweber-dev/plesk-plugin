@@ -113,6 +113,8 @@ class IndexController extends pm_Controller_Action
             return $this->_redirect('index/error?type=permission');
         }
 
+        $this->view->showPhpVersionWizard = pm_Settings::get('show_php_version_wizard', false);
+
         $templateVersions = pm_Settings::get('mw_templates_versions');
         if (!empty($templateVersions)) {
             $templateVersions = json_decode($templateVersions, true);
