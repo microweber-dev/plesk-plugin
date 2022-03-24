@@ -2,27 +2,6 @@
 
 class Modules_Microweber_ServerManager
 {
-    public function getHostingPlans()
-    {
-        $apiRequest = <<<APICALL
-<packet>
-<service-plan>
-   <get>
-     <filter/>
-   </get>
-</service-plan>
-</packet>
-
-APICALL;
-        $requestResult = $this->_makeRequest($apiRequest);
-
-
-        var_dump($requestResult);
-        die();
-
-        return [];
-    }
-
     public function getPhpHandlers()
     {
         $apiRequest = <<<APICALL

@@ -86,9 +86,36 @@ class PhpupgradewizardController extends BasepluginController
 
     public function checkhostingplanssupportphpversionAction()
     {
-        $serverManager = new Modules_Microweber_ServerManager();
-        $phpHandlers = $serverManager->getHostingPlans();
+        $hostingManager = new Modules_Microweber_HostingManager();
+        $hostingPlans = $hostingManager->getHostingPlans();
 
+        $isSupported = false;
+        $supportedPlans = [];
+        if (!empty($hostingPlans)) {
+            foreach ($hostingPlans as &$hostingPlan) {
+                if(isset($hostingPlan['hosting']['vrt_hst']['property'])) {
+                    foreach ($hostingPlan['hosting']['vrt_hst']['property'] as $property) {
+                        if ($property['name'] == 'php_handler_id') {
+                            $phpHandler = $hostingManager->getPhpHandler($property['value']);
+                            $hostingPlan['php_handler'] = $phpHandler;
+                            if (version_compare($phpHandler['version'], $this->latestRequirements['mwReleasePhpVersion'], '>')) {
+                                $supportedPlans[] = $hostingPlan;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (count($supportedPlans) == count($hostingPlans)) {
+            $isSupported = true;
+        }
+
+        $this->_helper->json([
+            'supported'=>$isSupported,
+            'supported_plans'=>$supportedPlans,
+            'hosting_plans'=>$hostingPlans,
+        ]);
     }
 
     public function step3Action()

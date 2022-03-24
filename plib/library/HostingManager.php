@@ -146,12 +146,46 @@ APICALL;
         return false;
     }
 
-	protected function _makeRequest($apiRequest) {
-		
-		if (empty($this->_domainId)) {
-			throw new Exception('Domain id is not set.');
-		}
+    public function getHostingPlans()
+    {
+        $apiRequest = <<<APICALL
+<packet>
+<service-plan>
+   <get>
+     <filter/>
+   </get>
+</service-plan>
+</packet>
 
+APICALL;
+        $requestResult = $this->_makeRequest($apiRequest);
+        if (isset($requestResult['service-plan']['get']['result'])) {
+            $mwPlans = [];
+            foreach ($requestResult['service-plan']['get']['result'] as $plan) {
+                if (isset($plan['plan-items'])) {
+                    foreach ($plan['plan-items'] as $planItem) {
+                        if (isset($planItem['name'])) {
+                            if (strpos($planItem['name'],'microweber') !== false) {
+                                $mwPlans[] = $plan;
+                            }
+                        }
+                        if (isset($planItem[0])) {
+                            foreach ($planItem as $item) {
+                                if (strpos($item['name'],'microweber') !== false) {
+                                    $mwPlans[] = $plan;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return $mwPlans;
+        }
+
+        return [];
+    }
+
+	protected function _makeRequest($apiRequest) {
 		return json_decode(json_encode(pm_ApiRpc::getService()->call($apiRequest, 'admin')), TRUE);
 	}
 }
