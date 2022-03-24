@@ -6,9 +6,9 @@
  * Copyright: Microweber CMS
  */
 
-include_once 'BasePluginController.php';
+include_once 'BasepluginController.php';
 
-class IndexController extends BasePluginController
+class IndexController extends BasepluginController
 {
     public function indexAction()
     {
@@ -46,7 +46,7 @@ class IndexController extends BasePluginController
 
         $this->view->showPhpVersionWizard = pm_Settings::get('show_php_version_wizard', false);
         if ($this->view->showPhpVersionWizard) {
-            $this->view->phpUpgradeWizardLink = pm_Context::getBaseUrl() . 'index.php/index/phpUpgradeWizard';
+            $this->view->phpUpgradeWizardLink = pm_Context::getBaseUrl() . 'index.php/phpupgradewizard/index';
         }
 
         $templateVersions = pm_Settings::get('mw_templates_versions');

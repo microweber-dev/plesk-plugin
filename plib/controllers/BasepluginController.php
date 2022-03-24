@@ -1,6 +1,6 @@
 <?php
 
-abstract class BasePluginController extends pm_Controller_Action {
+abstract class BasepluginController extends pm_Controller_Action {
 
     protected $devMode = false;
     protected $taskManager = NULL;

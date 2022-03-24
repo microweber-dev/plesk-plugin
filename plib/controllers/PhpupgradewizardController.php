@@ -6,15 +6,17 @@
  * Copyright: Microweber CMS
  */
 
-include_once 'BasePluginController.php';
+include_once 'BasepluginController.php';
 
-class PhpUpgradeWizardController extends pm_Controller_Action
+class PhpupgradewizardController extends BasepluginController
 {
     private $currentStep = 1;
     private $maxSteps = 6;
+
     public function init()
     {
         parent::init();
+
         $this->currentStep = $this->getRequest()->get('step');
         $this->nextStep = $this->currentStep + 1;
 
