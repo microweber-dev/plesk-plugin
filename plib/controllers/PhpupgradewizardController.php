@@ -34,6 +34,10 @@ class PhpupgradewizardController extends BasepluginController
         $this->currentStep = 1;
         $this->_generateSteps();
 
+        $serverManager = new Modules_Microweber_ServerManager();
+        $phpHandlers = $serverManager->getPhpHandlers();
+
+        var_dump($phpHandlers);
     }
 
 
