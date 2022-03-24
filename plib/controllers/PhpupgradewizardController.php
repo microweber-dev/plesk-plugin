@@ -18,14 +18,15 @@ class PhpupgradewizardController extends BasepluginController
         parent::init();
 
         $this->_generateSteps();
+
+        $this->view->phpUpgradeLink = '/admin/php-handler/list';
+
     }
 
     public function indexAction()
     {
         $this->view->pageTitle = $this->_moduleName . ' - PHP Upgrade wizard';
 
-        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
-        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/php-upgrade-wizard.js');
     }
 
 
@@ -34,12 +35,46 @@ class PhpupgradewizardController extends BasepluginController
         $this->currentStep = 1;
         $this->_generateSteps();
 
+        $latestRequirements = Modules_Microweber_Helper::getLatestRequiredPhpVersionOfApp();
+
+        $this->view->latestAppVersion = $latestRequirements['mwReleaseVersion'];
+        $this->view->requiredPhpVersion = $latestRequirements['mwReleasePhpVersion'];
+
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/php-upgrade-wizard/step1.js');
+
+    }
+
+    public function checkserversupportphpversionAction()
+    {
+        $latestRequirements = Modules_Microweber_Helper::getLatestRequiredPhpVersionOfApp();
+
         $serverManager = new Modules_Microweber_ServerManager();
         $phpHandlers = $serverManager->getPhpHandlers();
 
-        var_dump($phpHandlers);
-    }
+        $supportedPhpVersions = [];
+        foreach ($phpHandlers as $phpHandler) {
 
+            if ($phpHandler['status'] !== 'ok') {
+                continue;
+            }
+
+            if (version_compare($phpHandler['version'], $latestRequirements['mwReleasePhpVersion'], '>')) {
+                $supportedPhpVersions[] = $phpHandler;
+            }
+        }
+
+        $isSupported = false;
+        if (!empty($supportedPhpVersions)) {
+            $isSupported = true;
+        }
+
+        $this->_helper->json([
+            'supported'=>$isSupported,
+            'supported_php_versions'=>$supportedPhpVersions,
+        ]);
+
+    }
 
     public function step2Action()
     {
@@ -69,7 +104,6 @@ class PhpupgradewizardController extends BasepluginController
         $this->view->maxSteps = $this->maxSteps;
         $this->view->nextStep = $this->nextStep;
         $this->view->nextStepLink = pm_Context::getBaseUrl() . 'index.php/phpupgradewizard/step-' . ($this->currentStep + 1);
-
     }
 
 }

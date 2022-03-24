@@ -71,11 +71,12 @@ class Modules_Microweber_Helper
 		return $ext;
 	}
 
-    public static function canIUpdateNewVersionOfApp()
+    public static function getLatestRequiredPhpVersionOfApp()
     {
         $mwRelease = Modules_Microweber_Config::getRelease();
         $mwReleaseComposer = Modules_Microweber_Helper::getJsonFromUrl($mwRelease['composer_url']);
         $mwReleasePhpVersion = false;
+
         if (isset($mwReleaseComposer['require']['php'])) {
             $mwReleasePhpVersion = $mwReleaseComposer['require']['php'];
             $mwReleasePhpVersion = str_replace('<',false, $mwReleasePhpVersion);
@@ -85,13 +86,21 @@ class Modules_Microweber_Helper
 
         $mwReleaseVersion = Modules_Microweber_Helper::getContentFromUrl($mwRelease['version_url']);
 
+        return ['mwReleaseVersion'=>$mwReleaseVersion,'mwReleasePhpVersion'=>$mwReleasePhpVersion];
+    }
+
+    public static function canIUpdateNewVersionOfApp()
+    {
+
+        $latestRequirements = static::getLatestRequiredPhpVersionOfApp();
+
         $updateApp = true;
         $appSharedPath = Modules_Microweber_Config::getAppSharedPath();
         $appSharedPathVersion = $appSharedPath . 'version.txt';
         $sfm = new pm_ServerFileManager();
         if ($sfm->fileExists($appSharedPathVersion)) {
             $appSharedPathVersion = $sfm->fileGetContents($appSharedPathVersion);
-            if ($appSharedPathVersion == $mwReleaseVersion) {
+            if ($appSharedPathVersion == $latestRequirements['mwReleaseVersion']) {
                 // $updateApp = false;
             }
         }
@@ -123,7 +132,7 @@ class Modules_Microweber_Helper
             }
 
             $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
-            if (version_compare($phpHandler['version'], $mwReleasePhpVersion, '<')) {
+            if (version_compare($phpHandler['version'], $latestRequirements['mwReleasePhpVersion'], '<')) {
                 // $error = 'PHP version ' . $phpHandler['version'] . ' is not supported by Microweber. You must install PHP '.$mwReleasePhpVersion.'.';
                 $outdatedDomains[] = $domain->getName();
             }

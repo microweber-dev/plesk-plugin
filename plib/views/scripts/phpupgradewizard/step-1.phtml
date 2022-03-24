@@ -18,26 +18,26 @@
                         <h3>PHP Upgrade Wizard - Step <?php echo $this->currentStep;?> of <?php echo $this->maxSteps;?></h3>
 
                         <p>
-                            First your server must be support the 8.0 version of PHP. <br />
+                            To upgrade <b><?php echo Modules_Microweber_WhiteLabel::getBrandName(); ?> <?php echo $this->latestAppVersion; ?></b>
+                            your server must support <b>PHP <?php echo $this->requiredPhpVersion; ?></b>. <br />
                             We will check information about this right now.
                         </p>
 
-                        <div class="js-show-outdated-domains">
-                            <div class="pul-content-loader" style="max-width: 350px">
+                        <div class="js-check-server-support-php-version">
+                            <div class="pul-content-loader" style="max-width: 450px">
                                 <div class="pul-content-loader__container">
                                     <div class="pul-content-loader__loader pul-content-loader__loader--spinner">
                                         <svg class="pul-spinner pul-content-loader__indicator" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
                                             <circle class="pul-spinner__path" fill="none" stroke-width="6" stroke-linecap="round" cx="24" cy="24" r="21"></circle>
                                         </svg>
-                                        <div class="pul-content-loader__text">Getting php supported versions of server...</div>
+                                        <div class="pul-content-loader__text">Checking supported php versions installed on server...</div>
                                     </div>
                                 </div>
                             </div>
 
                         </div>
-                        <br />
-                        <a href="<?php echo $this->nextStepLink; ?>" class="btn btn-primary js-upgrade-websites" style="display: none">Next step</a>
-
+                        <a href="<?php echo $this->nextStepLink; ?>" class="btn btn-primary js-next-step" style="display: none">Next step</a>
+                        <a href="<?php echo $this->phpUpgradeLink; ?>" target="_blank" class="btn btn-primary js-upgrade-php" style="display: none">Upgrade PHP</a>
 
                     </div>
                 </div>
