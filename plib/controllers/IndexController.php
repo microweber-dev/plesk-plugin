@@ -74,13 +74,6 @@ class IndexController extends pm_Controller_Action
 
     public function indexAction()
     {
-
-      /*  $status = Modules_Microweber_Helper::canIUpdateNewVersionOfApp();
-        if ($status['update_app']) {
-
-        }
-        var_dump($status);*/
-
         $this->_checkAppSettingsIsCorrect();
 
         $this->view->errorMessage = false;
@@ -115,7 +108,7 @@ class IndexController extends pm_Controller_Action
 
         $this->view->showPhpVersionWizard = pm_Settings::get('show_php_version_wizard', false);
         if ($this->view->showPhpVersionWizard) {
-            $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/php-upgrade-wizard.js');
+            $this->view->phpUpgradeWizardLink = pm_Context::getBaseUrl() . 'index.php/index/phpUpgradeWizard';
         }
 
         $templateVersions = pm_Settings::get('mw_templates_versions');
@@ -161,6 +154,12 @@ class IndexController extends pm_Controller_Action
 
         $this->view->updateLink = pm_Context::getBaseUrl() . 'index.php/index/update';
        // $this->view->updateTemplatesLink = pm_Context::getBaseUrl() . 'index.php/index/update_templates';
+    }
+
+    public function phpupgradewizardAction()
+    {
+
+
     }
 
     public function whitelabelAction()
