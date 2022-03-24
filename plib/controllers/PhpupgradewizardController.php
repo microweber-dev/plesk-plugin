@@ -97,7 +97,7 @@ class PhpupgradewizardController extends BasepluginController
                     foreach ($hostingPlan['hosting']['vrt_hst']['property'] as $property) {
                         if ($property['name'] == 'php_handler_id') {
                             $phpHandler = $hostingManager->getPhpHandler($property['value']);
-                            $hostingPlan['php_handler'] = $phpHandler;
+                            $hostingPlan['php-handler'] = $phpHandler;
                             if (version_compare($phpHandler['version'], $this->latestRequirements['mwReleasePhpVersion'], '>')) {
                                 $supportedPlans[] = $hostingPlan;
                             }
