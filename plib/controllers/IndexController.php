@@ -158,13 +158,21 @@ class IndexController extends pm_Controller_Action
 
     public function phpupgradewizardAction()
     {
+        $step = $this->getRequest()->get('step');
+        if ($step < 1) {
+            $step = 1;
+        }
 
+        $this->view->step = $step;
         $this->view->pageTitle = $this->_moduleName . ' - PHP Upgrade wizard';
 
+        $this->view->nextStepLink = pm_Context::getBaseUrl() . 'index.php/index/phpUpgradeWizard?step=' . ($step + 1);
 
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/php-upgrade-wizard.js');
     }
 
-    public function getOutdatedDomainsAction()
+    public function getoutdateddomainsAction()
     {
         $status = Modules_Microweber_Helper::canIUpdateNewVersionOfApp();
         $this->_helper->json($status);
