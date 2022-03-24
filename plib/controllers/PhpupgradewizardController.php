@@ -12,6 +12,7 @@ class PhpupgradewizardController extends BasepluginController
 {
     private $currentStep = 0;
     private $maxSteps = 6;
+    private $latestRequirements = 6;
 
     public function init()
     {
@@ -20,6 +21,10 @@ class PhpupgradewizardController extends BasepluginController
         $this->_generateSteps();
 
         $this->view->phpUpgradeLink = '/admin/php-handler/list';
+
+        $this->latestRequirements = Modules_Microweber_Helper::getLatestRequiredPhpVersionOfApp();
+        $this->view->latestAppVersion = $this->latestRequirements['mwReleaseVersion'];
+        $this->view->requiredPhpVersion = $this->latestRequirements['mwReleasePhpVersion'];
 
     }
 
@@ -35,20 +40,13 @@ class PhpupgradewizardController extends BasepluginController
         $this->currentStep = 1;
         $this->_generateSteps();
 
-        $latestRequirements = Modules_Microweber_Helper::getLatestRequiredPhpVersionOfApp();
-
-        $this->view->latestAppVersion = $latestRequirements['mwReleaseVersion'];
-        $this->view->requiredPhpVersion = $latestRequirements['mwReleasePhpVersion'];
-
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/php-upgrade-wizard/step1.js');
 
     }
 
-    public function checkserversupportphpversionAction()
+        public function checkserversupportphpversionAction()
     {
-        $latestRequirements = Modules_Microweber_Helper::getLatestRequiredPhpVersionOfApp();
-
         $serverManager = new Modules_Microweber_ServerManager();
         $phpHandlers = $serverManager->getPhpHandlers();
 
@@ -59,7 +57,7 @@ class PhpupgradewizardController extends BasepluginController
                 continue;
             }
 
-            if (version_compare($phpHandler['version'], $latestRequirements['mwReleasePhpVersion'], '>')) {
+            if (version_compare($phpHandler['version'], $this->latestRequirements['mwReleasePhpVersion'], '>')) {
                 $supportedPhpVersions[] = $phpHandler;
             }
         }
@@ -80,6 +78,16 @@ class PhpupgradewizardController extends BasepluginController
     {
         $this->currentStep = 2;
         $this->_generateSteps();
+
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/php-upgrade-wizard/step2.js');
+
+    }
+
+    public function checkhostingplanssupportphpversionAction()
+    {
+        $serverManager = new Modules_Microweber_ServerManager();
+        $phpHandlers = $serverManager->getHostingPlans();
 
     }
 
