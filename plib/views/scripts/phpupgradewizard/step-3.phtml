@@ -14,33 +14,9 @@
         <div class="pul-card__body">
             <div class="pul-card__main">
                 <div class="pul-card__main-content">
+                    <div class="js-step-<?php echo $this->currentStep;?>">
+                        <h3>PHP Upgrade Wizard - Step <?php echo $this->currentStep;?>/<?php echo $this->maxSteps;?></h3>
 
-
-                    <?php if ($this->step == 1):?>
-                    <div class="step-2">
-                        <h3>PHP Upgrade Wizard - Step <?php echo $this->step;?>/<?php echo $this->maxSteps;?></h3>
-                        <p>
-                            Welcome to PHP Upgrade Wizard! <br />
-                            This tool will help you to upgrade your outdated websites quickly.
-                        </p>
-                        <a href="<?php echo $this->nextStepLink; ?>" class="btn btn-primary">Next step</a>
-                    </div>
-                    <?php endif; ?>
-
-                    <?php if ($this->step == 1):?>
-                    <div class="step-2">
-                        <h3>PHP Upgrade Wizard - Step 2/4</h3>
-                        <p>
-                            Welcome to PHP Upgrade Wizard! <br />
-                            This tool will help you to upgrade your outdated websites quickly.
-                        </p>
-                        <a href="<?php echo $this->nextStepLink; ?>" class="btn btn-primary">Next step</a>
-                    </div>
-                    <?php endif; ?>
-
-                    <?php if ($this->step == 3):?>
-                    <div class="step-2">
-                        <h3>PHP Upgrade Wizard - Step 2/6</h3>
                         <p>
                             Some of your websites are on old version of PHP. <br />
                             The outdated websites must be upgraded to be compatible with the next version of <?php echo $this->moduleName; ?>.
@@ -60,9 +36,8 @@
                         </div>
                         <br />
                         <a href="<?php echo $this->nextStepLink; ?>" class="btn btn-primary js-upgrade-websites" style="display: none">Upgrade websites</a>
-                    </div>
-                    <?php endif; ?>
 
+                    </div>
                 </div>
             </div>
         </div>

@@ -7,6 +7,7 @@
  */
 ?>
 
+<?php echo $this->renderTabs($this->tabs); ?>
 
 <div class="pul-card pul-card--extended">
     <div class="pul-card__inner">
@@ -14,11 +15,11 @@
             <div class="pul-card__main">
                 <div class="pul-card__main-content">
                     <div class="js-step-<?php echo $this->currentStep;?>">
-                        <h3>Welcome to PHP Upgrade Wizard!</h3>
-                        <p>
-                            This tool will help you to upgrade your outdated websites quickly.
-                        </p>
-                        <a href="<?php echo $this->nextStepLink; ?>" class="btn btn-primary">Start Wizard</a>
+                        <h3>PHP Upgrade Wizard - Step <?php echo $this->currentStep;?> of <?php echo $this->maxSteps;?></h3>
+
+
+                        
+
                     </div>
                 </div>
             </div>
