@@ -1,1 +1,47 @@
-<h1>Test</h1>
+<?php
+/**
+ * Microweber auto provision plesk plugin
+ * Author: Bozhidar Slaveykov
+ * @email: info@microweber.com
+ * Copyright: Microweber CMS
+ */
+?>
+
+<?php echo $this->renderTabs($this->tabs); ?>
+
+<div class="pul-card pul-card--extended">
+    <div class="pul-card__inner">
+        <div class="pul-card__body">
+            <div class="pul-card__main">
+                <div class="pul-card__main-content">
+                    <div>
+                        <h3>PHP Upgrade Wizard - Step 1/3</h3>
+                        <p>
+                            Some of your websites are on old version of PHP. <br />
+                            The outdated websites must be upgraded to be compatible with the next version of <?php echo $this->moduleName; ?>.
+                        </p>
+                        <div class="pul-content-loader" style="max-width: 250px">
+                            <div class="pul-content-loader__container">
+                                <div class="pul-content-loader__loader pul-content-loader__loader--spinner">
+                                    <svg class="pul-spinner pul-content-loader__indicator" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                                        <circle class="pul-spinner__path" fill="none" stroke-width="6" stroke-linecap="round" cx="24" cy="24" r="21"></circle>
+                                    </svg>
+                                    <div class="pul-content-loader__text">Loading outdated websites...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <a href="" class="pul-button pul-button--primary pul-button--loading" type="button" style="display: none">
+                            <span class="pul-button__inner">
+                                <svg class="pul-spinner pul-button__spinner" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                                    <circle class="pul-spinner__path" fill="none" stroke-width="6" stroke-linecap="round" cx="24" cy="24" r="21"></circle>
+                                </svg>
+                                <span>Upgrade websites</span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

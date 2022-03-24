@@ -159,7 +159,15 @@ class IndexController extends pm_Controller_Action
     public function phpupgradewizardAction()
     {
 
+        $this->view->pageTitle = $this->_moduleName . ' - PHP Upgrade wizard';
 
+
+    }
+
+    public function getOutdatedDomainsAction()
+    {
+        $status = Modules_Microweber_Helper::canIUpdateNewVersionOfApp();
+        $this->_helper->json($status);
     }
 
     public function whitelabelAction()
