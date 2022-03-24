@@ -5,26 +5,15 @@ $j(document).ready(function() {
 
 function checkHostingPlansSupportPhpVersion() {
 
-    $j.get('/modules/microweber/index.php/phpupgradewizard/checkHostingPlansSupportPhpVersion', function(data) {
+    $j.get('/modules/microweber/index.php/phpupgradewizard/checkHostingPlansSupportPhpVersion', function(plansData) {
 
         $j('.js-check-hosting-plans-support-php-version').html('');
 
-        $j.each(data.hosting_plans, function(i, item) {
+        $j.each(plansData.hosting_plans, function(iPlan, planItem) {
 
-            /*$j.each(data.su, function(i, item) {
-                var html = '<p>' +
-                    '<label for="radio-16" class="pul-radio">' +
-                    '<input class="pul-radio__input" type="radio" name="group2" id="radio-16">' +
-                    '<span class="pul-radio__indicator"></span>' +
-                    '<span class="pul-radio__text">' + item[''] + '</span>' +
-                    '</label>' +
-                    '</p>';
-            });*/
-
-            var html = '<div class="pul-switches-panel-item pul-switches-panel__item">' +
-                '<h5 class="pul-switches-panel-item__title">'+item['name']+' - Current version of PHP'+item['php-handler']['version']+' </h5>' +
+            var html = '<div class="pul-switches-panel-item pul-switches-panel__item" style="width: 100%">' +
+                '<h5 class="pul-switches-panel-item__title">'+planItem['name']+' - <b>PHP'+planItem['php-handler']['version']+'</b></h5>' +
                 '<div class="pul-switches-panel-item__actions">' +
-
 
                 '</div>' +
                 '</div>';

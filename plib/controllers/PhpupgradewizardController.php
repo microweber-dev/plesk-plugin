@@ -45,22 +45,9 @@ class PhpupgradewizardController extends BasepluginController
 
     }
 
-        public function checkserversupportphpversionAction()
+    public function checkserversupportphpversionAction()
     {
-        $serverManager = new Modules_Microweber_ServerManager();
-        $phpHandlers = $serverManager->getPhpHandlers();
-
-        $supportedPhpVersions = [];
-        foreach ($phpHandlers as $phpHandler) {
-
-            if ($phpHandler['status'] !== 'ok') {
-                continue;
-            }
-
-            if (version_compare($phpHandler['version'], $this->latestRequirements['mwReleasePhpVersion'], '>')) {
-                $supportedPhpVersions[] = $phpHandler;
-            }
-        }
+        $supportedPhpVersions = $this->_getSupportedPhpVersions();
 
         $isSupported = false;
         if (!empty($supportedPhpVersions)) {
@@ -115,7 +102,9 @@ class PhpupgradewizardController extends BasepluginController
             'supported'=>$isSupported,
             'supported_plans'=>$supportedPlans,
             'hosting_plans'=>$hostingPlans,
+            'supported_php_versions'=>$this->_getSupportedPhpVersions()
         ]);
+        
     }
 
     public function step3Action()
@@ -129,6 +118,26 @@ class PhpupgradewizardController extends BasepluginController
     {
         $status = Modules_Microweber_Helper::canIUpdateNewVersionOfApp();
         $this->_helper->json($status);
+    }
+
+    private function _getSupportedPhpVersions()
+    {
+        $serverManager = new Modules_Microweber_ServerManager();
+        $phpHandlers = $serverManager->getPhpHandlers();
+
+        $supportedPhpVersions = [];
+        foreach ($phpHandlers as $phpHandler) {
+
+            if ($phpHandler['status'] !== 'ok') {
+                continue;
+            }
+
+            if (version_compare($phpHandler['version'], $this->latestRequirements['mwReleasePhpVersion'], '>')) {
+                $supportedPhpVersions[] = $phpHandler;
+            }
+        }
+
+        return $supportedPhpVersions;
     }
 
     private function _generateSteps()
