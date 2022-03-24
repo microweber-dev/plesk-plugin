@@ -17,8 +17,27 @@
                     <div class="js-step-<?php echo $this->currentStep;?>">
                         <h3>PHP Upgrade Wizard - Step <?php echo $this->currentStep;?> of <?php echo $this->maxSteps;?></h3>
 
+                        <p>
+                            Firstable your server must be support the 8.0 version of PHP. <br />
+                            We will check information about this right now.
+                        </p>
 
-                        
+                        <div class="js-show-outdated-domains">
+                            <div class="pul-content-loader" style="max-width: 350px">
+                                <div class="pul-content-loader__container">
+                                    <div class="pul-content-loader__loader pul-content-loader__loader--spinner">
+                                        <svg class="pul-spinner pul-content-loader__indicator" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                                            <circle class="pul-spinner__path" fill="none" stroke-width="6" stroke-linecap="round" cx="24" cy="24" r="21"></circle>
+                                        </svg>
+                                        <div class="pul-content-loader__text">Getting php supported versions of server...</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <br />
+                        <a href="<?php echo $this->nextStepLink; ?>" class="btn btn-primary js-upgrade-websites" style="display: none">Next step</a>
+
 
                     </div>
                 </div>
