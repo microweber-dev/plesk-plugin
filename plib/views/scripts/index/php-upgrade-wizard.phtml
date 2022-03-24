@@ -18,7 +18,7 @@
 
                     <?php if ($this->step == 1):?>
                     <div class="step-2">
-                        <h3>PHP Upgrade Wizard - Step 1/4</h3>
+                        <h3>PHP Upgrade Wizard - Step <?php echo $this->step;?>/<?php echo $this->maxSteps;?></h3>
                         <p>
                             Welcome to PHP Upgrade Wizard! <br />
                             This tool will help you to upgrade your outdated websites quickly.
@@ -27,7 +27,18 @@
                     </div>
                     <?php endif; ?>
 
-                    <?php if ($this->step == 2):?>
+                    <?php if ($this->step == 1):?>
+                    <div class="step-2">
+                        <h3>PHP Upgrade Wizard - Step 2/4</h3>
+                        <p>
+                            Welcome to PHP Upgrade Wizard! <br />
+                            This tool will help you to upgrade your outdated websites quickly.
+                        </p>
+                        <a href="<?php echo $this->nextStepLink; ?>" class="btn btn-primary">Next step</a>
+                    </div>
+                    <?php endif; ?>
+
+                    <?php if ($this->step == 3):?>
                     <div class="step-2">
                         <h3>PHP Upgrade Wizard - Step 2/6</h3>
                         <p>
