@@ -25,7 +25,7 @@ function upgradeHostingPlans() {
     $j('.js-upgrade-hosting-plans').html('Updating hosting plans...');
 
     setTimeout(function () {
-        $j('.js-upgrade-hosting-plans').append('<span>This maybe can take a time, so please dont refresh the page...</span>');
+        $j('.js-messages').html('<span>This maybe can take a time, so please don\'t refresh the page...</span>');
     }, 5000);
 
     $j.post('/modules/microweber/index.php/phpupgradewizard/updateHostingPlansPhpVersion',{
@@ -47,6 +47,14 @@ function checkHostingPlansSupportPhpVersion() {
 
         $j('.js-check-hosting-plans-support-php-version').html('<div>Your hosting plans</div><br />');
 
+        if (data.supported) {
+            $j('.js-next-step').show();
+            $j('.js-upgrade-hosting-plans').hide();
+            $j('.js-messages').html('<div class="pul-alert pul-alert--success pul-status-message pul-status-message--success">Success! Your hosting plans meet the following requirements.<br /> You can click on next step button.</div>');
+        } else {
+            $j('.js-messages').html('<div class="pul-alert pul-alert--danger pul-status-message pul-status-message--danger">Failed! Your hosting plans doesn\'t meet the following requirements. Please select PHP version for your plans.</div>');
+        }
+
         $j.each(data.hosting_plans, function(iPlan, planItem) {
 
             var html = '<div class="pul-switches-panel-item pul-switches-panel__item" style="width: 100%">' +
@@ -57,21 +65,23 @@ function checkHostingPlansSupportPhpVersion() {
             $j('.js-check-hosting-plans-support-php-version').append(html);
         });
 
+        // If nothing supported show php handlers
+        if (!data.supported) {
+            var html = '<div style="padding-left:15px;margin-top:20px;">';
+            $j.each(data.supported_php_versions, function (iPhpVersion, phpVersionItem) {
+                html += '<p>' +
+                    '<label for="radio-' + phpVersionItem.id + '" class="pul-radio">' +
+                    '<input class="pul-radio__input" type="radio" name="php_version_id" value="' + phpVersionItem.id + '" id="radio-' + phpVersionItem.id + '">' +
+                    '<span class="pul-radio__indicator"></span>' +
+                    '<span class="pul-radio__text">PHP' + phpVersionItem.version + ' (' + phpVersionItem.id + ')</span>' +
+                    '</label>' +
+                    '</p>';
+            });
+            html += '</div>';
 
-        var html = '<div style="padding-left:15px;margin-top:20px;">';
-        $j.each(data.supported_php_versions, function(iPhpVersion, phpVersionItem) {
-            html += '<p>' +
-                '<label for="radio-' + phpVersionItem.id + '" class="pul-radio">' +
-                '<input class="pul-radio__input" type="radio" name="php_version_id" value="' + phpVersionItem.id + '" id="radio-' + phpVersionItem.id + '">' +
-                '<span class="pul-radio__indicator"></span>' +
-                '<span class="pul-radio__text">PHP' + phpVersionItem.version + ' (' + phpVersionItem.id + ')</span>' +
-                '</label>' +
-                '</p>';
-        });
-        html += '</div>';
-
-        $j('.js-check-hosting-plans-support-php-version').append(html);
-        $j('.js-upgrade-hosting-plans').show();
+            $j('.js-check-hosting-plans-support-php-version').append(html);
+            $j('.js-upgrade-hosting-plans').show();
+        }
 
     });
 
