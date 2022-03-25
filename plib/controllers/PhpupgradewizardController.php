@@ -136,6 +136,21 @@ class PhpupgradewizardController extends BasepluginController
         $this->currentStep = 3;
         $this->_generateSteps();
 
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/php-upgrade-wizard/step3.js');
+
+
+    }
+
+    public function step4Action()
+    {
+        $this->currentStep = 4;
+        $this->_generateSteps();
+
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/php-upgrade-wizard/step4.js');
+
+
     }
 
     public function getoutdateddomainsAction()

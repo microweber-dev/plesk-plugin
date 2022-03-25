@@ -1,0 +1,36 @@
+<?php
+/**
+ * Microweber auto provision plesk plugin
+ * Author: Bozhidar Slaveykov
+ * @email: info@microweber.com
+ * Copyright: Microweber CMS
+ */
+?>
+
+<?php echo $this->renderTabs($this->tabs); ?>
+
+<div class="pul-card pul-card--extended">
+    <div class="pul-card__inner">
+        <div class="pul-card__body">
+            <div class="pul-card__main">
+                <div class="pul-card__main-content">
+                    <div class="js-step-<?php echo $this->currentStep;?>">
+                        <h3>PHP Upgrade Wizard - Step <?php echo $this->currentStep;?> of <?php echo $this->maxSteps;?></h3>
+
+                        <p>
+                            To upgrade <b><?php echo Modules_Microweber_WhiteLabel::getBrandName(); ?> <?php echo $this->latestAppVersion; ?></b>
+                            your server must support <b>PHP <?php echo $this->requiredPhpVersion; ?></b>. <br />
+                            We will check information about this right now.
+                        </p>
+
+
+
+                        <a href="<?php echo $this->nextStepLink; ?>" class="btn btn-primary js-next-step" style="display: none">Next step</a>
+                        <a href="<?php echo $this->phpUpgradeLink; ?>" target="_blank" class="btn btn-primary js-upgrade-php" style="display: none">Upgrade PHP</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
