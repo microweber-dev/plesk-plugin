@@ -107,6 +107,30 @@ class PhpupgradewizardController extends BasepluginController
         
     }
 
+    public function updatehostingplansphpversionAction()
+    {
+        $phpHandlerId = $this->getRequest()->get('php_handler_id');
+        $hostingPlanIds = $this->getRequest()->get('hosting_plan_ids');
+
+        $hostingManager = new Modules_Microweber_HostingManager();
+
+        $isUpdated = false;
+        if (!empty($hostingPlanIds)) {
+            foreach ($hostingPlanIds as $hostingPlanId) {
+                $updateStatus = $hostingManager->setServicePlanPhpHandler($hostingPlanId, $phpHandlerId);
+                if ($updateStatus) {
+                    $updatedHostings[] = true;
+                }
+            }
+        }
+        if (!empty($updatedHostings)) {
+            $isUpdated = true;
+        }
+        $this->_helper->json([
+            'updated' => $isUpdated,
+        ]);
+    }
+
     public function step3Action()
     {
         $this->currentStep = 3;

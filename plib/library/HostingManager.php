@@ -51,7 +51,33 @@ APICALL;
           'webspaceId'=>$webspaceId,
         ];
     }
-	
+
+    public function setServicePlanPhpHandler($servicePlanId, $phpId) {
+        $apiRequest = <<<APICALL
+                <packet>
+        <service-plan>
+        <set>
+           <filter>
+              <id>$servicePlanId</id>
+           </filter>
+           <hosting>
+              <vrt_hst>
+                    <property>
+                      <name>php_handler_id</name>
+                      <value>$phpId</value>
+                    </property>
+              </vrt_hst>
+           </hosting>
+        </set>
+        </service-plan>
+        </packet>
+APICALL;
+
+        $requestResult = $this->_makeRequest($apiRequest);
+
+        return $requestResult;
+    }
+
 	public function getPhpHandler($phpId) {
 
 		$apiRequest = <<<APICALL
