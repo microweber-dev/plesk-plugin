@@ -39,30 +39,38 @@ function showOutdatedDomains() {
 
     $j.get('/modules/microweber/index.php/phpupgradewizard/getOutdatedDomains', function(data) {
         $j('.js-show-outdated-domains').html('');
-        $j.each(data.outdated_domains, function(i, item) {
-            $j('.js-show-outdated-domains').append('<b><span class="pul-text pul-text--warning">Outdated:</span> ' + item + '</b> <br />');
-        });
-        $j.each(data.outdated_domains_ids, function(i, outdatedDomainId) {
-            $j('.js-show-outdated-domains').append('<input type="hidden" name="domain_ids[]" value="'+outdatedDomainId+'" />');
-        });
 
-        $j('.js-upgrade-websites-btn').removeAttr('disabled','disabled');
-        $j('.js-upgrade-websites-btn').show();
+        if (data.outdated_domains.length > 0) {
+
+            $j.each(data.outdated_domains, function (i, item) {
+                $j('.js-show-outdated-domains').append('<b><span class="pul-text pul-text--warning">Outdated:</span> ' + item + '</b> <br />');
+            });
+            $j.each(data.outdated_domains_ids, function (i, outdatedDomainId) {
+                $j('.js-show-outdated-domains').append('<input type="hidden" name="domain_ids[]" value="' + outdatedDomainId + '" />');
+            });
+
+            $j('.js-upgrade-websites-btn').removeAttr('disabled', 'disabled');
+            $j('.js-upgrade-websites-btn').show();
 
 
-        var html = '<div style="padding-left:15px;margin-top:20px;">';
-        $j.each(data.supported_php_versions, function (iPhpVersion, phpVersionItem) {
-            html += '<p>' +
-                '<label for="radio-' + phpVersionItem.id + '" class="pul-radio">' +
-                '<input class="pul-radio__input" type="radio" name="php_version_id" value="' + phpVersionItem.id + '" id="radio-' + phpVersionItem.id + '">' +
-                '<span class="pul-radio__indicator"></span>' +
-                '<span class="pul-radio__text">PHP' + phpVersionItem.version + ' (' + phpVersionItem.id + ')</span>' +
-                '</label>' +
-                '</p>';
-        });
-        html += '</div>';
+            var html = '<div style="padding-left:15px;margin-top:20px;">';
+            $j.each(data.supported_php_versions, function (iPhpVersion, phpVersionItem) {
+                html += '<p>' +
+                    '<label for="radio-' + phpVersionItem.id + '" class="pul-radio">' +
+                    '<input class="pul-radio__input" type="radio" name="php_version_id" value="' + phpVersionItem.id + '" id="radio-' + phpVersionItem.id + '">' +
+                    '<span class="pul-radio__indicator"></span>' +
+                    '<span class="pul-radio__text">PHP' + phpVersionItem.version + ' (' + phpVersionItem.id + ')</span>' +
+                    '</label>' +
+                    '</p>';
+            });
+            html += '</div>';
 
-        $j('.js-show-outdated-domains').append(html);
+            $j('.js-show-outdated-domains').append(html);
+        } else {
+            $j('.js-show-outdated-domains').append('All domains are up to date!');
+            $j('.js-upgrade-websites-btn').hide();
+            $j('.js-next-step-btn').show();
+        }
 
 
     });

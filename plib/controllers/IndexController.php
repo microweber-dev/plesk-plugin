@@ -15,6 +15,7 @@ class IndexController extends BasepluginController
         parent::init();
 
         // Init tabs for all actions
+        $this->view->tabs = [];
         $this->view->tabs[] = [
             [
                 'title' => 'Domains',
