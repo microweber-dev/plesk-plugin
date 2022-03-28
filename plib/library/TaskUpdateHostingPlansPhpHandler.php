@@ -16,18 +16,21 @@ class Modules_Microweber_TaskUpdateHostingPlansPhpHandler extends \pm_LongTask_T
         $hostingPlanIds = $this->getParam('hosting_plan_ids');
         $hostingManager = new Modules_Microweber_HostingManager();
 
+        $updatedHostingPlans = [];
         $isUpdated = false;
         if (!empty($hostingPlanIds)) {
             foreach ($hostingPlanIds as $hostingPlanId) {
                 $updateStatus = $hostingManager->setServicePlanPhpHandler($hostingPlanId, $phpHandlerId);
                 if ($updateStatus) {
-                    $updatedHostings[] = true;
+                    $updatedHostingPlans[] = true;
                 }
             }
         }
-        if (!empty($updatedHostings)) {
+        if (!empty($updatedHostingPlans)) {
             $isUpdated = true;
         }
+
+        $this->updateProgress(100);
 
         return $isUpdated;
     }
