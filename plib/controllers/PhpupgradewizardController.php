@@ -134,9 +134,18 @@ class PhpupgradewizardController extends BasepluginController
 
     public function updatewebsitesphpversionAction()
     {
-        $phpHandlerId = $this->getRequest()->get('php_handler_id');
+        $domainIds = $this->getRequest()->get('domain_ids');
 
-        die();
+        $phpHandlerId = false;
+
+        $task = new Modules_Microweber_TaskUpdateDomainsPhpHandler();
+        $task->setParam('php_handler_id', $phpHandlerId);
+        $task->setParam('domain_ids', $domainIds);
+        $this->taskManager->start($task, NULL);
+
+        $this->_helper->json([
+            'updated' => true,
+        ]);
     }
 
     public function step4Action()
