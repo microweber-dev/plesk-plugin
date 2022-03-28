@@ -47,6 +47,11 @@ class Modules_Microweber_TaskAppDownload extends \pm_LongTask_Task
         $this->updateProgress(100);
 
         $taskManager = new pm_LongTask_Manager();
+        
+        // Update templates
+        $task = new Modules_Microweber_TaskTemplatesDownload();
+        $taskManager->start($task, NULL);
+
         $task = new Modules_Microweber_TaskDomainReinstall();
         $taskManager->start($task, NULL);
 	}

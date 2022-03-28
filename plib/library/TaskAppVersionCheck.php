@@ -37,12 +37,6 @@ class Modules_Microweber_TaskAppVersionCheck extends \pm_LongTask_Task
             throw new pm_Exception($msg);
         }
 
-        $this->updateProgress(50);
-
-        // Update templates
-        $task = new Modules_Microweber_TaskTemplatesDownload();
-        $taskManager->start($task, NULL);
-
         $this->updateProgress(100);
 
 	}
