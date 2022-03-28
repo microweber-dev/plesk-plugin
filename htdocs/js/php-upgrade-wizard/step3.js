@@ -21,7 +21,7 @@ $j(document).ready(function() {
         $j('.js-upgrade-websites-btn').html('Updating websites...');
 
         setTimeout(function () {
-            $j('.js-messages').html('<span>This maybe can take a time, so please don\'t refresh the page...</span>');
+            $j('.js-messages').html('<span>The background update task is started. You can follow next step of wizard.</span>');
         }, 5000);
 
         $j.post('/modules/microweber/index.php/phpupgradewizard/updateWebsitesPhpVersion',{

@@ -17,7 +17,7 @@ class Modules_Microweber_TaskUpdateDomainsPhpHandler extends \pm_LongTask_Task
         $phpHandlerId = $this->getParam('php_handler_id');
 
 
-        
+
 
 
         if ($updateApp) {
