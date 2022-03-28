@@ -106,6 +106,7 @@ class Modules_Microweber_Helper
         }
 
         $outdatedDomains = [];
+        $outdatedDomainsFull = [];
         foreach (Modules_Microweber_Domain::getDomains() as $domain) {
 
             if (!$domain->hasHosting()) {
@@ -135,6 +136,7 @@ class Modules_Microweber_Helper
             if (version_compare($phpHandler['version'], $latestRequirements['mwReleasePhpVersion'], '<')) {
                 // $error = 'PHP version ' . $phpHandler['version'] . ' is not supported by Microweber. You must install PHP '.$mwReleasePhpVersion.'.';
                 $outdatedDomains[] = $domain->getName();
+                $outdatedDomainsIds[] = $domain->getId();
             }
         }
         if (!empty($outdatedDomains)) {
@@ -145,6 +147,10 @@ class Modules_Microweber_Helper
             $outdatedDomains = array_slice($outdatedDomains, 0, 10);
         }
 
-        return ['update_app'=>$updateApp, 'outdated_domains'=>$outdatedDomains];
+        return [
+            'update_app'=>$updateApp,
+            'outdated_domains'=>$outdatedDomains,
+            'outdated_domains_ids'=>$outdatedDomainsIds
+        ];
     }
 }

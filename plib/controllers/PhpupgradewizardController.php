@@ -134,7 +134,9 @@ class PhpupgradewizardController extends BasepluginController
 
     public function updatewebsitesphpversionAction()
     {
+        $phpHandlerId = $this->getRequest()->get('php_handler_id');
 
+        die();
     }
 
     public function step4Action()
