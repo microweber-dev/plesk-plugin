@@ -17,17 +17,33 @@
                     <div class="js-step-<?php echo $this->currentStep;?>">
                         <h3>PHP Upgrade Wizard - Step <?php echo $this->currentStep;?> of <?php echo $this->maxSteps;?></h3>
 
-                        <p>
-                            To upgrade <b><?php echo Modules_Microweber_WhiteLabel::getBrandName(); ?> <?php echo $this->latestAppVersion; ?></b>
-                            your server must support <b>PHP <?php echo $this->requiredPhpVersion; ?></b>. <br />
-                            We will check information about this right now.
-                        </p>
 
-
-
-                        <a href="<?php echo $this->nextStepLink; ?>" class="btn btn-primary js-next-step" style="display: none">Next step</a>
-                        <a href="<?php echo $this->phpUpgradeLink; ?>" target="_blank" class="btn btn-primary js-upgrade-php" style="display: none">Upgrade PHP</a>
-
+                        <div class="pul-extended-status-message__container">
+                            <div class="pul-extended-status-message pul-extended-status-message--success" style="max-width: 100%;">
+                                <div class="pul-extended-status-message__image">
+                                    <img src="<?php echo pm_Context::getBaseUrl();?>images/extended-status-message-icon.png" alt="">
+                                </div>
+                                <div class="pul-extended-status-message__body">
+                                    <h3 class="pul-heading pul-heading--h3 pul-extended-status-message__title">
+                                        Upgrading process of <?php echo Modules_Microweber_WhiteLabel::getBrandName(); ?> is finished!
+                                    </h3>
+                                    <div class="pul-extended-status-message__description">
+                                        Now you can use <?php echo $this->latestAppVersion; ?> version of app.
+                                    </div>
+                                    <div class="pul-extended-status-message__actions">
+                                        <a href="<?php echo $this->moduleUpdateLink; ?>" class="pul-button pul-button--primary">
+                                            <span class="pul-button__inner">
+                                                <span class="pul-icon pul-icon--size-12 pul-button__icon">
+                                                    <svg focusable="false"><use href="<?php echo pm_Context::getBaseUrl();?>images/symbols.svg?6bd5879cb9a032639fb3#refresh:12"></use>
+                                                    </svg>
+                                                </span>
+                                                <span>Back to  <?php echo Modules_Microweber_WhiteLabel::getBrandName(); ?> module</span>
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

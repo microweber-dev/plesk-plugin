@@ -11,8 +11,8 @@ include_once 'BasepluginController.php';
 class PhpupgradewizardController extends BasepluginController
 {
     private $currentStep = 0;
-    private $maxSteps = 6;
-    private $latestRequirements = 6;
+    private $maxSteps = 4;
+    private $latestRequirements = [];
 
     public function init()
     {

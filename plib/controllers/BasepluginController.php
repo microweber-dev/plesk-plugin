@@ -14,6 +14,7 @@ abstract class BasepluginController extends pm_Controller_Action {
             $this->taskManager = new pm_LongTask_Manager();
         }
 
+        $this->view->moduleUpdateLink = pm_Context::getBaseUrl() . 'index.php/index/update';
         $this->view->newLicenseLink = '/server/additional_keys.php?key_type=additional';
         $this->view->buyLink = pm_Context::getBuyUrl();
         $this->view->upgradeLink = pm_Context::getUpgradeLicenseUrl();

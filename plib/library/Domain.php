@@ -38,6 +38,36 @@ class Modules_Microweber_Domain
         return $domains;
     }
 
+    public static function updatePhpHandler($domainId, $phpHandlerId)
+    {
+        $request = <<<APICALL
+        <packet>
+<site>
+    <set>
+       <filter>
+         <id>$domainId</id>
+       </filter>
+       <values>
+            <hosting>
+              <vrt_hst>
+              <property>
+                <name>php_handler_id</name>
+                <value>$phpHandlerId</value>
+              </property>
+              </vrt_hst>
+            </hosting>
+       </values>
+    </set>
+</site>
+</packet>
+APICALL;
+
+        $requestResult = static::_makeRequest($request);
+
+        return $requestResult;
+
+    }
+
     public static function getUserDomainById($domainId)
     {
         foreach (self::getDomains() as $domain) {
@@ -49,7 +79,7 @@ class Modules_Microweber_Domain
         throw new Exception('You don\'t have permission to manage this domain');
     }
 
-    public static function _xmlApi($request)
+    public static function _makeRequest($request)
     {
         pm_Log::debug("Ready to make a request to XML API: $request");
 

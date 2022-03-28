@@ -16,9 +16,14 @@ class Modules_Microweber_TaskUpdateDomainsPhpHandler extends \pm_LongTask_Task
         $domainIds = $this->getParam('domain_ids');
         $phpHandlerId = $this->getParam('php_handler_id');
 
-
-
-
+        $iProgress = 0;
+        if (!empty($domainIds)) {
+            foreach ($domainIds as $domainId) {
+                Modules_Microweber_Domain::updatePhpHandler($domainId, $phpHandlerId);
+                $iProgress++;
+                $this->updateProgress($iProgress);
+            }
+        }
 
         if ($updateApp) {
             $taskManager = new pm_LongTask_Manager();
