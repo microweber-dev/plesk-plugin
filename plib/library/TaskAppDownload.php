@@ -26,12 +26,6 @@ class Modules_Microweber_TaskAppDownload extends \pm_LongTask_Task
 
         $this->updateProgress(30);
 
-        $taskManager = new pm_LongTask_Manager();
-        $task = new Modules_Microweber_TaskDomainReinstall();
-        $taskManager->start($task, NULL);
-		
-        $this->updateProgress(60);
-
         // Whm Connector
         $downloadUrl = 'https://github.com/microweber-dev/whmcs-connector/archive/master.zip';
         $downloadLog .= pm_ApiCli::callSbin('unzip_app_modules.sh', [base64_encode($downloadUrl), Modules_Microweber_Config::getAppSharedPath()])['stdout'];
@@ -51,6 +45,10 @@ class Modules_Microweber_TaskAppDownload extends \pm_LongTask_Task
         pm_Settings::set('show_php_version_wizard', false);
 
         $this->updateProgress(100);
+
+        $taskManager = new pm_LongTask_Manager();
+        $task = new Modules_Microweber_TaskDomainReinstall();
+        $taskManager->start($task, NULL);
 	}
 
     private function _queueRefreshDomains()
