@@ -10,6 +10,45 @@ include_once 'BasepluginController.php';
 
 class IndexController extends BasepluginController
 {
+    public function init()
+    {
+        parent::init();
+
+        // Init tabs for all actions
+        $this->view->tabs[] = [
+            [
+                'title' => 'Domains',
+                'action' => 'index'
+            ]
+        ];
+
+        $this->view->tabs[] = [
+            'title' => 'Install',
+            'action' => 'install'
+        ];
+
+        if (pm_Session::getClient()->isAdmin()) {
+            $this->view->tabs[] = [
+                'title' => 'Versions',
+                'action' => 'versions'
+            ];
+        }
+
+        if ($this->_isWhiteLabelAllowed()) {
+            $this->view->tabs[] = [
+                'title' => 'White Label',
+                'action' => 'whitelabel'
+            ];
+        }
+
+        if (pm_Session::getClient()->isAdmin()) {
+            $this->view->tabs[] = [
+                'title' => 'Settings',
+                'action' => 'settings',
+            ];
+        }
+    }
+
     public function indexAction()
     {
         $this->_checkAppSettingsIsCorrect();

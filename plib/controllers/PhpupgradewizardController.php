@@ -18,6 +18,8 @@ class PhpupgradewizardController extends BasepluginController
     {
         parent::init();
 
+        $this->view->tabs = [];
+
         $this->_generateSteps();
 
         $this->view->phpUpgradeLink = '/admin/php-handler/list';

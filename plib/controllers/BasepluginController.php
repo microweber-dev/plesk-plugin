@@ -25,40 +25,6 @@ abstract class BasepluginController extends pm_Controller_Action {
         // Set module name to views
         $this->view->moduleName = $this->_moduleName;
 
-        // Init tabs for all actions
-        $this->view->tabs = [
-            [
-                'title' => 'Domains',
-                'action' => 'index'
-            ]
-        ];
-
-        $this->view->tabs[] = [
-            'title' => 'Install',
-            'action' => 'install'
-        ];
-
-        if (pm_Session::getClient()->isAdmin()) {
-            $this->view->tabs[] = [
-                'title' => 'Versions',
-                'action' => 'versions'
-            ];
-        }
-
-        if ($this->_isWhiteLabelAllowed()) {
-            $this->view->tabs[] = [
-                'title' => 'White Label',
-                'action' => 'whitelabel'
-            ];
-        }
-
-        if (pm_Session::getClient()->isAdmin()) {
-            $this->view->tabs[] = [
-                'title' => 'Settings',
-                'action' => 'settings',
-            ];
-        }
-
         $this->view->headLink()->appendStylesheet(pm_Context::getBaseUrl() . 'css/app.css');
 
         if ($this->view->limitations['app_installations_freeze']) {
