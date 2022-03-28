@@ -112,22 +112,13 @@ class PhpupgradewizardController extends BasepluginController
         $phpHandlerId = $this->getRequest()->get('php_handler_id');
         $hostingPlanIds = $this->getRequest()->get('hosting_plan_ids');
 
-        $hostingManager = new Modules_Microweber_HostingManager();
+        $task = new Modules_Microweber_TaskWhiteLabelBrandingUpdate();
+        $task->setParam('php_handler_id', $phpHandlerId);
+        $task->setParam('hosting_plan_ids', $hostingPlanIds);
+        $this->taskManager->start($task, NULL);
 
-        $isUpdated = false;
-        if (!empty($hostingPlanIds)) {
-            foreach ($hostingPlanIds as $hostingPlanId) {
-                $updateStatus = $hostingManager->setServicePlanPhpHandler($hostingPlanId, $phpHandlerId);
-                if ($updateStatus) {
-                    $updatedHostings[] = true;
-                }
-            }
-        }
-        if (!empty($updatedHostings)) {
-            $isUpdated = true;
-        }
         $this->_helper->json([
-            'updated' => $isUpdated,
+            'updated' => true,
         ]);
     }
 
@@ -138,7 +129,6 @@ class PhpupgradewizardController extends BasepluginController
 
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/php-upgrade-wizard/step3.js');
-
 
     }
 

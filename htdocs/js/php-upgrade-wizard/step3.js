@@ -1,6 +1,32 @@
 var $j = jQuery.noConflict();
 $j(document).ready(function() {
     showOutdatedDomains();
+
+    $j('body').on('click', '.js-upgrade-websites', function() {
+        domainIds = [];
+        getDomainIds = $j("input[name='domain_ids[]']").serializeArray();
+        $j.each(getDomainIds, function (i, item) {
+            domainIds.push(item.value);
+        });
+
+        $j('.js-upgrade-hosting-plans').attr('disabled', 'disabled');
+        $j('.js-upgrade-hosting-plans').html('Updating websites...');
+
+        setTimeout(function () {
+            $j('.js-messages').html('<span>This maybe can take a time, so please don\'t refresh the page...</span>');
+        }, 5000);
+
+        $j.post('/modules/microweber/index.php/phpupgradewizard/updateWebsitesPhpVersion',{
+            domain_ids:domainIds,
+        }, function (data) {
+            if (data.updated) {
+                window.location.href = window.location.href;
+            }
+            $j('.js-upgrade-hosting-plans').hide();
+            $j('.js-next-step').show();
+        });
+    });
+
 });
 
 function showOutdatedDomains() {
