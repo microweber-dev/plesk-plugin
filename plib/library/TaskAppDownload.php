@@ -25,17 +25,10 @@ class Modules_Microweber_TaskAppDownload extends \pm_LongTask_Task
         $downloadLog .= pm_ApiCli::callSbin('unzip_app_version.sh', [base64_encode($release['url']), $appSharedPath])['stdout'];
 
         $this->updateProgress(30);
-		
-		foreach (Modules_Microweber_Domain::getDomains() as $domain) {
 
-            if (!$domain->hasHosting()) {
-                continue;
-            }
-
-			$domainDocumentRoot = $domain->getDocumentRoot();
-			
-			Modules_Microweber_Reinstall::run($domain->getId(), $domainDocumentRoot);
-		}
+        $taskManager = new pm_LongTask_Manager();
+        $task = new Modules_Microweber_TaskDomainReinstall();
+        $taskManager->start($task, NULL);
 		
         $this->updateProgress(60);
 
@@ -44,7 +37,6 @@ class Modules_Microweber_TaskAppDownload extends \pm_LongTask_Task
         $downloadLog .= pm_ApiCli::callSbin('unzip_app_modules.sh', [base64_encode($downloadUrl), Modules_Microweber_Config::getAppSharedPath()])['stdout'];
 
         $this->updateProgress(70);
-
 
         // Login with token
         $downloadUrl = 'https://github.com/microweber-modules/login_with_token/archive/master.zip';
@@ -55,6 +47,8 @@ class Modules_Microweber_TaskAppDownload extends \pm_LongTask_Task
         Modules_Microweber_WhmcsConnector::updateWhmcsConnector();
 
         $this->updateProgress(90);
+
+        pm_Settings::set('show_php_version_wizard', false);
 
         $this->updateProgress(100);
 	}
