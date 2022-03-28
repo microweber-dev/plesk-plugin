@@ -19,9 +19,6 @@ $j(document).ready(function() {
         $j.post('/modules/microweber/index.php/phpupgradewizard/updateWebsitesPhpVersion',{
             domain_ids:domainIds,
         }, function (data) {
-            if (data.updated) {
-                window.location.href = window.location.href;
-            }
             $j('.js-upgrade-hosting-plans').hide();
             $j('.js-next-step').show();
         });

@@ -132,6 +132,11 @@ class PhpupgradewizardController extends BasepluginController
 
     }
 
+    public function updatewebsitesphpversionAction()
+    {
+
+    }
+
     public function step4Action()
     {
         $this->currentStep = 4;
