@@ -112,7 +112,7 @@ class PhpupgradewizardController extends BasepluginController
         $phpHandlerId = $this->getRequest()->get('php_handler_id');
         $hostingPlanIds = $this->getRequest()->get('hosting_plan_ids');
 
-        $task = new Modules_Microweber_TaskUpdateHostingPhpHandler();
+        $task = new Modules_Microweber_TaskUpdateHostingPlansPhpHandler();
         $task->setParam('php_handler_id', $phpHandlerId);
         $task->setParam('hosting_plan_ids', $hostingPlanIds);
         $this->taskManager->start($task, NULL);

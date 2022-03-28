@@ -6,9 +6,8 @@
  * Copyright: Microweber CMS
  */
 
-class Modules_Microweber_TaskUpdateHostingPhpHandler extends \pm_LongTask_Task
+class Modules_Microweber_TaskUpdateHostingPlansPhpHandler extends \pm_LongTask_Task
 {
-
     public $trackProgress = true;
 
     public function run()
@@ -39,7 +38,7 @@ class Modules_Microweber_TaskUpdateHostingPhpHandler extends \pm_LongTask_Task
 
             case static::STATUS_RUNNING:
 
-                return 'Updating php version on websites.';
+                return 'Updating php version on hosting plans.';
 
             case static::STATUS_DONE:
 
