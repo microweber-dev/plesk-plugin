@@ -135,12 +135,13 @@ class PhpupgradewizardController extends BasepluginController
     public function updatewebsitesphpversionAction()
     {
         $domainIds = $this->getRequest()->get('domain_ids');
-
-        $phpHandlerId = false;
+        $phpHandlerId = $this->getRequest()->get('php_handler_id');
 
         $task = new Modules_Microweber_TaskUpdateDomainsPhpHandler();
         $task->setParam('php_handler_id', $phpHandlerId);
         $task->setParam('domain_ids', $domainIds);
+        $task->setParam('update_app', true);
+
         $this->taskManager->start($task, NULL);
 
         $this->_helper->json([
@@ -162,6 +163,8 @@ class PhpupgradewizardController extends BasepluginController
     public function getoutdateddomainsAction()
     {
         $status = Modules_Microweber_Helper::canIUpdateNewVersionOfApp();
+        $status['supported_php_versions'] = $this->_getSupportedPhpVersions();
+
         $this->_helper->json($status);
     }
 

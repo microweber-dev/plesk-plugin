@@ -12,15 +12,23 @@ class Modules_Microweber_TaskUpdateDomainsPhpHandler extends \pm_LongTask_Task
 
     public function run()
     {
+        $updateApp = $this->getParam('update_app');
         $domainIds = $this->getParam('domain_ids');
         $phpHandlerId = $this->getParam('php_handler_id');
 
 
+        
 
+
+        if ($updateApp) {
+            $taskManager = new pm_LongTask_Manager();
+            $task = new Modules_Microweber_TaskAppVersionCheck();
+            $taskManager->start($task, NULL);
+        }
 
         $this->updateProgress(100);
 
-        return $isUpdated;
+        return true;
     }
 
     public function statusMessage()

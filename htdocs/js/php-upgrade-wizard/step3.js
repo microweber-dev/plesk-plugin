@@ -5,6 +5,12 @@ $j(document).ready(function() {
 
     $j('body').on('click', '.js-upgrade-websites-btn', function() {
 
+        var selectedPhpHandler = $j("input[type='radio'][name='php_version_id']:checked").val();
+        if ((selectedPhpHandler == '') || (typeof selectedPhpHandler === 'undefined')) {
+            alert('Please, select PHP version for hosting plans.');
+            return;
+        }
+
         domainIds = [];
         getDomainIds = $j("input[name='domain_ids[]']").serializeArray();
         $j.each(getDomainIds, function (i, item) {
@@ -20,6 +26,7 @@ $j(document).ready(function() {
 
         $j.post('/modules/microweber/index.php/phpupgradewizard/updateWebsitesPhpVersion',{
             domain_ids:domainIds,
+            php_handler_id:selectedPhpHandler
         }, function (data) {
             $j('.js-upgrade-websites-btn').hide();
             $j('.js-next-step-btn').show();
@@ -38,8 +45,26 @@ function showOutdatedDomains() {
         $j.each(data.outdated_domains_ids, function(i, outdatedDomainId) {
             $j('.js-show-outdated-domains').append('<input type="hidden" name="domain_ids[]" value="'+outdatedDomainId+'" />');
         });
+
         $j('.js-upgrade-websites-btn').removeAttr('disabled','disabled');
         $j('.js-upgrade-websites-btn').show();
+
+
+        var html = '<div style="padding-left:15px;margin-top:20px;">';
+        $j.each(data.supported_php_versions, function (iPhpVersion, phpVersionItem) {
+            html += '<p>' +
+                '<label for="radio-' + phpVersionItem.id + '" class="pul-radio">' +
+                '<input class="pul-radio__input" type="radio" name="php_version_id" value="' + phpVersionItem.id + '" id="radio-' + phpVersionItem.id + '">' +
+                '<span class="pul-radio__indicator"></span>' +
+                '<span class="pul-radio__text">PHP' + phpVersionItem.version + ' (' + phpVersionItem.id + ')</span>' +
+                '</label>' +
+                '</p>';
+        });
+        html += '</div>';
+
+        $j('.js-show-outdated-domains').append(html);
+
+
     });
 
 }
