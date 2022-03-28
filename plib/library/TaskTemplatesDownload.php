@@ -77,6 +77,11 @@ class Modules_Microweber_TaskTemplatesDownload extends \pm_LongTask_Task
         }
 
         $this->updateProgress(100);
+
+        $taskManager = new pm_LongTask_Manager();
+
+        $task = new Modules_Microweber_TaskDomainReinstall();
+        $taskManager->start($task, NULL);
 	}
 
     private function _getTemplatesUrl()
