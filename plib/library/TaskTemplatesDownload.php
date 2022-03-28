@@ -90,7 +90,10 @@ class Modules_Microweber_TaskTemplatesDownload extends \pm_LongTask_Task
 
         $whiteLabelKey =  pm_Settings::get('wl_key');;
         if (!empty($whiteLabelKey)) {
-            $licenses[] = $whiteLabelKey;
+            $licenses[] = [
+                'rel_type'=>'plesk-ext',
+                'local_key'=>$whiteLabelKey,
+            ];
         }
 
         $pmLicense = pm_License::getAdditionalKey('microweber');

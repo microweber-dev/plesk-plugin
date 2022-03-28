@@ -13,8 +13,8 @@ class MicroweberMarketplaceConnector
 	 *
 	 * @var array
 	 */
-	public $package_urls = [
-		'http://packages.microweberapi.com/packages.json'
+	public $package_urls = [ 
+		'https://packages.microweberapi.com/packages.json'
 	];
 
 	/**
@@ -229,7 +229,7 @@ class MicroweberMarketplaceConnector
             }
 
             if (!empty($this->licenses)) {
-                $headers[] = "Authorization: Basic " . base64_encode(json_encode($this->licenses));
+                $headers[] = "Authorization: Basic " . base64_encode('license:' . base64_encode(json_encode($this->licenses)));
             }
 
             $opts = [
