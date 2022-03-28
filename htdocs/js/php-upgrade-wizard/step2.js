@@ -32,9 +32,6 @@ function upgradeHostingPlans() {
         php_handler_id:selectedPhpHandler,
         hosting_plan_ids:hostingPlanIds,
     }, function (data) {
-        if (data.updated) {
-            window.location.href = window.location.href;
-        }
         $j('.js-upgrade-hosting-plans').hide();
         $j('.js-next-step').show();
     });
