@@ -111,8 +111,7 @@ class Modules_Microweber_Config
     public static function getRelease()
     {
         if (pm_Settings::get('update_app_channel') == 'dev') {
-           // $dev = 'dev';
-            $dev = 'laravel9-php8';
+            $dev = 'dev'; //$dev = 'laravel9-php8';
             return [
                 'version'=>'Latest development version',
                 'composer_url'=>'http://updater.microweberapi.com/builds/'.$dev.'/composer.json',
