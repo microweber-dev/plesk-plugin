@@ -30,7 +30,7 @@ class Modules_Microweber_TaskDomainReinstall extends \pm_LongTask_Task
             $this->updateProgress($updateProgress);
         }
 
-        $this->updateProgress(100); 
+        $this->updateProgress(100);
 
         return true;
     }
@@ -45,11 +45,11 @@ class Modules_Microweber_TaskDomainReinstall extends \pm_LongTask_Task
 
             case static::STATUS_DONE:
 
-                return '';
+                return 'Websites are up to date!';
 
             case static::STATUS_ERROR:
 
-                return '';
+                return 'Error applying update on websites.';
 
             case static::STATUS_NOT_STARTED:
 
