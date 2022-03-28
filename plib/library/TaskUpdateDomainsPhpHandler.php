@@ -8,6 +8,7 @@
 
 class Modules_Microweber_TaskUpdateDomainsPhpHandler extends \pm_LongTask_Task
 {
+    public $runningLog = 'Updating php version on websites.';
     public $trackProgress = true;
 
     public function run()
@@ -19,7 +20,12 @@ class Modules_Microweber_TaskUpdateDomainsPhpHandler extends \pm_LongTask_Task
         $iProgress = 0;
         if (!empty($domainIds)) {
             foreach ($domainIds as $domainId) {
+
+                $domain = new pm_Domain($domainId);
+
                 Modules_Microweber_Domain::updatePhpHandler($domainId, $phpHandlerId);
+                $this->runningLog = 'Updating php version on ' . $domain->getName();
+
                 $iProgress++;
                 $this->updateProgress($iProgress);
             }
@@ -42,7 +48,7 @@ class Modules_Microweber_TaskUpdateDomainsPhpHandler extends \pm_LongTask_Task
 
             case static::STATUS_RUNNING:
 
-                return 'Updating php version on websites.';
+                return $this->runningLog;
 
             case static::STATUS_DONE:
 
