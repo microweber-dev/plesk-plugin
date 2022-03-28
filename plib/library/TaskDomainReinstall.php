@@ -21,13 +21,16 @@ class Modules_Microweber_TaskDomainReinstall extends \pm_LongTask_Task
                 continue;
             }
             $domainDocumentRoot = $domain->getDocumentRoot();
+
+            $this->runningLog = 'Applying the new version of app on ' . $domain->getName();
+
             Modules_Microweber_Reinstall::run($domain->getId(), $domainDocumentRoot);
 
             $updateProgress++;
             $this->updateProgress($updateProgress);
         }
 
-        $this->updateProgress(100);
+        $this->updateProgress(100); 
 
         return true;
     }
