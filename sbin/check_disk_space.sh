@@ -1,3 +1,1 @@
-#!/bin/bash
-
-df $1 | awk 'NR==2{print$4}'
+#!/bin/bashdf $1 | grep sda | cut -d" " -f14
