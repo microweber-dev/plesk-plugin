@@ -139,10 +139,18 @@ class IndexController extends BasepluginController
 
     public function checkserverdiskspaceAction()
     {
+        $freeDiskSpace = pm_ApiCli::callSbin('check_disk_space.sh', [Modules_Microweber_Config::getAppSharedPath()])['stdout'];
+        $freeDiskSpace = str_ireplace(PHP_EOL, '', $freeDiskSpace);
+        $freeDiskSpace = $freeDiskSpace / pow(1024, 3);
+
+        $isOk = false;
+        if ($freeDiskSpace > 2) {
+            $isOk = true;
+        }
 
         $json = [];
-        $json['path'] = Modules_Microweber_Config::getAppSharedPath();
-        $json['free_disk_space'] = pm_ApiCli::callSbin('check_disk_space.sh', [Modules_Microweber_Config::getAppSharedPath()]);;
+        $json['free_disk_space'] = $freeDiskSpace;
+        $json['is_ok'] = $isOk;
 
         $this->_helper->json($json);
     }
