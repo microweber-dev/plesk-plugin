@@ -714,7 +714,8 @@ class IndexController extends BasepluginController
             return $this->_redirect('index/error?type=permission');
         }
 
-        $release = Modules_Microweber_Config::getRelease();
+        $mwRelease = Modules_Microweber_Config::getRelease();
+        $mwReleaseVersion = Modules_Microweber_Helper::getContentFromUrl($mwRelease['version_url']);
 
         $this->view->pageTitle = $this->_moduleName;
 
@@ -726,14 +727,14 @@ class IndexController extends BasepluginController
             return $this->_redirect('index');
         }
 
-        if (!empty($release)) {
-            $this->view->latestVersion = $release['version'];
+        if (!empty($mwRelease)) {
+            $this->view->latestVersion = $mwReleaseVersion;
         }
 
         $this->view->updateLink = pm_Context::getBaseUrl() . 'index.php/index/update';
 
-        ///$this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
-        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/startup.js');
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/versions.js');
     }
 
     public function settingsAction()
