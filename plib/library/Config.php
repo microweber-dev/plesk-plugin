@@ -16,14 +16,14 @@ class Modules_Microweber_Config
 		return $sbin;
 	}
 	
-	public static function getModuleVarPath() 
+	public static function getExtensionVarPath()
 	{
 		return trim(pm_Context::getVarDir());
 	}
 	
 	public static function getAppSharedPath() 
 	{
-		return self::getModuleVarPath() . 'latest/';
+		return self::getExtensionVarPath() . 'latest/';
 	}
 	
 	public static function getSupportedTemplates()

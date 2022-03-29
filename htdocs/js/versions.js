@@ -10,7 +10,7 @@ $j(document).ready(function() {
 
         setTimeout(function () {
             $j('.js-check-for-update').html('Checking free disk space...');
-        }, 5000);
+        }, 2000);
 
         $j.get('/modules/microweber/index.php/index/checkServerDiskSpace', function(data) {
             if (data.is_ok) {
