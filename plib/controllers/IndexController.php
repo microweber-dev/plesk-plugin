@@ -132,6 +132,17 @@ class IndexController extends BasepluginController
 
         $this->view->updateLink = pm_Context::getBaseUrl() . 'index.php/index/update';
        // $this->view->updateTemplatesLink = pm_Context::getBaseUrl() . 'index.php/index/update_templates';
+
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/versions.js');
+    }
+
+    public function checkserverdiskspaceAction()
+    {
+        $json = [];
+        $json['free_disk_space'] = pm_ApiCli::callSbin('update_domain_phpini.sh', [$domain->getName(), $tempPhpIni])['stdout'];;
+
+        $this->_helper->json($json);
     }
 
     public function whitelabelAction()
