@@ -17,6 +17,10 @@ class Modules_Microweber_TaskAppVersionCheck extends \pm_LongTask_Task
 	{
 		$this->updateProgress(10);
 
+        if (!Modules_Microweber_Helper::isAvailableDiskSpace()) {
+            throw new pm_Exception('No disk space available on the server. Can\'t download the app.');
+        }
+
         $taskManager = new pm_LongTask_Manager();
 
         // Update app

@@ -8,6 +8,20 @@
 
 class Modules_Microweber_Helper
 {
+    public static function isAvailableDiskSpace()
+    {
+        $freeDiskSpace = pm_ApiCli::callSbin('check_disk_space.sh', [Modules_Microweber_Config::getAppSharedPath()])['stdout'];
+        $freeDiskSpace = str_ireplace(PHP_EOL, '', $freeDiskSpace);
+        $freeDiskSpace = $freeDiskSpace / pow(1024, 3);
+
+        $isOk = false;
+        if ($freeDiskSpace > 2) {
+            $isOk = true;
+        }
+
+        return $isOk;
+    }
+
 	public static function getRandomPassword($length = 16, $complex = false)
 	{
 		$alphabet = 'ghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
