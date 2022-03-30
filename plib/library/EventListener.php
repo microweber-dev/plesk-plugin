@@ -11,6 +11,10 @@ class Modules_Microweber_EventListener implements EventListener
     public function filterActions()
     {
         return [
+            'domain_delete',
+            'domain_alias_delete',
+            'site_delete',
+
             'phys_hosting_create',
             'phys_hosting_update'
         ];
@@ -18,23 +22,47 @@ class Modules_Microweber_EventListener implements EventListener
 
     public function handleEvent($objectType, $objectId, $action, $oldValue, $newValue)
     {
-        $domain = new pm_Domain($objectId);
-        $planItems = $domain->getPlanItems();
+        switch ($action) {
+            
+            case "domain_delete":
+            case "domain_alias_delete":
+            case "site_delete":
 
-        if (is_array($planItems) && count($planItems) > 0 && (in_array("microweber", $planItems) || in_array("microweber_without_shop", $planItems) || in_array("microweber_lite", $planItems))) {
+                $domain = new pm_Domain($objectId);
+                $taskManager = new pm_LongTask_Manager();
 
-            if ($action == 'phys_hosting_create') {
+                $task = new Modules_Microweber_TaskDomainAppInstallationScan();
+                $task->setParam('domainId', $domain->getId());
+                $taskManager->start($task, NULL);
 
-                // Install microweber
-                $this->_installMicroweber($domain, $newValue);
+                $task = new Modules_Microweber_TaskDomainAppInstallationCount();
+                $taskManager->start($task, NULL);
+                break;
 
-                // Enable or disable shop
-                $this->_updateMicroweber($domain, $newValue);
-            }
+            case "phys_hosting_create":
+            case "phys_hosting_update":
 
-            if ($action == 'phys_hosting_update') {
-                $this->_updateMicroweber($domain, $newValue);
-            }
+                $domain = new pm_Domain($objectId);
+                $planItems = $domain->getPlanItems();
+
+                if (is_array($planItems)
+                    && count($planItems) > 0
+                    && (in_array("microweber", $planItems)
+                        || in_array("microweber_without_shop", $planItems)
+                        || in_array("microweber_lite", $planItems))) {
+
+                    if ($action == 'phys_hosting_create') {
+                        // Install microweber
+                        $this->_installMicroweber($domain, $newValue);
+                        // Enable or disable shop
+                        $this->_updateMicroweber($domain, $newValue);
+                    }
+
+                    if ($action == 'phys_hosting_update') {
+                        $this->_updateMicroweber($domain, $newValue);
+                    }
+                }
+                break;
         }
 
     }
