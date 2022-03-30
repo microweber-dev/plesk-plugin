@@ -23,12 +23,16 @@ class Modules_Microweber_EventListener implements EventListener
     public function handleEvent($objectType, $objectId, $action, $oldValue, $newValue)
     {
         switch ($action) {
-            
+
             case "domain_delete":
             case "domain_alias_delete":
             case "site_delete":
 
                 $domain = new pm_Domain($objectId);
+                if (empty($domain->getName())) {
+                    return;
+                }
+                
                 $taskManager = new pm_LongTask_Manager();
 
                 $task = new Modules_Microweber_TaskDomainAppInstallationScan();
@@ -43,6 +47,10 @@ class Modules_Microweber_EventListener implements EventListener
             case "phys_hosting_update":
 
                 $domain = new pm_Domain($objectId);
+                if (empty($domain->getName())) {
+                    return;
+                }
+
                 $planItems = $domain->getPlanItems();
 
                 if (is_array($planItems)
