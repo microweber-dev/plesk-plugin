@@ -6,9 +6,7 @@
  * Copyright: Microweber CMS
  */
 
-include_once 'BasepluginController.php';
-
-class IndexController extends BasepluginController
+class IndexController extends Modules_Microweber_BasepluginController
 {
     public function init()
     {

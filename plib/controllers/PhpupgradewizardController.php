@@ -6,9 +6,7 @@
  * Copyright: Microweber CMS
  */
 
-include_once 'BasepluginController.php';
-
-class PhpupgradewizardController extends BasepluginController
+class PhpupgradewizardController extends Modules_Microweber_BasepluginController
 {
     private $currentStep = 0;
     private $maxSteps = 4;
