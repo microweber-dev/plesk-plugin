@@ -28,6 +28,20 @@ class Modules_Microweber_EventListener implements EventListener
     {
         switch ($action) {
 
+            case "license_update":
+
+                $limitations = Modules_Microweber_LicenseData::getLimitations();
+
+                if ($limitations['app_installations_freeze'] == false) {
+                    Modules_Microweber_Helper::stopTasks(['task_whitelabelbrandinupdate']);
+                    $taskManager = new pm_LongTask_Manager();
+                    // Start new task
+                    $task = new Modules_Microweber_Task_WhiteLabelBrandingUpdate();
+                    $taskManager->start($task, NULL);
+                }
+
+                break;
+
             case "license_expired":
             case "additional_license_expired":
 
