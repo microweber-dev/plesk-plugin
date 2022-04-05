@@ -32,7 +32,13 @@ class Modules_Microweber_EventListener implements EventListener
 
                 $limitations = Modules_Microweber_LicenseData::getLimitations();
 
-                if ($limitations['app_installations_freeze'] == false) {
+                if ($limitations['app_installations_freeze']) {
+                    Modules_Microweber_Helper::stopTasks(['task_whitelabelbrandinremove']);
+                    $taskManager = new pm_LongTask_Manager();
+                    // Start new task
+                    $task = new Modules_Microweber_Task_WhiteLabelBrandingRemove();
+                    $taskManager->start($task, NULL);
+                } else {
                     Modules_Microweber_Helper::stopTasks(['task_whitelabelbrandinupdate']);
                     $taskManager = new pm_LongTask_Manager();
                     // Start new task
