@@ -13,6 +13,11 @@ class Modules_Microweber_TaskDomainAppInstallationScan extends \pm_LongTask_Task
 
 	public function run()
 	{
+        if ($this->getParam('hiddenTask')) {
+            $this->hidden = true;
+            $this->trackProgress = false;
+        }
+
 		$this->updateProgress(10);
 
         $domainId = $this->getParam('domainId');

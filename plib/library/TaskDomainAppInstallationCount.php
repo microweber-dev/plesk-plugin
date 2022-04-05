@@ -13,6 +13,11 @@ class Modules_Microweber_TaskDomainAppInstallationCount extends \pm_LongTask_Tas
 
 	public function run()
 	{
+        if ($this->getParam('hiddenTask')) {
+            $this->hidden = true;
+            $this->trackProgress = false;
+        }
+
 		$this->updateProgress(30);
 
         $installations = 0;
