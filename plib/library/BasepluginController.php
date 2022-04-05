@@ -22,6 +22,8 @@ abstract class Modules_Microweber_BasepluginController extends pm_Controller_Act
         $this->view->limitations = Modules_Microweber_LicenseData::getLimitations();
         $this->_moduleName = Modules_Microweber_WhiteLabel::getBrandName();
 
+        $this->view->limitations['app_installations_freeze'] = true;
+
         // Set module name to views
         $this->view->moduleName = $this->_moduleName;
 

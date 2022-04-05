@@ -15,10 +15,8 @@ class IndexController extends Modules_Microweber_BasepluginController
         // Init tabs for all actions
         $this->view->tabs = [];
         $this->view->tabs[] = [
-            [
-                'title' => 'Domains',
-                'action' => 'index'
-            ]
+            'title' => 'Domains',
+            'action' => 'index'
         ];
 
         $this->view->tabs[] = [

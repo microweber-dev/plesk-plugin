@@ -1,13 +1,10 @@
 #pm-list-microweber {
-    filter: blur(2px);
+
 }
 
 #pm-list-microweber:before {
-    content: " ";
-    width: 100% !important;
-    height: 100% !important;
-    position: absolute;
-   /* background: rgba(0, 0, 0, 0.81);*/
+
+
 }
 
 .microweber-license-message {
