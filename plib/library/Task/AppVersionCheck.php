@@ -36,7 +36,7 @@ class Modules_Microweber_Task_AppVersionCheck extends \pm_LongTask_Task
                 Modules_Microweber_Helper::stopTasks(['task_appdownload']);
 
                 $task = new Modules_Microweber_Task_AppDownload();
-                $taskManager->start($task, NULL); 
+                $taskManager->start($task, NULL);
             }
         } else {
             pm_Settings::set('show_php_version_wizard', true);

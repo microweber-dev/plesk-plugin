@@ -1310,6 +1310,8 @@ class IndexController extends Modules_Microweber_BasepluginController
 
     private function _queueRefreshDomains()
     {
+        Modules_Microweber_Helper::stopTasks(['task_domainappinstallationscan']);
+
         $task = new Modules_Microweber_Task_DomainAppInstallationScan();
         $this->taskManager->start($task, NULL);
     }

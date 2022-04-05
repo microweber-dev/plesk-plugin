@@ -17,9 +17,7 @@ class Modules_Microweber_Helper
 
         $i = count($tasks) - 1;
         while ($i >= 0) {
-            if ($tasks[$i]->getStatus() == pm_LongTask_Task::STATUS_DONE) {
-                $taskManager->cancel($tasks[$i]);
-            }
+            $taskManager->cancel($tasks[$i]);
             $i--;
         }
     }

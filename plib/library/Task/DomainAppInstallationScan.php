@@ -8,6 +8,7 @@
 
 class Modules_Microweber_Task_DomainAppInstallationScan extends \pm_LongTask_Task
 {
+    const UID = 'domainAppInstallationScan';
     public $runningLog = 'Starting domain app installations scan...';
     public $trackProgress = true;
 
