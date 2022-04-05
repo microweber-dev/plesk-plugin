@@ -56,10 +56,7 @@ class Modules_Microweber_WhiteLabel
         $taskManager = new pm_LongTask_Manager();
 
         // Cancel old tasks
-        $tasks = $taskManager->getTasks([]);
-
-
-        var_dump($tasks);
+        $tasks = $taskManager->getTasks(['task_whitelabelbrandingupdate']);
 
         $i = count($tasks) - 1;
         while ($i >= 0) {
@@ -69,6 +66,7 @@ class Modules_Microweber_WhiteLabel
             $i--;
         }
 
+        // Start new task
         $task = new Modules_Microweber_Task_WhiteLabelBrandingUpdate();
         $taskManager->start($task, NULL);
 
