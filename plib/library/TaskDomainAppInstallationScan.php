@@ -8,7 +8,7 @@
 
 class Modules_Microweber_TaskDomainAppInstallationScan extends \pm_LongTask_Task
 {
-    public $runningLog = '';
+    public $runningLog = 'Starting domain app installations scan...';
     public $trackProgress = true;
 
 	public function run()
@@ -21,7 +21,7 @@ class Modules_Microweber_TaskDomainAppInstallationScan extends \pm_LongTask_Task
 		$this->updateProgress(10);
 
         $domainId = $this->getParam('domainId');
-        if ($domainId > 0) {
+        if ($domainId !== null) {
 
             $this->hidden = true;
             $this->trackProgress = false;
@@ -30,11 +30,15 @@ class Modules_Microweber_TaskDomainAppInstallationScan extends \pm_LongTask_Task
             $this->scanDomain($domain);
             $this->updateProgress(50);
         } else {
+            $i=0;
             foreach (Modules_Microweber_Domain::getDomains() as $domain) {
+
                 if (!$domain->hasHosting()) {
                     continue;
                 }
-                $this->runningLog = 'Scanning '.Modules_Microweber_WhiteLabel::getBrandName().' installations on domain: ' . $domain->getName();
+
+                $i++;
+                $this->updateProgress($i);
                 $this->scanDomain($domain);
             }
         }
@@ -51,6 +55,8 @@ class Modules_Microweber_TaskDomainAppInstallationScan extends \pm_LongTask_Task
         $domainDisplayName = $domain->getDisplayName();
         $domainIsActive = $domain->isActive();
         $domainCreation = $domain->getProperty('cr_date');
+
+        $this->runningLog = 'Scanning '.Modules_Microweber_WhiteLabel::getBrandName().' installations on domain: ' . $domain->getName();
 
         $appVersion = 'unknown';
 
