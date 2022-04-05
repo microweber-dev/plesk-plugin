@@ -6,7 +6,7 @@
  * Copyright: Microweber CMS
  */
 
-class Modules_Microweber_TaskDomainAppInstallationCount extends \pm_LongTask_Task
+class Modules_Microweber_Task_DomainAppInstallationCount extends \pm_LongTask_Task
 {
     public $hidden = true;
 	public $trackProgress = true;

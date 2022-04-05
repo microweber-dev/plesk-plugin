@@ -6,7 +6,7 @@
  * Copyright: Microweber CMS
  */
 
-class Modules_Microweber_TaskWhiteLabelBrandingUpdate extends \pm_LongTask_Task
+class Modules_Microweber_Task_WhiteLabelBrandingUpdate extends \pm_LongTask_Task
 {
     public $runningLog = '';
 	public $trackProgress = true;

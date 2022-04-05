@@ -69,7 +69,7 @@ class Modules_Microweber_WhiteLabel
             $i--;
         }
 
-        $task = new Modules_Microweber_TaskWhiteLabelBrandingUpdate();
+        $task = new Modules_Microweber_Task_WhiteLabelBrandingUpdate();
         $taskManager->start($task, NULL);
 
 	}

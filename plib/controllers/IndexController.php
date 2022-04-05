@@ -345,7 +345,7 @@ class IndexController extends Modules_Microweber_BasepluginController
     public function activatesymlinkingAction()
     {
 
-        $task = new Modules_Microweber_TaskDisableSelinux();
+        $task = new Modules_Microweber_Task_DisableSelinux();
         $this->taskManager->start($task, NULL);
 
         return $this->_redirect('index/install');
@@ -1137,7 +1137,7 @@ class IndexController extends Modules_Microweber_BasepluginController
         if (!empty($commandResponse['stdout'])) {
             if (strpos($commandResponse['stdout'], 'PHP Warning:') !== false) {
 
-                $task = new Modules_Microweber_TaskDomainAppInstallationRepair();
+                $task = new Modules_Microweber_Task_DomainAppInstallationRepair();
                 $task->setParam('domainId', $domainId);
                 $task->setParam('domainDocumentRoot', $domainDocumentRoot);
                 $this->taskManager->start($task, NULL);
@@ -1163,7 +1163,7 @@ class IndexController extends Modules_Microweber_BasepluginController
 
             if ((strpos($token, 'isnotdefined') !== false) || (strpos($token, 'Couldnotopeninputfile') !== false)) {
 
-                $task = new Modules_Microweber_TaskDomainAppInstallationRepair();
+                $task = new Modules_Microweber_Task_DomainAppInstallationRepair();
                 $task->setParam('domainId', $domainId);
                 $task->setParam('domainDocumentRoot', $domainDocumentRoot);
                 $this->taskManager->start($task, NULL);
@@ -1308,7 +1308,7 @@ class IndexController extends Modules_Microweber_BasepluginController
 
     private function _queueRefreshDomains()
     {
-        $task = new Modules_Microweber_TaskDomainAppInstallationScan();
+        $task = new Modules_Microweber_Task_DomainAppInstallationScan();
         $this->taskManager->start($task, NULL);
     }
 

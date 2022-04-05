@@ -6,7 +6,7 @@
  * Copyright: Microweber CMS
  */
 
-class Modules_Microweber_TaskDomainAppInstallationRepair extends \pm_LongTask_Task
+class Modules_Microweber_Task_DomainAppInstallationRepair extends \pm_LongTask_Task
 {
     public $trackProgress = true;
 

@@ -80,7 +80,7 @@ class Modules_Microweber_Task_DomainAppInstall extends \pm_LongTask_Task
 		$this->setParam('onDone', 1);
 
         $taskManager = new pm_LongTask_Manager();
-        $task = new Modules_Microweber_TaskDomainAppInstallationCount();
+        $task = new Modules_Microweber_Task_DomainAppInstallationCount();
         $taskManager->start($task, NULL);
 	}
 }

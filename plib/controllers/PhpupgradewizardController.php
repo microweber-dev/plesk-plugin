@@ -112,7 +112,7 @@ class PhpupgradewizardController extends Modules_Microweber_BasepluginController
         $phpHandlerId = $this->getRequest()->get('php_handler_id');
         $hostingPlanIds = $this->getRequest()->get('hosting_plan_ids');
 
-        $task = new Modules_Microweber_TaskUpdateHostingPlansPhpHandler();
+        $task = new Modules_Microweber_Task_UpdateHostingPlansPhpHandler();
         $task->setParam('php_handler_id', $phpHandlerId);
         $task->setParam('hosting_plan_ids', $hostingPlanIds);
         $this->taskManager->start($task, NULL);
@@ -137,7 +137,7 @@ class PhpupgradewizardController extends Modules_Microweber_BasepluginController
         $domainIds = $this->getRequest()->get('domain_ids');
         $phpHandlerId = $this->getRequest()->get('php_handler_id');
 
-        $task = new Modules_Microweber_TaskUpdateDomainsPhpHandler();
+        $task = new Modules_Microweber_Task_UpdateDomainsPhpHandler();
         $task->setParam('php_handler_id', $phpHandlerId);
         $task->setParam('domain_ids', $domainIds);
         $task->setParam('update_app', true);

@@ -6,7 +6,7 @@
  * Copyright: Microweber CMS
  */
 
-class Modules_Microweber_TaskUpdateHostingPlansPhpHandler extends \pm_LongTask_Task
+class Modules_Microweber_Task_UpdateHostingPlansPhpHandler extends \pm_LongTask_Task
 {
     public $trackProgress = true;
 

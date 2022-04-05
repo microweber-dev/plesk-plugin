@@ -6,7 +6,7 @@
  * Copyright: Microweber CMS
  */
 
-class Modules_Microweber_TaskUpdateDomainsPhpHandler extends \pm_LongTask_Task
+class Modules_Microweber_Task_UpdateDomainsPhpHandler extends \pm_LongTask_Task
 {
     public $runningLog = 'Updating php version on websites.';
     public $trackProgress = true;

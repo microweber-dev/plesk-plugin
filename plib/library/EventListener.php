@@ -35,11 +35,11 @@ class Modules_Microweber_EventListener implements EventListener
                 
                 $taskManager = new pm_LongTask_Manager();
 
-                $task = new Modules_Microweber_TaskDomainAppInstallationScan();
+                $task = new Modules_Microweber_Task_DomainAppInstallationScan();
                 $task->setParam('domainId', $domain->getId());
                 $taskManager->start($task, NULL);
 
-                $task = new Modules_Microweber_TaskDomainAppInstallationCount();
+                $task = new Modules_Microweber_Task_DomainAppInstallationCount();
                 $taskManager->start($task, NULL);
                 break;
 

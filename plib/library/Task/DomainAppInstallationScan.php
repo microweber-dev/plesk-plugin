@@ -6,7 +6,7 @@
  * Copyright: Microweber CMS
  */
 
-class Modules_Microweber_TaskDomainAppInstallationScan extends \pm_LongTask_Task
+class Modules_Microweber_Task_DomainAppInstallationScan extends \pm_LongTask_Task
 {
     public $runningLog = 'Starting domain app installations scan...';
     public $trackProgress = true;
