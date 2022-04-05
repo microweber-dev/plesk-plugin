@@ -52,8 +52,22 @@ class Modules_Microweber_WhiteLabel
     }
 
 	public static function updateWhiteLabelDomains()
-	{
+    {
         $taskManager = new pm_LongTask_Manager();
+
+        // Cancel old tasks
+        $tasks = $taskManager->getTasks([]);
+
+
+        var_dump($tasks);
+
+        $i = count($tasks) - 1;
+        while ($i >= 0) {
+            if ($tasks[$i]->getStatus() == pm_LongTask_Task::STATUS_DONE) {
+                $taskManager->cancel($tasks[$i]);
+            }
+            $i--;
+        }
 
         $task = new Modules_Microweber_TaskWhiteLabelBrandingUpdate();
         $taskManager->start($task, NULL);
