@@ -8,7 +8,6 @@
 
 class Modules_Microweber_TaskDomainAppInstallationCount extends \pm_LongTask_Task
 {
-
     public $hidden = true;
 	public $trackProgress = true;
 

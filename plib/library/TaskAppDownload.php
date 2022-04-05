@@ -54,23 +54,6 @@ class Modules_Microweber_TaskAppDownload extends \pm_LongTask_Task
 
 	}
 
-    private function _queueRefreshDomains()
-    {
-        foreach (Modules_Microweber_Domain::getDomains() as $domain) {
-
-            if (!$domain->hasHosting()) {
-                continue;
-            }
-
-            $taskManager = new pm_LongTask_Manager();
-
-            $task = new Modules_Microweber_TaskDomainAppInstallationScan();
-            $task->setParam('domainId', $domain->getId());
-
-            $taskManager->start($task, NULL);
-        }
-    }
-
 	public function statusMessage()
 	{
 		switch ($this->getStatus()) {
@@ -97,7 +80,5 @@ class Modules_Microweber_TaskAppDownload extends \pm_LongTask_Task
 	public function onDone()
 	{
 		$this->setParam('onDone', 1);
-
-        $this->_queueRefreshDomains();
 	}
 }

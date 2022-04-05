@@ -8,7 +8,7 @@
 
 class Modules_Microweber_TaskDomainAppInstallationScan extends \pm_LongTask_Task
 {
-    public $hidden = true;
+    public $hidden = false;
 	public $trackProgress = true;
 
 	public function run()

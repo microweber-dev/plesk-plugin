@@ -1334,11 +1334,6 @@ class IndexController extends Modules_Microweber_BasepluginController
             $domainInstallations = json_decode($domainInstallations, true);
 
             if (empty($domainInstallations)) {
-
-                $task = new Modules_Microweber_TaskDomainAppInstallationScan();
-                $task->setParam('domainId', $domain->getId());
-                $this->taskManager->start($task, NULL);
-
                 continue;
             }
 
