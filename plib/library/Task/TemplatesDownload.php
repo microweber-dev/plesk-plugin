@@ -5,10 +5,11 @@
  * @email: info@microweber.com
  * Copyright: Microweber CMS
  */
-include dirname(__DIR__) . '/library/MicroweberMarketplaceConnector.php';
+include dirname(dirname(__DIR__)) . '/library/MicroweberMarketplaceConnector.php';
 
 class Modules_Microweber_Task_TemplatesDownload extends \pm_LongTask_Task
 {
+    const UID = 'templatesDownload';
     public $runningLog = '';
 	public $trackProgress = true;
 
@@ -79,6 +80,8 @@ class Modules_Microweber_Task_TemplatesDownload extends \pm_LongTask_Task
         $this->updateProgress(100);
 
         $taskManager = new pm_LongTask_Manager();
+
+        Modules_Microweber_Helper::stopTasks(['task_domainreinstall']);
 
         $task = new Modules_Microweber_Task_DomainReinstall();
         $taskManager->start($task, NULL);

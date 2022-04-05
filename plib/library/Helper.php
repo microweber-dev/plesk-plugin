@@ -8,6 +8,22 @@
 
 class Modules_Microweber_Helper
 {
+    public static function stopTasks(array $taskIds)
+    {
+        $taskManager = new pm_LongTask_Manager();
+
+        // Cancel old tasks
+        $tasks = $taskManager->getTasks($taskIds);
+
+        $i = count($tasks) - 1;
+        while ($i >= 0) {
+            if ($tasks[$i]->getStatus() == pm_LongTask_Task::STATUS_DONE) {
+                $taskManager->cancel($tasks[$i]);
+            }
+            $i--;
+        }
+    }
+
     public static function isAvailableDiskSpace()
     {
         $freeDiskSpace = pm_ApiCli::callSbin('check_disk_space.sh', [Modules_Microweber_Config::getExtensionVarPath()])['stdout'];

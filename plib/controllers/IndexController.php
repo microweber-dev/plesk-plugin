@@ -333,6 +333,8 @@ class IndexController extends Modules_Microweber_BasepluginController
             return $this->_redirect('index/error?type=permission');
         }
 
+        Modules_Microweber_Helper::stopTasks(['task_appversioncheck','task_appdownload','task_templatesdownload']);
+
         $task = new Modules_Microweber_Task_AppVersionCheck();
         $this->taskManager->start($task, NULL);
 

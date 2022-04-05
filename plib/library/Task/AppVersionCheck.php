@@ -9,6 +9,7 @@
 
 class Modules_Microweber_Task_AppVersionCheck extends \pm_LongTask_Task
 {
+    const UID = 'appVersionCheck';
     public $hidden = false;
 	public $trackProgress = true;
     public $statusErrorMessage = 'App version not supported';
@@ -31,8 +32,11 @@ class Modules_Microweber_Task_AppVersionCheck extends \pm_LongTask_Task
         if ($status['update_app']) {
             $mwRelease = Modules_Microweber_Config::getRelease();
             if (!empty($mwRelease)) {
+
+                Modules_Microweber_Helper::stopTasks(['task_appdownload']);
+
                 $task = new Modules_Microweber_Task_AppDownload();
-                $taskManager->start($task, NULL);
+                $taskManager->start($task, NULL); 
             }
         } else {
             pm_Settings::set('show_php_version_wizard', true);
