@@ -13,28 +13,51 @@ class Modules_Microweber_TaskWhiteLabelBrandingUpdate extends \pm_LongTask_Task
 
 	public function run()
 	{
-        foreach (Modules_Microweber_Domain::getDomains() as $domain) {
+        $domainId = $this->getParam('domainId');
 
-            if (!$domain->hasHosting()) {
-                continue;
-            }
+        if ($domainId) {
 
-            $installations = json_decode($domain->getSetting('mwAppInstallations'), true);
-            if (!$installations || !is_array($installations)) {
-                return;
-            }
+            $this->hidden = true;
+            $this->trackProgress = false;
 
-            try {
-                foreach ($installations as $installation) {
-                    $this->runningLog = 'Applying whitelabel settings on domain: ' . $domain->getName();
-                    Modules_Microweber_WhiteLabelBranding::applyToInstallation($domain, $installation['appInstallation']);
-                }
-            } catch (Exception $e) {
-                // Broken domain permissions
-                $this->runningLog = $e->getMessage() . ' - Applying whitelabel settings on domain: ' . $domain->getName();
+            $domain = Modules_Microweber_Domain::getUserDomainById($domainId);
+            $this->updateDomainBranding($domain);
+            $this->updateProgress(50);
+
+        } else {
+            $i = 0;
+            foreach (Modules_Microweber_Domain::getDomains() as $domain) {
+                $i++;
+                $this->updateProgress($i);
+                $this->updateDomainBranding($domain);
             }
         }
+
+        $this->updateProgress(100);
 	}
+
+    private function updateDomainBranding($domain)
+    {
+        if (!$domain->hasHosting()) {
+            return;
+        }
+
+        $installations = json_decode($domain->getSetting('mwAppInstallations'), true);
+        if (!$installations || !is_array($installations)) {
+            return;
+        }
+
+        try {
+            foreach ($installations as $installation) {
+                $this->runningLog = 'Applying whitelabel settings on domain: ' . $domain->getName();
+                Modules_Microweber_WhiteLabelBranding::applyToInstallation($domain, $installation['appInstallation']);
+            }
+        } catch (Exception $e) {
+            // Broken domain permissions
+            $this->runningLog = $e->getMessage() . ' - Applying whitelabel settings on domain: ' . $domain->getName();
+        }
+    }
+
 
     public function statusMessage()
     {
