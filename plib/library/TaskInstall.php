@@ -8,7 +8,6 @@
 
 class Modules_Microweber_TaskInstall extends \pm_LongTask_Task
 {
-
 	public $trackProgress = true;
 
 	public function run()
@@ -42,6 +41,10 @@ class Modules_Microweber_TaskInstall extends \pm_LongTask_Task
 		
 		$newInstallation->setProgressLogger($this);
 		$newInstallation->run();
+
+        $taskManager = new pm_LongTask_Manager();
+        $task = new Modules_Microweber_TaskDomainAppInstallationCount();
+        $taskManager->start($task, NULL);
 		
 	}
 
@@ -79,7 +82,6 @@ class Modules_Microweber_TaskInstall extends \pm_LongTask_Task
 	public function onDone()
 	{
 		$this->setParam('onDone', 1);
-
         $this->_queueRefreshDomain();
 	}
 
