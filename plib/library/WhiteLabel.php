@@ -55,15 +55,9 @@ class Modules_Microweber_WhiteLabel
 	{
         $taskManager = new pm_LongTask_Manager();
 
-		foreach (Modules_Microweber_Domain::getDomains() as $domain) {
-            if (!$domain->hasHosting()) {
-                continue;
-            }
+        $task = new Modules_Microweber_TaskWhiteLabelBrandingUpdate();
+        $taskManager->start($task, NULL);
 
-            $task = new Modules_Microweber_TaskWhiteLabelBrandingUpdate();
-            $task->setParam('domainId', $domain->getId());
-            $taskManager->start($task, NULL);
-		}
 	}
 	
 	public static function getWhiteLabelJson($domain = false)
