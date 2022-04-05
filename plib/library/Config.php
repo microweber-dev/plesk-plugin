@@ -50,10 +50,9 @@ class Modules_Microweber_Config
 	
 	public static function getSupportedLanguages()
 	{
-		
 		$languages = [];
 
-		$languagesPath = self::getAppSharedPath() . 'userfiles/modules/microweber/language';
+		$languagesPath = self::getAppSharedPath() . 'src/MicroweberPackages/Translation/resources/lang';
 
         $sfm = new pm_ServerFileManager();
         if ($sfm->fileExists($languagesPath)) {
@@ -72,7 +71,13 @@ class Modules_Microweber_Config
 			$languages['en'] = 'EN';
 		}
 
+        $firstLangs = [
+            'en_us'=>'en_US'
+        ];
+
         asort($languages);
+
+        $languages = array_merge($firstLangs, $languages);
 		
 		return $languages;
 		
