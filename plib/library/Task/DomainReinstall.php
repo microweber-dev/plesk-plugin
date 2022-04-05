@@ -6,7 +6,7 @@
  * Copyright: Microweber CMS
  */
 
-class Modules_Microweber_TaskDomainReinstall extends \pm_LongTask_Task
+class Modules_Microweber_Task_DomainReinstall extends \pm_LongTask_Task
 {
     public $runningLog = 'Applying the new version of app on domains.';
     public $trackProgress = true;

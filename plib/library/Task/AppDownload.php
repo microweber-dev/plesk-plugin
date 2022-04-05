@@ -6,8 +6,9 @@
  * Copyright: Microweber CMS
  */
 
-class Modules_Microweber_TaskAppDownload extends \pm_LongTask_Task
+class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
 {
+    const UID = 'appDownload';
 	public $trackProgress = true;
 
 	public function run()
@@ -49,7 +50,7 @@ class Modules_Microweber_TaskAppDownload extends \pm_LongTask_Task
         $taskManager = new pm_LongTask_Manager();
 
         // Update templates
-        $task = new Modules_Microweber_TaskTemplatesDownload();
+        $task = new Modules_Microweber_Task_TemplatesDownload();
         $taskManager->start($task, NULL);
 
 	}

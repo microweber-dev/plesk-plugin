@@ -7,7 +7,7 @@
  */
 include dirname(__DIR__) . '/library/MicroweberMarketplaceConnector.php';
 
-class Modules_Microweber_TaskTemplatesDownload extends \pm_LongTask_Task
+class Modules_Microweber_Task_TemplatesDownload extends \pm_LongTask_Task
 {
     public $runningLog = '';
 	public $trackProgress = true;
@@ -80,7 +80,7 @@ class Modules_Microweber_TaskTemplatesDownload extends \pm_LongTask_Task
 
         $taskManager = new pm_LongTask_Manager();
 
-        $task = new Modules_Microweber_TaskDomainReinstall();
+        $task = new Modules_Microweber_Task_DomainReinstall();
         $taskManager->start($task, NULL);
 	}
 

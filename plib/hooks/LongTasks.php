@@ -14,18 +14,18 @@ class Modules_Microweber_LongTasks extends \pm_Hook_LongTasks
 		pm_Log::info('getLongTasks.');
 
 		return [
-			new Modules_Microweber_TaskInstall(),
-			new Modules_Microweber_TaskAppDownload(),
-			new Modules_Microweber_TaskAppVersionCheck(),
-			new Modules_Microweber_TaskTemplatesDownload(),
-			new Modules_Microweber_TaskWhiteLabelBrandingUpdate(),
-			new Modules_Microweber_TaskDisableSelinux(),
-			new Modules_Microweber_TaskUpdateHostingPlansPhpHandler(),
-			new Modules_Microweber_TaskUpdateDomainsPhpHandler(),
-			new Modules_Microweber_TaskDomainAppInstallationScan(),
-			new Modules_Microweber_TaskDomainAppInstallationRepair(),
-			new Modules_Microweber_TaskDomainAppInstallationCount(),
-			new Modules_Microweber_TaskDomainReinstall(),
+			new Modules_Microweber_Task_DomainAppInstall(),
+			new Modules_Microweber_Task_AppDownload(),
+			new Modules_Microweber_Task_AppVersionCheck(),
+			new Modules_Microweber_Task_TemplatesDownload(),
+			new Modules_Microweber_Task_WhiteLabelBrandingUpdate(),
+			new Modules_Microweber_Task_DisableSelinux(),
+			new Modules_Microweber_Task_UpdateHostingPlansPhpHandler(),
+			new Modules_Microweber_Task_UpdateDomainsPhpHandler(),
+			new Modules_Microweber_Task_DomainAppInstallationScan(),
+			new Modules_Microweber_Task_DomainAppInstallationRepair(),
+			new Modules_Microweber_Task_DomainAppInstallationCount(),
+			new Modules_Microweber_Task_DomainReinstall(),
 		];
 
 	}
