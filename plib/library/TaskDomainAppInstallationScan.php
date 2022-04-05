@@ -8,23 +8,37 @@
 
 class Modules_Microweber_TaskDomainAppInstallationScan extends \pm_LongTask_Task
 {
-    public $hidden = false;
-	public $trackProgress = true;
+    public $runningLog = '';
+    public $trackProgress = true;
 
 	public function run()
 	{
 		$this->updateProgress(10);
 
-		if (empty($this->getParam('domainId'))) {
-		    return;
+        $domainId = $this->getParam('domainId');
+        if ($domainId > 0) {
+
+            $this->hidden = true;
+            $this->trackProgress = false;
+
+            $domain = Modules_Microweber_Domain::getUserDomainById($domainId);
+            $this->scanDomain($domain);
+            $this->updateProgress(50);
+        } else {
+            foreach (Modules_Microweber_Domain::getDomains() as $domain) {
+                if (!$domain->hasHosting()) {
+                    continue;
+                }
+                $this->runningLog = 'Scanning '.Modules_Microweber_WhiteLabel::getBrandName().' installations on domain: ' . $domain->getName();
+                $this->scanDomain($domain);
+            }
         }
+		
+		$this->updateProgress(100);
+	}
 
-		$domain = Modules_Microweber_Domain::getUserDomainById($this->getParam('domainId'));
-
-        if (!$domain->hasHosting()) {
-            return;
-        }
-
+    private function scanDomain($domain)
+    {
         $installationsFind = [];
 
         $domainDocumentRoot = $domain->getDocumentRoot();
@@ -100,34 +114,32 @@ class Modules_Microweber_TaskDomainAppInstallationScan extends \pm_LongTask_Task
 
                 $domainNameAppUrlPath = $domainName;
                 $appInstallationExpByDomain = explode($domainName, $appInstallation);
-                if($appInstallationExpByDomain){
+                if ($appInstallationExpByDomain) {
                     $domainNameAppUrlPath = end($appInstallationExpByDomain);
-                    $domainNameAppUrlPath = str_replace( '/httpdocs', '', $domainNameAppUrlPath);
+                    $domainNameAppUrlPath = str_replace('/httpdocs', '', $domainNameAppUrlPath);
                     $domainNameAppUrlPath = $domainName . $domainNameAppUrlPath;
                 }
 
                 Modules_Microweber_Domain::addAppInstallation($domain, [
-                    'domainNameUrl'=>$domainNameAppUrlPath,
-                    'domainCreation'=>$domainCreation,
-                    'installationType'=>$installationType,
-                    'appVersion'=>$appVersion,
-                    'appInstallation'=>$appInstallation,
-                    'domainIsActive'=>$domainIsActive,
-                    'manageDomainUrl'=>$manageDomainUrl,
+                    'domainNameUrl' => $domainNameAppUrlPath,
+                    'domainCreation' => $domainCreation,
+                    'installationType' => $installationType,
+                    'appVersion' => $appVersion,
+                    'appInstallation' => $appInstallation,
+                    'domainIsActive' => $domainIsActive,
+                    'manageDomainUrl' => $manageDomainUrl,
                 ]);
             }
         }
-		
-		$this->updateProgress(100);
-	}
+    }
 
 	public function statusMessage()
 	{
 		switch ($this->getStatus()) {
 			case static::STATUS_RUNNING:
-				return '';
+				return $this->runningLog;
 			case static::STATUS_DONE:
-				return '';
+				return 'Domain scanning complete!';
 			case static::STATUS_ERROR:
 				return 'Error scan '.Modules_Microweber_WhiteLabel::getBrandName().' domain';
 			case static::STATUS_NOT_STARTED:

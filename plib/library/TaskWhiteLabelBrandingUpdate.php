@@ -15,7 +15,7 @@ class Modules_Microweber_TaskWhiteLabelBrandingUpdate extends \pm_LongTask_Task
 	{
         $domainId = $this->getParam('domainId');
 
-        if ($domainId) {
+        if ($domainId > 0) {
 
             $this->hidden = true;
             $this->trackProgress = false;

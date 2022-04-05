@@ -1308,16 +1308,8 @@ class IndexController extends Modules_Microweber_BasepluginController
 
     private function _queueRefreshDomains()
     {
-        foreach (Modules_Microweber_Domain::getDomains() as $domain) {
-
-            if (!$domain->hasHosting()) {
-                continue;
-            }
-
-            $task = new Modules_Microweber_TaskDomainAppInstallationScan();
-            $task->setParam('domainId', $domain->getId());
-            $this->taskManager->start($task, NULL);
-        }
+        $task = new Modules_Microweber_TaskDomainAppInstallationScan();
+        $this->taskManager->start($task, NULL);
     }
 
     private function _getAppInstallations()
