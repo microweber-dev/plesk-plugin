@@ -13,5 +13,5 @@ if (pm_Settings::get('update_app_automatically') != 'yes') {
 }
 
 $taskManager = new pm_LongTask_Manager();
-$task = new Modules_Microweber_TaskAppVersionCheck();
+$task = new Modules_Microweber_Task_AppVersionCheck();
 $taskManager->start($task, NULL);

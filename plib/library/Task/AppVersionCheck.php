@@ -7,7 +7,7 @@
  */
 
 
-class Modules_Microweber_TaskAppVersionCheck extends \pm_LongTask_Task
+class Modules_Microweber_Task_AppVersionCheck extends \pm_LongTask_Task
 {
     public $hidden = false;
 	public $trackProgress = true;
@@ -31,7 +31,7 @@ class Modules_Microweber_TaskAppVersionCheck extends \pm_LongTask_Task
         if ($status['update_app']) {
             $mwRelease = Modules_Microweber_Config::getRelease();
             if (!empty($mwRelease)) {
-                $task = new Modules_Microweber_TaskAppDownload();
+                $task = new Modules_Microweber_Task_AppDownload();
                 $taskManager->start($task, NULL);
             }
         } else {

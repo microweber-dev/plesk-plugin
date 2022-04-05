@@ -333,7 +333,7 @@ class IndexController extends Modules_Microweber_BasepluginController
             return $this->_redirect('index/error?type=permission');
         }
 
-        $task = new Modules_Microweber_TaskAppVersionCheck();
+        $task = new Modules_Microweber_Task_AppVersionCheck();
         $this->taskManager->start($task, NULL);
 
         $this->_status->addMessage('info', 'Update task has been started');
@@ -598,7 +598,7 @@ class IndexController extends Modules_Microweber_BasepluginController
 
             if (!$this->devMode) {
 
-                $task = new Modules_Microweber_TaskInstall();
+                $task = new Modules_Microweber_Task_DomainAppInstall();
                 $task->setParam('domainId', $domain->getId());
                 $task->setParam('domainName', $domain->getName());
                 $task->setParam('domainDisplayName', $domain->getDisplayName());

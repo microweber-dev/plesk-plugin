@@ -33,7 +33,7 @@ class Modules_Microweber_TaskUpdateDomainsPhpHandler extends \pm_LongTask_Task
 
         if ($updateApp) {
             $taskManager = new pm_LongTask_Manager();
-            $task = new Modules_Microweber_TaskAppVersionCheck();
+            $task = new Modules_Microweber_Task_AppVersionCheck();
             $taskManager->start($task, NULL);
         }
 
