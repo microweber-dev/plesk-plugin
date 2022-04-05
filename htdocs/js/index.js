@@ -91,6 +91,8 @@ function openSetupForm(instance) {
             html_form_filed += '<input type="hidden" value="'+ responseDataJson.domain_id + '" name="domain_id">';
             html_form_filed += '<input type="hidden" value="'+ domainFormData.website_url + '" name="website_url">';
             html_form_filed += '<input type="hidden" value="'+ domainFormData.document_root + '" name="document_root">';
+
+            html_form_filed += '<a onclick="removeDomainAppInstallation(this)" style="color:#c62d2d;margin-top: 15px;display: block;">Uninstall app</a>';
             html_form_filed += '</form>';
 
             domainSetupPopup.setHint(html_form_filed);
@@ -136,6 +138,23 @@ function generatePassword() {
     var getPasswordInput = document.getElementsByClassName("js-mw-admin-password")[0];
     getPasswordInput.setAttribute('value', retVal);
 
+}
+
+function removeDomainAppInstallation(instance) {
+    if (confirm('Are you sure you want to uninstall the app from this website?')) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('post', '/modules/microweber/index.php/index/domainappuninstall')
+        xhr.send(new FormData(instance.parentNode));
+
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var responseDataJson = JSON.parse(this.responseText);
+                if (responseDataJson.status == 'success') {
+
+                }
+            }
+        };
+    }
 }
 
 function submitDomainChanges(instance) {

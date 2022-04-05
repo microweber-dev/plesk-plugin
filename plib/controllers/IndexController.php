@@ -983,6 +983,65 @@ class IndexController extends Modules_Microweber_BasepluginController
         $this->_helper->json($json);
     }
 
+    public function domainappuninstallAction()
+    {
+        $domainId = (int)$_POST['domain_id'];
+        $appInstallationPath = $_POST['document_root'];
+
+        try {
+            $domain = Modules_Microweber_Domain::getUserDomainById($domainId);
+        } catch (Exception $e) {
+            $this->_helper->json(['message'=>$e->getMessage()]);
+            return;
+        }
+
+        if (!$domain) {
+            $this->_helper->json(['message'=>'Domain not found.']);
+            return;
+        }
+
+        $fileManager = new \pm_FileManager($domain->getId());
+
+        if (!$fileManager->fileExists($appInstallationPath . '/config/microweber.php')) {
+            $this->_helper->json(['message'=>'This is not microweber installation']);
+            return;
+        }
+
+        if (!$fileManager->isDir($appInstallationPath)) {
+            $this->_helper->json(['message'=>'Domain directory not found.']);
+            return;
+        }
+
+        $strposCheck = false;
+        if (strpos($appInstallationPath, $domain->getDocumentRoot()) !== false) {
+            $strposCheck = true;
+        }
+
+        if (!$strposCheck) {
+            $this->_helper->json(['message'=>'Domain invalid directory.']);
+            return;
+        }
+
+        // Delete domain file
+        pm_ApiCli::callSbin('filemng', [
+            $domain->getSysUserLogin(),
+            'exec',
+            $domain->getDocumentRoot(),
+            'rm',
+            '-rf',
+            $appInstallationPath . '/'
+
+        ], pm_ApiCli::RESULT_FULL);
+
+        Modules_Microweber_Helper::stopTasks(['task_domainappinstallationscan']);
+
+        $task = new Modules_Microweber_Task_DomainAppInstallationScan();
+        $task->setParam('domainId', $domain->getId());
+        $this->taskManager->start($task, NULL);
+
+        $this->_helper->json(['status'=>'success']);
+    }
+
     public function domainupdateAction()
     {
         $json = [];

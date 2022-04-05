@@ -387,7 +387,6 @@ class Modules_Microweber_Install {
                 'created_at'=> date('Y-m-d H:i:s')
             ];
             $domain->setSetting('mw_settings_' . md5($domainDocumentRoot), serialize($saveDomainSettings));
-            $domain->setSetting('mwAppInstallations', false);
 
             // Set branding json
             Modules_Microweber_WhiteLabelBranding::applyToInstallation($domain, $domainDocumentRoot);
