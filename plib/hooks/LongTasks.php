@@ -19,6 +19,7 @@ class Modules_Microweber_LongTasks extends \pm_Hook_LongTasks
 			new Modules_Microweber_Task_AppVersionCheck(),
 			new Modules_Microweber_Task_TemplatesDownload(),
 			new Modules_Microweber_Task_WhiteLabelBrandingUpdate(),
+			new Modules_Microweber_Task_WhiteLabelBrandingRemove(),
 			new Modules_Microweber_Task_DisableSelinux(),
 			new Modules_Microweber_Task_UpdateHostingPlansPhpHandler(),
 			new Modules_Microweber_Task_UpdateDomainsPhpHandler(),

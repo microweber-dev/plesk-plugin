@@ -294,6 +294,14 @@ class IndexController extends Modules_Microweber_BasepluginController
         if ($this->getRequest()->getParam('delete_whitelabel_key') == '1') {
             pm_Settings::set('wl_key', false);
             pm_Settings::set('wl_license_data', false);
+
+            Modules_Microweber_Helper::stopTasks(['task_whitelabelbrandinremove']);
+
+            $taskManager = new pm_LongTask_Manager();
+
+            // Start new task
+            $task = new Modules_Microweber_Task_WhiteLabelBrandingRemove();
+            $taskManager->start($task, NULL);
         }
 
         if (!$savingWhiteLabelKey && $this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {

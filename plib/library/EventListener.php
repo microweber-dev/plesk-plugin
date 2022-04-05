@@ -11,6 +11,10 @@ class Modules_Microweber_EventListener implements EventListener
     public function filterActions()
     {
         return [
+            'license_expired',
+            'license_update',
+            'additional_license_expired',
+
             'domain_delete',
             'domain_alias_delete',
             'site_delete',
@@ -23,6 +27,19 @@ class Modules_Microweber_EventListener implements EventListener
     public function handleEvent($objectType, $objectId, $action, $oldValue, $newValue)
     {
         switch ($action) {
+
+            case "license_expired":
+            case "additional_license_expired":
+
+                Modules_Microweber_Helper::stopTasks(['task_whitelabelbrandinremove']);
+
+                $taskManager = new pm_LongTask_Manager();
+
+                // Start new task
+                $task = new Modules_Microweber_Task_WhiteLabelBrandingRemove();
+                $taskManager->start($task, NULL);
+
+                break;
 
             case "domain_delete":
             case "domain_alias_delete":

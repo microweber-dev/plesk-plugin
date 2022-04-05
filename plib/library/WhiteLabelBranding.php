@@ -8,6 +8,23 @@
 
 class Modules_Microweber_WhiteLabelBranding
 {
+    public static function removeFromInstallation($domain, $appInstallation) {
+
+        if (empty($domain)) {
+            throw new Exception('Please, set domain object');
+        }
+
+        if (empty($appInstallation)) {
+            throw new Exception('Please, set app installation');
+        }
+
+        $fileManager = new pm_FileManager($domain->getId());
+
+        if ($fileManager->fileExists($appInstallation . '/config/microweber.php')) {
+            $fileManager->removeFile($appInstallation . '/storage/branding.json');
+        }
+    }
+
     public static function applyToInstallation($domain, $appInstallation)
     {
         if (empty($domain)) {
