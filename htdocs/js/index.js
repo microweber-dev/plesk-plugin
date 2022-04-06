@@ -37,8 +37,9 @@ function openSetupForm(instance) {
 
             var responseDataJson = JSON.parse(this.responseText);
 
-            var html_form_filed = '<form method="post">';
+            var html_form_filed = '<h3>'+ domainFormData.website_url + '</h3>';
 
+            html_form_filed += '<form method="post">';
             html_form_filed += '<div class="js-mw-form-messages"></div>';
 
             html_form_filed += '<div class="mtop15">';
