@@ -22,7 +22,15 @@ class Modules_Microweber_Domain
 
         $fileManager = new pm_FileManager($domain->getId());
 
+        if (!$fileManager->isDir($domainDocumentRoot)) {
+            return false;
+        }
+
         $allDirs = $fileManager->scanDir($domainDocumentRoot, true);
+        if (empty($allDirs)) {
+            return false;
+        }
+
         foreach ($allDirs as $dir) {
             if (!is_dir($domainDocumentRoot . '/' . $dir . '/config/')) {
                 continue;
