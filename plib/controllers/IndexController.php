@@ -1045,6 +1045,8 @@ class IndexController extends Modules_Microweber_BasepluginController
         $task->setParam('domainId', $domain->getId());
         $this->taskManager->start($task, NULL);
 
+        sleep(3);
+
         $this->_helper->json(['status'=>'success']);
     }
 

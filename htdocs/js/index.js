@@ -142,6 +142,9 @@ function generatePassword() {
 
 function removeDomainAppInstallation(instance) {
     if (confirm('Are you sure you want to uninstall the app from this website?')) {
+
+        instance.innerHTML = "Uninstalling...";
+
         var xhr = new XMLHttpRequest();
         xhr.open('post', '/modules/microweber/index.php/index/domainappuninstall')
         xhr.send(new FormData(instance.parentNode));
@@ -150,6 +153,7 @@ function removeDomainAppInstallation(instance) {
                 var responseDataJson = JSON.parse(this.responseText);
                 if (responseDataJson.status == 'success') {
                     window.location.href = window.location.href;
+                    instance.innerHTML = "Reloading page...";
                 }
             }
         };
