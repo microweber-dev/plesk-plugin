@@ -145,12 +145,11 @@ function removeDomainAppInstallation(instance) {
         var xhr = new XMLHttpRequest();
         xhr.open('post', '/modules/microweber/index.php/index/domainappuninstall')
         xhr.send(new FormData(instance.parentNode));
-
         xhr.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var responseDataJson = JSON.parse(this.responseText);
                 if (responseDataJson.status == 'success') {
-
+                    window.location.href = window.location.href;
                 }
             }
         };

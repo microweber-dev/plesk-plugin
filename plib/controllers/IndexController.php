@@ -48,6 +48,10 @@ class IndexController extends Modules_Microweber_BasepluginController
 
     public function indexAction()
     {
+
+       /* $domain = Modules_Microweber_Domain::getUserDomainById(369);
+        Modules_Microweber_Domain::scanForAppInstallations($domain);*/
+
         $this->_checkAppSettingsIsCorrect();
 
         $this->view->errorMessage = false;
@@ -1003,11 +1007,13 @@ class IndexController extends Modules_Microweber_BasepluginController
         $fileManager = new \pm_FileManager($domain->getId());
 
         if (!$fileManager->fileExists($appInstallationPath . '/config/microweber.php')) {
+            $domain->setSetting('mwAppInstallations', false);
             $this->_helper->json(['message'=>'This is not microweber installation']);
             return;
         }
 
         if (!$fileManager->isDir($appInstallationPath)) {
+            $domain->setSetting('mwAppInstallations', false);
             $this->_helper->json(['message'=>'Domain directory not found.']);
             return;
         }
