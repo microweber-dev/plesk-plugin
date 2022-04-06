@@ -15,6 +15,10 @@ class Modules_Microweber_Reinstall
         if (empty($domain->getName())) {
             throw new \Exception($domain->getName() . ' domain not found.');
         }
+
+        if (!$domain->hasHosting()) {
+            return;
+        }
 		
 		$fileManager = new \pm_FileManager($domain->getId());
 		
