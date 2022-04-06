@@ -10,6 +10,11 @@ class Modules_Microweber_Domain
 {
     public static function scanForAppInstallations($domain)
     {
+        if (!$domain->hasHosting()) {
+            $domain->setSetting('mwAppInstallations', false);
+            return false;
+        }
+
         $installationsFind = [];
 
         $domainDocumentRoot = $domain->getDocumentRoot();
