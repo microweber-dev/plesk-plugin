@@ -173,17 +173,17 @@ class IndexController extends Modules_Microweber_BasepluginController
         $form->addElement('text', 'wl_brand_favicon', [
             'label' => 'Brand Favicon',
             'value' => Modules_Microweber_WhiteLabelSettings::get('wl_brand_favicon'),
-            'placeholder' => 'Enter favicon url of your company.'
+            'placeholder' => 'https://example.com/favicon.ico'
         ]);
         $form->addElement('text', 'wl_admin_login_url', [
             'label' => 'Admin login - White Label URL?',
             'value' => Modules_Microweber_WhiteLabelSettings::get('wl_admin_login_url'),
-            'placeholder' => 'Enter website url of your company.'
+            'placeholder' => 'https://example.com'
         ]);
         $form->addElement('text', 'wl_contact_page', [
             'label' => 'Enable support links?',
             'value' => Modules_Microweber_WhiteLabelSettings::get('wl_contact_page'),
-            'placeholder' => 'Enter url of your contact page'
+            'placeholder' => 'https://example.com/contact-us'
         ]);
         $form->addElement('checkbox', 'wl_enable_support_links',
             [
@@ -205,17 +205,17 @@ class IndexController extends Modules_Microweber_BasepluginController
         $form->addElement('text', 'wl_logo_admin_panel', [
             'label' => 'Logo for Admin panel (size: 180x35px)',
             'value' => Modules_Microweber_WhiteLabelSettings::get('wl_logo_admin_panel'),
-            'placeholder' => ''
+            'placeholder' => 'https://example.com/logo.png'
         ]);
         $form->addElement('text', 'wl_logo_live_edit_toolbar', [
             'label' => 'Logo for Live-Edit toolbar (size: 50x50px)',
             'value' => Modules_Microweber_WhiteLabelSettings::get('wl_logo_live_edit_toolbar'),
-            'placeholder' => ''
+            'placeholder' => 'https://example.com/logo.png'
         ]);
         $form->addElement('text', 'wl_logo_login_screen', [
             'label' => 'Logo for Login screen (max width: 290px)',
             'value' => Modules_Microweber_WhiteLabelSettings::get('wl_logo_login_screen'),
-            'placeholder' => ''
+            'placeholder' => 'https://example.com/logo.png'
         ]);
         $form->addElement('checkbox', 'wl_disable_microweber_marketplace',
             [
@@ -241,12 +241,12 @@ class IndexController extends Modules_Microweber_BasepluginController
         $form->addElement('text', 'wl_plesk_logo_invert', [
             'label' => 'Plesk Logo for sidebar',
             'value' => Modules_Microweber_WhiteLabelSettings::get('wl_plesk_logo_invert'),
-            'placeholder' => ''
+            'placeholder' => 'https://example.com/logo-invert.png'
         ]);
         $form->addElement('text', 'wl_plesk_logo_app', [
             'label' => 'Plesk Logo App',
             'value' => Modules_Microweber_WhiteLabelSettings::get('wl_plesk_logo_app'),
-            'placeholder' => ''
+            'placeholder' => 'https://example.com/logo.png'
         ]);
         $form->addElement('textarea', 'wl_admin_colors_sass',
             [

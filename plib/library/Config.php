@@ -85,10 +85,12 @@ class Modules_Microweber_Config
 
 	public static function getPlanItems()
 	{
+        $brandName = Modules_Microweber_WhiteLabel::getBrandName();
+
 		return [
-			'microweber' => 'Install Microweber',
-			'microweber_without_shop' => 'Install Microweber Without Shop',
-			'microweber_lite' => 'Install Microweber Lite'
+			'microweber' => 'Install ' . $brandName,
+			'microweber_without_shop' => 'Install '.$brandName.' Without Shop',
+			'microweber_lite' => 'Install '.$brandName.' Lite'
 		];
 	}
 
