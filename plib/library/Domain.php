@@ -23,11 +23,13 @@ class Modules_Microweber_Domain
         $fileManager = new pm_FileManager($domain->getId());
 
         if (!$fileManager->isDir($domainDocumentRoot)) {
+            $domain->setSetting('mwAppInstallations', false);
             return false;
         }
 
         $allDirs = $fileManager->scanDir($domainDocumentRoot, true);
         if (empty($allDirs)) {
+            $domain->setSetting('mwAppInstallations', false);
             return false;
         }
 
