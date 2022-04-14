@@ -141,6 +141,8 @@ class IndexController extends Modules_Microweber_BasepluginController
     {
         $json = [];
         $json['is_ok'] = Modules_Microweber_Helper::isAvailableDiskSpace();
+        $json['required_disk_space'] = Modules_Microweber_Helper::getRequiredDiskSpace() . "GB";
+        $json['available_disk_space'] = round(Modules_Microweber_Helper::getAvailableDiskSpace(), 2);
 
         $this->_helper->json($json);
     }
@@ -742,7 +744,7 @@ class IndexController extends Modules_Microweber_BasepluginController
         $this->view->updateLink = pm_Context::getBaseUrl() . 'index.php/index/update';
 
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
-        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/versions.js');
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/startup.js');
     }
 
     public function settingsAction()

@@ -22,14 +22,26 @@ class Modules_Microweber_Helper
         }
     }
 
-    public static function isAvailableDiskSpace()
+    public static function getRequiredDiskSpace()
+    {
+        return 2;
+    }
+
+    public static function getAvailableDiskSpace()
     {
         $freeDiskSpace = pm_ApiCli::callSbin('check_disk_space.sh', [Modules_Microweber_Config::getExtensionVarPath()])['stdout'];
         $freeDiskSpace = str_ireplace(PHP_EOL, '', $freeDiskSpace);
         $freeDiskSpace = $freeDiskSpace / pow(1024, 3);
 
+        return $freeDiskSpace;
+    }
+
+    public static function isAvailableDiskSpace()
+    {
+        $freeDiskSpace = self::getAvailableDiskSpace();
+
         $isOk = false;
-        if ($freeDiskSpace > 2) {
+        if ($freeDiskSpace > self::getRequiredDiskSpace()) {
             $isOk = true;
         }
 
