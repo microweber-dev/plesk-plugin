@@ -8,7 +8,7 @@
 
 class Modules_Microweber_LicenseData
 {
-    private static function _getAppInstallationsCount()
+    public static function getAppInstallationsCount()
     {
         return (int) pm_Settings::get('mw_installations_count');
     }
@@ -31,7 +31,9 @@ class Modules_Microweber_LicenseData
             }
         }
 
-        $appInstallationsCount = self::_getAppInstallationsCount();
+        $appInstallationsLimit = 10;
+
+        $appInstallationsCount = self::getAppInstallationsCount();
 
         // Freeze app installations
         $appInstallationsFreeze = true;

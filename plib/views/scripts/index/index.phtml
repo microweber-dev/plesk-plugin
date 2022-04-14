@@ -37,9 +37,17 @@ if ($this->errorMessage):
 <?php endif; ?>
 
 <?php
-if ($this->list) {
+if ($this->list && Modules_Microweber_LicenseData::getAppInstallationsCount() > 0) {
     echo $this->renderList($this->list);
-}
-?>
+} else {
+    if (isset($_GET['queue_refresh'])) {
+     ?>
+
+        Scanning for app domain installations...
+        <meta http-equiv="refresh" content="35; URL='<?php echo $this->indexLink; ?>'" />
+
+        <?php
+    }
+}?>
 
 <a href="<?php echo $this->refreshDomainLink; ?>" class="btn btn-info i-link">Refresh domains</a>

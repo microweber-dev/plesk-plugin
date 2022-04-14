@@ -59,6 +59,7 @@ class IndexController extends Modules_Microweber_BasepluginController
            $this->view->errorMessage =  $_GET['message'];
         }
 
+        $this->view->indexLink = pm_Context::getBaseUrl() . 'index.php/index';
         $this->view->refreshDomainLink = pm_Context::getBaseUrl() . 'index.php/index/refreshdomains';
         $this->view->pageTitle = $this->_moduleName . ' - Domains';
         $this->view->list = $this->_getDomainsList();
@@ -71,7 +72,7 @@ class IndexController extends Modules_Microweber_BasepluginController
     {
         $this->_queueRefreshDomains();
 
-        return $this->_redirect('index/index');
+        return $this->_redirect('index/index?queue_refresh=1');
     }
 
     public function versionsAction()
@@ -1390,6 +1391,10 @@ class IndexController extends Modules_Microweber_BasepluginController
         Modules_Microweber_Helper::stopTasks(['task_domainappinstallationscan']);
 
         $task = new Modules_Microweber_Task_DomainAppInstallationScan();
+        $this->taskManager->start($task, NULL);
+
+        $task = new Modules_Microweber_Task_DomainAppInstallationCount();
+        $task->setParam('hiddenTask', true);
         $this->taskManager->start($task, NULL);
     }
 
