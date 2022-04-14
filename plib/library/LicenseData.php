@@ -31,8 +31,6 @@ class Modules_Microweber_LicenseData
             }
         }
 
-        $appInstallationsLimit = 10;
-
         $appInstallationsCount = self::getAppInstallationsCount();
 
         // Freeze app installations
