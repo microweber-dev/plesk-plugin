@@ -50,8 +50,9 @@ class Modules_Microweber_Task_DomainAppInstallationScan extends \pm_LongTask_Tas
 
                 $i++;
                 $this->updateProgress($i);
-                if (Modules_Microweber_Domain::scanForAppInstallations($domain)) {
-                    $installations++;
+                $installationsFound = Modules_Microweber_Domain::scanForAppInstallations($domain);
+                if ($installationsFound) {
+                    $installations = $installations + $installationsFound;
                 }
             }
 

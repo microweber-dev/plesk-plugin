@@ -57,6 +57,8 @@ class Modules_Microweber_Domain
             $domain->setSetting('mwAppInstallations', false);
         }
 
+        $installations = 0;
+
         if (!empty($installationsFind)) {
 
             foreach ($installationsFind as $appInstallationConfig) {
@@ -115,10 +117,11 @@ class Modules_Microweber_Domain
                     'domainIsActive' => $domainIsActive,
                     'manageDomainUrl' => $manageDomainUrl,
                 ]);
+                $installations++;
             }
         }
 
-        return true;
+        return $installations;
     }
 
     public static function addAppInstallation($domain, $appInstallation)

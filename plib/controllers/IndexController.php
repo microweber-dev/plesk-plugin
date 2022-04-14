@@ -1048,6 +1048,8 @@ class IndexController extends Modules_Microweber_BasepluginController
         $task->setParam('domainId', $domain->getId());
         $this->taskManager->start($task, NULL);
 
+        pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() - 1));
+
         sleep(3);
 
         $this->_helper->json(['status'=>'success']);
