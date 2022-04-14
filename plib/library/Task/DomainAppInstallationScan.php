@@ -40,6 +40,8 @@ class Modules_Microweber_Task_DomainAppInstallationScan extends \pm_LongTask_Tas
 
         } else {
             $i=0;
+            $installations=0;
+
             foreach (Modules_Microweber_Domain::getDomains() as $domain) {
                 if (!$domain->hasHosting()) {
                     continue;
@@ -48,9 +50,14 @@ class Modules_Microweber_Task_DomainAppInstallationScan extends \pm_LongTask_Tas
 
                 $i++;
                 $this->updateProgress($i);
-                Modules_Microweber_Domain::scanForAppInstallations($domain);
+                if (Modules_Microweber_Domain::scanForAppInstallations($domain)) {
+                    $installations++;
+                }
             }
+
+            pm_Settings::set('mw_installations_count', $installations);
         }
+
 		
 		$this->updateProgress(100);
 	}

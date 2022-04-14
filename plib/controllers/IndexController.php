@@ -1392,10 +1392,6 @@ class IndexController extends Modules_Microweber_BasepluginController
 
         $task = new Modules_Microweber_Task_DomainAppInstallationScan();
         $this->taskManager->start($task, NULL);
-
-        $task = new Modules_Microweber_Task_DomainAppInstallationCount();
-        $task->setParam('hiddenTask', true);
-        $this->taskManager->start($task, NULL);
     }
 
     private function _getAppInstallations()

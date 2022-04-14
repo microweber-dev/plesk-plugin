@@ -117,6 +117,8 @@ class Modules_Microweber_Domain
                 ]);
             }
         }
+
+        return true;
     }
 
     public static function addAppInstallation($domain, $appInstallation)
