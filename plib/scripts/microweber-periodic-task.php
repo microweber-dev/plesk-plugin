@@ -14,6 +14,3 @@ $task = new Modules_Microweber_Task_DomainAppInstallationScan();
 $task->setParam('hiddenTask', true);
 $taskManager->start($task, NULL);
 
-$task = new Modules_Microweber_Task_DomainAppInstallationCount();
-$task->setParam('hiddenTask', true);
-$taskManager->start($task, NULL);

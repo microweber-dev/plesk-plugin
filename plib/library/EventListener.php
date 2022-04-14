@@ -77,11 +77,6 @@ class Modules_Microweber_EventListener implements EventListener
                 $task = new Modules_Microweber_Task_DomainAppInstallationScan();
                 $task->setParam('domainId', $domain->getId());
                 $taskManager->start($task, NULL);
-
-                Modules_Microweber_Helper::stopTasks(['task_domainappinstallationcount']);
-
-                $task = new Modules_Microweber_Task_DomainAppInstallationCount();
-                $taskManager->start($task, NULL);
                 break;
 
             case "phys_hosting_create":
@@ -98,10 +93,15 @@ class Modules_Microweber_EventListener implements EventListener
                 }
 
                 if ($action == 'phys_hosting_update') {
+
                     $taskManager = new pm_LongTask_Manager();
-                    Modules_Microweber_Helper::stopTasks(['task_domainappinstallationcount']);
-                    $task = new Modules_Microweber_Task_DomainAppInstallationCount();
+
+                    Modules_Microweber_Helper::stopTasks(['task_domainappinstallationcscan']);
+
+                    $task = new Modules_Microweber_Task_DomainAppInstallationScan();
+                    $task->setParam('domainId', $domain->getId());
                     $taskManager->start($task, NULL);
+
                 }
 
                 $planItems = $domain->getPlanItems();
