@@ -31,7 +31,7 @@ class Modules_Microweber_Helper
     {
         $freeDiskSpace = pm_ApiCli::callSbin('check_disk_space.sh', [Modules_Microweber_Config::getExtensionVarPath()])['stdout'];
         $freeDiskSpace = str_ireplace(PHP_EOL, '', $freeDiskSpace);
-        $freeDiskSpace = $freeDiskSpace / pow(1024, 3);
+        $freeDiskSpace = $freeDiskSpace / pow(1024, 2);
 
         return $freeDiskSpace;
     }
