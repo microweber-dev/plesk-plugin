@@ -1,3 +1,3 @@
 #!/bin/bash
 
-df $1 | awk 'NR == 2 { print $4 }'
+df -P $1 | awk 'NR == 2 { print $4 }'
