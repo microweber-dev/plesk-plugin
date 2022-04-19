@@ -22,11 +22,16 @@ class Modules_Microweber_LicenseData
         if (!empty($license)) {
             $keyBody = $license->getProperty('key-body');
             if (!empty($keyBody)) {
-                $keyBody = json_decode($keyBody, true);
-                if (!empty($keyBody)) {
-                    if (isset($keyBody['limit'])) {
-                        $appInstallationsLimit = $keyBody['limit'];
+                $keyBodyJson= json_decode($keyBody, true);
+                if (!empty($keyBodyJson)) {
+                    if (isset($keyBodyJson['limit'])) {
+                        $appInstallationsLimit = $keyBodyJson['limit'];
                     }
+                } else {
+                    $keyBodyLimit = $keyBody;
+                    $keyBodyLimit = str_replace('limit:','', $keyBodyLimit);
+                    $keyBodyLimit = trim($keyBodyLimit);
+                    $appInstallationsLimit = $keyBodyLimit;
                 }
             }
         }
