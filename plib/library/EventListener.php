@@ -177,6 +177,16 @@ class Modules_Microweber_EventListener implements EventListener
 
             $newInstallation->run();
 
+            // Scan domains again
+            $taskManager = new pm_LongTask_Manager();
+
+            Modules_Microweber_Helper::stopTasks(['task_domainappinstallationcscan']);
+
+            $task = new Modules_Microweber_Task_DomainAppInstallationScan();
+            $task->hidden = true;
+            $task->setParam('domainId', $domain->getId());
+            $taskManager->start($task, NULL);
+
         } catch (pm_Exception $e) {
             pm_Settings::set('domain_issue_' . $domain->getId(), pm_Locale::lmsg('microweberError', [
                 'domain' => $domain->getDisplayName(),
