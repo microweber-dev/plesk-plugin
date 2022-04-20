@@ -146,8 +146,20 @@ class Modules_Microweber_Domain
 
         $allDomains = pm_Domain::getAllDomains();
         foreach ($allDomains as $domain) {
+            if (!$domain->hasHosting()) {
+                continue;
+            }
+            $planItems = $domain->getPlanItems();
+
             if (pm_Session::getClient()->hasAccessToDomain($domain->getId())) {
-                $domains[] = $domain;
+
+                if (is_array($planItems)
+                    && count($planItems) > 0
+                    && (in_array("microweber", $planItems)
+                        || in_array("microweber_without_shop", $planItems)
+                        || in_array("microweber_lite", $planItems))) {
+                    $domains[] = $domain;
+                }
             }
         }
 
