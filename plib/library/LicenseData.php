@@ -30,6 +30,7 @@ class Modules_Microweber_LicenseData
                 } else {
                     $keyBodyLimit = $keyBody;
                     $keyBodyLimit = str_replace('limit:','', $keyBodyLimit);
+                    $keyBodyLimit = str_replace('"','', $keyBodyLimit);
                     $keyBodyLimit = trim($keyBodyLimit);
                     $appInstallationsLimit = $keyBodyLimit;
                 }
