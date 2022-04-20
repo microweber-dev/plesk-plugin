@@ -10,23 +10,16 @@ class Modules_Microweber_Task_DomainAppInstallationScan extends \pm_LongTask_Tas
 {
     const UID = 'domainAppInstallationScan';
     public $runningLog = 'Starting domain app installations scan...';
-    public $trackProgress = true;
+    public $trackProgress = false;
+    public $hidden = true;
 
 	public function run()
 	{
-        if ($this->getParam('hiddenTask')) {
-            $this->hidden = true;
-            $this->trackProgress = false;
-        }
-
 		$this->updateProgress(10);
 
         $domainId = $this->getParam('domainId');
         if ($domainId !== null) {
-
-            $this->hidden = true;
-            $this->trackProgress = false;
-
+            
             $domain = Modules_Microweber_Domain::getUserDomainById($domainId);
             if (!$domain->hasHosting()) {
                 $domain->setSetting('mwAppInstallations', false);

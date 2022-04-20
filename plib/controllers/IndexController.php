@@ -1045,6 +1045,7 @@ class IndexController extends Modules_Microweber_BasepluginController
         Modules_Microweber_Helper::stopTasks(['task_domainappinstallationscan']);
 
         $task = new Modules_Microweber_Task_DomainAppInstallationScan();
+        $task->hidden = true;
         $task->setParam('domainId', $domain->getId());
         $this->taskManager->start($task, NULL);
 

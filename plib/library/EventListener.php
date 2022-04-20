@@ -75,6 +75,7 @@ class Modules_Microweber_EventListener implements EventListener
                 Modules_Microweber_Helper::stopTasks(['task_domainappinstallationcscan']);
 
                 $task = new Modules_Microweber_Task_DomainAppInstallationScan();
+                $task->hidden = true;
                 $task->setParam('domainId', $domain->getId());
                 $taskManager->start($task, NULL);
                 break;
@@ -99,6 +100,7 @@ class Modules_Microweber_EventListener implements EventListener
                     Modules_Microweber_Helper::stopTasks(['task_domainappinstallationcscan']);
 
                     $task = new Modules_Microweber_Task_DomainAppInstallationScan();
+                    $task->hidden = true;
                     $task->setParam('domainId', $domain->getId());
                     $taskManager->start($task, NULL);
 
