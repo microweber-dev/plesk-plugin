@@ -414,6 +414,7 @@ class IndexController extends Modules_Microweber_BasepluginController
         $this->view->pageTitle = $this->_moduleName . ' - Install';
 
         $domainsSelect = ['no_select' => 'Select domain to install..'];
+        $domainsCount = 0;
         foreach (Modules_Microweber_Domain::getDomains() as $domain) {
 
             if (!$domain->hasHosting()) {
@@ -424,6 +425,12 @@ class IndexController extends Modules_Microweber_BasepluginController
             $domainName = $domain->getDisplayName();
 
             $domainsSelect[$domainId] = $domainName;
+            $domainsCount++;
+        }
+
+        $this->view->hasDomains = false;
+        if ($domainsCount > 0) {
+            $this->view->hasDomains = true;
         }
 
         $form = new pm_Form_Simple();
@@ -438,6 +445,7 @@ class IndexController extends Modules_Microweber_BasepluginController
         if (pm_Session::getClient()->isClient()) {
             $createNewDomainLink = "/smb/web/add-domain";
         }
+        $this->view->createNewDomainLink = $createNewDomainLink;
 
         $form->addElement(
             new Zend_Form_Element_Note('create_new_domain_link',

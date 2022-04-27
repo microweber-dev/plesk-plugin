@@ -35,11 +35,21 @@ endif;
 */
 ?>
 
-<h3>Choose installation options</h3>
-<b>Random values will be generated if fields are left blank.</b>
+<?php if ($this->hasDomains): ?>
+    <h3>Choose installation options</h3>
+    <b>Random values will be generated if fields are left blank.</b>
+    <br />
+    <br />
+    <div class="js-microweber-install-form" style="display:none;">
+        <?php echo $this->form; ?>
+    </div>
+<?php else:?>
 
-<br />
-<br />
-<div class="js-microweber-install-form" style="display:none;">
-<?php echo $this->form; ?>
-</div>
+    <div class="pul-alert pul-alert--info">
+         To make a new installation first you need to create a new domain.
+        <br />
+        <br />
+        <a href="<?php echo $this->createNewDomainLink; ?>" class="btn btn-primary">Create New Domain</a>
+    </div>
+
+<?php endif;?>
