@@ -44,6 +44,8 @@ class IndexController extends Modules_Microweber_BasepluginController
                 'action' => 'settings',
             ];
         }
+
+        $this->view->brandName = Modules_Microweber_WhiteLabel::getBrandName();
     }
 
     public function indexAction()
@@ -428,6 +430,8 @@ class IndexController extends Modules_Microweber_BasepluginController
             $domainsCount++;
         }
 
+        $domainsCount=0;
+
         $this->view->hasDomains = false;
         if ($domainsCount > 0) {
             $this->view->hasDomains = true;
@@ -440,6 +444,12 @@ class IndexController extends Modules_Microweber_BasepluginController
             'multiOptions' => $domainsSelect,
             'required' => true,
         ]);
+
+        $createNewServicePlanLink = "/admin/customer-service-plan/list";
+        if (pm_Session::getClient()->isClient()) {
+            $createNewServicePlanLink = "/admin/customer-service-plan/list";
+        }
+        $this->view->createNewServicePlanLink = $createNewServicePlanLink;
 
         $createNewDomainLink = "/admin/domain/add-domain";
         if (pm_Session::getClient()->isClient()) {
