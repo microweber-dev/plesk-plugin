@@ -430,8 +430,6 @@ class IndexController extends Modules_Microweber_BasepluginController
             $domainsCount++;
         }
 
-        $domainsCount=0;
-
         $this->view->hasHostingPlan = false;
         $this->view->hasDomains = false;
         if ($domainsCount > 0) {
