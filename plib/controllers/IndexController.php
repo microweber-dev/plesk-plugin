@@ -432,9 +432,18 @@ class IndexController extends Modules_Microweber_BasepluginController
 
         $domainsCount=0;
 
+        $this->view->hasHostingPlan = false;
         $this->view->hasDomains = false;
         if ($domainsCount > 0) {
             $this->view->hasDomains = true;
+        }
+
+        if (!$this->view->hasDomains) {
+            $hostingManager = new Modules_Microweber_HostingManager();
+            $hostingPlans = $hostingManager->getHostingPlans();
+            if (!empty($hostingPlans)) {
+                $this->view->hasHostingPlan = true;
+            }
         }
 
         $form = new pm_Form_Simple();
