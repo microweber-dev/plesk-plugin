@@ -454,18 +454,21 @@ class IndexController extends Modules_Microweber_BasepluginController
             'required' => true,
         ]);
 
-        $createNewServicePlanLink = "/admin/customer-service-plan/list";
+        // service plan link
+        $createNewServicePlanLink = "/admin/customer-service-plan/create";
         if (pm_Session::getClient()->isClient()) {
-            $createNewServicePlanLink = "/admin/customer-service-plan/list";
+            $createNewServicePlanLink = "/admin/customer-service-plan/create";
         }
         $this->view->createNewServicePlanLink = $createNewServicePlanLink;
 
+        // add domain link
         $createNewDomainLink = "/admin/domain/add-domain";
         if (pm_Session::getClient()->isClient()) {
             $createNewDomainLink = "/smb/web/add-domain";
         }
         $this->view->createNewDomainLink = $createNewDomainLink;
 
+        // subscription link
         $createNewSubscriptionLink = "/admin/subscription/create";
         if (pm_Session::getClient()->isClient()) {
             $createNewSubscriptionLink = "/smb/web/subscription";
