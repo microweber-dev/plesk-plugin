@@ -457,6 +457,12 @@ class IndexController extends Modules_Microweber_BasepluginController
         }
         $this->view->createNewDomainLink = $createNewDomainLink;
 
+        $createNewSubscriptionLink = "/admin/subscription/create";
+        if (pm_Session::getClient()->isClient()) {
+            $createNewSubscriptionLink = "/smb/web/subscription";
+        }
+        $this->view->createNewSubscriptionLink = $createNewSubscriptionLink;
+
         $form->addElement(
             new Zend_Form_Element_Note('create_new_domain_link',
                 ['value' => '<a href="'.$createNewDomainLink.'" style="margin-left:175px;top: -15px;position:relative;">Create New Domain</a>']
