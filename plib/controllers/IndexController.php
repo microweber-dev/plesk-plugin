@@ -78,7 +78,7 @@ class IndexController extends Modules_Microweber_BasepluginController
         }
 
         if ($this->view->showPluginBrokenMessage) {
-            $this->view->limitations['app_installations_freeze'] = true;
+            $this->view->tabs = [];
         }
 
        /* $domain = Modules_Microweber_Domain::getUserDomainById(369);
