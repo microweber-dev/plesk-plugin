@@ -19,10 +19,19 @@ class IndexController extends Modules_Microweber_BasepluginController
             'action' => 'index'
         ];
 
-        $this->view->tabs[] = [
-            'title' => 'Install',
-            'action' => 'install'
-        ];
+        $showInstallTab = true;
+        if ($this->view->limitations['app_installations_freeze']) {
+            if (pm_Session::getClient()->isClient()) {
+                $showInstallTab = false;
+            }
+        }
+
+        if ($showInstallTab) {
+            $this->view->tabs[] = [
+                'title' => 'Install',
+                'action' => 'install'
+            ];
+        }
 
         if (pm_Session::getClient()->isAdmin()) {
             $this->view->tabs[] = [
