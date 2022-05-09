@@ -65,11 +65,24 @@ class IndexController extends Modules_Microweber_BasepluginController
             $checkTask1 = false;
             $checkTask2 = false;
             foreach ($listTasks as $task) {
+
+                $taskSchedule = $task->getSchedule();
+                unset($taskSchedule['minute']);
+
+                $taskEveryHour = pm_Scheduler::$EVERY_HOUR;
+                $taskEveryDay = pm_Scheduler::$EVERY_DAY;
+                unset($taskEveryHour['minute']);
+                unset($taskEveryDay['minute']);
+
                 if (stripos($task->getCmd(), 'microweber-periodic-task')!==false) {
-                    $checkTask1 = true;
+                    if (empty(array_diff($taskSchedule, pm_Scheduler::$EVERY_HOUR))) {
+                        $checkTask1 = true;
+                    }
                 }
                 if (stripos($task->getCmd(), 'microweber-periodic-update-task')!==false) {
-                    $checkTask2 = true;
+                    if (empty(array_diff($taskSchedule, pm_Scheduler::$EVERY_DAY))) {
+                        $checkTask2 = true;
+                    }
                 }
             }
             if ($checkTask1 && $checkTask2) {
