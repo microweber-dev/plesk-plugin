@@ -59,6 +59,27 @@ class IndexController extends Modules_Microweber_BasepluginController
 
     public function indexAction()
     {
+        $this->view->showPluginBrokenMessage = true;
+        $listTasks = pm_Scheduler::getInstance()->listTasks();
+        if (!empty($listTasks)) {
+            $checkTask1 = false;
+            $checkTask2 = false;
+            foreach ($listTasks as $task) {
+                if (stripos($task->getCmd(), 'microweber-periodic-task')!==false) {
+                    $checkTask1 = true;
+                }
+                if (stripos($task->getCmd(), 'microweber-periodic-update-task')!==false) {
+                    $checkTask2 = true;
+                }
+            }
+            if ($checkTask1 && $checkTask2) {
+                $this->view->showPluginBrokenMessage = false;
+            }
+        }
+
+        if ($this->view->showPluginBrokenMessage) {
+            $this->view->limitations['app_installations_freeze'] = true;
+        }
 
        /* $domain = Modules_Microweber_Domain::getUserDomainById(369);
         Modules_Microweber_Domain::scanForAppInstallations($domain);*/

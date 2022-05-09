@@ -18,7 +18,11 @@ if ($this->errorMessage):
     </div>
 <?php endif; ?>
 
-
+<?php if($this->showPluginBrokenMessage && pm_Session::getClient()->isAdmin()): ?>
+    <div class="alert alert-danger">
+        The plugin is broken. Please reinstall it.
+    </div>
+<?php endif;?>
 
 <?php if($this->limitations['app_installations_freeze'] && !pm_Session::getClient()->isClient()): ?>
 
