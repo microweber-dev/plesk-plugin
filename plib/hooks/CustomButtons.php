@@ -19,11 +19,13 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
                 if (!$domain->hasHosting()) {
                     continue;
                 }
-                $planItems = $domain->getPlanItems();
+                $showButtons = true;
+                break;
+               /* $planItems = $domain->getPlanItems();
                 if (is_array($planItems) && count($planItems) > 0 && (in_array("microweber", $planItems) || in_array("microweber_without_shop", $planItems) || in_array("microweber_lite", $planItems))) {
                     $showButtons = true;
                     break;
-                }
+                }*/
             }
         }
 
@@ -35,22 +37,25 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
             $showButtons = true;
         }
 
+        if (!$showButtons) {
+            return [];
+        }
+
+
         $places = [];
 
-        if ($showButtons) {
-            $places[] = [
-                'place' => [
-                    self::PLACE_DOMAIN,
-                    self::PLACE_DOMAIN_PROPERTIES,
-                    self::PLACE_RESELLER_TOOLS_AND_SETTINGS
-                ],
-                'title' => Modules_Microweber_WhiteLabel::getBrandName(),
-                'description' => 'View all ' . Modules_Microweber_WhiteLabel::getBrandName() . ' websites.',
-                'icon' => Modules_Microweber_WhiteLabel::getBrandAppIcon(),
-                'link' => pm_Context::getBaseUrl() . 'index.php/index/index',
-                'contextParams' => true
-            ];
-        }
+        $places[] = [
+            'place' => [
+                self::PLACE_DOMAIN,
+                self::PLACE_DOMAIN_PROPERTIES,
+                self::PLACE_RESELLER_TOOLS_AND_SETTINGS
+            ],
+            'title' => Modules_Microweber_WhiteLabel::getBrandName(),
+            'description' => 'View all ' . Modules_Microweber_WhiteLabel::getBrandName() . ' websites.',
+            'icon' => Modules_Microweber_WhiteLabel::getBrandAppIcon(),
+            'link' => pm_Context::getBaseUrl() . 'index.php/index/index',
+            'contextParams' => true
+        ];
 
         $places[] = [
             'place' => self::PLACE_ADMIN_NAVIGATION,
@@ -61,7 +66,7 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
             'link' => pm_Context::getActionUrl('index', ''),
             'icon' => Modules_Microweber_WhiteLabel::getBrandInvertIcon()
         ];
-        
+
         $places[] = [
             'place' => [self::PLACE_HOSTING_PANEL_TABS],
             'order' => 15,
