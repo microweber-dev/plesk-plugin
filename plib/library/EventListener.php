@@ -177,8 +177,6 @@ class Modules_Microweber_EventListener implements EventListener
 
             $newInstallation->run();
 
-            pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() + 1));
-
             // Scan domains again
             $taskManager = new pm_LongTask_Manager();
 

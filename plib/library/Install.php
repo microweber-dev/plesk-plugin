@@ -388,6 +388,8 @@ class Modules_Microweber_Install {
             ];
             $domain->setSetting('mw_settings_' . md5($domainDocumentRoot), serialize($saveDomainSettings));
 
+            pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() + 1)); 
+
             // Set branding json
             Modules_Microweber_WhiteLabelBranding::applyToInstallation($domain, $domainDocumentRoot);
         	
