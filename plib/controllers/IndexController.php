@@ -41,10 +41,20 @@ class IndexController extends Modules_Microweber_BasepluginController
         }
 
         if ($this->_isWhiteLabelAllowed()) {
-            $this->view->tabs[] = [
-                'title' => 'White Label',
-                'action' => 'whitelabel'
-            ];
+            $checkAppIsLicensed = $this->_checkAppIsLicensed();
+            $showWhitelabelTab = false;
+            if ($checkAppIsLicensed && pm_Session::getClient()->isReseller()) {
+                $showWhitelabelTab = true;
+            }
+            if (pm_Session::getClient()->isAdmin()) {
+                $showWhitelabelTab = true;
+            }
+            if ($showWhitelabelTab) {
+                $this->view->tabs[] = [
+                    'title' => 'White Label',
+                    'action' => 'whitelabel'
+                ];
+            }
         }
 
         if (pm_Session::getClient()->isAdmin()) {
@@ -1405,6 +1415,7 @@ class IndexController extends Modules_Microweber_BasepluginController
     {
         $isLicensed = false;
 
+        // Microweber license
         $licenseData = pm_Settings::get('wl_license_data');
         if (!empty($licenseData)) {
             $licenseData = json_decode($licenseData, TRUE);
@@ -1413,6 +1424,7 @@ class IndexController extends Modules_Microweber_BasepluginController
             }
         }
 
+        // Plesk license
         $pmLicense = pm_License::getAdditionalKey();
         if ($pmLicense && isset($pmLicense->getProperties('product')['name'])) {
             $isLicensed = true;

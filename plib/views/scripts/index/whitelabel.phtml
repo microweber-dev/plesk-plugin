@@ -9,6 +9,7 @@
 
 <?php echo $this->renderTabs($this->tabs); ?>
 
+<?php if (pm_Session::getClient()->isAdmin()) { ?>
 <div class="pul-card pul-card--extended">
     <div class="pul-card__inner">
         <div class="pul-card__body">
@@ -41,6 +42,13 @@
 </div>
 </div>
 </div>
+<?php } ?>
+
+<?php if (pm_Session::getClient()->isReseller() && $this->isLicensed == false) { ?>
+<div class="license-active" style="background: #ff5c5c;color:#fff;">
+    Please activate the while label license from the main hosting account.
+</div>
+<?php } ?>
 
 <br />
 <div class="panel" style="display: none;">
