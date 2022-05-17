@@ -38,7 +38,25 @@ class Modules_Microweber_Helper
             $showButtons = true;
         }
         if (pm_Session::getClient()->isReseller()) {
-            if ($appInstalled) {
+
+            $createClients = false;
+            $createDomains = false;
+
+            $hostingManager = new Modules_Microweber_HostingManager();
+            $getResellerPermissions = $hostingManager->getResellerPermissions(pm_Session::getClient()->getId());
+            if (!empty($getResellerPermissions)) {
+                foreach ($getResellerPermissions as $resellerPermission) {
+                    if ($resellerPermission['name'] == 'create_clients'
+                        && $resellerPermission['value'] == 'true') {
+                        $createClients = true;
+                    }
+                    if ($resellerPermission['name'] == 'create_domains'
+                        && $resellerPermission['value'] == 'true') {
+                        $createDomains = true;
+                    }
+                }
+            }
+            if ($appInstalled && $createClients && $createDomains) {
                 $showButtons = true;
             }
         }

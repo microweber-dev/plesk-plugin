@@ -172,6 +172,32 @@ APICALL;
         return false;
     }
 
+    public function getResellerPermissions($resellerId) {
+        $apiRequest = <<<APICALL
+      <packet version="1.6.0.0">
+<reseller>
+   <get>
+      <filter>
+          <id>$resellerId</id>
+      </filter>
+      <dataset>
+          <permissions/>
+      </dataset>
+   </get>
+</reseller>
+</packet>
+APICALL;
+        $request =  $this->_makeRequest($apiRequest);
+
+        $permissions = [];
+        if (isset($request['reseller']['get']['result']['data']['permissions']['permission'])) {
+            $permissions = $request['reseller']['get']['result']['data']['permissions']['permission'];
+        }
+
+
+        return $permissions;
+
+    }
     public function getServicePlans()
     {
         $client = pm_Session::getClient();
