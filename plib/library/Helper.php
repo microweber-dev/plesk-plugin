@@ -53,6 +53,16 @@ class Modules_Microweber_Helper
             }
         }
 
+        foreach ($requiredSchedules as $requiredSchedule) {
+            if ($requiredSchedule['founded'] == false) {
+                // Must recreate task
+                continue;
+            }
+            if ($requiredSchedule['is_ok'] == false) {
+                // Must update task
+            }
+        }
+
     }
 
     public static function getCurrentVersionOfApp()
