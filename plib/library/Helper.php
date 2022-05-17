@@ -11,39 +11,45 @@ class Modules_Microweber_Helper
 
     public static function checkAndFixSchedulerTasks()
     {
+        $everyHour = pm_Scheduler::$EVERY_HOUR;
+        unset($everyHour['minute']);
+
+        $everyDay = pm_Scheduler::$EVERY_DAY;
+        unset($everyDay['minute']);
+
         $requiredSchedules = [
-            [
-                'cmd'=> 'microweber-periodic-task',
+            // Microweber app installations scan
+            'microweber-periodic-task.php' => [
+                'cmd'=>'microweber-periodic-task.php',
+                'schedule'=>false,
+                'required_schedule'=>$everyHour,
+                'founded'=>false,
+                'is_ok'=>false,
             ],
-            [
-                'cmd'=> 'microweber-periodic-update-task',
-            ],
+            // Microweber check for update task
+            'microweber-periodic-update-task.php' => [
+                'cmd'=>'microweber-periodic-update-task.php',
+                'schedule'=>false,
+                'required_schedule'=>$everyDay,
+                'founded'=>false,
+                'is_ok'=>false,
+            ]
         ];
-        
+
         $listTasks = pm_Scheduler::getInstance()->listTasks();
         if (!empty($listTasks)) {
-            $checkTask1IsOk = false;
-            $checkTask2IsOk = false;
             foreach ($listTasks as $task) {
                 $taskSchedule = $task->getSchedule();
                 unset($taskSchedule['minute']);
-                $taskEveryHour = pm_Scheduler::$EVERY_HOUR;
-                $taskEveryDay = pm_Scheduler::$EVERY_DAY;
-                unset($taskEveryHour['minute']);
-                unset($taskEveryDay['minute']);
-                if (stripos($task->getCmd(), 'microweber-periodic-task')!==false) {
-                    if (empty(array_diff($taskSchedule, pm_Scheduler::$EVERY_HOUR))) {
-                        $checkTask1IsOk = true;
-                    }
+
+                $taskCmd = $task->getCmd();
+
+                $requiredSchedules[$taskCmd]['founded'] = true;
+                $requiredSchedules[$taskCmd]['cmd'] = $task->getCmd();
+                $requiredSchedules[$taskCmd]['schedule'] = $taskSchedule;
+                if (empty(array_diff($requiredSchedules[$taskCmd]['schedule'], $requiredSchedules[$taskCmd]['required_schedule']))) {
+                    $requiredSchedules[$taskCmd]['is_ok'] = true;
                 }
-                if (stripos($task->getCmd(), 'microweber-periodic-update-task')!==false) {
-                    if (empty(array_diff($taskSchedule, pm_Scheduler::$EVERY_DAY))) {
-                        $checkTask2IsOk = true;
-                    }
-                }
-            }
-            if ($checkTask1IsOk && $checkTask2IsOk) {
-                $brokenSchedule = false;
             }
         }
 
