@@ -123,6 +123,10 @@ class Modules_Microweber_Install {
         $hostingManager = new Modules_Microweber_HostingManager();
         $hostingManager->setDomainId($domain->getId());
 
+        if (!$fileManager->isDir($domain->getDocumentRoot())) {
+            $fileManager->mkdir($domain->getDocumentRoot());
+        }
+
         // Prepare php domain settings for symlinking
         if ($this->_type == 'symlink') {
 
