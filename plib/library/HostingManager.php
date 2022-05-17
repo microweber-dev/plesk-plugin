@@ -195,10 +195,17 @@ APICALL;
         $requestResult = $this->_makeRequest($apiRequest);
 
         if (isset($requestResult['service-plan']['get']['result'])) {
+
+            if (!isset($requestResult['service-plan']['get']['result'][0])) {
+                $requestResult['service-plan']['get']['result'][] = $requestResult['service-plan']['get']['result'];
+            }
+
             $mwPlans = [];
-            foreach ($requestResult['service-plan']['get']['result'] as $plan) {
+            foreach ($requestResult['service-plan']['get']['result'] as $planKey=>$plan) {
+
                 if (isset($plan['plan-items'])) {
                     foreach ($plan['plan-items'] as $planItem) {
+
                         if (isset($planItem['name'])) {
                             if (strpos($planItem['name'],'microweber') !== false) {
                                 $mwPlans[] = $plan;
@@ -214,6 +221,8 @@ APICALL;
                     }
                 }
             }
+
+
             return $mwPlans;
         }
 
