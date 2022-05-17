@@ -11,26 +11,22 @@ class Modules_Microweber_Helper
 
     public static function checkAndFixSchedulerTasks()
     {
-        $everyHour = pm_Scheduler::$EVERY_HOUR;
-        unset($everyHour['minute']);
-
-        $everyDay = pm_Scheduler::$EVERY_DAY;
-        unset($everyDay['minute']);
-
         $requiredSchedules = [
             // Microweber app installations scan
             'microweber-periodic-task.php' => [
+                'id'=>0,
                 'cmd'=>'microweber-periodic-task.php',
                 'schedule'=>false,
-                'required_schedule'=>$everyHour,
+                'required_schedule'=>pm_Scheduler::$EVERY_HOUR,
                 'founded'=>false,
                 'is_ok'=>false,
             ],
             // Microweber check for update task
             'microweber-periodic-update-task.php' => [
+                'id'=>0,
                 'cmd'=>'microweber-periodic-update-task.php',
                 'schedule'=>false,
-                'required_schedule'=>$everyDay,
+                'required_schedule'=>pm_Scheduler::$EVERY_DAY,
                 'founded'=>false,
                 'is_ok'=>false,
             ]
@@ -39,14 +35,17 @@ class Modules_Microweber_Helper
         $listTasks = pm_Scheduler::getInstance()->listTasks();
         if (!empty($listTasks)) {
             foreach ($listTasks as $task) {
+
                 $taskSchedule = $task->getSchedule();
                 unset($taskSchedule['minute']);
 
                 $taskCmd = $task->getCmd();
 
+                $requiredSchedules[$taskCmd]['id'] = $task->getId();
                 $requiredSchedules[$taskCmd]['founded'] = true;
                 $requiredSchedules[$taskCmd]['cmd'] = $task->getCmd();
                 $requiredSchedules[$taskCmd]['schedule'] = $taskSchedule;
+
                 if (empty(array_diff($requiredSchedules[$taskCmd]['schedule'], $requiredSchedules[$taskCmd]['required_schedule']))) {
                     $requiredSchedules[$taskCmd]['is_ok'] = true;
                 }
@@ -56,10 +55,18 @@ class Modules_Microweber_Helper
         foreach ($requiredSchedules as $requiredSchedule) {
             if ($requiredSchedule['founded'] == false) {
                 // Must recreate task
+                $task = new pm_Scheduler_Task();
+                $task->setSchedule($requiredSchedule['required_schedule']);
+                $task->setCmd($requiredSchedule['cmd']);
+                pm_Scheduler::getInstance()->putTask($task);
                 continue;
             }
             if ($requiredSchedule['is_ok'] == false) {
                 // Must update task
+                $getTask = pm_Scheduler::getInstance()->getTaskById($requiredSchedule['id']);
+                $getTask->setSchedule($requiredSchedule['required_schedule']);
+                $getTask->setCmd($requiredSchedule['cmd']);
+                pm_Scheduler::getInstance()->putTask($getTask);
             }
         }
 

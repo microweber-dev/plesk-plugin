@@ -20,19 +20,4 @@ foreach ($tasks as $task) {
     }
 }
 
-// Domain app installations scan
-$task = new pm_Scheduler_Task();
-$task->setSchedule(pm_Scheduler::$EVERY_HOUR);
-$task->setCmd('microweber-periodic-task.php');
-
-pm_Scheduler::getInstance()->putTask($task);
-pm_Settings::set('microweber_periodic_task_id', $task->getId());
-
-
-// Microweber app updates install
-$task = new pm_Scheduler_Task();
-$task->setSchedule(pm_Scheduler::$EVERY_DAY);
-$task->setCmd('microweber-periodic-update-task.php');
-
-pm_Scheduler::getInstance()->putTask($task);
-pm_Settings::set('microweber_periodic_update_task_id', $task->getId());
+Modules_Microweber_Helper::checkAndFixSchedulerTasks();
