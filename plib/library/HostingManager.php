@@ -172,19 +172,28 @@ APICALL;
         return false;
     }
 
-    public function getHostingPlans()
+    public function getServicePlans()
     {
-        $apiRequest = <<<APICALL
+        $client = pm_Session::getClient();
+
+        $apiRequest = "
 <packet>
 <service-plan>
    <get>
-     <filter/>
-   </get>
-</service-plan>
-</packet>
+       <filter></filter>
+       ";
 
-APICALL;
+        if ($client->isReseller()) {
+            $apiRequest .= "<owner-login>".$client->getLogin()."</owner-login>";
+        }
+
+    $apiRequest .= "
+</get>
+</service-plan>
+</packet>";
+
         $requestResult = $this->_makeRequest($apiRequest);
+
         if (isset($requestResult['service-plan']['get']['result'])) {
             $mwPlans = [];
             foreach ($requestResult['service-plan']['get']['result'] as $plan) {

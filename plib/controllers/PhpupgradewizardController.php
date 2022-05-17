@@ -74,12 +74,12 @@ class PhpupgradewizardController extends Modules_Microweber_BasepluginController
     public function checkhostingplanssupportphpversionAction()
     {
         $hostingManager = new Modules_Microweber_HostingManager();
-        $hostingPlans = $hostingManager->getHostingPlans();
+        $servicePlans = $hostingManager->getServicePlans();
 
         $isSupported = false;
         $supportedPlans = [];
-        if (!empty($hostingPlans)) {
-            foreach ($hostingPlans as &$hostingPlan) {
+        if (!empty($servicePlans)) {
+            foreach ($servicePlans as &$hostingPlan) {
                 if(isset($hostingPlan['hosting']['vrt_hst']['property'])) {
                     foreach ($hostingPlan['hosting']['vrt_hst']['property'] as $property) {
                         if ($property['name'] == 'php_handler_id') {
@@ -94,14 +94,14 @@ class PhpupgradewizardController extends Modules_Microweber_BasepluginController
             }
         }
 
-        if (count($supportedPlans) == count($hostingPlans)) {
+        if (count($supportedPlans) == count($servicePlans)) {
             $isSupported = true;
         }
 
         $this->_helper->json([
             'supported'=>$isSupported,
             'supported_plans'=>$supportedPlans,
-            'hosting_plans'=>$hostingPlans,
+            'hosting_plans'=>$servicePlans,
             'supported_php_versions'=>$this->_getSupportedPhpVersions()
         ]);
         
