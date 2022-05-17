@@ -15,7 +15,7 @@ class IndexController extends Modules_Microweber_BasepluginController
         // Init tabs for all actions
         $this->view->tabs = [];
         $this->view->tabs[] = [
-            'title' => 'Domains',
+            'title' => 'Installations',
             'action' => 'index'
         ];
 
@@ -104,9 +104,6 @@ class IndexController extends Modules_Microweber_BasepluginController
             $this->view->tabs = [];
         }
 
-       /* $domain = Modules_Microweber_Domain::getUserDomainById(369);
-        Modules_Microweber_Domain::scanForAppInstallations($domain);*/
-
         $this->_checkAppSettingsIsCorrect();
 
         $this->view->errorMessage = false;
@@ -116,7 +113,7 @@ class IndexController extends Modules_Microweber_BasepluginController
 
         $this->view->indexLink = pm_Context::getBaseUrl() . 'index.php/index';
         $this->view->refreshDomainLink = pm_Context::getBaseUrl() . 'index.php/index/refreshdomains';
-        $this->view->pageTitle = $this->_moduleName . ' - Domains';
+        $this->view->pageTitle = $this->_moduleName . ' - Installations';
         $this->view->list = $this->_getDomainsList();
 
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/index.js');
@@ -1485,6 +1482,8 @@ class IndexController extends Modules_Microweber_BasepluginController
     {
         $data = [];
 
+        $sfm = new pm_ServerFileManager();
+
         foreach (Modules_Microweber_Domain::getDomains() as $domain) {
 
             if (!$domain->hasHosting()) {
@@ -1499,6 +1498,10 @@ class IndexController extends Modules_Microweber_BasepluginController
             }
 
             foreach ($domainInstallations as $installation) {
+
+                if (!$sfm->fileExists($installation['appInstallation'])) {
+                    continue;
+                }
 
                 $pleskMainUrl = '//' . $_SERVER['HTTP_HOST'];
 
