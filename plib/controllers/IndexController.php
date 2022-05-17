@@ -69,8 +69,9 @@ class IndexController extends Modules_Microweber_BasepluginController
 
     public function indexAction()
     {
-
-        Modules_Microweber_Helper::checkAndFixSchedulerTasks();
+        if (pm_Session::getClient()->isAdmin()) {
+            Modules_Microweber_Helper::checkAndFixSchedulerTasks();
+        }
 
         $this->_checkAppSettingsIsCorrect();
 
