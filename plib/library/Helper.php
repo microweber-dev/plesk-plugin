@@ -8,6 +8,47 @@
 
 class Modules_Microweber_Helper
 {
+    public static function showMicroweberButtons()
+    {
+        // Check app is installed
+        $appInstalled = true;
+        $currentVersion = Modules_Microweber_Helper::getCurrentVersionOfApp();
+        if ($currentVersion == 'unknown') {
+            $appInstalled = false;
+        }
+
+        // Check hosting plan items
+        $hostingPlanItems = false;
+        if (!pm_Session::getClient()->isAdmin()) {
+            $domains = pm_Domain::getDomainsByClient(pm_Session::getClient());
+            foreach ($domains as $domain) {
+                if (!$domain->hasHosting()) {
+                    continue;
+                }
+                $planItems = $domain->getPlanItems();
+                if (is_array($planItems) && count($planItems) > 0 && (in_array("microweber", $planItems) || in_array("microweber_without_shop", $planItems) || in_array("microweber_lite", $planItems))) {
+                    $hostingPlanItems = true;
+                    break;
+                }
+            }
+        }
+
+        $showButtons = false;
+        if (pm_Session::getClient()->isAdmin()) {
+            $showButtons = true;
+        }
+        if (pm_Session::getClient()->isReseller()) {
+            if ($appInstalled) {
+                $showButtons = true;
+            }
+        }
+        if (pm_Session::getClient()->isClient()) {
+            if ($appInstalled && $hostingPlanItems) {
+                $showButtons = true;
+            }
+        }
+        return $showButtons;
+    }
 
     public static function checkAndFixSchedulerTasks()
     {
