@@ -194,7 +194,6 @@ APICALL;
             $permissions = $request['reseller']['get']['result']['data']['permissions']['permission'];
         }
 
-
         return $permissions;
 
     }
