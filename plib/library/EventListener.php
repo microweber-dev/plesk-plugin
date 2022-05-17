@@ -64,6 +64,9 @@ class Modules_Microweber_EventListener implements EventListener
             case "domain_delete":
             case "domain_alias_delete":
             case "site_delete":
+            case "reseller_delete":
+            case "client_delete":
+            case "domain_move":
 
                 $domain = new pm_Domain($objectId);
                 if (empty($domain->getName())) {
