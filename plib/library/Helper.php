@@ -8,6 +8,21 @@
 
 class Modules_Microweber_Helper
 {
+    public static function getCurrentVersionOfApp()
+    {
+        $manager = new pm_ServerFileManager();
+
+        $versionFile = $manager->fileExists(Modules_Microweber_Config::getAppSharedPath() . 'version.txt');
+
+        $version = 'unknown';
+        if ($versionFile) {
+            $version = $manager->fileGetContents(Modules_Microweber_Config::getAppSharedPath() . 'version.txt');
+            $version = strip_tags($version);
+        }
+
+        return $version;
+    }
+
     public static function stopTasks(array $taskIds)
     {
         $taskManager = new pm_LongTask_Manager();

@@ -37,6 +37,13 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
             $showButtons = true;
         }
 
+        $currentVersion = Modules_Microweber_Helper::getCurrentVersionOfApp();
+        if ($currentVersion == 'unknown') {
+            if (!pm_Session::getClient()->isAdmin()) {
+                $showButtons = false;
+            }
+        }
+
         if (!$showButtons) {
             return [];
         }

@@ -1471,17 +1471,7 @@ class IndexController extends Modules_Microweber_BasepluginController
 
     private function _getCurrentVersion()
     {
-        $manager = new pm_ServerFileManager();
-
-        $versionFile = $manager->fileExists(Modules_Microweber_Config::getAppSharedPath() . 'version.txt');
-
-        $version = 'unknown';
-        if ($versionFile) {
-            $version = $manager->fileGetContents(Modules_Microweber_Config::getAppSharedPath() . 'version.txt');
-            $version = strip_tags($version);
-        }
-
-        return $version;
+        return Modules_Microweber_Helper::getCurrentVersionOfApp();
     }
 
     private function _queueRefreshDomains()
