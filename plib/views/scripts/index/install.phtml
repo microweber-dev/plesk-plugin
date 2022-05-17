@@ -47,18 +47,11 @@ endif;
 
     <h3>Make new installation</h3>
 
+    <?php if (!$this->hasHostingPlan): ?>
     <div class="pul-alert pul-alert--danger">
         <div class="pul-media">
             <div class="pul-media__body">
                 <div class="pul-media__content">
-
-                    <?php if ($this->hasHostingPlan): ?>
-                        <img src="<?php echo pm_Context::getBaseUrl(); ?>images/apply-icon.png" alt="" title="">
-                    <?php else:  ?>
-                        <img src="<?php echo pm_Context::getBaseUrl(); ?>images/delete-icon.png" alt="" title="">
-                    <?php endif;  ?>
-
-
                     You must have a service plan with <?php echo $this->brandName; ?> service.<br/>
                     Please go to <a href="<?php echo $this->createNewServicePlanLink; ?>">Additional Services</a> and enable the <?php echo $this->brandName; ?> service.
 
@@ -78,6 +71,7 @@ endif;
             </div>
         </div>
     </div>
+    <?php endif;  ?>
 
     <div class="pul-alert pul-alert--danger">
         <div class="pul-media">
