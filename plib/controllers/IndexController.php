@@ -69,38 +69,8 @@ class IndexController extends Modules_Microweber_BasepluginController
 
     public function indexAction()
     {
-        $brokenSchedule = true;
-        $listTasks = pm_Scheduler::getInstance()->listTasks();
-        if (!empty($listTasks)) {
-            $checkTask1IsOk = false;
-            $checkTask2IsOk = false;
-            foreach ($listTasks as $task) {
-                $taskSchedule = $task->getSchedule();
-                unset($taskSchedule['minute']);
-                $taskEveryHour = pm_Scheduler::$EVERY_HOUR;
-                $taskEveryDay = pm_Scheduler::$EVERY_DAY;
-                unset($taskEveryHour['minute']);
-                unset($taskEveryDay['minute']);
-                if (stripos($task->getCmd(), 'microweber-periodic-task')!==false) {
-                    if (empty(array_diff($taskSchedule, pm_Scheduler::$EVERY_HOUR))) {
-                        $checkTask1IsOk = true;
-                    }
-                }
-                if (stripos($task->getCmd(), 'microweber-periodic-update-task')!==false) {
-                    if (empty(array_diff($taskSchedule, pm_Scheduler::$EVERY_DAY))) {
-                        $checkTask2IsOk = true;
-                    }
-                }
-            }
-            if ($checkTask1IsOk && $checkTask2IsOk) {
-                $brokenSchedule = false;
-            }
-        }
 
-        if ($brokenSchedule) {
-
-            die();
-        }
+        Modules_Microweber_Helper::checkAndFixSchedulerTasks();
 
         $this->_checkAppSettingsIsCorrect();
 
