@@ -69,39 +69,37 @@ class IndexController extends Modules_Microweber_BasepluginController
 
     public function indexAction()
     {
-        $this->view->showPluginBrokenMessage = true;
+        $brokenSchedule = true;
         $listTasks = pm_Scheduler::getInstance()->listTasks();
         if (!empty($listTasks)) {
-            $checkTask1 = false;
-            $checkTask2 = false;
+            $checkTask1IsOk = false;
+            $checkTask2IsOk = false;
             foreach ($listTasks as $task) {
-
                 $taskSchedule = $task->getSchedule();
                 unset($taskSchedule['minute']);
-
                 $taskEveryHour = pm_Scheduler::$EVERY_HOUR;
                 $taskEveryDay = pm_Scheduler::$EVERY_DAY;
                 unset($taskEveryHour['minute']);
                 unset($taskEveryDay['minute']);
-
                 if (stripos($task->getCmd(), 'microweber-periodic-task')!==false) {
                     if (empty(array_diff($taskSchedule, pm_Scheduler::$EVERY_HOUR))) {
-                        $checkTask1 = true;
+                        $checkTask1IsOk = true;
                     }
                 }
                 if (stripos($task->getCmd(), 'microweber-periodic-update-task')!==false) {
                     if (empty(array_diff($taskSchedule, pm_Scheduler::$EVERY_DAY))) {
-                        $checkTask2 = true;
+                        $checkTask2IsOk = true;
                     }
                 }
             }
-            if ($checkTask1 && $checkTask2) {
-                $this->view->showPluginBrokenMessage = false;
+            if ($checkTask1IsOk && $checkTask2IsOk) {
+                $brokenSchedule = false;
             }
         }
 
-        if ($this->view->showPluginBrokenMessage) {
-            $this->view->tabs = [];
+        if ($brokenSchedule) {
+
+            die();
         }
 
         $this->_checkAppSettingsIsCorrect();
