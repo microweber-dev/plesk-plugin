@@ -12,6 +12,12 @@ class IndexController extends Modules_Microweber_BasepluginController
     {
         parent::init();
 
+        $showButtons = Modules_Microweber_Helper::showMicroweberButtons();
+        if ($showButtons == false) {
+            $this->view->tabs = [];
+            return $this->_redirect('error/index?type=permission');
+        }
+
         // Init tabs for all actions
         $this->view->tabs = [];
         $this->view->tabs[] = [
