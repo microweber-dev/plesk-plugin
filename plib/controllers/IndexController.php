@@ -496,6 +496,7 @@ class IndexController extends Modules_Microweber_BasepluginController
                 $this->view->hasHostingPlan = true;
             }
         }
+        $this->view->hasHostingPlan = false;
 
         $form = new pm_Form_Simple();
 
