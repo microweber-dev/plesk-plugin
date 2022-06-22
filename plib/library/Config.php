@@ -61,10 +61,10 @@ class Modules_Microweber_Config
                 $ext = Modules_Microweber_Helper::getFileExtension($file);
                 if ($ext == 'json') {
 
-                    $upperText = str_replace('.json', false, $file);
-                    $upperText = strtoupper($upperText);
+                    $languageAbr = str_replace('.json', false, $file);
+                    $upperText = strtoupper($languageAbr);
 
-                    $languages[trim(strtolower($upperText))] = $upperText;
+                    $languages[trim($languageAbr)] = $upperText;
                 }
             }
         } else {
@@ -72,7 +72,7 @@ class Modules_Microweber_Config
 		}
 
         $firstLangs = [
-            'en_us'=>'en_US'
+            'en_US'=>'en_US'
         ];
 
         asort($languages);
