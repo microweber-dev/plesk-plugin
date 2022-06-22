@@ -328,7 +328,7 @@ class Modules_Microweber_Install {
         $installArguments[] = '--db_host='.$dbHost;
         $installArguments[] = '--db_name=' . $dbName;
         $installArguments[] = '--db_username='.$dbUsername;
-        $installArguments[] = '--db_pass='.$dbPassword;
+        $installArguments[] = '--db_password='.$dbPassword;
         $installArguments[] = '--db_driver=' .$this->_databaseDriver;
 
 		if ($this->_language) {
@@ -341,7 +341,7 @@ class Modules_Microweber_Install {
 			$installArguments[] = '--language=' . trim($installationLanguage);
     	}
     	
-        $installArguments[] = '--prefix=site_';
+        $installArguments[] = '--db_prefix=site_';
         
         if ($this->_template) {
         	$installArguments[] = '--template='.$this->_template;
