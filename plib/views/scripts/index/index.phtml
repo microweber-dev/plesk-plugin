@@ -18,6 +18,18 @@ if ($this->errorMessage):
     </div>
 <?php endif; ?>
 
+<?php if($this->limitations['app_installations_freeze'] && pm_Session::getClient()->isClient()): ?>
+    <div class="alert alert-danger">
+        <p>You have reached your plan limit and you are not able to do new installations. Contact your administrator to upgrade your limits.</p>
+    </div>
+<?php endif; ?>
+
+<?php if($this->limitations['app_installations_freeze'] && pm_Session::getClient()->isReseller()): ?>
+    <div class="alert alert-danger">
+        <p>You have reached your plan limit and you are not able to do new installations. Contact your administrator to upgrade your limits.</p>
+    </div>
+<?php endif; ?>
+
 <?php if($this->limitations['app_installations_freeze'] && pm_Session::getClient()->isAdmin()): ?>
 
 <div class="microweber-license-message">
