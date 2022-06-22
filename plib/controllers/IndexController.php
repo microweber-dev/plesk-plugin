@@ -1182,6 +1182,11 @@ class IndexController extends Modules_Microweber_BasepluginController
 
             // Cache clear
             $artisan->exec([
+                'microweber:reload_database'
+            ]);
+
+            // Cache clear
+            $artisan->exec([
                 'microweber:server-clear-cache'
             ]);
 
