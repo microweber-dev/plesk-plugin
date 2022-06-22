@@ -1176,7 +1176,15 @@ class IndexController extends Modules_Microweber_BasepluginController
 
             $artisan->exec([
                 'microweber:server-set-config',
+                '--config=microweber',
                 '--key=site_lang',
+                '--value=' . $websiteLanguage
+            ]);
+
+            $artisan->exec([
+                'microweber:server-set-config',
+                '--config=app',
+                '--key=locale',
                 '--value=' . $websiteLanguage
             ]);
 
