@@ -6,6 +6,8 @@
  * Copyright: Microweber CMS
  */
 
+include dirname(dirname(__DIR__)) . '/library/MicroweberMarketplaceConnector.php';
+
 class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
 {
     const UID = 'appDownload';
@@ -23,21 +25,22 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
 
         $appSharedPath = Modules_Microweber_Config::getAppSharedPath();
 
-        $downloadLog .= pm_ApiCli::callSbin('unzip_app_version.sh', [base64_encode($release['url']), $appSharedPath])['stdout'];
+      //  $downloadLog .= pm_ApiCli::callSbin('unzip_app_version.sh', [base64_encode($release['url']), $appSharedPath])['stdout'];
 
         $this->updateProgress(30);
 
-        $modulesPath = Modules_Microweber_Config::getAppSharedPath().'userfiles/modules';
 
-        // Whm Connector
-        $downloadUrl = 'https://github.com/microweber-modules/whmcs-connector/archive/master.zip';
-        $downloadLog .= pm_ApiCli::callSbin('unzip_app_module.sh', [base64_encode($downloadUrl), $modulesPath])['stdout'];
-
-        $this->updateProgress(70);
-
-        // Login with token
-        $downloadUrl = 'https://github.com/microweber-modules/login-with-token/archive/master.zip';
-        $downloadLog .= pm_ApiCli::callSbin('unzip_app_module.sh', [base64_encode($downloadUrl), $modulesPath])['stdout'];
+        // Download the server modules
+        $connector = new MicroweberMarketplaceConnector();
+        $connector->package_urls = ['http://market.microweberapi.com/packages/microweberserverpackages/packages.json'];
+        $downloadModuleUrls = $connector->get_modules_download_urls();
+        if (!empty($downloadModuleUrls)) {
+            foreach ($downloadModuleUrls as $moduleUrl) {
+                $modulesPath = Modules_Microweber_Config::getAppSharedPath().'userfiles/modules/'.$moduleUrl['target_dir'];
+                $downloadLog = pm_ApiCli::callSbin('unzip_app_module.sh', [base64_encode($moduleUrl['download_url']), $modulesPath])['stdout'];
+                var_dump($downloadLog);
+            }
+        }
 
         $this->updateProgress(80);
 

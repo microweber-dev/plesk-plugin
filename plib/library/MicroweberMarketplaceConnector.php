@@ -213,6 +213,35 @@ class MicroweberMarketplaceConnector
 		return $download_urls;
 	}
 
+    public function get_modules_download_urls()
+    {
+
+        $download_urls = [];
+        $packages = $this->get_packages();
+        if (!empty($packages)) {
+            foreach ($packages as $packageName=>$packageVersions) {
+                foreach ($packageVersions as $packageVersion) {
+                    if (isset($packageVersion['latest_version'])) {
+
+                        if (isset($packageVersion['latest_version']['dist']['type']) && $packageVersion['latest_version']['dist']['type'] == 'license_key') {
+                            continue;
+                        }
+
+                        $download_urls[] = [
+                            'version'=>$packageVersion['latest_version']['version'],
+                            'name'=>$packageVersion['latest_version']['name'],
+                            'target_dir'=>$packageVersion['latest_version']['target-dir'],
+                            'download_url'=>$packageVersion['latest_version']['dist']['url']
+                        ];
+
+                    }
+                }
+            }
+        }
+
+        return $download_urls;
+    }
+
     /**
      * Get content from url
      * @param unknown $url
