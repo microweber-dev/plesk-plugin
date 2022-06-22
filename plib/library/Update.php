@@ -49,13 +49,13 @@ class Modules_Microweber_Update
 			$phpHandler['clipath'],
 			'artisan',
 			'microweber:module',
-			'shop'
+			'--module=shop'
 		];
 		
 		if ($this->_shopActive) {
-			$args[] = 'install';
+			$args[] = '--module_action=install';
 		} else {
-			$args[] = 'uninstall';
+			$args[] = '--module_action=uninstall';
 		}
 		
 		$artisan = pm_ApiCli::callSbin('filemng', $args, pm_ApiCli::RESULT_FULL);

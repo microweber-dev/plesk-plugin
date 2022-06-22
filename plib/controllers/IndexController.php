@@ -1154,9 +1154,9 @@ class IndexController extends Modules_Microweber_BasepluginController
             // Change Language
             $artisan->exec([
                 'microweber:option',
-                'language',
-                $websiteLanguage,
-                'website'
+                '--option_key=language',
+                '--option_value='. $websiteLanguage,
+                '--option_group=website'
             ]);
 
             // Change Admin Details
