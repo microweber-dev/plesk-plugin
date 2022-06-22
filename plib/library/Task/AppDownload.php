@@ -6,8 +6,6 @@
  * Copyright: Microweber CMS
  */
 
-include dirname(dirname(__DIR__)) . '/library/MicroweberMarketplaceConnector.php';
-
 class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
 {
     const UID = 'appDownload';
