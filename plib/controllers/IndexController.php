@@ -1152,7 +1152,7 @@ class IndexController extends Modules_Microweber_BasepluginController
             $artisan->setDomainDocumentRoot($domainDocumentRoot);
 
             // Change Language
-            $artisan->exec([
+            $changeLanguageStatus = $artisan->exec([
                 'microweber:option',
                 '--option_key=language',
                 '--option_value='. $websiteLanguage,
