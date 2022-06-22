@@ -1170,6 +1170,7 @@ class IndexController extends Modules_Microweber_BasepluginController
             // Update Server details
             $artisan->exec([
                 'microweber:server-set-config',
+                '--config=microweber', 
                 '--key=admin_url',
                 '--value=' . $adminUrl
             ]);
