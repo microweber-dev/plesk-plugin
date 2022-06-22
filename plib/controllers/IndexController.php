@@ -1200,7 +1200,7 @@ class IndexController extends Modules_Microweber_BasepluginController
                 $domainSettings['admin_email'] = $adminEmail;
                 $domainSettings['admin_password'] = $adminPassword;
                 $domainSettings['admin_url'] = $adminUrl;
-                $domainSettings['website_language'] = $websiteLanguage;
+                $domainSettings['language'] = $websiteLanguage; 
 
                 $domain->setSetting('mw_settings_' . $domainDocumentRootHash, serialize($domainSettings));
 
