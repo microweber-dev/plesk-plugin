@@ -5,7 +5,7 @@
  * @email: info@microweber.com
  * Copyright: Microweber CMS
  */
-include dirname(dirname(__DIR__)) . '/library/MicroweberMarketplaceConnector.php';
+require_once dirname(dirname(__DIR__)) . '/library/MicroweberMarketplaceConnector.php';
 
 class Modules_Microweber_Task_TemplatesDownload extends \pm_LongTask_Task
 {
