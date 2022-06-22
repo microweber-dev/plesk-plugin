@@ -1241,14 +1241,14 @@ class IndexController extends Modules_Microweber_BasepluginController
         $fileManager = new pm_FileManager($domain->getId());
 
         // Check microweber isntallation is STANDALONE
-        $loginWithTokenModulePathShared = Modules_Microweber_Config::getAppSharedPath() . 'userfiles/modules/login_with_token/';
-        $loginWithTokenModulePath = $domainDocumentRoot . '/userfiles/modules/login_with_token/';
+        $loginWithTokenModulePathShared = Modules_Microweber_Config::getAppSharedPath() . 'userfiles/modules/login-with-token/';
+        $loginWithTokenModulePath = $domainDocumentRoot . '/userfiles/modules/login-with-token/';
 
         if (!$fileManager->isDir($loginWithTokenModulePath)) {
             // Must copy the login with token plugin
             try {
-                if (!$fileManager->isDir('login_with_token')) {
-                    $fileManager->mkdir('login_with_token');
+                if (!$fileManager->isDir('login-with-token')) {
+                    $fileManager->mkdir('login-with-token');
                 }
             } catch (Exception $e) {
                 return $this->_redirect('index/index?message=Can\'t login to this website. '. $e->getMessage());
@@ -1282,7 +1282,7 @@ class IndexController extends Modules_Microweber_BasepluginController
 
        /// Modules_Microweber_Reinstall::run($domain->getId(), $domainDocumentRoot);
 
-        $commandResponse = $artisan->exec(['microweber:module', 'login_with_token', '1']);
+        $commandResponse = $artisan->exec(['microweber:module', 'login-with-token', '1']);
         if (!empty($commandResponse['stdout'])) {
             if (strpos($commandResponse['stdout'], 'PHP Warning:') !== false) {
 
