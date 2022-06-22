@@ -27,15 +27,17 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
 
         $this->updateProgress(30);
 
+        $modulesPath = Modules_Microweber_Config::getAppSharedPath().'userfiles/modules';
+
         // Whm Connector
-        $downloadUrl = 'https://github.com/microweber-dev/whmcs-connector/archive/master.zip';
-        $downloadLog .= pm_ApiCli::callSbin('unzip_app_modules.sh', [base64_encode($downloadUrl), Modules_Microweber_Config::getAppSharedPath()])['stdout'];
+        $downloadUrl = 'https://github.com/microweber-modules/whmcs-connector/archive/master.zip';
+        $downloadLog .= pm_ApiCli::callSbin('unzip_app_module.sh', [base64_encode($downloadUrl), $modulesPath])['stdout'];
 
         $this->updateProgress(70);
 
         // Login with token
-        $downloadUrl = 'https://github.com/microweber-modules/login_with_token/archive/master.zip';
-        $downloadLog .= pm_ApiCli::callSbin('unzip_app_modules.sh', [base64_encode($downloadUrl), Modules_Microweber_Config::getAppSharedPath()])['stdout'];
+        $downloadUrl = 'https://github.com/microweber-modules/login-with-token/archive/master.zip';
+        $downloadLog .= pm_ApiCli::callSbin('unzip_app_module.sh', [base64_encode($downloadUrl), $modulesPath])['stdout'];
 
         $this->updateProgress(80);
 
