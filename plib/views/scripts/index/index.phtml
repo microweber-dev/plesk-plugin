@@ -18,7 +18,7 @@ if ($this->errorMessage):
     </div>
 <?php endif; ?>
 
-<?php if($this->limitations['app_installations_freeze'] && !pm_Session::getClient()->isClient()): ?>
+<?php if($this->limitations['app_installations_freeze'] && pm_Session::getClient()->isAdmin()): ?>
 
 <div class="microweber-license-message">
     <h2>You have reached your plan limit.</h2>
