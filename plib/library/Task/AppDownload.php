@@ -34,6 +34,7 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
         $connector = new MicroweberMarketplaceConnector();
         $connector->package_urls = ['http://market.microweberapi.com/packages/microweberserverpackages/packages.json'];
         $downloadModuleUrls = $connector->get_modules_download_urls();
+
         if (!empty($downloadModuleUrls)) {
             foreach ($downloadModuleUrls as $moduleUrl) {
                 $modulesPath = Modules_Microweber_Config::getAppSharedPath().'userfiles/modules/'.$moduleUrl['target_dir'];
