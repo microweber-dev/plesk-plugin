@@ -36,8 +36,7 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
         if (!empty($downloadModuleUrls)) {
             foreach ($downloadModuleUrls as $moduleUrl) {
                 $modulesPath = Modules_Microweber_Config::getAppSharedPath().'userfiles/modules/'.$moduleUrl['target_dir'];
-                $downloadLog = pm_ApiCli::callSbin('unzip_app_module.sh', [base64_encode($moduleUrl['download_url']), $modulesPath])['stdout'];
-                var_dump($downloadLog);
+                pm_ApiCli::callSbin('unzip_app_module.sh', [base64_encode($moduleUrl['download_url']), $modulesPath])['stdout'];
             }
         }
 
