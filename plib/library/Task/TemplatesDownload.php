@@ -5,7 +5,6 @@
  * @email: info@microweber.com
  * Copyright: Microweber CMS
  */
-require_once dirname(dirname(__DIR__)) . '/library/MicroweberMarketplaceConnector.php';
 
 class Modules_Microweber_Task_TemplatesDownload extends \pm_LongTask_Task
 {
@@ -105,7 +104,7 @@ class Modules_Microweber_Task_TemplatesDownload extends \pm_LongTask_Task
             $licenses[] = 'plesk|' . base64_encode($pmLicense);
         }
 
-        $connector = new MicroweberMarketplaceConnector();
+        $connector = new Modules_Microweber_MarketplaceConnector();
         $connector->set_whmcs_url(Modules_Microweber_Config::getWhmcsUrl());
         $connector->set_license($licenses);
 

@@ -6,8 +6,6 @@
  * Copyright: Microweber CMS
  */
 
-require_once dirname(dirname(__DIR__)) . '/library/MicroweberMarketplaceConnector.php';
-
 class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
 {
     const UID = 'appDownload';
@@ -31,7 +29,7 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
 
 
         // Download the server modules
-        $connector = new MicroweberMarketplaceConnector();
+        $connector = new Modules_Microweber_MarketplaceConnector();
         $connector->package_urls = ['http://market.microweberapi.com/packages/microweberserverpackages/packages.json'];
         $downloadModuleUrls = $connector->get_modules_download_urls();
 

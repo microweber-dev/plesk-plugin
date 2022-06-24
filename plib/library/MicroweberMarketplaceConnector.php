@@ -6,7 +6,7 @@
  * Copyright: Microweber CMS
  */
 
-class MicroweberMarketplaceConnector
+class Modules_Microweber_MarketplaceConnector
 {
 	/**
 	 * Package manager urls
