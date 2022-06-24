@@ -1163,8 +1163,8 @@ class IndexController extends Modules_Microweber_BasepluginController
             $commandAdminDetailsResponse = $artisan->exec([
                 'microweber:change-admin-details',
                 '--username=' . $adminUsername,
-                '--newPassword=' . $adminPassword,
-                '--newEmail=' . $adminEmail
+                '--new_password=' . $adminPassword,
+                '--new_email=' . $adminEmail
             ]);
 
             // Update Server details
@@ -1191,7 +1191,7 @@ class IndexController extends Modules_Microweber_BasepluginController
 
             // Cache clear
             $artisan->exec([
-                'microweber:reload_database'
+                'microweber:reload-database'
             ]);
 
             // Cache clear

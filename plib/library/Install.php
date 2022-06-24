@@ -347,7 +347,7 @@ class Modules_Microweber_Install {
         	$installArguments[] = '--template='.$this->_template;
         }
 
-        $installArguments[] = '--default-content=1';
+        $installArguments[] = '--default_content=1';
 
         if (!$this->_template) {
        		$installArguments[] = '--config_only=1';
@@ -373,7 +373,7 @@ class Modules_Microweber_Install {
         	if (!$this->checkSsl($domain->getName())) {
                 $this->addDomainEncryption($domain);
             } else {
-                Modules_Microweber_Log::debug('Domain allready have a SSL.');
+                Modules_Microweber_Log::debug('Domain already have a SSL.');
             }
 
         	// Save domain settings
