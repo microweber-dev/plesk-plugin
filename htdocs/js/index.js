@@ -197,6 +197,11 @@ function submitDomainChanges(instance) {
                     '</div>\n' +
                     '</div>';
             }
+
+            setTimeout(function () {
+                var messageBox = document.getElementsByClassName('js-mw-form-messages')[0];
+                messageBox.innerHTML = '';
+            }, 2000); 
         }
     }
 }

@@ -1209,15 +1209,15 @@ class IndexController extends Modules_Microweber_BasepluginController
         if (isset($currentDomainSettings['admin_username'])) {
             $currentAdminUsername = $currentDomainSettings['admin_username'];
         }
-        if ($adminUsername !== $currentAdminUsername) {
-            $changeAdminDetails = true;
-        }
+//        if ($adminUsername !== $currentAdminUsername) {
+//            $changeAdminDetails = true;
+//        }
 
         // If change admin details
         if ($changeAdminDetails) {
             $changes['change_admin_details'] = $artisan->exec([
                 'microweber:change-admin-details',
-                '--username=' . $adminUsername,
+                '--username=' . $currentAdminUsername,
                 '--new_password=' . $adminPassword,
                 '--new_email=' . $adminEmail
             ]);
@@ -1260,12 +1260,12 @@ class IndexController extends Modules_Microweber_BasepluginController
         }
 
         if (empty($changes)) {
-            $json['message'] = 'No new changed are found.';
+            $json['message'] = 'No new changes have been made.';
             $json['status'] = 'error';
             $this->_helper->json($json);
             return;
         }
-        
+
         $artisan->exec([
             'microweber:reload-database'
         ]);
@@ -1275,15 +1275,16 @@ class IndexController extends Modules_Microweber_BasepluginController
             'microweber:server-clear-cache'
         ]);
 
-        $domainSettings['admin_email'] = $adminEmail;
-        $domainSettings['admin_password'] = $adminPassword;
-        $domainSettings['admin_url'] = $adminUrl;
-        $domainSettings['language'] = $websiteLanguage;
+        $currentDomainSettings['admin_email'] = $adminEmail;
+        $currentDomainSettings['admin_password'] = $adminPassword;
+        $currentDomainSettings['admin_url'] = $adminUrl;
+        $currentDomainSettings['language'] = $websiteLanguage;
 
-        $domain->setSetting('mw_settings_' . $domainDocumentRootHash, serialize($domainSettings));
+        $domain->setSetting('mw_settings_' . $domainDocumentRootHash, serialize($currentDomainSettings));
 
         $json['message'] = 'Domain settings are updated successfully.';
         $json['status'] = 'success';
+        $json['changes'] = $changes;
 
         $this->_helper->json($json);
     }
