@@ -1215,12 +1215,13 @@ class IndexController extends Modules_Microweber_BasepluginController
 
         // If change admin details
         if ($changeAdminDetails) {
-            $changes['change_admin_details'] = $artisan->exec([
+            $artisan->exec([
                 'microweber:change-admin-details',
                 '--username=' . $currentAdminUsername,
                 '--new_password=' . $adminPassword,
                 '--new_email=' . $adminEmail
             ]);
+            $changes[] = 'Admin details are changed.';
         }
 
         // If language is changed
@@ -1229,19 +1230,19 @@ class IndexController extends Modules_Microweber_BasepluginController
             $currentWebsiteLanguage = $currentDomainSettings['language'];
         }
         if ($websiteLanguage !== $currentWebsiteLanguage) {
-            $changes['server_set_config_site_lang'] = $artisan->exec([
+            $artisan->exec([
                 'microweber:server-set-config',
                 '--config=microweber',
                 '--key=site_lang',
                 '--value=' . $websiteLanguage
             ]);
-
-            $changes['server_set_config_locale'] = $artisan->exec([
+            $artisan->exec([
                 'microweber:server-set-config',
                 '--config=app',
                 '--key=locale',
                 '--value=' . $websiteLanguage
             ]);
+            $changes[] = 'Website language are changed.';
         }
 
         // If admin url is changed
@@ -1251,12 +1252,13 @@ class IndexController extends Modules_Microweber_BasepluginController
         }
         if ($adminUrl !== $currentAdminUrl) {
             // Update Server details
-            $changes['server_set_config_admin_url'] = $artisan->exec([
+           $artisan->exec([
                 'microweber:server-set-config',
                 '--config=microweber',
                 '--key=admin_url',
                 '--value=' . $adminUrl
             ]);
+            $changes[] = 'Admin url are changed.';
         }
 
         if (empty($changes)) {
@@ -1282,7 +1284,11 @@ class IndexController extends Modules_Microweber_BasepluginController
 
         $domain->setSetting('mw_settings_' . $domainDocumentRootHash, serialize($currentDomainSettings));
 
-        $json['message'] = 'Domain settings are updated successfully.';
+        $json['message'] = '';
+        foreach ($changes as $message) {
+            $json['message'] .= $message . '<br />';
+        }
+
         $json['status'] = 'success';
         $json['changes'] = $changes;
 
