@@ -1125,109 +1125,165 @@ class IndexController extends Modules_Microweber_BasepluginController
     public function domainupdateAction()
     {
         $json = [];
-        $domainFound = false;
+        $domain = false;
         $domainId = (int)$_POST['domain_id'];
-        $adminUsername = $_POST['admin_username'];
         $adminPassword = $_POST['admin_password'];
+        $adminUsername = $_POST['admin_username'];
         $adminEmail = $_POST['admin_email'];
         $adminUrl = $_POST['admin_url'];
-        // $websiteUrl = $_POST['website_url'];
         $websiteLanguage = $_POST['website_language'];
         $domainDocumentRoot = $_POST['document_root'];
         $domainDocumentRootHash = md5($domainDocumentRoot);
 
+        if (empty(trim($adminPassword))) {
+            $json['message'] = 'Admin password is required.';
+            $json['status'] = 'error';
+            $this->_helper->json($json);
+            return;
+        }
+
+        if (empty(trim($adminUrl))) {
+            $json['message'] = 'Admin url is required.';
+            $json['status'] = 'error';
+            $this->_helper->json($json);
+            return;
+        }
+
+        if (empty(trim($adminEmail))) {
+            $json['message'] = 'Admin email is required.';
+            $json['status'] = 'error';
+            $this->_helper->json($json);
+            return;
+        }
+
+        if (!filter_var($adminEmail, FILTER_VALIDATE_EMAIL)) {
+            $json['message'] = 'Admin email is not valid.';
+            $json['status'] = 'error';
+            $this->_helper->json($json);
+            return;
+        }
+
         try {
             $domain = Modules_Microweber_Domain::getUserDomainById($domainId);
         } catch (Exception $e) {
-            $domainFound = false;
-        }
-        if ($domain) {
-            $domainFound = true;
+            // Domain not found
         }
 
-        if ($domainFound) {
+        if (!$domain) {
+            $json['message'] = 'Domain not found.';
+            $json['status'] = 'error';
+            $this->_helper->json($json);
+            return;
+        }
 
-            $artisan = new Modules_Microweber_ArtisanExecutor();
-            $artisan->setDomainId($domain->getId());
-            $artisan->setDomainDocumentRoot($domainDocumentRoot);
+        $currentDomainSettings = $domain->getSetting('mw_settings_' . $domainDocumentRootHash);
+        $currentDomainSettings = unserialize($currentDomainSettings);
 
-            // Change Language
-            $changeLanguageStatus = $artisan->exec([
-                'microweber:option',
-                '--option_key=language',
-                '--option_value='. $websiteLanguage,
-                '--option_group=website'
-            ]);
+        $changes = [];
 
-            // Change Admin Details
-            $commandAdminDetailsResponse = $artisan->exec([
+        $artisan = new Modules_Microweber_ArtisanExecutor();
+        $artisan->setDomainId($domain->getId());
+        $artisan->setDomainDocumentRoot($domainDocumentRoot);
+
+        $changeAdminDetails = false;
+
+        // If admin email is changed
+        $currentAdminEmail = false;
+        if (isset($currentDomainSettings['admin_email'])) {
+            $currentAdminEmail = $currentDomainSettings['admin_email'];
+        }
+        if ($adminEmail !== $currentAdminEmail) {
+            $changeAdminDetails = true;
+        }
+        // If admin password is changed
+        $currentAdminPassword = false;
+        if (isset($currentDomainSettings['admin_password'])) {
+            $currentAdminPassword = $currentDomainSettings['admin_password'];
+        }
+        if ($adminPassword !== $currentAdminPassword) {
+            $changeAdminDetails = true;
+        }
+
+        // If admin username is changed
+        $currentAdminUsername = false;
+        if (isset($currentDomainSettings['admin_username'])) {
+            $currentAdminUsername = $currentDomainSettings['admin_username'];
+        }
+        if ($adminUsername !== $currentAdminUsername) {
+            $changeAdminDetails = true;
+        }
+
+        // If change admin details
+        if ($changeAdminDetails) {
+            $changes['change_admin_details'] = $artisan->exec([
                 'microweber:change-admin-details',
                 '--username=' . $adminUsername,
                 '--new_password=' . $adminPassword,
                 '--new_email=' . $adminEmail
             ]);
+        }
 
-            // Update Server details
-            $artisan->exec([
-                'microweber:server-set-config',
-                '--config=microweber',
-                '--key=admin_url',
-                '--value=' . $adminUrl
-            ]);
-
-            $artisan->exec([
+        // If language is changed
+        $currentWebsiteLanguage = false;
+        if (isset($currentDomainSettings['language'])) {
+            $currentWebsiteLanguage = $currentDomainSettings['language'];
+        }
+        if ($websiteLanguage !== $currentWebsiteLanguage) {
+            $changes['server_set_config_site_lang'] = $artisan->exec([
                 'microweber:server-set-config',
                 '--config=microweber',
                 '--key=site_lang',
                 '--value=' . $websiteLanguage
             ]);
 
-            $artisan->exec([
+            $changes['server_set_config_locale'] = $artisan->exec([
                 'microweber:server-set-config',
                 '--config=app',
                 '--key=locale',
                 '--value=' . $websiteLanguage
             ]);
-
-            // Cache clear
-            $artisan->exec([
-                'microweber:reload-database'
-            ]);
-
-            // Cache clear
-            $artisan->exec([
-                'microweber:server-clear-cache'
-            ]);
-
-            $successChange = false;
-            if (isset($commandAdminDetailsResponse['stdout'])) {
-                if (strpos(strtolower($commandAdminDetailsResponse['stdout']), 'done') !== false) {
-                    $successChange = true;
-                }
-            }
-
-            if ($successChange) {
-
-                $domainSettings = $domain->getSetting('mw_settings_' . $domainDocumentRootHash);
-                $domainSettings = unserialize($domainSettings);
-
-                $domainSettings['admin_email'] = $adminEmail;
-                $domainSettings['admin_password'] = $adminPassword;
-                $domainSettings['admin_url'] = $adminUrl;
-                $domainSettings['language'] = $websiteLanguage; 
-
-                $domain->setSetting('mw_settings_' . $domainDocumentRootHash, serialize($domainSettings));
-
-                $json['message'] = 'Domain settings are updated successfully.';
-                $json['status'] = 'success';
-            } else {
-                $json['message'] = 'Can\'t change domain settings.';
-                $json['status'] = 'error';
-            }
-        } else {
-            $json['message'] = 'Domain not found.';
-            $json['status'] = 'error';
         }
+
+        // If admin url is changed
+        $currentAdminUrl = false;
+        if (isset($currentDomainSettings['admin_url'])) {
+            $currentAdminUrl = $currentDomainSettings['admin_url'];
+        }
+        if ($adminUrl !== $currentAdminUrl) {
+            // Update Server details
+            $changes['server_set_config_admin_url'] = $artisan->exec([
+                'microweber:server-set-config',
+                '--config=microweber',
+                '--key=admin_url',
+                '--value=' . $adminUrl
+            ]);
+        }
+
+        if (empty($changes)) {
+            $json['message'] = 'No new changed are found.';
+            $json['status'] = 'error';
+            $this->_helper->json($json);
+            return;
+        }
+        
+        $artisan->exec([
+            'microweber:reload-database'
+        ]);
+
+        // Cache clear
+        $artisan->exec([
+            'microweber:server-clear-cache'
+        ]);
+
+        $domainSettings['admin_email'] = $adminEmail;
+        $domainSettings['admin_password'] = $adminPassword;
+        $domainSettings['admin_url'] = $adminUrl;
+        $domainSettings['language'] = $websiteLanguage;
+
+        $domain->setSetting('mw_settings_' . $domainDocumentRootHash, serialize($domainSettings));
+
+        $json['message'] = 'Domain settings are updated successfully.';
+        $json['status'] = 'success';
 
         $this->_helper->json($json);
     }
