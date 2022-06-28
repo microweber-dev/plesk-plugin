@@ -201,7 +201,7 @@ function submitDomainChanges(instance) {
             setTimeout(function () {
                 var messageBox = document.getElementsByClassName('js-mw-form-messages')[0];
                 messageBox.innerHTML = '';
-            }, 2000); 
+            }, 4000);
         }
     }
 }
