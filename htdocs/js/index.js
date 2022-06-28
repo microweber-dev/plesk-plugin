@@ -44,7 +44,7 @@ function openSetupForm(instance) {
 
             html_form_filed += '<div class="mtop15">';
             html_form_filed += '<small>Admin url *</small><br />';
-            html_form_filed += '<input type="text" value="'+responseDataJson.admin_url+'" name="admin_url" class="form-control" style="width:100%">';
+            html_form_filed += '<input type="text" value="'+responseDataJson.admin_url+'" required="required" name="admin_url" class="form-control" style="width:100%">';
             html_form_filed += '</div>';
 
             html_form_filed += '<div class="mtop15">';
@@ -67,7 +67,7 @@ function openSetupForm(instance) {
 
             html_form_filed += '<div class="mtop15">';
             html_form_filed += '<small>Administrator\'s email *</small><br />';
-            html_form_filed += '<input type="text" value="'+responseDataJson.admin_email+'" name="admin_email" class="form-control" style="width:100%">';
+            html_form_filed += '<input type="text" value="'+responseDataJson.admin_email+'" name="admin_email" required="required" class="form-control" style="width:100%">';
             html_form_filed += '</div>';
 
 
