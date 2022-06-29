@@ -1563,9 +1563,9 @@ class IndexController extends Modules_Microweber_BasepluginController
                 $loginToWebsite .= '<a href="' . $pleskMainUrl . $installation['manageDomainUrl'] . '" class="btn btn-info"><img src="' . pm_Context::getBaseUrl() . 'images/publish.png" alt=""> Manage Domain</a>';
                 $loginToWebsite .= '<input type="hidden" name="website_url" value="' . $installation['domainNameUrl'] . '" />';
                 $loginToWebsite .= '<input type="hidden" name="domain_id" value="' . $domain->getId() . '" />';
-                $loginToWebsite .= '<input type="hidden" name="document_root" value="' . $installation['appInstallation'] . '" />';
-                $loginToWebsite .= '<button type="submit" name="login" value="1" class="btn btn-info"><img src="' . pm_Context::getBaseUrl() . 'images/open-in-browser.png" alt=""> Login to website</button>';
-                $loginToWebsite .= '<button type="button" onclick="openSetupForm(this)" name="setup" value="1" class="btn btn-info"><img src="' . pm_Context::getBaseUrl() . 'images/setup.png" /> Setup</button>';
+                $loginToWebsite .= '<input type="hidden" name="document_root" value="' . $installation['appInstallation'] . '" />'; 
+                $loginToWebsite .= '<button type="submit" name="login" value="1" class="btn btn-info js-website-login"><img src="' . pm_Context::getBaseUrl() . 'images/open-in-browser.png" alt=""> Login to website</button>';
+                $loginToWebsite .= '<button type="button" onclick="openSetupForm(this)" name="setup" value="1" class="btn btn-info js-website-setup"><img src="' . pm_Context::getBaseUrl() . 'images/setup.png" /> Setup</button>';
                 $loginToWebsite .= '</form>';
 
                 $data[] = [
