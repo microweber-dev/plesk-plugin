@@ -1,0 +1,20 @@
+name: Dusk
+on: [ push,pull_request ]
+
+jobs:
+  dusk:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      max-parallel: 2
+      matrix:
+        php-versions: [ '7.4' ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        env:
+          DEBUG: true
+          APP_ENV: "testing"
+      - uses: ./.github/actions/setup-php
+        with:
+          php_version: ${{ matrix.php-versions }}
