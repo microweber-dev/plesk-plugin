@@ -1,6 +1,20 @@
 {
-    "require-dev": {
-        "plesk/pm-api-stubs": "^17.0",
-        "phpstan/phpstan": "^0.11.16"
+  "name": "microweber-dev/plesk-plugin",
+  "description": "Plesk plugin",
+  "authors": [
+    {
+      "name": "Microweber",
+      "email": "info@microweber.com"
+    },
+    {
+      "name": "Bozhidar Slaveykov",
+      "email": "bobi@microweber.com"
     }
+  ],
+  "prefer-stable": true,
+  "homepage": "http://microweber.com",
+  "license": "MIT",
+  "support": {
+    "email": "support@microweber.com"
+  }
 }
