@@ -9,6 +9,7 @@ return array(
     'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
+    'Symfony\\Component\\VarDumper\\' => array($vendorDir . '/symfony/var-dumper'),
     'Symfony\\Component\\Process\\' => array($vendorDir . '/symfony/process'),
     'Symfony\\Component\\Filesystem\\' => array($vendorDir . '/symfony/filesystem'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
@@ -16,5 +17,5 @@ return array(
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-factory/src', $vendorDir . '/psr/http-message/src'),
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'Plesk\\SDK\\' => array($vendorDir . '/plesk/pm-api-stubs/SDK'),
-    'MicroweberPackages\\' => array($vendorDir . '/microweber-packages/shared-server-scripts/src', $vendorDir . '/microweber-packages/composer-client/src'),
+    'MicroweberPackages\\' => array($vendorDir . '/microweber-packages/composer-client/src', $vendorDir . '/microweber-packages/shared-server-scripts/src'),
 );

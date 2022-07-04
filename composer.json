@@ -22,7 +22,8 @@
     "microweber-packages/shared-server-scripts": "dev-main"
   },
   "require-dev": {
-    "plesk/pm-api-stubs": "^18.0"
+    "plesk/pm-api-stubs": "^18.0",
+    "symfony/var-dumper": "^5.4"
   },
   "config": {
     "vendor-dir": "plib/vendor"

@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'e05e1f6e8cdad1326bfb8ac2bdb8e07a49be01ff',
+    'reference' => 'bbc6dab747cc35e47d975330624ea340e517834a',
     'name' => 'microweber-dev/plesk-plugin',
   ),
   'versions' => 
@@ -42,7 +42,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'e05e1f6e8cdad1326bfb8ac2bdb8e07a49be01ff',
+      'reference' => 'bbc6dab747cc35e47d975330624ea340e517834a',
     ),
     'microweber-packages/composer-client' => 
     array (
@@ -179,6 +179,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '597f3fff8e3e91836bb0bd38f5718b56ddbde2f3',
+    ),
+    'symfony/var-dumper' => 
+    array (
+      'pretty_version' => 'v5.4.9',
+      'version' => '5.4.9.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'af52239a330fafd192c773795520dc2dd62b5657',
     ),
   ),
 );

@@ -10,6 +10,7 @@ class ComposerStaticInitea9162607b44ca8c83d5cf0fc35dc937
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -18,6 +19,7 @@ class ComposerStaticInitea9162607b44ca8c83d5cf0fc35dc937
             'Symfony\\Polyfill\\Php80\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Ctype\\' => 23,
+            'Symfony\\Component\\VarDumper\\' => 28,
             'Symfony\\Component\\Process\\' => 26,
             'Symfony\\Component\\Filesystem\\' => 29,
         ),
@@ -47,6 +49,10 @@ class ComposerStaticInitea9162607b44ca8c83d5cf0fc35dc937
         'Symfony\\Polyfill\\Ctype\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
+        'Symfony\\Component\\VarDumper\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/var-dumper',
         ),
         'Symfony\\Component\\Process\\' => 
         array (
@@ -80,8 +86,8 @@ class ComposerStaticInitea9162607b44ca8c83d5cf0fc35dc937
         ),
         'MicroweberPackages\\' => 
         array (
-            0 => __DIR__ . '/..' . '/microweber-packages/shared-server-scripts/src',
-            1 => __DIR__ . '/..' . '/microweber-packages/composer-client/src',
+            0 => __DIR__ . '/..' . '/microweber-packages/composer-client/src',
+            1 => __DIR__ . '/..' . '/microweber-packages/shared-server-scripts/src',
         ),
     );
 
