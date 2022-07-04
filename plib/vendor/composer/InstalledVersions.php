@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '9e6eecf8f8e9b2fee46139d78f9ee4d672b84c91',
+    'reference' => 'e05e1f6e8cdad1326bfb8ac2bdb8e07a49be01ff',
     'name' => 'microweber-dev/plesk-plugin',
   ),
   'versions' => 
@@ -42,7 +42,26 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '9e6eecf8f8e9b2fee46139d78f9ee4d672b84c91',
+      'reference' => 'e05e1f6e8cdad1326bfb8ac2bdb8e07a49be01ff',
+    ),
+    'microweber-packages/composer-client' => 
+    array (
+      'pretty_version' => '1.9',
+      'version' => '1.9.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'f7a3d4343c501e33ffc8e47e65d8155e218e7bbf',
+    ),
+    'microweber-packages/shared-server-scripts' => 
+    array (
+      'pretty_version' => 'dev-main',
+      'version' => 'dev-main',
+      'aliases' => 
+      array (
+        0 => '9999999-dev',
+      ),
+      'reference' => 'e21ce36b9671a3978d18f6735ca23f80e8a20516',
     ),
     'plesk/pm-api-stubs' => 
     array (
@@ -115,6 +134,51 @@ private static $installed = array (
       array (
       ),
       'reference' => 'd49695b909c3b7628b6289db5479a1c204601f11',
+    ),
+    'symfony/filesystem' => 
+    array (
+      'pretty_version' => 'v5.4.9',
+      'version' => '5.4.9.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '36a017fa4cce1eff1b8e8129ff53513abcef05ba',
+    ),
+    'symfony/polyfill-ctype' => 
+    array (
+      'pretty_version' => 'v1.26.0',
+      'version' => '1.26.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '6fd1b9a79f6e3cf65f9e679b23af304cd9e010d4',
+    ),
+    'symfony/polyfill-mbstring' => 
+    array (
+      'pretty_version' => 'v1.26.0',
+      'version' => '1.26.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '9344f9cb97f3b19424af1a21a3b0e75b0a7d8d7e',
+    ),
+    'symfony/polyfill-php80' => 
+    array (
+      'pretty_version' => 'v1.26.0',
+      'version' => '1.26.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'cfa0ae98841b9e461207c13ab093d76b0fa7bace',
+    ),
+    'symfony/process' => 
+    array (
+      'pretty_version' => 'v5.4.8',
+      'version' => '5.4.8.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '597f3fff8e3e91836bb0bd38f5718b56ddbde2f3',
     ),
   ),
 );

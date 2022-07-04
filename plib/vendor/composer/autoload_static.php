@@ -6,7 +6,21 @@ namespace Composer\Autoload;
 
 class ComposerStaticInitea9162607b44ca8c83d5cf0fc35dc937
 {
+    public static $files = array (
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
+        'S' => 
+        array (
+            'Symfony\\Polyfill\\Php80\\' => 23,
+            'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Symfony\\Polyfill\\Ctype\\' => 23,
+            'Symfony\\Component\\Process\\' => 26,
+            'Symfony\\Component\\Filesystem\\' => 29,
+        ),
         'P' => 
         array (
             'Psr\\Log\\' => 8,
@@ -15,9 +29,33 @@ class ComposerStaticInitea9162607b44ca8c83d5cf0fc35dc937
             'Psr\\Container\\' => 14,
             'Plesk\\SDK\\' => 10,
         ),
+        'M' => 
+        array (
+            'MicroweberPackages\\' => 19,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'Symfony\\Polyfill\\Php80\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
+        ),
+        'Symfony\\Polyfill\\Mbstring\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+        ),
+        'Symfony\\Polyfill\\Ctype\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
+        'Symfony\\Component\\Process\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/process',
+        ),
+        'Symfony\\Component\\Filesystem\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/filesystem',
+        ),
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
@@ -29,8 +67,8 @@ class ComposerStaticInitea9162607b44ca8c83d5cf0fc35dc937
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Container\\' => 
         array (
@@ -39,6 +77,11 @@ class ComposerStaticInitea9162607b44ca8c83d5cf0fc35dc937
         'Plesk\\SDK\\' => 
         array (
             0 => __DIR__ . '/..' . '/plesk/pm-api-stubs/SDK',
+        ),
+        'MicroweberPackages\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/microweber-packages/shared-server-scripts/src',
+            1 => __DIR__ . '/..' . '/microweber-packages/composer-client/src',
         ),
     );
 
@@ -53,7 +96,12 @@ class ComposerStaticInitea9162607b44ca8c83d5cf0fc35dc937
     );
 
     public static $classMap = array (
+        'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
+        'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
+        'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
+        'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
         'pm_ActionLog' => __DIR__ . '/..' . '/plesk/pm-api-stubs/pm/ActionLog.php',
         'pm_ApiCli' => __DIR__ . '/..' . '/plesk/pm-api-stubs/pm/ApiCli.php',
         'pm_ApiRpc' => __DIR__ . '/..' . '/plesk/pm-api-stubs/pm/ApiRpc.php',
