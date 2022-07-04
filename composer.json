@@ -26,6 +26,6 @@
     "symfony/var-dumper": "^5.4"
   },
   "config": {
-    "vendor-dir": "src/plib/vendor"
+    "vendor-dir": "plib/vendor"
   }
 }
