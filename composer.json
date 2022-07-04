@@ -16,5 +16,11 @@
   "license": "MIT",
   "support": {
     "email": "support@microweber.com"
+  },
+  "require-dev": {
+    "plesk/pm-api-stubs": "^18.0"
+  },
+  "config": {
+    "vendor-dir": "plib/vendor"
   }
 }
