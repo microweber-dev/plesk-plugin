@@ -1,8 +1,8 @@
 module.exports = {
     routes: [
         {
-            path: 'overview',
-            component: 'Overview',
+            path: 'installations',
+            component: 'Installations',
         },
     ],
 };
