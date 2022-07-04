@@ -73,8 +73,8 @@ class ComposerStaticInita13db66e117658d5da4d92443605ff84
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Container\\' => 
         array (
@@ -86,8 +86,8 @@ class ComposerStaticInita13db66e117658d5da4d92443605ff84
         ),
         'MicroweberPackages\\' => 
         array (
-            0 => __DIR__ . '/..' . '/microweber-packages/shared-server-scripts/src',
-            1 => __DIR__ . '/..' . '/microweber-packages/composer-client/src',
+            0 => __DIR__ . '/..' . '/microweber-packages/composer-client/src',
+            1 => __DIR__ . '/..' . '/microweber-packages/shared-server-scripts/src',
         ),
     );
 
