@@ -1,7 +1,7 @@
 module.exports = {
     routes: [
         {
-            path: 'installations',
+            path: 'index',
             component: 'Installations',
         },
     ],
