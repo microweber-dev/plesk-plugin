@@ -24,7 +24,7 @@ export default class Installations extends Component {
     render() {
         return (
             <Alert intent="info">
-                {`Installations22233`}
+                {`Installations___`}
             </Alert>
         );
     }

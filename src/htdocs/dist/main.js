@@ -12575,7 +12575,7 @@ var Installations = function (_Component) {
             return (0, _pleskExtSdk.createElement)(
                 _pleskExtSdk.Alert,
                 { intent: 'info' },
-                'Installations22233'
+                'Installations___'
             );
         }
     }]);
