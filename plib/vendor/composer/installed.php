@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'd299f2400c3f17e5120603bd4b06e83d3edbe138',
+    'reference' => '295d50adbfa661d5b21c955cab8b39f60037f96d',
     'name' => 'microweber-dev/plesk-plugin',
   ),
   'versions' => 
@@ -18,7 +18,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'd299f2400c3f17e5120603bd4b06e83d3edbe138',
+      'reference' => '295d50adbfa661d5b21c955cab8b39f60037f96d',
     ),
     'microweber-packages/composer-client' => 
     array (
