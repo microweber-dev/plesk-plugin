@@ -19,7 +19,7 @@
   },
   "require": {
     "microweber-packages/composer-client": "^1.9",
-    "microweber-packages/shared-server-scripts": "dev-main"
+    "microweber-packages/shared-server-scripts": "0.1"
   },
   "require-dev": {
     "plesk/pm-api-stubs": "^18.0",

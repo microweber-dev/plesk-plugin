@@ -17,5 +17,5 @@ return array(
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src', $vendorDir . '/psr/http-factory/src'),
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'Plesk\\SDK\\' => array($vendorDir . '/plesk/pm-api-stubs/SDK'),
-    'MicroweberPackages\\' => array($vendorDir . '/microweber-packages/shared-server-scripts/src', $vendorDir . '/microweber-packages/composer-client/src'),
+    'MicroweberPackages\\' => array($vendorDir . '/microweber-packages/composer-client/src', $vendorDir . '/microweber-packages/shared-server-scripts/src'),
 );

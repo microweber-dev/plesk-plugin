@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1e3be94e2a8ab15ff776430d3292c8a2",
+    "content-hash": "729694efd14278c360ba12bf2b11db70",
     "packages": [
         {
             "name": "microweber-packages/composer-client",
@@ -58,16 +58,16 @@
         },
         {
             "name": "microweber-packages/shared-server-scripts",
-            "version": "dev-main",
+            "version": "0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/microweber-packages/shared-server-scripts.git",
-                "reference": "e21ce36b9671a3978d18f6735ca23f80e8a20516"
+                "reference": "2e2d4896b5ed6b864ce7d7695debb65ae4a21dfb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/microweber-packages/shared-server-scripts/zipball/e21ce36b9671a3978d18f6735ca23f80e8a20516",
-                "reference": "e21ce36b9671a3978d18f6735ca23f80e8a20516",
+                "url": "https://api.github.com/repos/microweber-packages/shared-server-scripts/zipball/2e2d4896b5ed6b864ce7d7695debb65ae4a21dfb",
+                "reference": "2e2d4896b5ed6b864ce7d7695debb65ae4a21dfb",
                 "shasum": ""
             },
             "require": {
@@ -81,7 +81,6 @@
                 "phpunit/phpunit": "^8.0 || ^9.0",
                 "symfony/var-dumper": "^5.4"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -107,9 +106,9 @@
             "support": {
                 "email": "support@microweber.com",
                 "issues": "https://github.com/microweber-packages/shared-server-scripts/issues",
-                "source": "https://github.com/microweber-packages/shared-server-scripts/tree/main"
+                "source": "https://github.com/microweber-packages/shared-server-scripts/tree/0.1"
             },
-            "time": "2022-06-27T13:34:30+00:00"
+            "time": "2022-06-28T19:48:02+00:00"
         },
         {
             "name": "symfony/filesystem",
@@ -990,9 +989,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "microweber-packages/shared-server-scripts": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],

@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '295d50adbfa661d5b21c955cab8b39f60037f96d',
+    'reference' => 'c988e2ddbc86c75de87ecd2decc807e99477f500',
     'name' => 'microweber-dev/plesk-plugin',
   ),
   'versions' => 
@@ -42,7 +42,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '295d50adbfa661d5b21c955cab8b39f60037f96d',
+      'reference' => 'c988e2ddbc86c75de87ecd2decc807e99477f500',
     ),
     'microweber-packages/composer-client' => 
     array (
@@ -55,13 +55,12 @@ private static $installed = array (
     ),
     'microweber-packages/shared-server-scripts' => 
     array (
-      'pretty_version' => 'dev-main',
-      'version' => 'dev-main',
+      'pretty_version' => '0.1',
+      'version' => '0.1.0.0',
       'aliases' => 
       array (
-        0 => '9999999-dev',
       ),
-      'reference' => 'e21ce36b9671a3978d18f6735ca23f80e8a20516',
+      'reference' => '2e2d4896b5ed6b864ce7d7695debb65ae4a21dfb',
     ),
     'plesk/pm-api-stubs' => 
     array (
