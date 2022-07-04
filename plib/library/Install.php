@@ -325,11 +325,11 @@ class Modules_Microweber_Install {
         $installArguments[] = '--password='.$adminPassword;
         
         // Database settings
-        $installArguments[] = '--db_host='.$dbHost;
-        $installArguments[] = '--db_name=' . $dbName;
-        $installArguments[] = '--db_username='.$dbUsername;
-        $installArguments[] = '--db_password='.$dbPassword;
-        $installArguments[] = '--db_driver=' .$this->_databaseDriver;
+        $installArguments[] = '--db-host='.$dbHost;
+        $installArguments[] = '--db-name=' . $dbName;
+        $installArguments[] = '--db-username='.$dbUsername;
+        $installArguments[] = '--db-password='.$dbPassword;
+        $installArguments[] = '--db-driver=' .$this->_databaseDriver;
 
 		if ($this->_language) {
 			$installationLanguage = $this->_language;
@@ -341,16 +341,16 @@ class Modules_Microweber_Install {
 			$installArguments[] = '--language=' . trim($installationLanguage);
     	}
     	
-        $installArguments[] = '--db_prefix=site_';
+        $installArguments[] = '--db-prefix=site_';
         
         if ($this->_template) {
         	$installArguments[] = '--template='.$this->_template;
         }
 
-        $installArguments[] = '--default_content=1';
+        $installArguments[] = '--default-content=1';
 
         if (!$this->_template) {
-       		$installArguments[] = '--config_only=1';
+       		$installArguments[] = '--config-only=1';
         }
 
         try {
