@@ -1584,9 +1584,12 @@ class IndexController extends Modules_Microweber_BasepluginController
             }
 
         }
-        
-        if ($this->view->limitations['app_installations_count'] != $installationsCount) {
-            pm_Settings::set('mw_installations_count', $installationsCount);
+
+        // Update installations count if is broken
+        if (pm_Session::getClient()->isAdmin()) {
+            if ($this->view->limitations['app_installations_count'] != $installationsCount) {
+                pm_Settings::set('mw_installations_count', $installationsCount);
+            }
         }
 
         return $data;
