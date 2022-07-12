@@ -16,6 +16,10 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
             return [];
         }
 
+        $brandName = Modules_Microweber_WhiteLabel::getBrandName();
+        $brandAppIcon = Modules_Microweber_WhiteLabel::getBrandAppIcon();
+        $brandInvertedIcon = Modules_Microweber_WhiteLabel::getBrandInvertIcon();
+
         $places = [];
         $places[] = [
             'place' => [
@@ -23,9 +27,9 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
                 self::PLACE_DOMAIN_PROPERTIES,
                 self::PLACE_RESELLER_TOOLS_AND_SETTINGS
             ],
-            'title' => Modules_Microweber_WhiteLabel::getBrandName(),
-            'description' => 'View all ' . Modules_Microweber_WhiteLabel::getBrandName() . ' websites.',
-            'icon' => Modules_Microweber_WhiteLabel::getBrandAppIcon(),
+            'title' => $brandName,
+            'description' => 'View all ' . $brandName . ' websites.',
+            'icon' => $brandAppIcon,
             'link' => pm_Context::getBaseUrl() . 'index.php/index/index',
             'contextParams' => true
         ];
@@ -34,19 +38,19 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
             'place' => self::PLACE_ADMIN_NAVIGATION,
             'section' => self::SECTION_NAV_SERVER_MANAGEMENT,
             'order' => 15,
-            'title' => Modules_Microweber_WhiteLabel::getBrandName(),
-            'description' => 'Install last version of ' . Modules_Microweber_WhiteLabel::getBrandName(),
+            'title' => $brandName,
+            'description' => 'Install last version of ' . $brandName,
             'link' => pm_Context::getActionUrl('index', ''),
-            'icon' => Modules_Microweber_WhiteLabel::getBrandInvertIcon()
+            'icon' => $brandInvertedIcon
         ];
 
         $places[] = [
             'place' => [self::PLACE_HOSTING_PANEL_TABS],
             'order' => 15,
-            'title' => Modules_Microweber_WhiteLabel::getBrandName(),
-            'description' => 'Install last version of ' . Modules_Microweber_WhiteLabel::getBrandName(),
+            'title' => $brandName,
+            'description' => 'Install last version of ' . $brandName,
             'link' => pm_Context::getActionUrl('index'),
-            'icon' => Modules_Microweber_WhiteLabel::getBrandInvertIcon()
+            'icon' => $brandInvertedIcon
         ];
 
         $places[] = [
@@ -56,10 +60,10 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
                 self::PLACE_ADMIN_TOOLS_AND_SETTINGS,
             ],
             'order' => 15,
-            'title' => Modules_Microweber_WhiteLabel::getBrandName(),
-            'description' => 'Install last version of ' . Modules_Microweber_WhiteLabel::getBrandName(),
+            'title' => $brandName,
+            'description' => 'Install last version of ' . $brandName,
             'link' => pm_Context::getActionUrl('index', 'index'),
-            'icon' => Modules_Microweber_WhiteLabel::getBrandInvertIcon()
+            'icon' => $brandInvertedIcon
         ];
 
         return $places;

@@ -13,11 +13,13 @@ class Modules_Microweber_WhiteLabel
     {
         $name = 'Microweber';
 
-        $setting = Modules_Microweber_WhiteLabelSettings::get('wl_brand_name');
-        $setting = trim($setting);
+        if (!empty(pm_Settings::get('wl_key'))) {
+            $setting = Modules_Microweber_WhiteLabelSettings::get('wl_brand_name');
+            $setting = trim($setting);
 
-        if (!empty($setting)) {
-            $name = $setting;
+            if (!empty($setting)) {
+                $name = $setting;
+            }
         }
 
         return $name;
@@ -27,11 +29,13 @@ class Modules_Microweber_WhiteLabel
     {
         $icon = pm_Context::getBaseUrl() . 'images/logo_small_white.svg';
 
-        $setting = Modules_Microweber_WhiteLabelSettings::get('wl_plesk_logo_invert');
-        $setting = trim($setting);
+        if (!empty(pm_Settings::get('wl_key'))) {
+            $setting = Modules_Microweber_WhiteLabelSettings::get('wl_plesk_logo_invert');
+            $setting = trim($setting);
 
-        if (!empty($setting)) {
-            $icon = $setting;
+            if (!empty($setting)) {
+                $icon = $setting;
+            }
         }
 
         return $icon;
@@ -41,11 +45,13 @@ class Modules_Microweber_WhiteLabel
     {
         $icon = pm_Context::getBaseUrl() . 'images/logo_small.svg';
 
-        $setting = Modules_Microweber_WhiteLabelSettings::get('wl_plesk_logo_app');
-        $setting = trim($setting);
+        if (!empty(pm_Settings::get('wl_key'))) {
+            $setting = Modules_Microweber_WhiteLabelSettings::get('wl_plesk_logo_app');
+            $setting = trim($setting);
 
-        if (!empty($setting)) {
-            $icon = $setting;
+            if (!empty($setting)) {
+                $icon = $setting;
+            }
         }
 
         return $icon;

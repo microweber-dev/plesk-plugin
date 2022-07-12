@@ -326,6 +326,7 @@ class IndexController extends Modules_Microweber_BasepluginController
         }
 
         if ($this->getRequest()->getParam('delete_whitelabel_key') == '1') {
+
             pm_Settings::set('wl_key', false);
             pm_Settings::set('wl_license_data', false);
 
