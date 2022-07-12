@@ -1537,8 +1537,9 @@ class IndexController extends Modules_Microweber_BasepluginController
     {
         $data = [];
 
-        $sfm = new pm_ServerFileManager();
+        $installationsCount = 0;
 
+        $sfm = new pm_ServerFileManager();
         foreach (Modules_Microweber_Domain::getDomains() as $domain) {
 
             if (!$domain->hasHosting()) {
@@ -1578,8 +1579,14 @@ class IndexController extends Modules_Microweber_BasepluginController
                     'active' => ($installation['domainIsActive'] ? 'Yes' : 'No'),
                     'action' => $loginToWebsite
                 ];
+
+                $installationsCount++;
             }
 
+        }
+        
+        if ($this->view->limitations['app_installations_count'] != $installationsCount) {
+            pm_Settings::set('mw_installations_count', $installationsCount);
         }
 
         return $data;
