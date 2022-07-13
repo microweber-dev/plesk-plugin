@@ -320,31 +320,31 @@ class Modules_Microweber_Install {
         $installArguments = [];
 
         // Admin details
-        $installArguments[] = '--email='.$adminEmail;
-        $installArguments[] = '--username='.$adminUsername;
-        $installArguments[] = '--password='.$adminPassword;
+        $installArguments[] = '--email='.escapeshellarg($adminEmail);
+        $installArguments[] = '--username='.escapeshellarg($adminUsername);
+        $installArguments[] = '--password='.escapeshellarg($adminPassword);
         
         // Database settings
-        $installArguments[] = '--db-host='.$dbHost;
-        $installArguments[] = '--db-name=' . $dbName;
-        $installArguments[] = '--db-username='.$dbUsername;
-        $installArguments[] = '--db-password='.$dbPassword;
-        $installArguments[] = '--db-driver=' .$this->_databaseDriver;
+        $installArguments[] = '--db-host='.escapeshellarg($dbHost);
+        $installArguments[] = '--db-name=' . escapeshellarg($dbName);
+        $installArguments[] = '--db-username='.escapeshellarg($dbUsername);
+        $installArguments[] = '--db-password='.escapeshellarg($dbPassword);
+        $installArguments[] = '--db-driver=' .escapeshellarg($this->_databaseDriver);
 
 		if ($this->_language) {
-			$installationLanguage = $this->_language;
+			$installationLanguage = escapeshellarg($this->_language);
 		} else {
 			$installationLanguage = pm_Settings::get('installation_language');
 		}
 		
 		if (!empty($installationLanguage)) { 
-			$installArguments[] = '--language=' . trim($installationLanguage);
+			$installArguments[] = '--language=' . escapeshellarg(trim($installationLanguage));
     	}
     	
         $installArguments[] = '--db-prefix=site_';
         
         if ($this->_template) {
-        	$installArguments[] = '--template='.$this->_template;
+        	$installArguments[] = '--template='.escapeshellarg($this->_template);
         }
 
         $installArguments[] = '--default-content=1';
