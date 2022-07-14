@@ -58,9 +58,9 @@ class Modules_Microweber_Domain
         }
 
         $installations = 0;
+        $refreshInstallations = [];
 
         if (!empty($installationsFind)) {
-
             foreach ($installationsFind as $appInstallationConfig) {
 
                 if (strpos($appInstallationConfig, 'backup-files') !== false) {
@@ -108,7 +108,7 @@ class Modules_Microweber_Domain
                     $domainNameAppUrlPath = $domainName . $domainNameAppUrlPath;
                 }
 
-                Modules_Microweber_Domain::addAppInstallation($domain, [
+                $refreshInstallations[$domain] = [
                     'domainNameUrl' => $domainNameAppUrlPath,
                     'domainCreation' => $domainCreation,
                     'installationType' => $installationType,
@@ -117,9 +117,14 @@ class Modules_Microweber_Domain
                     'domainIsActive' => $domainIsActive,
                     'manageDomainUrl' => $manageDomainUrl,
                     'created_at' => date("Y-m-d H:i:s", filemtime($appInstallationConfig)),
-                ]);
+                ];
                 $installations++;
             }
+        }
+
+        $domain->setSetting('mwAppInstallations', false);
+        foreach ($refreshInstallations as $domain=>$installationDetails) {
+             Modules_Microweber_Domain::addAppInstallation($domain,$installationDetails);
         }
 
         return $installations;
