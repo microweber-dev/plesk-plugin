@@ -43,7 +43,7 @@ class Modules_Microweber_Task_WhiteLabelBrandingUpdate extends \pm_LongTask_Task
             return;
         }
 
-        $installations = json_decode($domain->getSetting('mwAppInstallations'), true);
+        $installations = json_decode(Modules_Microweber_Domain::getMwOption($domain, 'mwAppInstallations'), true);
         if (!$installations || !is_array($installations)) {
             return;
         }

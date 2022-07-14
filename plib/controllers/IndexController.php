@@ -1049,7 +1049,7 @@ class IndexController extends Modules_Microweber_BasepluginController
             $json['admin_url'] = 'admin';
             $json['language'] = 'en';
 
-            $domainSettings = $domain->getSetting('mw_settings_' . $domainDocumentRootHash);
+            $domainSettings = Modules_Microweber_Domain::getMwOption($domain, 'mw_settings_' . $domainDocumentRootHash);
             $domainSettings = unserialize($domainSettings);
 
             if (isset($domainSettings['admin_email']) && !empty($domainSettings['admin_email'])) {
@@ -1202,7 +1202,7 @@ class IndexController extends Modules_Microweber_BasepluginController
             return;
         }
 
-        $currentDomainSettings = $domain->getSetting('mw_settings_' . $domainDocumentRootHash);
+        $currentDomainSettings = Modules_Microweber_Domain::getMwOption($domain, 'mw_settings_' . $domainDocumentRootHash);
         $currentDomainSettings = unserialize($currentDomainSettings);
 
         $changes = [];
@@ -1571,7 +1571,7 @@ class IndexController extends Modules_Microweber_BasepluginController
                 continue;
             }
 
-            $domainInstallations = $domain->getSetting('mwAppInstallations');
+            $domainInstallations = Modules_Microweber_Domain::getMwOption($domain, 'mwAppInstallations');
             $domainInstallations = json_decode($domainInstallations, true);
 
             if (empty($domainInstallations)) {
