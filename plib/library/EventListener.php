@@ -92,7 +92,7 @@ class Modules_Microweber_EventListener implements EventListener
                 }
 
                 if (!$domain->hasHosting()) {
-                    $domain->setSetting('mwAppInstallations', false);
+                    Modules_Microweber_Domain::setMwOption($domain, 'mwAppInstallations', false);
                     return false;
                 }
 

@@ -1102,13 +1102,13 @@ class IndexController extends Modules_Microweber_BasepluginController
         $fileManager = new \pm_FileManager($domain->getId());
 
         if (!$fileManager->fileExists($appInstallationPath . '/config/microweber.php')) {
-            $domain->setSetting('mwAppInstallations', false);
+            Modules_Microweber_Domain::setMwOption($domain, 'mwAppInstallations', false);
             $this->_helper->json(['message'=>'This is not microweber installation']);
             return;
         }
 
         if (!$fileManager->isDir($appInstallationPath)) {
-            $domain->setSetting('mwAppInstallations', false);
+            Modules_Microweber_Domain::setMwOption($domain, 'mwAppInstallations', false);
             $this->_helper->json(['message'=>'Domain directory not found.']);
             return;
         }
@@ -1308,7 +1308,7 @@ class IndexController extends Modules_Microweber_BasepluginController
         $currentDomainSettings['admin_url'] = $adminUrl;
         $currentDomainSettings['language'] = $websiteLanguage;
 
-        $domain->setSetting('mw_settings_' . $domainDocumentRootHash, serialize($currentDomainSettings));
+        Modules_Microweber_Domain::setMwOption($domain, 'mw_settings_' . $domainDocumentRootHash, serialize($currentDomainSettings));
 
         $json['message'] = '';
         foreach ($changes as $message) {

@@ -22,7 +22,7 @@ class Modules_Microweber_Task_DomainAppInstallationScan extends \pm_LongTask_Tas
 
             $domain = Modules_Microweber_Domain::getUserDomainById($domainId);
             if (!$domain->hasHosting()) {
-                $domain->setSetting('mwAppInstallations', false);
+                Modules_Microweber_Domain::setMwOption($domain, 'mwAppInstallations', false);
                 $this->updateProgress(100);
                 return false;
             }
