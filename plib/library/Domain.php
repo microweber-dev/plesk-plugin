@@ -123,8 +123,10 @@ class Modules_Microweber_Domain
         }
 
         $domain->setSetting('mwAppInstallations', false);
-        foreach ($refreshInstallations as $domain=>$installationDetails) {
-             Modules_Microweber_Domain::addAppInstallation($domain,$installationDetails);
+        if (!empty($refreshInstallations)) {
+            foreach ($refreshInstallations as $domain => $installationDetails) {
+                Modules_Microweber_Domain::addAppInstallation($domain, $installationDetails);
+            }
         }
 
         return $installations;
