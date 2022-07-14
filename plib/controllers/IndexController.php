@@ -1561,11 +1561,27 @@ class IndexController extends Modules_Microweber_BasepluginController
 
                 $createdAt = $installation['domainCreation'];
 
-                $domainDocumentRootHash = md5($domain->getDocumentRoot());
+                $domainDocumentRootHash = md5($installation['appInstallation']);
                 $currentDomainSettings = $domain->getSetting('mw_settings_' . $domainDocumentRootHash);
                 $currentDomainSettings = unserialize($currentDomainSettings);
+
                 if (isset($currentDomainSettings['created_at'])) {
                     $createdAt = $currentDomainSettings['created_at'];
+                }
+
+                if (isset($currentDomainSettings['pending']) && $currentDomainSettings['pending']) {
+                    
+                    $data[] = [
+                        'domain' => '<a href="http://' . $installation['domainNameUrl'] . '" target="_blank">' . $installation['domainNameUrl'] . '</a> ',
+                        'created_date' => $createdAt,
+                        'type' => $installation['installationType'],
+                        'app_version' => $installation['appVersion'],
+                        'document_root' => $installation['appInstallation'],
+                        'active' => ($installation['domainIsActive'] ? 'Yes' : 'No'),
+                        'action' => 'pending'
+                    ];
+                    $installationsCount++;
+                    continue;
                 }
 
                 $pleskMainUrl = '//' . $_SERVER['HTTP_HOST'];
