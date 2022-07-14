@@ -312,7 +312,11 @@ class IndexController extends Modules_Microweber_BasepluginController
                 pm_Settings::set('wl_key', $formMwKey->getValue('wl_key'));
                 pm_Settings::set('wl_license_data', json_encode($licenseCheck));
 
+                Modules_Microweber_WhiteLabel::setEnabled();
+
             } else {
+                Modules_Microweber_WhiteLabel::setDisabled();
+
                 pm_Settings::set('wl_license_data', false);
                 $this->_status->addMessage('error', 'The license key is wrong or expired.');
             }
@@ -327,6 +331,8 @@ class IndexController extends Modules_Microweber_BasepluginController
 
         if ($this->getRequest()->getParam('delete_whitelabel_key') == '1') {
 
+            Modules_Microweber_WhiteLabel::setDisabled();
+
             pm_Settings::set('wl_key', false);
             pm_Settings::set('wl_license_data', false);
 
@@ -340,6 +346,8 @@ class IndexController extends Modules_Microweber_BasepluginController
         }
 
         if (!$savingWhiteLabelKey && $this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
+
+            Modules_Microweber_WhiteLabel::setEnabled();
 
             Modules_Microweber_WhiteLabelSettings::set('wl_brand_name', $form->getValue('wl_brand_name'));
             Modules_Microweber_WhiteLabelSettings::set('wl_brand_favicon', $form->getValue('wl_brand_favicon'));

@@ -8,6 +8,16 @@
 
 class Modules_Microweber_WhiteLabel
 {
+    public static function setEnabled()
+    {
+        return pm_Settings::set('whitelabel_enabled', true);
+    }
+
+    public static function setDisabled()
+    {
+        return pm_Settings::set('whitelabel_enabled', false);
+    }
+
     public static function isEnabled()
     {
         if (Modules_Microweber_LicenseData::hasActiveLicense()) {
