@@ -1581,7 +1581,7 @@ class IndexController extends Modules_Microweber_BasepluginController
             foreach ($domainInstallations as $installation) {
 
                 $createdAt = $installation['domainCreation'];
-                
+
                 if (isset($installation['created_at'])) {
                     $createdAt = $installation['created_at'];
                 }
@@ -1594,7 +1594,7 @@ class IndexController extends Modules_Microweber_BasepluginController
                         'app_version' => $installation['appVersion'],
                         'document_root' => $installation['appInstallation'],
                         'active' => ($installation['domainIsActive'] ? 'Yes' : 'No'),
-                        'action' => 'pending'
+                        'action' => '<img src="'.pm_Context::getBaseUrl() . 'images/loading.gif'.'" />'
                     ];
 
                     $installationsCount++;
