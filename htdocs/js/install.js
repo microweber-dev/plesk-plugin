@@ -15,10 +15,9 @@ $j(document).ready(function() {
     $j('#installation_password').attr('type', 'password');
 
     $j(document).keyup('#installation_folder', function() {
-        if ($j('#installation_folder').val().match(/[^a-zA-Z0-9 ]/g)) {
-            $j('#installation_folder').val($j('#installation_folder').val().replace(/[^a-zA-Z0-9 ]/g, ''));
-        }
-        // console.log($j('#installation_folder').val());
+      //  if ($j('#installation_folder').val().match(/^[a-zA-Z\s]*$/g)) {
+            $j('#installation_folder').val($j('#installation_folder').val().replace(/[^a-zA-Z0-9,_-]/g, ''));
+       // }
     });
 
     $j('#installation_domain').after(' / <input type="text" name="installation_folder" id="installation_folder" value="website" class="input-text">');
