@@ -1580,7 +1580,11 @@ class IndexController extends Modules_Microweber_BasepluginController
 
             foreach ($domainInstallations as $installation) {
 
-                $createdAt = $installation['created_at'];
+                $createdAt = $installation['domainCreation'];
+                
+                if (isset($installation['created_at'])) {
+                    $createdAt = $installation['created_at'];
+                }
 
                 if (isset($installation['pending']) && $installation['pending'] == true) {
                     $data[] = [
