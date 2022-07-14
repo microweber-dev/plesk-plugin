@@ -105,20 +105,6 @@ class Modules_Microweber_Install {
             $installationDirPath = $domainDocumentRoot . '/' . $this->_path;
         }
 
-        // Save pending installation
-        Modules_Microweber_Domain::addAppInstallation($domain, [
-            'domainNameUrl' => 'fwafwa',
-            'domainCreation' => 'fwafwa',
-            'installationType' => 'awf',
-            'appVersion' => 'fwa',
-            'appInstallation' => $installationDirPath,
-            'domainIsActive' => '',
-            'manageDomainUrl' => 'fwa',
-            'pending' => true,
-        ]);
-        pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() + 1));
-
-
         // Start installation setup
         $whmcs = new Modules_Microweber_WhmcsConnector();
         $whmcs->setDomainName($domain->getName());

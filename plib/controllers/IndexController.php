@@ -682,6 +682,26 @@ class IndexController extends Modules_Microweber_BasepluginController
 
             if (!$this->devMode) {
 
+                // Save pending installation
+                $installationDomainPath = $domain->getName();
+                $installationDirPath = $domain->getDocumentRoot();
+                if ($post['installation_folder'] && !empty($this->_path)) {
+                    $installationDirPath = $domain->getDocumentRoot() . '/' . $post['installation_folder'];
+                    $installationDomainPath = $domain->getName() . '/' . $post['installation_folder'];
+                }
+
+                Modules_Microweber_Domain::addAppInstallation($domain, [
+                    'domainNameUrl' => $installationDomainPath,
+                    'domainCreation' => $domain->getProperty('cr_date'),
+                    'installationType' => $post['installation_type'],
+                    'appVersion' => '-',
+                    'appInstallation' => $installationDirPath,
+                    'domainIsActive' => true,
+                    'manageDomainUrl' => '',
+                    'pending' => true,
+                ]);
+                pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() + 1));
+
                 $task = new Modules_Microweber_Task_DomainAppInstall();
                 $task->setParam('domainId', $domain->getId());
                 $task->setParam('domainName', $domain->getName());
@@ -728,8 +748,7 @@ class IndexController extends Modules_Microweber_BasepluginController
                     $newInstallation->setPassword($post['installation_password']);
                 }
 
-                var_dump($newInstallation->run());
-                die();
+                return $newInstallation->run();
             }
 
         }
