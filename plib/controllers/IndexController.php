@@ -1559,6 +1559,15 @@ class IndexController extends Modules_Microweber_BasepluginController
                     continue;
                 }
 
+                $createdAt = $installation['domainCreation'];
+
+                $domainDocumentRootHash = md5($domain->getDocumentRoot());
+                $currentDomainSettings = $domain->getSetting('mw_settings_' . $domainDocumentRootHash);
+                $currentDomainSettings = unserialize($currentDomainSettings);
+                if (isset($currentDomainSettings['created_at'])) {
+                    $createdAt = $currentDomainSettings['created_at'];
+                }
+
                 $pleskMainUrl = '//' . $_SERVER['HTTP_HOST'];
 
                 $loginToWebsite = '<form method="post" class="js-open-settings-domain" action="' . pm_Context::getBaseUrl() . 'index.php/index/domainlogin" target="_blank">';
@@ -1572,7 +1581,7 @@ class IndexController extends Modules_Microweber_BasepluginController
 
                 $data[] = [
                     'domain' => '<a href="http://' . $installation['domainNameUrl'] . '" target="_blank">' . $installation['domainNameUrl'] . '</a> ',
-                    'created_date' => $installation['domainCreation'],
+                    'created_date' => $createdAt,
                     'type' => $installation['installationType'],
                     'app_version' => $installation['appVersion'],
                     'document_root' => $installation['appInstallation'],
