@@ -18,7 +18,7 @@ $j(document).ready(function() {
       //  if ($j('#installation_folder').val().match(/^[a-zA-Z\s]*$/g)) {
             $j('#installation_folder').val($j('#installation_folder').val().replace(/[^a-zA-Z0-9,_-]/g, ''));
        // }
-    }); 
+    });
 
     $j('#installation_domain').after(' / <input type="text" name="installation_folder" id="installation_folder" value="website" class="input-text">');
 
@@ -70,7 +70,7 @@ function checkStrength(password) {
         $j('#btn-send').attr('disabled', 'disabled');
         return '<i style="color:red;">The password is too weak.</i>';
     } else if (strength == 2) {
-        j('#btn-send').removeAttr('disabled');
+        $j('#btn-send').removeAttr('disabled');
         return '<i style="color:yellowgreen;">The password is good.</i>';
     } else {
         $j('#btn-send').removeAttr('disabled');
