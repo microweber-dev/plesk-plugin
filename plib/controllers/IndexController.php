@@ -1555,10 +1555,6 @@ class IndexController extends Modules_Microweber_BasepluginController
 
             foreach ($domainInstallations as $installation) {
 
-                if (!$sfm->fileExists($installation['appInstallation'])) {
-                    continue;
-                }
-
                 $createdAt = $installation['domainCreation'];
 
                 $domainDocumentRootHash = md5($installation['appInstallation']);
@@ -1581,6 +1577,10 @@ class IndexController extends Modules_Microweber_BasepluginController
                         'action' => 'pending'
                     ];
                     $installationsCount++;
+                    continue;
+                }
+
+                if (!$sfm->fileExists($installation['appInstallation'])) {
                     continue;
                 }
 
