@@ -100,8 +100,9 @@ class Modules_Microweber_Install {
         }
 
         $domainDocumentRoot = $domain->getDocumentRoot();
+        $installationDirPath = $domain->getDocumentRoot();
         if ($this->_path && !empty($this->_path)) {
-            $domainDocumentRoot = $domainDocumentRoot . '/' . $this->_path;
+            $installationDirPath = $domainDocumentRoot . '/' . $this->_path;
         }
 
         // Save pending installation
@@ -115,7 +116,7 @@ class Modules_Microweber_Install {
             'pending_at'=> date('Y-m-d H:i:s'),
             'created_at'=> date('Y-m-d H:i:s')
         ];
-        $domain->setSetting('mw_settings_' . md5($domainDocumentRoot), serialize($saveDomainPendingSettings));
+        $domain->setSetting('mw_settings_' . md5($installationDirPath), serialize($saveDomainPendingSettings));
         pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() + 1));
 
 
@@ -227,8 +228,8 @@ class Modules_Microweber_Install {
         }
         
         if ($this->_path) {
-            if (!$fileManager->fileExists($domainDocumentRoot)) {
-                $fileManager->mkdir($domainDocumentRoot);
+            if (!$fileManager->fileExists($installationDirPath)) {
+                $fileManager->mkdir($installationDirPath);
             }
         }
         
@@ -239,20 +240,20 @@ class Modules_Microweber_Install {
         Modules_Microweber_Log::debug('Clear old folder on domain: ' . $domain->getName());
         
         // Clear domain files if exists
-        $this->_prepairDomainFolder($fileManager, $domainDocumentRoot, $domain->getHomePath());
+        $this->_prepairDomainFolder($fileManager, $installationDirPath, $domain->getHomePath());
         
         $this->setProgress(60);
         
         // First we will make a directories
         foreach ($this->_getDirsToMake() as $dir) {
-        	$fileManager->mkdir($domainDocumentRoot . '/' . $dir, '0755', true);
+        	$fileManager->mkdir($installationDirPath . '/' . $dir, '0755', true);
         }
         	
         $this->setProgress(65);
 
         foreach ($this->_getFilesForSymlinking($this->appLatestVersionFolder) as $folder) {
         	$scriptDirOrFile = $this->appLatestVersionFolder . $folder;
-        	$domainDirOrFile = $domainDocumentRoot .'/'. $folder;
+        	$domainDirOrFile = $installationDirPath .'/'. $folder;
         	
         	if ($this->_type == 'symlink') {
         		
@@ -260,7 +261,7 @@ class Modules_Microweber_Install {
         		pm_ApiCli::callSbin('filemng', [
         			$domain->getSysUserLogin(),
         			'exec',
-        			$domainDocumentRoot,
+                    $installationDirPath,
         			'rm', 
         			'-rf', 
         			$domainDirOrFile
@@ -271,7 +272,7 @@ class Modules_Microweber_Install {
         		pm_ApiCli::callSbin('filemng', [
                     $domain->getSysUserLogin(),
                     'exec',
-                    $domainDocumentRoot,
+                    $installationDirPath,
                     'ln',
                     '-s',
                     $scriptDirOrFile,
@@ -290,19 +291,19 @@ class Modules_Microweber_Install {
         // And then we will copy folders
         foreach ($this->_getDirsToCopy() as $folder) {
             $scriptDirOrFile = $this->appLatestVersionFolder . $folder;
-            $domainDirOrFile = $domainDocumentRoot .'/'. $folder;
+            $domainDirOrFile = $installationDirPath .'/'. $folder;
             $fileManager->copyFile($scriptDirOrFile, dirname($domainDirOrFile));
         }
 
         // And then we will copy files
         foreach ($this->_getFilesForCopy() as $file) {
-        	$fileManager->copyFile($this->appLatestVersionFolder . $file, dirname($domainDocumentRoot . '/' . $file));
+        	$fileManager->copyFile($this->appLatestVersionFolder . $file, dirname($installationDirPath . '/' . $file));
         }
         	
         $this->setProgress(75);
         
         if ($this->_type == 'symlink') {
-        	$this->_fixHtaccess($fileManager, $domainDocumentRoot); 
+        	$this->_fixHtaccess($fileManager, $installationDirPath);
         }
         
         $this->setProgress(85);
@@ -330,7 +331,7 @@ class Modules_Microweber_Install {
 
         } else {
         	$dbHost = 'localhost';
-        	$dbName = $domainDocumentRoot . '/storage/database1.sqlite';
+        	$dbName = $installationDirPath . '/storage/database1.sqlite';
         }
 
         $this->setProgress(90);
@@ -375,7 +376,7 @@ class Modules_Microweber_Install {
         	$args = [
         		$domain->getSysUserLogin(),
         		'exec',
-                $domainDocumentRoot,
+                $installationDirPath,
         		$phpHandler['clipath'],
                 'artisan',
         		'microweber:install',
@@ -403,10 +404,10 @@ class Modules_Microweber_Install {
                 'language'=>$this->_language,
                 'created_at'=> date('Y-m-d H:i:s')
             ];
-            $domain->setSetting('mw_settings_' . md5($domainDocumentRoot), serialize($saveDomainSettings));
+            $domain->setSetting('mw_settings_' . md5($installationDirPath), serialize($saveDomainSettings));
 
             // Set branding json
-            Modules_Microweber_WhiteLabelBranding::applyToInstallation($domain, $domainDocumentRoot);
+            Modules_Microweber_WhiteLabelBranding::applyToInstallation($domain, $installationDirPath);
         	
         	return ['success'=>true, 'log'=> $artisan['stdout']];
         } catch (Exception $e) {
