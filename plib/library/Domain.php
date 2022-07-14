@@ -110,14 +110,16 @@ class Modules_Microweber_Domain
 
                 $refreshInstallations[] = [
                     'domainObject'=>$domain,
-                    'domainNameUrl' => $domainNameAppUrlPath,
-                    'domainCreation' => $domainCreation,
-                    'installationType' => $installationType,
-                    'appVersion' => $appVersion,
-                    'appInstallation' => $appInstallation,
-                    'domainIsActive' => $domainIsActive,
-                    'manageDomainUrl' => $manageDomainUrl,
-                    'created_at' => date("Y-m-d H:i:s", filemtime($appInstallationConfig)),
+                    'details'=> [
+                        'domainNameUrl' => $domainNameAppUrlPath,
+                        'domainCreation' => $domainCreation,
+                        'installationType' => $installationType,
+                        'appVersion' => $appVersion,
+                        'appInstallation' => $appInstallation,
+                        'domainIsActive' => $domainIsActive,
+                        'manageDomainUrl' => $manageDomainUrl,
+                        'created_at' => date("Y-m-d H:i:s", filemtime($appInstallationConfig)),
+                    ]
                 ];
                 $installations++;
             }
@@ -125,8 +127,8 @@ class Modules_Microweber_Domain
 
         $domain->setSetting('mwAppInstallations', false);
         if (!empty($refreshInstallations)) {
-            foreach ($refreshInstallations as $installationDetails) {
-                Modules_Microweber_Domain::addAppInstallation($installationDetails['domainObject'], $installationDetails);
+            foreach ($refreshInstallations as $installation) {
+                Modules_Microweber_Domain::addAppInstallation($installation['domainObject'], $installation['details']);
             }
         }
 
