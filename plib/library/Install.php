@@ -389,7 +389,7 @@ class Modules_Microweber_Install {
                 'language'=>$this->_language,
                 'created_at'=> date('Y-m-d H:i:s')
             ];
-            Modules_Microweber_Domain::setMwOption($domain, 'mw_settings_' . md5($installationDirPath), serialize($saveDomainSettings));
+            Modules_Microweber_Domain::setMwOption($domain, 'mw_settings_' . md5($installationDirPath), json_encode($saveDomainSettings));
 
             // Set branding json
             Modules_Microweber_WhiteLabelBranding::applyToInstallation($domain, $installationDirPath);

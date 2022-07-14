@@ -8,10 +8,10 @@
 
 class Modules_Microweber_Domain
 {
-    public static function getMwOptionFile($domain)
+    public static function getMwOptionFile()
     {
-        $file = md5($domain->getName()) . '.json';
-        $dir = Modules_Microweber_Config::getExtensionVarPath().'domains/';
+        $file = 'domains.json';
+        $dir = Modules_Microweber_Config::getExtensionVarPath().'storage/';
 
         if (!is_dir($dir)) {
             mkdir($dir);
@@ -22,9 +22,9 @@ class Modules_Microweber_Domain
 
     public static function setMwOption($domain, $key, $value) {
 
-        $optionFile = Modules_Microweber_Domain::getMwOptionFile($domain);
+        $optionFile = Modules_Microweber_Domain::getMwOptionFile();
         $options = Modules_Microweber_Domain::getMwOptions($domain);
-        $options[$key] = $value;
+        $options[$domain->getName()][$key] = $value;
 
         return file_put_contents($optionFile, json_encode($options, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
     }
@@ -32,8 +32,8 @@ class Modules_Microweber_Domain
     public static function getMwOption($domain, $key) {
 
         $options = Modules_Microweber_Domain::getMwOptions($domain);
-        if (isset($options[$key])) {
-            return $options[$key];
+        if (isset($options[$domain->getName()][$key])) {
+            return $options[$domain->getName()][$key];
         }
 
         return null;
