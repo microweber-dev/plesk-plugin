@@ -106,17 +106,16 @@ class Modules_Microweber_Install {
         }
 
         // Save pending installation
-        $saveDomainPendingSettings = [
-            'admin_email'=>'',
-            'admin_password'=>'',
-            'admin_username'=>'',
-            'admin_url'=>'admin',
-            'language'=>$this->_language,
-            'pending'=>true,
-            'pending_at'=> date('Y-m-d H:i:s'),
-            'created_at'=> date('Y-m-d H:i:s')
-        ];
-        $domain->setSetting('mw_settings_' . md5($installationDirPath), serialize($saveDomainPendingSettings));
+        Modules_Microweber_Domain::addAppInstallation($domain, [
+            'domainNameUrl' => 'fwafwa',
+            'domainCreation' => 'fwafwa',
+            'installationType' => 'awf',
+            'appVersion' => 'fwa',
+            'appInstallation' => $installationDirPath,
+            'domainIsActive' => '',
+            'manageDomainUrl' => 'fwa',
+            'pending' => true,
+        ]);
         pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() + 1));
 
 

@@ -69,20 +69,6 @@ class Modules_Microweber_Domain
 
                 $appInstallation = str_replace('/config/microweber.php', false, $appInstallationConfig);
 
-                $domainDocumentRootHash = md5($appInstallation);
-                $currentDomainSettings = $domain->getSetting('mw_settings_' . $domainDocumentRootHash);
-                $currentDomainSettings = unserialize($currentDomainSettings);
-
-                if (isset($currentDomainSettings['pending'])) {
-                    unset($currentDomainSettings['pending']);
-
-                    if (isset($currentDomainSettings['pending_at'])) {
-                        unset($currentDomainSettings['pending_at']);
-                    }
-
-                    $domain->setSetting('mw_settings_' . $domainDocumentRootHash, serialize($currentDomainSettings));
-                }
-
                 // Find app in main folder
                 if ($fileManager->fileExists($appInstallation . '/version.txt')) {
                     $appVersion = $fileManager->fileGetContents($appInstallation . '/version.txt');

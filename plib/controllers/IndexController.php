@@ -1557,16 +1557,7 @@ class IndexController extends Modules_Microweber_BasepluginController
 
                 $createdAt = $installation['domainCreation'];
 
-                $domainDocumentRootHash = md5($installation['appInstallation']);
-                $currentDomainSettings = $domain->getSetting('mw_settings_' . $domainDocumentRootHash);
-                $currentDomainSettings = unserialize($currentDomainSettings);
-
-                if (isset($currentDomainSettings['created_at'])) {
-                    $createdAt = $currentDomainSettings['created_at'];
-                }
-
-                if (isset($currentDomainSettings['pending']) && $currentDomainSettings['pending']) {
-                    
+                if (isset($installation['pending']) && $installation['pending'] == true) {
                     $data[] = [
                         'domain' => '<a href="http://' . $installation['domainNameUrl'] . '" target="_blank">' . $installation['domainNameUrl'] . '</a> ',
                         'created_date' => $createdAt,
@@ -1576,6 +1567,7 @@ class IndexController extends Modules_Microweber_BasepluginController
                         'active' => ($installation['domainIsActive'] ? 'Yes' : 'No'),
                         'action' => 'pending'
                     ];
+
                     $installationsCount++;
                     continue;
                 }
