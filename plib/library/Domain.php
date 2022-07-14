@@ -67,7 +67,7 @@ class Modules_Microweber_Domain
                     continue;
                 }
 
-                $appInstallation = str_replace('/config/microweber.php', false, $appInstallationConfig);
+                $appInstallation = str_replace('/config/microweber.php', '', $appInstallationConfig);
 
                 // Find app in main folder
                 if ($fileManager->fileExists($appInstallation . '/version.txt')) {
@@ -108,7 +108,8 @@ class Modules_Microweber_Domain
                     $domainNameAppUrlPath = $domainName . $domainNameAppUrlPath;
                 }
 
-                $refreshInstallations[$domain] = [
+                $refreshInstallations[] = [
+                    'domainObject'=>$domain,
                     'domainNameUrl' => $domainNameAppUrlPath,
                     'domainCreation' => $domainCreation,
                     'installationType' => $installationType,
@@ -124,8 +125,8 @@ class Modules_Microweber_Domain
 
         $domain->setSetting('mwAppInstallations', false);
         if (!empty($refreshInstallations)) {
-            foreach ($refreshInstallations as $domain => $installationDetails) {
-                Modules_Microweber_Domain::addAppInstallation($domain, $installationDetails);
+            foreach ($refreshInstallations as $installationDetails) {
+                Modules_Microweber_Domain::addAppInstallation($installationDetails['domainObject'], $installationDetails);
             }
         }
 

@@ -1554,6 +1554,14 @@ class IndexController extends Modules_Microweber_BasepluginController
     {
         Modules_Microweber_Helper::stopTasks(['task_domainappinstallationscan']);
 
+        foreach (Modules_Microweber_Domain::getDomains() as $domain) {
+            if (!$domain->hasHosting()) {
+                continue;
+            }
+            Modules_Microweber_Domain::scanForAppInstallations($domain);
+        }
+        dd(0);
+
         $task = new Modules_Microweber_Task_DomainAppInstallationScan();
         $this->taskManager->start($task, NULL);
     }
