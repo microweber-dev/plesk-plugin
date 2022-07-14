@@ -162,6 +162,28 @@ class Modules_Microweber_EventListener implements EventListener
     private function _installMicroweber($domain, $newValues)
     {
         try {
+
+            // Save pending installation
+            $installationDomainPath = $domain->getName();
+            $installationDirPath = $domain->getDocumentRoot();
+            $installationType = 'Standalone';
+            if (pm_Settings::get('installation_type') == 'symlink') {
+                $installationType = 'Symlinked';
+            }
+
+            Modules_Microweber_Domain::addAppInstallation($domain, [
+                'domainNameUrl' => $installationDomainPath,
+                'domainCreation' => $domain->getProperty('cr_date'),
+                'installationType' => $installationType,
+                'appVersion' => '-',
+                'appInstallation' => $installationDirPath,
+                'domainIsActive' => true,
+                'manageDomainUrl' => '',
+                'pending' => true,
+                'created_at' => date('Y-m-d H:i:s'),
+            ]);
+            pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() + 1));
+            
             $whmcsConnector = new Modules_Microweber_WhmcsConnector();
             $whmcsConnector->setDomainName($domain->getName());
             $selectedTemplate = $whmcsConnector->getSelectedTemplate();
