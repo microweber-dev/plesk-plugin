@@ -13,7 +13,8 @@ class Modules_Microweber_WhiteLabel
     {
         $name = 'Microweber';
 
-        if (!empty(pm_Settings::get('wl_key'))) {
+        
+        if (Modules_Microweber_LicenseData::hasActiveLicense()) {
             $setting = Modules_Microweber_WhiteLabelSettings::get('wl_brand_name');
             $setting = trim($setting);
 
@@ -29,7 +30,7 @@ class Modules_Microweber_WhiteLabel
     {
         $icon = pm_Context::getBaseUrl() . 'images/logo_small_white.svg';
 
-        if (!empty(pm_Settings::get('wl_key'))) {
+        if (Modules_Microweber_LicenseData::hasActiveLicense()) {
             $setting = Modules_Microweber_WhiteLabelSettings::get('wl_plesk_logo_invert');
             $setting = trim($setting);
 
@@ -45,7 +46,7 @@ class Modules_Microweber_WhiteLabel
     {
         $icon = pm_Context::getBaseUrl() . 'images/logo_small.svg';
 
-        if (!empty(pm_Settings::get('wl_key'))) {
+        if (Modules_Microweber_LicenseData::hasActiveLicense()) {
             $setting = Modules_Microweber_WhiteLabelSettings::get('wl_plesk_logo_app');
             $setting = trim($setting);
 

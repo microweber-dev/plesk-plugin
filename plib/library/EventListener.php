@@ -183,7 +183,7 @@ class Modules_Microweber_EventListener implements EventListener
                 'created_at' => date('Y-m-d H:i:s'),
             ]);
             pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() + 1));
-            
+
             $whmcsConnector = new Modules_Microweber_WhmcsConnector();
             $whmcsConnector->setDomainName($domain->getName());
             $selectedTemplate = $whmcsConnector->getSelectedTemplate();

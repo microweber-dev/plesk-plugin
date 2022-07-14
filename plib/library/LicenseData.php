@@ -13,6 +13,16 @@ class Modules_Microweber_LicenseData
         return (int) pm_Settings::get('mw_installations_count');
     }
 
+    public static function hasActiveLicense()
+    {
+        $limitations = self::getLimitations();
+        if ($limitations['app_installations_freeze']) {
+            return false;
+        }
+
+        return true;
+    }
+
     public static function getLimitations()
     {
         // Licenses

@@ -27,6 +27,11 @@ class Modules_Microweber_WhiteLabelBranding
 
     public static function applyToInstallation($domain, $appInstallation)
     {
+        if (!Modules_Microweber_LicenseData::hasActiveLicense()) {
+            /// No active license
+            return;
+        }
+
         if (empty($domain)) {
             throw new Exception('Please, set domain object');
         }
