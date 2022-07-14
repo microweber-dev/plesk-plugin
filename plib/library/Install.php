@@ -101,6 +101,22 @@ class Modules_Microweber_Install {
 
         $domainDocumentRoot = $domain->getDocumentRoot();
 
+        // Save pending installation
+        $saveDomainPendingSettings = [
+            'admin_email'=>'',
+            'admin_password'=>'',
+            'admin_username'=>'',
+            'admin_url'=>'admin',
+            'language'=>$this->_language,
+            'pending'=>true,
+            'pending_at'=> date('Y-m-d H:i:s'),
+            'created_at'=> date('Y-m-d H:i:s')
+        ];
+        $domain->setSetting('mw_settings_' . md5($domainDocumentRoot), serialize($saveDomainPendingSettings));
+        pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() + 1));
+
+
+        // Start installation setup
         $whmcs = new Modules_Microweber_WhmcsConnector();
         $whmcs->setDomainName($domain->getName());
         $whiteLabelWhmcsSettings = $whmcs->getWhitelabelSettings();
@@ -387,13 +403,15 @@ class Modules_Microweber_Install {
             ];
             $domain->setSetting('mw_settings_' . md5($domainDocumentRoot), serialize($saveDomainSettings));
 
-            pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() + 1));
-
             // Set branding json
             Modules_Microweber_WhiteLabelBranding::applyToInstallation($domain, $domainDocumentRoot);
         	
         	return ['success'=>true, 'log'=> $artisan['stdout']];
         } catch (Exception $e) {
+
+            // Remove one count if installation failed, because top of the code we set +1
+            pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() - 1));
+
         	return ['success'=>false, 'error'=>true, 'log'=> $e->getMessage()];
         }
         
