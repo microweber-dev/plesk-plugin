@@ -1594,7 +1594,7 @@ class IndexController extends Modules_Microweber_BasepluginController
                         'app_version' => $installation['appVersion'],
                         'document_root' => $installation['appInstallation'],
                         'active' => ($installation['domainIsActive'] ? 'Yes' : 'No'),
-                        'action' => '<img src="'.pm_Context::getBaseUrl() . 'images/loading.gif'.'" />'
+                        'action' => '<img src="'.pm_Context::getBaseUrl() . 'images/loading.gif'.'" /> Installing... '
                     ];
 
                     $installationsCount++;
