@@ -292,7 +292,6 @@ class Modules_Microweber_Helper
             }
 
             $domainInstallations = Modules_Microweber_Domain::getMwOption($domain, 'mwAppInstallations');
-            $domainInstallations = json_decode($domainInstallations, true);
             if (empty($domainInstallations)) {
                 continue;
             }

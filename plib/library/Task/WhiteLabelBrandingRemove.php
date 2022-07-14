@@ -42,7 +42,7 @@ class Modules_Microweber_Task_WhiteLabelBrandingRemove extends \pm_LongTask_Task
             return;
         }
 
-        $installations = json_decode(Modules_Microweber_Domain::getMwOption($domain, 'mwAppInstallations'), true);
+        $installations = Modules_Microweber_Domain::getMwOption($domain, 'mwAppInstallations');
         if (!$installations || !is_array($installations)) {
             return;
         }

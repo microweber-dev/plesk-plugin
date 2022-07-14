@@ -185,14 +185,13 @@ class Modules_Microweber_Domain
         $appInstallation['appInstallationId'] = md5($appInstallation['appInstallation']);
 
         $mwAppInstallations = Modules_Microweber_Domain::getMwOption($domain,'mwAppInstallations');
-        $mwAppInstallations = json_decode($mwAppInstallations, true);
         if (!is_array($mwAppInstallations)) {
             $mwAppInstallations = [];
         }
 
         $mwAppInstallations[$appInstallation['appInstallationId']] = $appInstallation;
 
-        Modules_Microweber_Domain::setMwOption($domain,'mwAppInstallations', json_encode($mwAppInstallations));
+        Modules_Microweber_Domain::setMwOption($domain,'mwAppInstallations', $mwAppInstallations);
     }
 
     public static function getDomains()
