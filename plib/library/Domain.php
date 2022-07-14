@@ -8,12 +8,48 @@
 
 class Modules_Microweber_Domain
 {
+    public static function getMwOptionFile($domain)
+    {
+        $file = md5($domain->getName()) . '.json';
+        $dir = Modules_Microweber_Config::getExtensionVarPath().'domains/';
+
+        if (!is_dir($dir)) {
+            mkdir($dir);
+        }
+
+        return $dir . $file;
+    }
+
     public static function setMwOption($domain, $key, $value) {
 
+        $optionFile = Modules_Microweber_Domain::getMwOptionFile($domain);
+        $options = Modules_Microweber_Domain::getMwOptions($domain);
+        $options[$key] = $value;
+
+        return file_put_contents($optionFile, json_encode($options));
     }
 
     public static function getMwOption($domain, $key) {
 
+        $options = Modules_Microweber_Domain::getMwOptions($domain);
+        if (isset($options[$key])) {
+            return $options[$key];
+        }
+
+        return null;
+    }
+
+    public static function getMwOptions($domain) {
+
+        $optionFile = Modules_Microweber_Domain::getMwOptionFile($domain);
+        $optionContent = file_get_contents($optionFile);
+        $optionContent = json_decode($optionContent, true);
+
+        if (!empty($optionContent) && is_array($optionContent)) {
+            return $optionContent;
+        }
+
+        return [];
     }
 
     public static function scanForAppInstallations($domain)
