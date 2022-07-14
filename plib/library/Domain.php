@@ -26,7 +26,7 @@ class Modules_Microweber_Domain
         $options = Modules_Microweber_Domain::getMwOptions($domain);
         $options[$key] = $value;
 
-        return file_put_contents($optionFile, json_encode($options));
+        return file_put_contents($optionFile, json_encode($options, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
     }
 
     public static function getMwOption($domain, $key) {
