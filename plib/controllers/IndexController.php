@@ -685,21 +685,25 @@ class IndexController extends Modules_Microweber_BasepluginController
                 // Save pending installation
                 $installationDomainPath = $domain->getName();
                 $installationDirPath = $domain->getDocumentRoot();
+                $installationType = 'Standalone';
                 if ($post['installation_folder'] && !empty($this->_path)) {
                     $installationDirPath = $domain->getDocumentRoot() . '/' . $post['installation_folder'];
                     $installationDomainPath = $domain->getName() . '/' . $post['installation_folder'];
+                }
+                if ($post['installation_type'] == 'symlink') {
+                    $installationType = 'Symlinked';
                 }
 
                 Modules_Microweber_Domain::addAppInstallation($domain, [
                     'domainNameUrl' => $installationDomainPath,
                     'domainCreation' => $domain->getProperty('cr_date'),
-                    'installationType' => $post['installation_type'],
+                    'installationType' => $installationType,
                     'appVersion' => '-',
                     'appInstallation' => $installationDirPath,
                     'domainIsActive' => true,
                     'manageDomainUrl' => '',
                     'pending' => true,
-                ]);
+                ]); 
                 pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() + 1));
 
                 $task = new Modules_Microweber_Task_DomainAppInstall();
