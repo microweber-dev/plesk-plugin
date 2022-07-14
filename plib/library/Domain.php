@@ -8,10 +8,18 @@
 
 class Modules_Microweber_Domain
 {
+    public static function setMwOption($domain, $key, $value) {
+
+    }
+
+    public static function getMwOption($domain, $key) {
+
+    }
+
     public static function scanForAppInstallations($domain)
     {
         if (!$domain->hasHosting()) {
-            $domain->setSetting('mwAppInstallations', false);
+            Modules_Microweber_Domain::setMwOption($domain, 'mwAppInstallations', false);
             return false;
         }
 
@@ -28,13 +36,13 @@ class Modules_Microweber_Domain
         $fileManager = new pm_FileManager($domain->getId());
 
         if (!$fileManager->isDir($domainDocumentRoot)) {
-            $domain->setSetting('mwAppInstallations', false);
+            Modules_Microweber_Domain::setMwOption($domain,'mwAppInstallations', false);
             return false;
         }
 
         $allDirs = $fileManager->scanDir($domainDocumentRoot, true);
         if (empty($allDirs)) {
-            $domain->setSetting('mwAppInstallations', false);
+            Modules_Microweber_Domain::setMwOption($domain,'mwAppInstallations', false);
             return false;
         }
 
@@ -54,7 +62,7 @@ class Modules_Microweber_Domain
         }
 
         if (empty($installationsFind)) {
-            $domain->setSetting('mwAppInstallations', false);
+            Modules_Microweber_Domain::setMwOption($domain,'mwAppInstallations', false);
         }
 
         $installations = 0;
@@ -125,7 +133,7 @@ class Modules_Microweber_Domain
             }
         }
 
-        $domain->setSetting('mwAppInstallations', false);
+        Modules_Microweber_Domain::setMwOption($domain,'mwAppInstallations', false);
         if (!empty($refreshInstallations)) {
             foreach ($refreshInstallations as $installation) {
                 Modules_Microweber_Domain::addAppInstallation($installation['domainObject'], $installation['details']);
@@ -140,7 +148,7 @@ class Modules_Microweber_Domain
         $appInstallation['domainId'] = $domain->getId();
         $appInstallation['appInstallationId'] = md5($appInstallation['appInstallation']);
 
-        $mwAppInstallations = $domain->getSetting('mwAppInstallations');
+        $mwAppInstallations = Modules_Microweber_Domain::getMwOption($domain,'mwAppInstallations');
         $mwAppInstallations = json_decode($mwAppInstallations, true);
         if (!is_array($mwAppInstallations)) {
             $mwAppInstallations = [];
@@ -148,7 +156,7 @@ class Modules_Microweber_Domain
 
         $mwAppInstallations[$appInstallation['appInstallationId']] = $appInstallation;
 
-        $domain->setSetting('mwAppInstallations', json_encode($mwAppInstallations));
+        Modules_Microweber_Domain::setMwOption($domain,'mwAppInstallations', json_encode($mwAppInstallations));
     }
 
     public static function getDomains()
