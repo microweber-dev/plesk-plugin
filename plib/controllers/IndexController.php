@@ -1554,13 +1554,6 @@ class IndexController extends Modules_Microweber_BasepluginController
     {
         Modules_Microweber_Helper::stopTasks(['task_domainappinstallationscan']);
 
-     /*   foreach (Modules_Microweber_Domain::getDomains() as $domain) {
-            if (!$domain->hasHosting()) {
-                continue;
-            }
-            Modules_Microweber_Domain::scanForAppInstallations($domain);
-        }*/
-
         $task = new Modules_Microweber_Task_DomainAppInstallationScan();
         $this->taskManager->start($task, NULL);
     }
@@ -1600,8 +1593,8 @@ class IndexController extends Modules_Microweber_BasepluginController
                         'type' => $installation['installationType'],
                         'app_version' => $installation['appVersion'],
                         'document_root' => $installation['appInstallation'],
-                        'active' => ($installation['domainIsActive'] ? 'Yes' : 'No'),
-                        'action' => '<img src="'.pm_Context::getBaseUrl() . 'images/loading.gif'.'" /> Installing... '
+                        'active' => ($installation['domainIsActive'] ? 'Yes' : 'No'), 
+                        'action' => '<img src="'.pm_Context::getBaseUrl() . 'images/loading.gif'.'" /> Installing... <script>setTimeout(function () {window.location.href=window.location.href}, 60000);</script>'
                     ];
 
                     $installationsCount++;
