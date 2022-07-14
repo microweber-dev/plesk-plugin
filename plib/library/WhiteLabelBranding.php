@@ -27,8 +27,8 @@ class Modules_Microweber_WhiteLabelBranding
 
     public static function applyToInstallation($domain, $appInstallation)
     {
-        if (!Modules_Microweber_LicenseData::hasActiveLicense()) {
-            /// No active license
+        if (!Modules_Microweber_WhiteLabel::isEnabled()) {
+            /// No active license or not enabled
             return;
         }
 
