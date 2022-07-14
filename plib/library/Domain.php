@@ -116,6 +116,7 @@ class Modules_Microweber_Domain
                     'appInstallation' => $appInstallation,
                     'domainIsActive' => $domainIsActive,
                     'manageDomainUrl' => $manageDomainUrl,
+                    'created_at' => date("Y-m-d H:i:s", filemtime($appInstallationConfig)),
                 ]);
                 $installations++;
             }

@@ -686,7 +686,7 @@ class IndexController extends Modules_Microweber_BasepluginController
                 $installationDomainPath = $domain->getName();
                 $installationDirPath = $domain->getDocumentRoot();
                 $installationType = 'Standalone';
-                if ($post['installation_folder'] && !empty($this->_path)) {
+                if (!empty($post['installation_folder'])) {
                     $installationDirPath = $domain->getDocumentRoot() . '/' . $post['installation_folder'];
                     $installationDomainPath = $domain->getName() . '/' . $post['installation_folder'];
                 }
@@ -703,8 +703,10 @@ class IndexController extends Modules_Microweber_BasepluginController
                     'domainIsActive' => true,
                     'manageDomainUrl' => '',
                     'pending' => true,
-                ]); 
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]);
                 pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() + 1));
+
 
                 $task = new Modules_Microweber_Task_DomainAppInstall();
                 $task->setParam('domainId', $domain->getId());
@@ -1578,7 +1580,7 @@ class IndexController extends Modules_Microweber_BasepluginController
 
             foreach ($domainInstallations as $installation) {
 
-                $createdAt = $installation['domainCreation'];
+                $createdAt = $installation['created_at'];
 
                 if (isset($installation['pending']) && $installation['pending'] == true) {
                     $data[] = [
