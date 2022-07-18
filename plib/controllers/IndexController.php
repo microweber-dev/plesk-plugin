@@ -1496,6 +1496,10 @@ class IndexController extends Modules_Microweber_BasepluginController
 
     private function _checkAppIsLicensed()
     {
+        if (!Modules_Microweber_WhiteLabel::isEnabled()) {
+            return false;
+        }
+
         $isLicensed = false;
 
         // Microweber license
