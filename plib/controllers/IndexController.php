@@ -1649,6 +1649,22 @@ class IndexController extends Modules_Microweber_BasepluginController
                     $createdAt = $installation['created_at'];
                 }
 
+                if (isset($installation['error']) && $installation['error'] == true) {
+                    
+                    $data[] = [
+                        'domain' => '<a href="http://' . $installation['domainNameUrl'] . '" target="_blank">' . $installation['domainNameUrl'] . '</a> ',
+                        'created_date' => $createdAt,
+                        'type' => $installation['installationType'],
+                        'app_version' => $installation['appVersion'],
+                        'document_root' => $installation['appInstallation'],
+                        'active' => ($installation['domainIsActive'] ? 'Yes' : 'No'),
+                        'action' => 'Error! The application is not installed.'
+                    ];
+
+                    $installationsCount++;
+                    continue;
+                }
+
                 if (isset($installation['pending']) && $installation['pending'] == true) {
                     $data[] = [
                         'domain' => '<a href="http://' . $installation['domainNameUrl'] . '" target="_blank">' . $installation['domainNameUrl'] . '</a> ',
