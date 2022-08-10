@@ -43,11 +43,6 @@ class Modules_Microweber_Task_DomainAppInstall extends \pm_LongTask_Task
 		$status = $newInstallation->run();
 
         if (isset($status['error']) && $status['error']) {
-
-            $domain = new pm_Domain($this->getParam('domainId'));
-
-            Modules_Microweber_Domain::setErrorToAppInstallation($domain, $this->getParam('path'), $status['error']);
-
             throw new pm_Exception($status['log']);
         }
 
