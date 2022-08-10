@@ -92,15 +92,36 @@ class Modules_Microweber_Domain
                 continue;
             }
 
-            if (is_file($domainDocumentRoot . '/' . $dir . '/config/app.php')) {
-                $installationsFind[] = $domainDocumentRoot . '/' . $dir . '/config/app.php';
+            $configAppFile = $domainDocumentRoot . '/' . $dir . '/config/app.php';
+
+            $configMicroweberFile = $domainDocumentRoot . '/' . $dir . '/config/microweber.php';
+            if (!is_file($configMicroweberFile)) {
+                $configMicroweberFile = false;
+            }
+
+            if (is_file($configAppFile)) {
+                $installationsFind[] = [
+                    'config_app'=>$configAppFile,
+                    'config_microweber'=>$configMicroweberFile
+                ];
             }
         }
 
         if (is_dir($domainDocumentRoot . '/userfiles/modules')) {
             if (is_dir($domainDocumentRoot . '/config/')) {
-                if (is_file($domainDocumentRoot . '/config/app.php')) {
-                    $installationsFind[] = $domainDocumentRoot . '/config/app.php';
+
+                $configAppFile = $domainDocumentRoot . '/config/app.php';
+
+                $configMicroweberFile = $domainDocumentRoot . '/config/microweber.php';
+                if (!is_file($configMicroweberFile)) {
+                    $configMicroweberFile = false;
+                }
+
+                if (is_file($configAppFile)) {
+                    $installationsFind[] = [
+                        'config_app'=>$configAppFile,
+                        'config_microweber'=>$configMicroweberFile
+                    ];
                 }
             }
         }
@@ -115,11 +136,11 @@ class Modules_Microweber_Domain
         if (!empty($installationsFind)) {
             foreach ($installationsFind as $appInstallationConfig) {
 
-                if (strpos($appInstallationConfig, 'backup-files') !== false) {
+                if (strpos($appInstallationConfig['config_app'], 'backup-files') !== false) {
                     continue;
                 }
 
-                $appInstallation = str_replace('/config/app.php', '', $appInstallationConfig);
+                $appInstallation = str_replace('/config/app.php', '', $appInstallationConfig['config_app']);
 
                 // Find app in main folder
                 if ($fileManager->fileExists($appInstallation . '/version.txt')) {
@@ -160,19 +181,26 @@ class Modules_Microweber_Domain
                     $domainNameAppUrlPath = $domainName . $domainNameAppUrlPath;
                 }
 
+                $refreshInstallationDetails = [
+                    'domainNameUrl' => $domainNameAppUrlPath,
+                    'domainCreation' => $domainCreation,
+                    'installationType' => $installationType,
+                    'appVersion' => $appVersion,
+                    'appInstallation' => $appInstallation,
+                    'domainIsActive' => $domainIsActive,
+                    'manageDomainUrl' => $manageDomainUrl,
+                    'created_at' => date("Y-m-d H:i:s", filemtime($appInstallationConfig['config_app'])),
+                ];
+
+                if (!$appInstallationConfig['config_microweber']) {
+                    $refreshInstallationDetails['pending'] = true;
+                }
+
                 $refreshInstallations[] = [
                     'domainObject'=>$domain,
-                    'details'=> [
-                        'domainNameUrl' => $domainNameAppUrlPath,
-                        'domainCreation' => $domainCreation,
-                        'installationType' => $installationType,
-                        'appVersion' => $appVersion,
-                        'appInstallation' => $appInstallation,
-                        'domainIsActive' => $domainIsActive,
-                        'manageDomainUrl' => $manageDomainUrl,
-                        'created_at' => date("Y-m-d H:i:s", filemtime($appInstallationConfig)),
-                    ]
+                    'details'=> $refreshInstallationDetails
                 ];
+
                 $installations++;
             }
         }
