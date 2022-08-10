@@ -190,7 +190,7 @@ class Modules_Microweber_EventListener implements EventListener
         $task->setParam('password', $newValues['System User Password']);
 
         $taskManager = new pm_LongTask_Manager();
-        $taskManager->start($task, $domain);
+        $taskManager->start($task, NULL);
     }
 }
 

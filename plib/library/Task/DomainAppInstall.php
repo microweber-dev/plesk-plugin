@@ -12,23 +12,6 @@ class Modules_Microweber_Task_DomainAppInstall extends \pm_LongTask_Task
 
 	public function run()
 	{
-        $domain = new pm_Domain($this->getParam('domainId'));
-
-        // Check php is supported
-        $latestRequirements = Modules_Microweber_Helper::getLatestRequiredPhpVersionOfApp();
-
-        $hostingManager = new Modules_Microweber_HostingManager();
-        $hostingManager->setDomainId($domain->getId());
-        $hostingProperties = $hostingManager->getHostingProperties();
-        if (!$hostingProperties['php']) {
-            throw new pm_Exception('error', 'PHP is not activated on selected domain.');
-        }
-
-        $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
-        if (version_compare($phpHandler['version'], $latestRequirements['mwReleasePhpVersion'], '<')) {
-            throw new pm_Exception('PHP version ' . $phpHandler['version'] . ' is not supported by Microweber. You must install PHP '.$latestRequirements['mwReleasePhpVersion'].' or newer.');
-        }
-
 		$newInstallation = new Modules_Microweber_Install();
 		$newInstallation->setDomainId($this->getParam('domainId'));
 		$newInstallation->setType($this->getParam('type'));
@@ -60,9 +43,18 @@ class Modules_Microweber_Task_DomainAppInstall extends \pm_LongTask_Task
 		$status = $newInstallation->run();
 
         if (isset($status['error']) && $status['error']) {
+
+            $domain = new pm_Domain($this->getParam('domainId'));
+            Modules_Microweber_Domain::removeAppInstallation($domain, $this->getParam('path'));
+
             throw new pm_Exception($status['log']);
         }
 
+        $this->startDomainScan();
+	}
+
+    public function startDomainScan()
+    {
         // Domain scan
         $taskManager = new pm_LongTask_Manager();
         Modules_Microweber_Helper::stopTasks(['task_domainappinstallationcscan']);
@@ -70,7 +62,7 @@ class Modules_Microweber_Task_DomainAppInstall extends \pm_LongTask_Task
         $task->hidden = true;
         $task->setParam('domainId', $this->getParam('domainId'));
         $taskManager->start($task, NULL);
-	}
+    }
 
 	public function statusMessage()
 	{
