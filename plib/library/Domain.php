@@ -193,7 +193,7 @@ class Modules_Microweber_Domain
                 ];
 
                 if (!$appInstallationConfig['config_microweber']) {
-                    $refreshInstallationDetails['pending'] = true;
+                    $refreshInstallationDetails['error'] = true;
                 }
 
                 $refreshInstallations[] = [
