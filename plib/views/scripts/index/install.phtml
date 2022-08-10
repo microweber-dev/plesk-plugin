@@ -35,7 +35,7 @@ endif;
 */
 ?>
 
-<?php if ($this->hasDomains): ?>
+<?php if ($this->hasDomains && $this->showInstallForm): ?>
     <h3>Choose installation options</h3>
     <b>Random values will be generated if fields are left blank.</b>
     <br/>
@@ -44,26 +44,37 @@ endif;
         <?php echo $this->form; ?>
     </div>
 <?php else: ?>
-
     <h3>Make new installation</h3>
+<?php endif; ?>
 
-    <?php if (!$this->hasServicePlan): ?>
-    <?php endif;  ?>
 
-    <?php if (!$this->isPhpSupported): ?>
+<?php if ($this->isPhpSupported === false): ?>
     <?php foreach($this->notSupportedPlans as $notSupportedPlan): ?>
-    <div class="pul-alert pul-alert--danger">
-        <div class="pul-media">
-            <div class="pul-media__body">
-                <div class="pul-media__content">
-                    <img src="<?php echo pm_Context::getBaseUrl(); ?>images/delete-icon.png" alt="" title="">
-                    The service plan <b><?php echo $notSupportedPlan['name']; ?></b> does not support <b>PHP <?php echo $this->latestRequirements['mwReleasePhpVersion']; ?></b>.<br/>
-                    Please go to <a href="<?php echo $this->createNewServicePlanLink; ?>">Hosting Parameters</a> and enable the <?php echo $this->latestRequirements['mwReleasePhpVersion']; ?> php version.
+        <div class="pul-alert pul-alert--danger">
+            <div class="pul-media">
+                <div class="pul-media__body">
+                    <div class="pul-media__content">
+                        <img src="<?php echo pm_Context::getBaseUrl(); ?>images/delete-icon.png" alt="" title="">
+                        The service plan <b><?php echo $notSupportedPlan['name']; ?></b> does not support <b>PHP <?php echo $this->latestRequirements['mwReleasePhpVersion']; ?></b>.<br/>
+                        Please go to <a href="<?php echo $this->createNewServicePlanLink; ?>">Hosting Parameters</a> and enable the <?php echo $this->latestRequirements['mwReleasePhpVersion']; ?> php version.
+
+                        <a href="https://www.plesk.com/kb/support/how-to-install-remove-additional-php-versions-provided-by-plesk/"
+                           target="_blank">
+                            <img src="<?php echo pm_Context::getBaseUrl(); ?>images/info-icon.png" alt=""
+                                 title="How to edit hosting plan?">Help
+                        </a>
+
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     <?php endforeach;  ?>
+<?php endif;  ?>
+
+
+<?php if ($this->hasDomains === false): ?>
+
+    <?php if (!$this->hasServicePlan): ?>
     <?php endif;  ?>
 
     <div class="pul-alert pul-alert--danger">
