@@ -96,19 +96,6 @@ class Modules_Microweber_EventListener implements EventListener
                     return false;
                 }
 
-                if ($action == 'phys_hosting_update') {
-
-                    $taskManager = new pm_LongTask_Manager();
-
-                    Modules_Microweber_Helper::stopTasks(['task_domainappinstallationcscan']);
-
-                    $task = new Modules_Microweber_Task_DomainAppInstallationScan();
-                    $task->hidden = true;
-                    $task->setParam('domainId', $domain->getId());
-                    $taskManager->start($task, NULL);
-
-                }
-
                 $planItems = $domain->getPlanItems();
 
                 if (is_array($planItems)
