@@ -161,8 +161,9 @@ class Modules_Microweber_Install {
 
         $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
         if (version_compare($phpHandler['version'], $latestRequirements['mwReleasePhpVersion'], '<')) {
-            Modules_Microweber_Domain::removeAppInstallation($domain, $installationDirPath);
-            return ['success'=>false, 'error'=>true, 'log'=> 'PHP version ' . $phpHandler['version'] . ' is not supported by Microweber. You must install PHP '.$latestRequirements['mwReleasePhpVersion'].'.'];
+            $errorMessage = 'PHP version ' . $phpHandler['version'] . ' is not supported by Microweber. You must install PHP '.$latestRequirements['mwReleasePhpVersion'].'.';
+            Modules_Microweber_Domain::setErrorToAppInstallation($domain, $installationDirPath, $errorMessage);
+            return ['success'=>false, 'error'=>true, 'log'=> $errorMessage];
         }
         
         $this->setProgress(10);
@@ -179,14 +180,16 @@ class Modules_Microweber_Install {
 
             $domainSubscription = $hostingManager->getDomainSubscription($domain->getName());
             if (!$domainSubscription['webspace']) {
-                Modules_Microweber_Domain::removeAppInstallation($domain, $installationDirPath);
-                return ['success'=>false, 'error'=>true, 'log'=> 'Webspace is not found. Domain: ' . $domain->getName()];
+                $errorMessage = 'Webspace is not found. Domain: ' . $domain->getName();
+                Modules_Microweber_Domain::setErrorToAppInstallation($domain, $installationDirPath, $errorMessage);
+                return ['success'=>false, 'error'=>true, 'log'=> $errorMessage];
             }
 
             $databaseServerDetails = $hostingManager->getDatabaseServerByWebspaceId($domainSubscription['webspaceId']);
             if (!$databaseServerDetails) {
-                Modules_Microweber_Domain::removeAppInstallation($domain, $installationDirPath);
-                return ['success'=>false, 'error'=>true, 'log'=> 'Cannot find database servers for webspace. WebspaceId:' . $domainSubscription['webspaceId']];
+                $errorMessage = 'Cannot find database servers for webspace. WebspaceId:' . $domainSubscription['webspaceId'];
+                Modules_Microweber_Domain::setErrorToAppInstallation($domain, $installationDirPath, $errorMessage);
+                return ['success'=>false, 'error'=>true, 'log'=> $errorMessage];
             }
 
             $this->_databaseServerId = $databaseServerDetails['id'];
@@ -198,8 +201,9 @@ class Modules_Microweber_Install {
         	$newDb = $dbManager->createDatabase($dbName, $this->_databaseServerId);
         	
 	        if (isset($newDb['database']['add-db']['result']['errtext'])) {
-                Modules_Microweber_Domain::removeAppInstallation($domain, $installationDirPath);
-                return ['success'=>false, 'error'=>true, 'log'=> $newDb['database']['add-db']['result']['errtext']];
+                $errorMessage = $newDb['database']['add-db']['result']['errtext'];
+                Modules_Microweber_Domain::setErrorToAppInstallation($domain, $installationDirPath, $errorMessage);
+                return ['success'=>false, 'error'=>true, 'log'=> $errorMessage];
 	        }
 
 	        $this->setProgress(30);
@@ -209,8 +213,9 @@ class Modules_Microweber_Install {
 	        }
 	
 	        if (!$dbId) {
-                Modules_Microweber_Domain::removeAppInstallation($domain, $installationDirPath);
-                return ['success'=>false, 'error'=>true, 'log'=> 'Can\'t create database.'];
+                $errorMessage = 'Can\'t create database.';
+                Modules_Microweber_Domain::setErrorToAppInstallation($domain, $installationDirPath, $errorMessage);
+                return ['success'=>false, 'error'=>true, 'log'=> $errorMessage];
 	        }
 	
 	        if ($dbId) {
@@ -218,8 +223,9 @@ class Modules_Microweber_Install {
 	        }
 			
 	        if (isset($newUser['database']['add-db-user']['result']['errtext'])) {
-                Modules_Microweber_Domain::removeAppInstallation($domain, $installationDirPath);
-	            throw new \Exception($newUser['database']['add-db-user']['result']['errtext']);
+                $errorMessage = $newUser['database']['add-db-user']['result']['errtext'];
+                Modules_Microweber_Domain::setErrorToAppInstallation($domain, $installationDirPath, $errorMessage);
+	            throw new \Exception($errorMessage);
 	        }
 	        
 	        $this->setProgress(40);
@@ -410,7 +416,7 @@ class Modules_Microweber_Install {
         	return ['success'=>true, 'log'=> $artisan['stdout']];
         } catch (Exception $e) {
 
-            Modules_Microweber_Domain::removeAppInstallation($domain, $installationDirPath);
+            Modules_Microweber_Domain::setErrorToAppInstallation($domain, $installationDirPath, $e->getMessage());
 
             // Remove one count if installation failed, because top of the code we set +1
             pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() - 1));

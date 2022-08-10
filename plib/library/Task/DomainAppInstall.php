@@ -45,7 +45,8 @@ class Modules_Microweber_Task_DomainAppInstall extends \pm_LongTask_Task
         if (isset($status['error']) && $status['error']) {
 
             $domain = new pm_Domain($this->getParam('domainId'));
-            Modules_Microweber_Domain::removeAppInstallation($domain, $this->getParam('path'));
+
+            Modules_Microweber_Domain::setErrorToAppInstallation($domain, $this->getParam('path'), $status['error']);
 
             throw new pm_Exception($status['log']);
         }
@@ -55,12 +56,13 @@ class Modules_Microweber_Task_DomainAppInstall extends \pm_LongTask_Task
 
     public function startDomainScan()
     {
-        // Domain scan
-        $taskManager = new pm_LongTask_Manager();
         Modules_Microweber_Helper::stopTasks(['task_domainappinstallationcscan']);
+
         $task = new Modules_Microweber_Task_DomainAppInstallationScan();
         $task->hidden = true;
         $task->setParam('domainId', $this->getParam('domainId'));
+
+        $taskManager = new pm_LongTask_Manager();
         $taskManager->start($task, NULL);
     }
 
