@@ -380,6 +380,9 @@ class Modules_Microweber_Install {
                 Modules_Microweber_Log::debug('Domain already have a SSL.');
             }
 
+            // Set branding json
+            Modules_Microweber_WhiteLabelBranding::applyToInstallation($domain, $installationDirPath);
+
         	// Save domain settings
             $saveDomainSettings = [
                 'admin_email'=>$adminEmail,
@@ -391,9 +394,6 @@ class Modules_Microweber_Install {
             ];
             Modules_Microweber_Domain::setMwOption($domain, 'mw_settings_' . md5($installationDirPath), $saveDomainSettings);
 
-            // Set branding json
-            Modules_Microweber_WhiteLabelBranding::applyToInstallation($domain, $installationDirPath);
-        	
         	return ['success'=>true, 'log'=> $artisan['stdout']];
         } catch (Exception $e) {
 
