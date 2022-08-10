@@ -12,6 +12,21 @@ class Modules_Microweber_Task_DomainAppInstall extends \pm_LongTask_Task
 
 	public function run()
 	{
+        $domain = new pm_Domain($this->getParam('domainId'));
+
+        // Check php is supported
+        $hostingManager = new Modules_Microweber_HostingManager();
+        $hostingManager->setDomainId($domain->getId());
+        $hostingProperties = $hostingManager->getHostingProperties();
+        if (!$hostingProperties['php']) {
+            throw new pm_Exception('error', 'PHP is not activated on selected domain.');
+        }
+
+        $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
+        if (version_compare($phpHandler['version'], '7.2', '<')) {
+            throw new pm_Exception('PHP version ' . $phpHandler['version'] . ' is not supported by Microweber. You must install PHP 7.2 or newer.');
+        }
+
 		$newInstallation = new Modules_Microweber_Install();
 		$newInstallation->setDomainId($this->getParam('domainId'));
 		$newInstallation->setType($this->getParam('type'));
@@ -52,7 +67,7 @@ class Modules_Microweber_Task_DomainAppInstall extends \pm_LongTask_Task
         $task = new Modules_Microweber_Task_DomainAppInstallationScan();
         $task->hidden = true;
         $task->setParam('domainId', $this->getParam('domainId'));
-        $taskManager->start($task, NULL); 
+        $taskManager->start($task, NULL);
 	}
 
 	public function statusMessage()
