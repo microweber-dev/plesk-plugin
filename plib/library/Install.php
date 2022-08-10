@@ -155,12 +155,12 @@ class Modules_Microweber_Install {
 
         $hostingProperties = $hostingManager->getHostingProperties();
         if (!$hostingProperties['php']) {
-            throw new \Exception('PHP is not activated on selected domain.');
+            return ['success'=>false, 'error'=>true, 'log'=> 'PHP is not activated on selected domain.'];
         }
 
         $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
         if (version_compare($phpHandler['version'], $latestRequirements['mwReleasePhpVersion'], '<')) {
-            throw new \Exception('PHP version ' . $phpHandler['version'] . ' is not supported by Microweber. You must install PHP '.$latestRequirements['mwReleasePhpVersion'].'.');
+            return ['success'=>false, 'error'=>true, 'log'=> 'PHP version ' . $phpHandler['version'] . ' is not supported by Microweber. You must install PHP '.$latestRequirements['mwReleasePhpVersion'].'.'];
         }
         
         $this->setProgress(10);
@@ -177,12 +177,12 @@ class Modules_Microweber_Install {
 
             $domainSubscription = $hostingManager->getDomainSubscription($domain->getName());
             if (!$domainSubscription['webspace']) {
-                throw new \Exception('Webspace is not found. Domain: ' . $domain->getName());
+                return ['success'=>false, 'error'=>true, 'log'=> 'Webspace is not found. Domain: ' . $domain->getName()];
             }
 
             $databaseServerDetails = $hostingManager->getDatabaseServerByWebspaceId($domainSubscription['webspaceId']);
             if (!$databaseServerDetails) {
-                throw new \Exception('Cannot find database servers for webspace. WebspaceId:' . $domainSubscription['webspaceId']);
+                return ['success'=>false, 'error'=>true, 'log'=> 'Cannot find database servers for webspace. WebspaceId:' . $domainSubscription['webspaceId']];
             }
 
             $this->_databaseServerId = $databaseServerDetails['id'];
@@ -194,7 +194,7 @@ class Modules_Microweber_Install {
         	$newDb = $dbManager->createDatabase($dbName, $this->_databaseServerId);
         	
 	        if (isset($newDb['database']['add-db']['result']['errtext'])) {
-	            throw new \Exception($newDb['database']['add-db']['result']['errtext']);
+                return ['success'=>false, 'error'=>true, 'log'=> $newDb['database']['add-db']['result']['errtext']];
 	        }
 
 	        $this->setProgress(30);
@@ -204,7 +204,7 @@ class Modules_Microweber_Install {
 	        }
 	
 	        if (!$dbId) {
-	            throw new \Exception('Can\'t create database.');
+                return ['success'=>false, 'error'=>true, 'log'=> 'Can\'t create database.'];
 	        }
 	
 	        if ($dbId) {
