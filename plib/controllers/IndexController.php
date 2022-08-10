@@ -1109,13 +1109,11 @@ class IndexController extends Modules_Microweber_BasepluginController
         $fileManager = new \pm_FileManager($domain->getId());
 
         if (!$fileManager->fileExists($appInstallationPath . '/config/microweber.php')) {
-            Modules_Microweber_Domain::setMwOption($domain, 'mwAppInstallations', false);
             $this->_helper->json(['message'=>'This is not microweber installation']);
             return;
         }
 
         if (!$fileManager->isDir($appInstallationPath)) {
-            Modules_Microweber_Domain::setMwOption($domain, 'mwAppInstallations', false);
             $this->_helper->json(['message'=>'Domain directory not found.']);
             return;
         }
@@ -1130,16 +1128,42 @@ class IndexController extends Modules_Microweber_BasepluginController
             return;
         }
 
-        // Delete domain file
-        pm_ApiCli::callSbin('filemng', [
-            $domain->getSysUserLogin(),
-            'exec',
-            $domain->getDocumentRoot(),
-            'rm',
-            '-rf',
-            $appInstallationPath . '/'
+        $filesForDelete = [
+          'src',
+          'resources',
+          'vendor',
+          'storage',
+          'userfiles',
+          'bootstrap',
+          'config',
+          'database',
+          '.env',
+          '.htaccess',
+          'artisan',
+          'composer.json',
+          'favicon.ico',
+          'index.php',
+          'version.txt',
+        ];
 
-        ], pm_ApiCli::RESULT_FULL);
+        if (!empty($filesForDelete)) {
+            foreach ($filesForDelete as $deleteFile) {
+
+                // Delete domain file
+                pm_ApiCli::callSbin('filemng', [
+                    $domain->getSysUserLogin(),
+                    'exec',
+                    $domain->getDocumentRoot(),
+                    'rm',
+                    '-rf',
+                    $appInstallationPath . '/' . $deleteFile
+
+                ], pm_ApiCli::RESULT_FULL);
+
+            }
+        }
+
+        Modules_Microweber_Domain::removeAppInstallation($domain, $appInstallationPath);
 
         Modules_Microweber_Helper::stopTasks(['task_domainappinstallationscan']);
 
