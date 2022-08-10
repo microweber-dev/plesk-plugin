@@ -476,6 +476,34 @@ class IndexController extends Modules_Microweber_BasepluginController
             $hostingManager = new Modules_Microweber_HostingManager();
             $servicePlans = $hostingManager->getServicePlans();
 
+            $this->view->isPhpSupported = false;
+            $supportedPlans = [];
+            if (!empty($servicePlans)) {
+                foreach ($servicePlans as &$hostingPlan) {
+                    if(isset($hostingPlan['hosting']['vrt_hst']['property'])) {
+                        foreach ($hostingPlan['hosting']['vrt_hst']['property'] as $property) {
+                            if ($property['name'] == 'php_handler_id') {
+                                $phpHandler = $hostingManager->getPhpHandler($property['value']);
+                                $hostingPlan['php-handler'] = $phpHandler;
+                                if (version_compare($phpHandler['version'], $this->view->latestRequirements['mwReleasePhpVersion'], '>')) {
+                                    $supportedPlans[] = $hostingPlan;
+                                } else {
+                                    $notSupportedPlans[] = [
+                                        'name'=>$hostingPlan['name'],
+                                        'php_version'=>$phpHandler['version'],
+                                    ];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            $this->view->notSupportedPlans = $notSupportedPlans;
+            if (count($supportedPlans) == count($servicePlans)) {
+                $this->view->isPhpSupported = true;
+            }
+
             if (!empty($servicePlans)) {
                 $this->view->hasServicePlan = true;
             }
