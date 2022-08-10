@@ -179,6 +179,19 @@ class Modules_Microweber_Domain
         return $installations;
     }
 
+    public static function removeAppInstallation($domain, $appInstallationPath)
+    {
+        $mwAppInstallations = Modules_Microweber_Domain::getMwOption($domain,'mwAppInstallations');
+
+        if (!is_array($mwAppInstallations)) {
+            $mwAppInstallations = [];
+        }
+
+        unset($mwAppInstallations[md5($appInstallationPath)]);
+
+        Modules_Microweber_Domain::setMwOption($domain,'mwAppInstallations', $mwAppInstallations);
+    }
+
     public static function addAppInstallation($domain, $appInstallation)
     {
         $appInstallation['domainId'] = $domain->getId();
