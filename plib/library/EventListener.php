@@ -148,65 +148,51 @@ class Modules_Microweber_EventListener implements EventListener
 
     private function _installMicroweber($domain, $newValues)
     {
-        try {
+        $installationDomainPath = $domain->getName();
+        $installationDirPath = $domain->getDocumentRoot();
 
-            // Save pending installation
-            $installationDomainPath = $domain->getName();
-            $installationDirPath = $domain->getDocumentRoot();
+        $whmcsConnector = new Modules_Microweber_WhmcsConnector();
+        $whmcsConnector->setDomainName($domain->getName());
+        $selectedTemplate = $whmcsConnector->getSelectedTemplate();
 
-            $installationType = 'Standalone';
-            if (pm_Settings::get('installation_type') == 'symlink') {
-                $installationType = 'Symlinked';
-            }
-
-            Modules_Microweber_Domain::addAppInstallation($domain, [
-                'domainNameUrl' => $installationDomainPath,
-                'domainCreation' => $domain->getProperty('cr_date'),
-                'installationType' => $installationType,
-                'appVersion' => '-',
-                'appInstallation' => $installationDirPath,
-                'domainIsActive' => true,
-                'manageDomainUrl' => '',
-                'pending' => true,
-                'created_at' => date('Y-m-d H:i:s'),
-            ]);
-            pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() + 1));
-
-            $whmcsConnector = new Modules_Microweber_WhmcsConnector();
-            $whmcsConnector->setDomainName($domain->getName());
-            $selectedTemplate = $whmcsConnector->getSelectedTemplate();
-
-            $newInstallation = new Modules_Microweber_Install();
-            $newInstallation->setDomainId($domain->getId());
-            $newInstallation->setType(pm_Settings::get('installation_type'));
-            $newInstallation->setDatabaseDriver(pm_Settings::get('installation_database_driver'));
-            $newInstallation->setUsername($newValues['System User']);
-            $newInstallation->setEmail($newValues['System User']);
-            $newInstallation->setPassword($newValues['System User Password']);
-
-            if (!empty($selectedTemplate)) {
-                $newInstallation->setTemplate($selectedTemplate);
-            }
-
-            $newInstallation->run();
-
-            // Scan domains again
-            $taskManager = new pm_LongTask_Manager();
-
-            Modules_Microweber_Helper::stopTasks(['task_domainappinstallationcscan']);
-
-            $task = new Modules_Microweber_Task_DomainAppInstallationScan();
-            $task->hidden = true;
-            $task->setParam('domainId', $domain->getId());
-            $taskManager->start($task, NULL);
-
-        } catch (pm_Exception $e) {
-            pm_Settings::set('domain_issue_' . $domain->getId(), pm_Locale::lmsg('microweberError', [
-                'domain' => $domain->getDisplayName(),
-                'package' => $domain->getPlanItems()[0],
-                'error' => $e->getMessage()
-            ]));
+        $installationType = 'Standalone';
+        if (pm_Settings::get('installation_type') == 'symlink') {
+            $installationType = 'Symlinked';
         }
+
+        Modules_Microweber_Domain::addAppInstallation($domain, [
+            'domainNameUrl' => $installationDomainPath,
+            'domainCreation' => $domain->getProperty('cr_date'),
+            'installationType' => $installationType,
+            'appVersion' => '-',
+            'appInstallation' => $installationDirPath,
+            'domainIsActive' => true,
+            'manageDomainUrl' => '',
+            'pending' => true,
+            'created_at' => date('Y-m-d H:i:s'),
+        ]);
+        pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() + 1));
+
+        $task = new Modules_Microweber_Task_DomainAppInstall();
+        $task->setParam('domainId', $domain->getId());
+        $task->setParam('domainName', $domain->getName());
+        $task->setParam('domainDisplayName', $domain->getDisplayName());
+        $task->setParam('type', pm_Settings::get('installation_type'));
+        $task->setParam('databaseDriver', pm_Settings::get('installation_database_driver'));
+        //$task->setParam('databaseServerId', $post['installation_database_server_id']);
+        $task->setParam('path', $installationDirPath);
+
+        if (!empty($selectedTemplate)) {
+            $task->setParam('template', $selectedTemplate);
+        }
+
+        $task->setParam('language', pm_Settings::get('installation_language'));
+        $task->setParam('email', $newValues['System User']);
+        $task->setParam('username', $newValues['System User']);
+        $task->setParam('password', $newValues['System User Password']);
+
+        $taskManager = new pm_LongTask_Manager();
+        $taskManager->start($task, $domain);
     }
 }
 
