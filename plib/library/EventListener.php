@@ -153,6 +153,7 @@ class Modules_Microweber_EventListener implements EventListener
             // Save pending installation
             $installationDomainPath = $domain->getName();
             $installationDirPath = $domain->getDocumentRoot();
+
             $installationType = 'Standalone';
             if (pm_Settings::get('installation_type') == 'symlink') {
                 $installationType = 'Symlinked';
