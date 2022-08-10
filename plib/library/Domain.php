@@ -83,17 +83,25 @@ class Modules_Microweber_Domain
         }
 
         foreach ($allDirs as $dir) {
+
+            if (!is_dir($domainDocumentRoot . '/' . $dir . '/userfiles/modules')) {
+                continue;
+            }
+
             if (!is_dir($domainDocumentRoot . '/' . $dir . '/config/')) {
                 continue;
             }
-            if (is_file($domainDocumentRoot . '/' . $dir . '/config/microweber.php')) {
-                $installationsFind[] = $domainDocumentRoot . '/' . $dir . '/config/microweber.php';
+
+            if (is_file($domainDocumentRoot . '/' . $dir . '/config/app.php')) {
+                $installationsFind[] = $domainDocumentRoot . '/' . $dir . '/config/app.php';
             }
         }
 
-        if (is_dir($domainDocumentRoot . '/config/')) {
-            if (is_file($domainDocumentRoot . '/config/microweber.php')) {
-                $installationsFind[] = $domainDocumentRoot . '/config/microweber.php';
+        if (is_dir($domainDocumentRoot . '/userfiles/modules')) {
+            if (is_dir($domainDocumentRoot . '/config/')) {
+                if (is_file($domainDocumentRoot . '/config/app.php')) {
+                    $installationsFind[] = $domainDocumentRoot . '/config/app.php';
+                }
             }
         }
 
@@ -111,7 +119,7 @@ class Modules_Microweber_Domain
                     continue;
                 }
 
-                $appInstallation = str_replace('/config/microweber.php', '', $appInstallationConfig);
+                $appInstallation = str_replace('/config/app.php', '', $appInstallationConfig);
 
                 // Find app in main folder
                 if ($fileManager->fileExists($appInstallation . '/version.txt')) {
