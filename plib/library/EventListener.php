@@ -179,8 +179,6 @@ class Modules_Microweber_EventListener implements EventListener
         $task->setParam('domainDisplayName', $domain->getDisplayName());
         $task->setParam('type', pm_Settings::get('installation_type'));
         $task->setParam('databaseDriver', pm_Settings::get('installation_database_driver'));
-        //$task->setParam('databaseServerId', $post['installation_database_server_id']);
-        $task->setParam('path', $installationDirPath);
 
         if (!empty($selectedTemplate)) {
             $task->setParam('template', $selectedTemplate);
