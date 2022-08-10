@@ -46,13 +46,13 @@ class Modules_Microweber_Task_DomainAppInstall extends \pm_LongTask_Task
             throw new pm_Exception($status['log']);
         }
 
-       /* // Domain scan
+        // Domain scan
         $taskManager = new pm_LongTask_Manager();
         Modules_Microweber_Helper::stopTasks(['task_domainappinstallationcscan']);
         $task = new Modules_Microweber_Task_DomainAppInstallationScan();
         $task->hidden = true;
         $task->setParam('domainId', $this->getParam('domainId'));
-        $taskManager->start($task, NULL);*/
+        $taskManager->start($task, NULL); 
 	}
 
 	public function statusMessage()
