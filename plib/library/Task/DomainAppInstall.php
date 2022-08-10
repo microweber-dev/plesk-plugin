@@ -15,6 +15,8 @@ class Modules_Microweber_Task_DomainAppInstall extends \pm_LongTask_Task
         $domain = new pm_Domain($this->getParam('domainId'));
 
         // Check php is supported
+        $latestRequirements = Modules_Microweber_Helper::getLatestRequiredPhpVersionOfApp();
+
         $hostingManager = new Modules_Microweber_HostingManager();
         $hostingManager->setDomainId($domain->getId());
         $hostingProperties = $hostingManager->getHostingProperties();
@@ -23,8 +25,8 @@ class Modules_Microweber_Task_DomainAppInstall extends \pm_LongTask_Task
         }
 
         $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
-        if (version_compare($phpHandler['version'], '7.2', '<')) {
-            throw new pm_Exception('PHP version ' . $phpHandler['version'] . ' is not supported by Microweber. You must install PHP 7.2 or newer.');
+        if (version_compare($phpHandler['version'], $latestRequirements['mwReleasePhpVersion'], '<')) {
+            throw new pm_Exception('PHP version ' . $phpHandler['version'] . ' is not supported by Microweber. You must install PHP '.$latestRequirements['mwReleasePhpVersion'].' or newer.');
         }
 
 		$newInstallation = new Modules_Microweber_Install();
