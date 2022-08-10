@@ -99,6 +99,8 @@ class Modules_Microweber_Install {
             throw new \Exception($domain->getName() . ' domain not found.');
         }
 
+        $latestRequirements = Modules_Microweber_Helper::getLatestRequiredPhpVersionOfApp();
+
         $domainDocumentRoot = $domain->getDocumentRoot();
         $installationDirPath = $domain->getDocumentRoot();
         if ($this->_path && !empty($this->_path)) {
@@ -155,7 +157,11 @@ class Modules_Microweber_Install {
         if (!$hostingProperties['php']) {
             throw new \Exception('PHP is not activated on selected domain.');
         }
+
         $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
+        if (version_compare($phpHandler['version'], $latestRequirements['mwReleasePhpVersion'], '<')) {
+            throw new \Exception('PHP version ' . $phpHandler['version'] . ' is not supported by Microweber. You must install PHP '.$latestRequirements['mwReleasePhpVersion'].'.');
+        }
         
         $this->setProgress(10);
 
