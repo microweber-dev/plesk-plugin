@@ -705,7 +705,7 @@ class IndexController extends Modules_Microweber_BasepluginController
 
             $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
             if (version_compare($phpHandler['version'], $this->view->latestRequirements['mwReleasePhpVersion'], '<')) {
-                $this->_status->addMessage('error', 'PHP version ' . $phpHandler['version'] . ' is not supported by Microweber. You must install PHP '.$this->view->latestRequirements['mwReleasePhpVersion'].' or newer.');
+                $this->_status->addMessage('error', 'Domain '.$domainName.' has PHP ' . $phpHandler['version'] . ' and is not supported by Microweber. You must install PHP '.$this->view->latestRequirements['mwReleasePhpVersion'].' or newer.');
                 $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/install']);
             }
 
