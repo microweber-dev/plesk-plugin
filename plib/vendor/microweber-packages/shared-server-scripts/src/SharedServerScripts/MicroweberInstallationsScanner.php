@@ -52,6 +52,10 @@ class MicroweberInstallationsScanner
                 $skip = false;
             }
 
+            if (strpos($file->getPathname(), '/backup_files/') !== false) {
+                $skip = true;
+            }
+
             if ($skip) {
                 continue;
             }

@@ -1,6 +1,8 @@
 <?php
 namespace MicroweberPackages\SharedServerScripts\FileManager\Adapters;
 
+use Mockery\Exception;
+
 class NativeFileManager implements IFileManager
 {
 
@@ -161,7 +163,13 @@ class NativeFileManager implements IFileManager
      */
     public function symlink($target, $link)
     {
-        return symlink($target, $link);
+        try {
+            $exec = symlink($target, $link);
+        } catch (\Exception $e) {
+            throw new \Exception(json_encode(['args'=> func_get_args(),'message'=>$e->getMessage()], JSON_PRETTY_PRINT));
+        }
+
+        return $exec;
     }
 
     /**
@@ -194,10 +202,23 @@ class NativeFileManager implements IFileManager
         );
 
         foreach ($files as $fileinfo) {
-            $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
-            @$todo($fileinfo->getRealPath());
+
+            if ($fileinfo->isLink()) {
+                unlink($fileinfo->getPathName()); // must be path name, cause will delete the source of symlink
+            }
+
+            if ($fileinfo->isDir()) {
+                rmdir($fileinfo->getRealPath());
+            }
+
+            if ($fileinfo->isFile()) {
+                unlink($fileinfo->getRealPath());
+            }
         }
 
-        @rmdir($dir);
+        if (is_dir($dir)) {
+            rmdir($dir);
+        }
+
     }
 }

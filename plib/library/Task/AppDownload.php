@@ -58,6 +58,9 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
         $task = new Modules_Microweber_Task_TemplatesDownload();
         $taskManager->start($task, NULL);
 
+        // Fix missing configs
+        $task = new Modules_Microweber_Task_AppFixMissingConfigs();
+        $this->taskManager->start($task, NULL);
 	}
 
 	public function statusMessage()

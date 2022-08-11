@@ -136,8 +136,14 @@ class MicroweberAppPathHelper
     {
 
         if (!$this->isInstalled()) {
+
             $templates = [];
-            $scan = $this->fileManager->scanDir($this->path . '/userfiles/templates');
+            $templatePath = $this->path . '/userfiles/templates';
+            if (!$this->fileManager->isDir($templatePath)) {
+                return [];
+            }
+
+            $scan = $this->fileManager->scanDir($templatePath);
             if (!empty($scan)) {
                 foreach ($scan as $dir) {
                     if ($dir == '.' || $dir == '..') {
@@ -179,8 +185,16 @@ class MicroweberAppPathHelper
     public function getSupportedLanguages()
     {
         if (!$this->isInstalled()) {
-            $languages = [];
-            $scan = $this->fileManager->scanDir($this->path . '/src/MicroweberPackages/Translation/resources/lang');
+            $langDir = $this->path . '/src/MicroweberPackages/Translation/resources/lang';
+            if (!$this->fileManager->isDir($langDir)) {
+                return [];
+            }
+            $languages = [
+                'en_US'=>'EN_US',
+                'bg_BG'=>'BG_BG',
+                'ar_SA'=>'AR_SA'
+            ];
+            $scan = $this->fileManager->scanDir($langDir);
             if (!empty($scan)) {
                 foreach ($scan as $dir) {
                     if ($dir == '.' || $dir == '..') {

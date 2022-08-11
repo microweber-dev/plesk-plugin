@@ -42,22 +42,28 @@ class MicroweberUninstaller {
 
     public function run()
     {
+        $deletedFiles = [];
 
         $files = $this->_getFilesForDelete();
+
         foreach ($files as $file) {
-            $deleteFile = $this->path . $file;
+            $deleteFile = $this->path . DIRECTORY_SEPARATOR . $file;
             if ($this->fileManager->isFile($deleteFile)) {
                 $this->fileManager->unlink($deleteFile);
+                $deletedFiles[] = $file;
             }
         }
 
         $dirs = $this->_getDirsForDelete();
         foreach ($dirs as $dir) {
-            $deleteDir = $this->path . $dir;
+            $deleteDir = $this->path . DIRECTORY_SEPARATOR . $dir;
             if ($this->fileManager->isDir($deleteDir)) {
                 $this->fileManager->rmdirRecursive($deleteDir);
+                $deletedFiles[] = $file;
             }
         }
+
+        return ['done'=>true,'deleted'=>$deletedFiles];
     }
 
 

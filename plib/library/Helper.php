@@ -8,6 +8,30 @@
 
 class Modules_Microweber_Helper
 {
+    public static function fixMissingConfigOnDomains()
+    {
+        $sfm = new pm_ServerFileManager();
+
+        foreach (Modules_Microweber_Domain::getDomains() as $domain) {
+            if (!$domain->hasHosting()) {
+                continue;
+            }
+
+            $domainInstallations = Modules_Microweber_Domain::getMwOption($domain, 'mwAppInstallations');
+            if (empty($domainInstallations)) {
+                continue;
+            }
+
+            foreach ($domainInstallations as $installation) {
+
+                var_dump($installation);
+                die();
+
+            }
+        }
+    }
+
+
     public static function showMicroweberButtons()
     {
         // Check app is installed

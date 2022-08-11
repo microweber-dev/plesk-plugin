@@ -16,6 +16,14 @@ class Modules_Microweber_Task_AppVersionCheck extends \pm_LongTask_Task
 
 	public function run()
 	{
+        // Fix missing configs
+        $taskManager = new pm_LongTask_Manager();
+        $task = new Modules_Microweber_Task_AppFixMissingConfigs();
+        $taskManager->start($task, NULL);
+
+        $this->updateProgress(100);
+        return;
+
 		$this->updateProgress(10);
 
         if (!Modules_Microweber_Helper::isAvailableDiskSpace()) {

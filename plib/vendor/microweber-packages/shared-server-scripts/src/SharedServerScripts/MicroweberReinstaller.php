@@ -7,69 +7,139 @@ class MicroweberReinstaller extends MicroweberInstaller {
 
     public function run()
     {
-        return;
-        
-        // First we will make a directories
-        foreach ($this->_getDirsToMake() as $dir) {
-            if (!$this->fileManager->isDir($this->path . '/' . $dir)) {
-                $this->fileManager->mkdir($this->path . '/' . $dir, '0755', true);
-            }
+        if ($this->type == self::TYPE_SYMLINK) {
+            return $this->runSymlinkReinstall();
         }
+
+        if ($this->type == self::TYPE_STANDALONE) {
+            return $this->runStandaloneReinstall();
+        }
+    }
+
+
+    public function runSymlinkReinstall()
+    {
+        $this->enableChownAfterInstall();
 
         foreach ($this->_getFilesForSymlinking() as $fileOrFolder) {
 
             $sourceDirOrFile = $this->sourcePath . '/' . $fileOrFolder;
             $targetDirOrFile = $this->path . '/' . $fileOrFolder;
 
-            if ($this->type == self::TYPE_SYMLINK) {
-                // Create symlink
-                if ($this->fileManager->isFile($targetDirOrFile)) {
-                    $this->fileManager->unlink($targetDirOrFile);
-                } else {
-                    $this->fileManager->rmdirRecursive($targetDirOrFile);
-                }
-
-                $this->fileManager->symlink($sourceDirOrFile, $targetDirOrFile);
-            } else {
-                if ($this->fileManager->isDir($sourceDirOrFile)) {
-
-                    // if dir exist we will skip copy folder
-                    if ($this->fileManager->isDir($targetDirOrFile)) {
-                        $this->fileManager->rmdirRecursive($targetDirOrFile);
-                    }
-
-                    $this->fileManager->copyFolder($sourceDirOrFile, $targetDirOrFile);
-
-                } else {
-                    $this->fileManager->copy($sourceDirOrFile, $targetDirOrFile);
-                }
-            }
-        }
-
-
-        // And then we will copy folders
-        foreach ($this->_getDirsToCopy() as $folder) {
-            $sourceDir = $this->sourcePath .'/'. $folder;
-            $targetDir = $this->path .'/'. $folder;
-            if ($this->fileManager->isDir($targetDir)) {
+            // Skip symlinked file
+            if ($this->fileManager->isLink($targetDirOrFile)) {
                 continue;
             }
-            $this->fileManager->copyFolder($sourceDir, $targetDir);
+
+            if ($this->fileManager->isDir($targetDirOrFile)) {
+                $this->fileManager->rmdirRecursive($targetDirOrFile);
+            }
+
+            if ($this->fileManager->isFile($targetDirOrFile)) {
+                $this->fileManager->unlink($targetDirOrFile);
+            }
+
+            // Create symlink
+            $this->fileManager->symlink($sourceDirOrFile, $targetDirOrFile);
+        }
+
+        $this->addMissingConfigFiles();
+
+        $this->_chownFolders();
+    }
+
+    public function runStandaloneReinstall()
+    {
+        $this->enableChownAfterInstall();
+
+        foreach ($this->_getFilesForSymlinking() as $fileOrFolder) {
+
+            $sourceDirOrFile = $this->sourcePath . '/' . $fileOrFolder;
+            $targetDirOrFile = $this->path . '/' . $fileOrFolder;
+
+            // Delete symlink
+            if ($this->fileManager->isLink($targetDirOrFile)) {
+                $this->fileManager->unlink($targetDirOrFile);
+            }
+
+            // Delete file
+            if ($this->fileManager->isFile($targetDirOrFile)) {
+                $this->fileManager->unlink($targetDirOrFile);
+            }
+
+            // Delete folder
+            if ($this->fileManager->isDir($sourceDirOrFile)) {
+                if ($this->fileManager->isDir($targetDirOrFile)) {
+                    $this->fileManager->rmdirRecursive($targetDirOrFile);
+                }
+                $this->fileManager->copyFolder($sourceDirOrFile, $targetDirOrFile);
+            }
+
         }
 
         // And then we will copy files
         foreach ($this->_getFilesForCopy() as $file) {
-            $sourceFile = $this->sourcePath .'/'. $file;
-            $targetFile = $this->path .'/'. $file;
-            if ($this->fileManager->isFile($targetFile)) {
-                continue;
+
+            $sourceDirOrFile = $this->sourcePath .'/'. $file;
+            $targetDirOrFile = $this->path .'/'. $file;
+
+            if ($this->fileManager->isFile($targetDirOrFile)) {
+                unlink($targetDirOrFile);
             }
-            $this->fileManager->copy($sourceFile, $targetFile);
+
+            $this->fileManager->copy($sourceDirOrFile, $targetDirOrFile);
         }
 
-        $this->_chownFolders();
+        $this->addMissingConfigFiles();
 
+        $this->_chownFolders();
     }
 
+    public function addMissingConfigFiles()
+    {
+        $sourceDirOfConfigs = [];
+        $sourceDirOfConfigsList = $this->fileManager->scanDir($this->sourcePath . '/config');
+        if (!empty($sourceDirOfConfigsList)) {
+            foreach ($sourceDirOfConfigsList as $configFile) {
+                if ($configFile == '.' || $configFile == '..') {
+                    continue;
+                }
+                $sourceDirOfConfigs[] = $configFile;
+            }
+        }
+
+
+        $targetDirOfConfigs = [];
+        $targetDirOfConfigsList = $this->fileManager->scanDir($this->path . '/config');
+        if (!empty($targetDirOfConfigsList)) {
+            foreach ($targetDirOfConfigsList as $targetConfigFile) {
+                if ($targetConfigFile == '.' || $targetConfigFile == '..') {
+                    continue;
+                }
+                $targetDirOfConfigs[] = $targetConfigFile;
+            }
+        }
+
+
+        $missingConfigs = [];
+        foreach ($sourceDirOfConfigs as $sourceConfig) {
+            if (!in_array($sourceConfig, $targetDirOfConfigs)) {
+                $missingConfigs[] = $sourceConfig;
+            }
+        }
+
+        if (!empty($missingConfigs)) {
+            foreach ($missingConfigs as $missingConfig) {
+
+                $sourceConfigFile = $this->sourcePath . '/config/'.$missingConfig;
+                $targetConfigFile = $this->path .'/config/' . $missingConfig;
+
+                if (!$this->fileManager->fileExists($targetConfigFile)) {
+                    $this->fileManager->copy($sourceConfigFile, $targetConfigFile);
+                }
+            }
+        }
+
+    }
 
 }

@@ -76,6 +76,11 @@ class IndexController extends Modules_Microweber_BasepluginController
 
     public function indexAction()
     {
+
+
+        var_dump(Modules_Microweber_Helper::fixMissingConfigOnDomains());
+        die();
+
         if (pm_Session::getClient()->isAdmin()) {
             Modules_Microweber_Helper::checkAndFixSchedulerTasks();
         }

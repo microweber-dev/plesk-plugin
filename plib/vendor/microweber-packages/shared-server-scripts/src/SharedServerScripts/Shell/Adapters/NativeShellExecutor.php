@@ -19,9 +19,9 @@ class NativeShellExecutor implements IShellExecutor
         return $this->executeCommand($processArgs);
     }
 
-    public function executeCommand(array $args)
+    public function executeCommand(array $args, $cwd = null, $env = null)
     {
-        $process = new Process($args);
+        $process = new Process($args, $cwd, $env);
         $process->setTimeout(100000);
         $process->mustRun();
 

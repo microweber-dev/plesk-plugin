@@ -55,17 +55,17 @@
         },
         {
             "name": "microweber-packages/shared-server-scripts",
-            "version": "0.1",
-            "version_normalized": "0.1.0.0",
+            "version": "0.2",
+            "version_normalized": "0.2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/microweber-packages/shared-server-scripts.git",
-                "reference": "2e2d4896b5ed6b864ce7d7695debb65ae4a21dfb"
+                "reference": "5aab497ec1f8e32c4e6d9d53ec08b33af1cf270a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/microweber-packages/shared-server-scripts/zipball/2e2d4896b5ed6b864ce7d7695debb65ae4a21dfb",
-                "reference": "2e2d4896b5ed6b864ce7d7695debb65ae4a21dfb",
+                "url": "https://api.github.com/repos/microweber-packages/shared-server-scripts/zipball/5aab497ec1f8e32c4e6d9d53ec08b33af1cf270a",
+                "reference": "5aab497ec1f8e32c4e6d9d53ec08b33af1cf270a",
                 "shasum": ""
             },
             "require": {
@@ -79,7 +79,7 @@
                 "phpunit/phpunit": "^8.0 || ^9.0",
                 "symfony/var-dumper": "^5.4"
             },
-            "time": "2022-06-28T19:48:02+00:00",
+            "time": "2022-08-09T13:18:29+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -106,23 +106,23 @@
             "support": {
                 "email": "support@microweber.com",
                 "issues": "https://github.com/microweber-packages/shared-server-scripts/issues",
-                "source": "https://github.com/microweber-packages/shared-server-scripts/tree/0.1"
+                "source": "https://github.com/microweber-packages/shared-server-scripts/tree/0.2"
             },
             "install-path": "../microweber-packages/shared-server-scripts"
         },
         {
             "name": "symfony/filesystem",
-            "version": "v5.4.9",
-            "version_normalized": "5.4.9.0",
+            "version": "v5.4.11",
+            "version_normalized": "5.4.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "36a017fa4cce1eff1b8e8129ff53513abcef05ba"
+                "reference": "6699fb0228d1bc35b12aed6dd5e7455457609ddd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/36a017fa4cce1eff1b8e8129ff53513abcef05ba",
-                "reference": "36a017fa4cce1eff1b8e8129ff53513abcef05ba",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/6699fb0228d1bc35b12aed6dd5e7455457609ddd",
+                "reference": "6699fb0228d1bc35b12aed6dd5e7455457609ddd",
                 "shasum": ""
             },
             "require": {
@@ -131,7 +131,7 @@
                 "symfony/polyfill-mbstring": "~1.8",
                 "symfony/polyfill-php80": "^1.16"
             },
-            "time": "2022-05-20T13:55:35+00:00",
+            "time": "2022-07-20T13:00:38+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -159,7 +159,7 @@
             "description": "Provides basic utilities for the filesystem",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/filesystem/tree/v5.4.9"
+                "source": "https://github.com/symfony/filesystem/tree/v5.4.11"
             },
             "funding": [
                 {
@@ -436,24 +436,24 @@
         },
         {
             "name": "symfony/process",
-            "version": "v5.4.8",
-            "version_normalized": "5.4.8.0",
+            "version": "v5.4.11",
+            "version_normalized": "5.4.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "597f3fff8e3e91836bb0bd38f5718b56ddbde2f3"
+                "reference": "6e75fe6874cbc7e4773d049616ab450eff537bf1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/597f3fff8e3e91836bb0bd38f5718b56ddbde2f3",
-                "reference": "597f3fff8e3e91836bb0bd38f5718b56ddbde2f3",
+                "url": "https://api.github.com/repos/symfony/process/zipball/6e75fe6874cbc7e4773d049616ab450eff537bf1",
+                "reference": "6e75fe6874cbc7e4773d049616ab450eff537bf1",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.5",
                 "symfony/polyfill-php80": "^1.16"
             },
-            "time": "2022-04-08T05:07:18+00:00",
+            "time": "2022-06-27T16:58:25+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -481,7 +481,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v5.4.8"
+                "source": "https://github.com/symfony/process/tree/v5.4.11"
             },
             "funding": [
                 {

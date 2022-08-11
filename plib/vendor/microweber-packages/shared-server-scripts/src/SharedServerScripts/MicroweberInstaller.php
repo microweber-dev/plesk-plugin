@@ -266,6 +266,10 @@ class MicroweberInstaller {
             $sourceDirOrFile = $this->sourcePath . '/' . $fileOrFolder;
             $targetDirOrFile = $this->path . '/' . $fileOrFolder;
 
+            if (!$this->fileManager->fileExists($sourceDirOrFile)) {
+                continue;
+            }
+
             if ($this->type == self::TYPE_SYMLINK) {
                 // Create symlink
                 $this->fileManager->symlink($sourceDirOrFile, $targetDirOrFile);
@@ -310,26 +314,26 @@ class MicroweberInstaller {
         $installArguments[] =  '--password='.  $this->adminPassword;
 
         // Database settings
-        $installArguments[] = '--db_host='.  $this->databaseHost;
-        $installArguments[] = '--db_name='.  $this->databaseName;
-        $installArguments[] = '--db_username='.  $this->databaseUsername;
-        $installArguments[] = '--db_password='.  $this->databasePassword;
-        $installArguments[] = '--db_driver='.  $this->databaseDriver;
+        $installArguments[] = '--db-host='.  $this->databaseHost;
+        $installArguments[] = '--db-name='.  $this->databaseName;
+        $installArguments[] = '--db-username='.  $this->databaseUsername;
+        $installArguments[] = '--db-password='.  $this->databasePassword;
+        $installArguments[] = '--db-driver='.  $this->databaseDriver;
 
         if ($this->language) {
             $installArguments[] = '--language='.  trim($this->language);
         }
 
-        $installArguments[] = '--db_prefix=site_';
+        $installArguments[] = '--db-prefix=site_';
 
         if ($this->template) {
             $installArguments[] = '--template='. $this->template;
         }
 
-        $installArguments[] = '--default_content=1';
+        $installArguments[] = '--default-content=1';
 
         if (!$this->template) {
-            $installArguments[] = '--config_only=1';
+            $installArguments[] = '--config-only=1';
         }
 
         try {
@@ -343,7 +347,12 @@ class MicroweberInstaller {
                 'microweber:install',
             ], $installArguments);
 
-            $executeArtisan = $this->shellExecutor->executeCommand($artisanCommand);
+            $executeArtisan = $this->shellExecutor->executeCommand($artisanCommand, $this->path, [
+                'APP_ENV' => false,
+                'DB_CONNECTION' => false,
+                'APP_KEY' => false,
+                'SYMFONY_DOTENV_VARS' => false,
+            ]);
 
             $this->_chownFolders();
 
@@ -477,7 +486,7 @@ class MicroweberInstaller {
                 if ($template == '.' || $template == '..') {
                     continue;
                 }
-                $files[] = '/userfiles/templates/' . $template;
+                $files[] = 'userfiles/templates/' . $template;
             }
         }
 
@@ -487,7 +496,7 @@ class MicroweberInstaller {
                 if ($module == '.' || $module == '..') {
                     continue;
                 }
-                $files[] = '/userfiles/modules/' . $module;
+                $files[] = 'userfiles/modules/' . $module;
             }
         }
 
@@ -550,9 +559,13 @@ class MicroweberInstaller {
     {
         $stat = stat($file);
         if ($stat) {
-            $group = posix_getgrgid($stat[5]);
+
+            // $group = posix_getgrgid($stat[5]);
             $user = posix_getpwuid($stat[4]);
-            return compact('user', 'group');
+
+            if (isset($user['name'])) {
+                return $user['name'];
+            }
         }
 
     }

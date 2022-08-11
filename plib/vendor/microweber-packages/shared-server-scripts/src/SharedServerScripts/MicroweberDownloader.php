@@ -19,10 +19,13 @@ class MicroweberDownloader implements IMicroweberDownloader {
      */
     public $shellExecutor;
 
+    const DEV_RELEASE = 'dev';
+    const STABLE_RELEASE = 'stable';
+
     /**
      * @var string
      */
-    public $realeaseSource = 'dev';
+    public $realeaseSource = self::STABLE_RELEASE;
 
     /**
      * @var Client
@@ -72,7 +75,15 @@ class MicroweberDownloader implements IMicroweberDownloader {
      */
     public function setReleaseSource($source)
     {
-        $this->realeaseSource = $source;
+        if ($source == self::DEV_RELEASE) {
+            return $this->realeaseSource = $source;
+        }
+
+        if ($source == self::STABLE_RELEASE) {
+            return $this->realeaseSource = $source;
+        }
+
+        throw new \Exception('Please, use constants');
     }
 
     /**
@@ -83,7 +94,7 @@ class MicroweberDownloader implements IMicroweberDownloader {
     {
         // Validate target path
         if (!$this->fileManager->isDir(dirname($target))) {
-            throw new \Exception('Parent folder of target path is not valid.');
+            throw new \Exception('Parent folder of target path is not valid.' . dirname($target));
         }
 
         if (!$this->fileManager->isWritable(dirname($target))) {
@@ -138,10 +149,8 @@ class MicroweberDownloader implements IMicroweberDownloader {
      */
     public function getRelease()
     {
-        if ($this->realeaseSource == 'dev') {
-
+        if ($this->realeaseSource == self::DEV_RELEASE) {
             $branch = 'dev';
-
             return [
                 'version'=>'Latest development version',
                 'composer_url'=>'http://updater.microweberapi.com/builds/'.$branch.'/composer.json',
