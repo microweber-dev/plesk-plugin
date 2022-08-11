@@ -1144,10 +1144,10 @@ class IndexController extends Modules_Microweber_BasepluginController
         }
 
         $log = 'No error log found.';
-        if (!$fileManager->fileExists($appInstallationPath . '/storage/logs/laravel.log')) {
+        if ($fileManager->fileExists($appInstallationPath . '/storage/logs/laravel.log')) {
             $log = $fileManager->fileGetContents($appInstallationPath . '/storage/logs/laravel.log');
         }
-        $this->_helper->json(['log' => $log]);
+        $this->_helper->json(['status'=>'success', 'log' => $log]);
     }
 
     public function domainappuninstallAction()

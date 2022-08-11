@@ -143,7 +143,16 @@ function generatePassword() {
 
 function openErrorLogDomainAppInstallation(instance) {
 
-    instance.innerHTML = "Opening...";
+    errorLogPopup = new Jsw.PopupForm({
+        singleRowButtons: true
+    });
+
+    errorLogPopup.setBoxType('form-box');
+    errorLogPopup.setTitle('Website Error Log');
+
+    closeButtonHtml = '<button class="btn pull-right" onclick="errorLogPopup.hide();" type="button" value="" style="width:200px;margin-top:15px;height:40px;">Close</button>';
+
+    errorLogPopup.setHint('<div style="height:250px;">Loading...</div>' + closeButtonHtml);
 
     var xhr = new XMLHttpRequest();
     xhr.open('post', '/modules/microweber/index.php/index/domainapperrorlog')
@@ -152,8 +161,7 @@ function openErrorLogDomainAppInstallation(instance) {
         if (this.readyState == 4 && this.status == 200) {
             var responseDataJson = JSON.parse(this.responseText);
             if (responseDataJson.status == 'success') {
-
-
+                errorLogPopup.setHint('<div>'+responseDataJson.log+'</div>' + closeButtonHtml);
             }
         }
     }
