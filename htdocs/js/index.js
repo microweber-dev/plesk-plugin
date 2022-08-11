@@ -156,7 +156,7 @@ function openErrorLogDomainAppInstallation(instance) {
 
             }
         }
-    };
+    }
 }
 
 function removeDomainAppInstallation(instance) {
