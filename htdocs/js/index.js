@@ -141,6 +141,24 @@ function generatePassword() {
 
 }
 
+function openErrorLogDomainAppInstallation(instance) {
+
+    instance.innerHTML = "Opening...";
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/modules/microweber/index.php/index/domainapperrorlog')
+    xhr.send(new FormData(instance.parentNode));
+    xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var responseDataJson = JSON.parse(this.responseText);
+            if (responseDataJson.status == 'success') {
+
+
+            }
+        }
+    };
+}
+
 function removeDomainAppInstallation(instance) {
     if (confirm('Are you sure you want to uninstall the app from this website?')) {
 
