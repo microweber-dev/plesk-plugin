@@ -1138,7 +1138,7 @@ class IndexController extends Modules_Microweber_BasepluginController
 
         $fileManager = new \pm_FileManager($domain->getId());
 
-        if (!$fileManager->fileExists($appInstallationPath . '/config/microweber.php')) {
+        if (!$fileManager->fileExists($appInstallationPath . '/userfiles/modules')) {
             $this->_helper->json(['message'=>'This is not microweber installation']);
             return;
         }
@@ -1658,7 +1658,7 @@ class IndexController extends Modules_Microweber_BasepluginController
                         'app_version' => $installation['appVersion'],
                         'document_root' => $installation['appInstallation'],
                         'active' => ($installation['domainIsActive'] ? 'Yes' : 'No'),
-                        'action' => '<div style="color:#f66e6e;">Error when installing the application.</div><a onclick="removeDomainAppInstallation(this)" class="btn btn-info">Remove</a>&nbsp;&nbsp;<a class="btn btn-info">Open Error Log</a>'
+                        'action' => '<form><div style="color:#f66e6e;">Error when installing the application.</div><input type="hidden" value="'.$domain->getId().'" name="domain_id"><input type="hidden" value="'.$installation['appInstallation'].'" name="document_root"><a onclick="removeDomainAppInstallation(this)" class="btn btn-info">Remove</a></form>&nbsp;&nbsp;<a class="btn btn-info">Open Error Log</a>'
                     ];
 
                     $installationsCount++;
