@@ -10,8 +10,6 @@ class Modules_Microweber_Helper
 {
     public static function fixMissingConfigOnDomains()
     {
-        $sfm = new pm_ServerFileManager();
-
         foreach (Modules_Microweber_Domain::getDomains() as $domain) {
             if (!$domain->hasHosting()) {
                 continue;
@@ -24,8 +22,16 @@ class Modules_Microweber_Helper
 
             foreach ($domainInstallations as $installation) {
 
-                var_dump($installation);
-                die();
+                $appSharedPath = Modules_Microweber_Config::getAppSharedPath();
+
+                $pleskDomainFileManager = new \MicroweberPackages\SharedServerScripts\FileManager\Adapters\PleskDomainFileManager();
+                $pleskDomainFileManager->setDomainId($domain->getId());
+
+                $mwReinstall = new \MicroweberPackages\SharedServerScripts\MicroweberReinstaller();
+                $mwReinstall->setFileManager($pleskDomainFileManager);
+                $mwReinstall->setPath($installation['appInstallation']);
+                $mwReinstall->setSourcePath($appSharedPath);
+                $mwReinstall->addMissingConfigFiles();
 
             }
         }
