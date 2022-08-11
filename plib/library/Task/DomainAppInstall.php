@@ -42,11 +42,11 @@ class Modules_Microweber_Task_DomainAppInstall extends \pm_LongTask_Task
 		$newInstallation->setProgressLogger($this);
 		$status = $newInstallation->run();
 
+        $this->startDomainScan();
+
         if (isset($status['error']) && $status['error']) {
             throw new pm_Exception($status['log']);
         }
-
-        $this->startDomainScan();
 	}
 
     public function startDomainScan()
