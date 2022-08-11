@@ -104,10 +104,14 @@ class MicroweberReinstaller extends MicroweberInstaller {
                 if ($configFile == '.' || $configFile == '..') {
                     continue;
                 }
+                $configFileExt = $this->fileManager->fileExtension($this->sourcePath . '/config/'.$configFile);
+                if ($configFileExt !== 'php') {
+                    continue;
+                }
+
                 $sourceDirOfConfigs[] = $configFile;
             }
         }
-
 
         $targetDirOfConfigs = [];
         $targetDirOfConfigsList = $this->fileManager->scanDir($this->path . '/config');
@@ -116,10 +120,13 @@ class MicroweberReinstaller extends MicroweberInstaller {
                 if ($targetConfigFile == '.' || $targetConfigFile == '..') {
                     continue;
                 }
+                $targetConfigFileExt = $this->fileManager->fileExtension($this->path . '/config/'.$targetConfigFile);
+                if ($targetConfigFileExt !== 'php') {
+                    continue;
+                }
                 $targetDirOfConfigs[] = $targetConfigFile;
             }
         }
-
 
         $missingConfigs = [];
         foreach ($sourceDirOfConfigs as $sourceConfig) {

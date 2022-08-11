@@ -1,7 +1,7 @@
 <?php
 namespace MicroweberPackages\SharedServerScripts\FileManager\Adapters;
 
-class PleskFileManager implements IFileManager
+class PleskDomainFileManager implements IFileManager
 {
     /**
      * @var \pm_FileManager
@@ -13,11 +13,6 @@ class PleskFileManager implements IFileManager
      */
     public $domainId;
 
-
-    public function __construct()
-    {
-        $this->fileManager = new \pm_FileManager($this->domainId);
-    }
 
     /**
      * @param $domainId
@@ -39,6 +34,35 @@ class PleskFileManager implements IFileManager
     }
 
     /**
+     * @param $file
+     * @return mixed
+     */
+    public function fileExists($file)
+    {
+        return $this->fileManager->fileExists($file);
+    }
+
+    /**
+     * @param $file
+     * @return mixed
+     */
+    public function fileExtension($file)
+    {
+        $file = rtrim($file, '.');
+        return substr($file, strrpos($file, '.') + 1);
+    }
+
+    /**
+     * @param $from
+     * @param $to
+     * @return mixed
+     */
+    public function copy($from, $to)
+    {
+        return $this->fileManager->copyFile($from, $to);
+    }
+
+    /**
      * @param $dir
      * @return mixed
      */
@@ -47,4 +71,11 @@ class PleskFileManager implements IFileManager
         return $this->fileManager->isWritable($dir);
     }
 
+    /**
+     * @param $dir
+     * @return mixed
+     */
+    public function scanDir($dir) {
+        return $this->fileManager->scanDir($dir);
+    }
 }
