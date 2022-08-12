@@ -484,7 +484,7 @@ class IndexController extends Modules_Microweber_BasepluginController
                         if ($property['name'] == 'php_handler_id') {
                             $phpHandler = $hostingManager->getPhpHandler($property['value']);
                             $hostingPlan['php-handler'] = $phpHandler;
-                            if (version_compare($phpHandler['version'], $this->view->latestRequirements['mwReleasePhpVersion'], '>')) {
+                            if (version_compare($phpHandler['version'], $this->view->latestRequirements['mwReleasePhpVersion'], '>=')) {
                                 $supportedPlans[] = $hostingPlan;
                             } else {
                                 $editPlanLink = '/admin/customer-service-plan/edit/id/' . $hostingPlan['id'];

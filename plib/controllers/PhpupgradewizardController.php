@@ -85,7 +85,7 @@ class PhpupgradewizardController extends Modules_Microweber_BasepluginController
                         if ($property['name'] == 'php_handler_id') {
                             $phpHandler = $hostingManager->getPhpHandler($property['value']);
                             $hostingPlan['php-handler'] = $phpHandler;
-                            if (version_compare($phpHandler['version'], $this->latestRequirements['mwReleasePhpVersion'], '>')) {
+                            if (version_compare($phpHandler['version'], $this->latestRequirements['mwReleasePhpVersion'], '>=')) {
                                 $supportedPlans[] = $hostingPlan;
                             }
                         }
@@ -180,7 +180,7 @@ class PhpupgradewizardController extends Modules_Microweber_BasepluginController
                 continue;
             }
 
-            if (version_compare($phpHandler['version'], $this->latestRequirements['mwReleasePhpVersion'], '>')) {
+            if (version_compare($phpHandler['version'], $this->latestRequirements['mwReleasePhpVersion'], '>=')) {
                 $supportedPhpVersions[] = $phpHandler;
             }
         }
