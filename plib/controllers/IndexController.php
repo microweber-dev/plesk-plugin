@@ -487,9 +487,13 @@ class IndexController extends Modules_Microweber_BasepluginController
                             if (version_compare($phpHandler['version'], $this->view->latestRequirements['mwReleasePhpVersion'], '>')) {
                                 $supportedPlans[] = $hostingPlan;
                             } else {
+                                $editPlanLink = '/admin/customer-service-plan/edit/id/' . $hostingPlan['id'];
+
                                 $notSupportedPlans[] = [
                                     'name'=>$hostingPlan['name'],
                                     'php_version'=>$phpHandler['version'],
+                                    'id'=>$hostingPlan['id'],
+                                    'edit_link'=> $editPlanLink,
                                 ];
                             }
                         }
