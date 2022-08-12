@@ -285,18 +285,29 @@ class Modules_Microweber_Helper
 
     public static function getRequiredPhpVersionOfSharedApp()
     {
-        $mwRelease = Modules_Microweber_Config::getRelease();
-        $mwReleaseComposer = Modules_Microweber_Helper::getJsonFromUrl($mwRelease['composer_url']);
-        $mwReleasePhpVersion = false;
+        $mwReleaseVersion = 0;
+        $mwReleasePhpVersion = 0;
 
-        if (isset($mwReleaseComposer['require']['php'])) {
-            $mwReleasePhpVersion = $mwReleaseComposer['require']['php'];
-            $mwReleasePhpVersion = str_replace('<',false, $mwReleasePhpVersion);
-            $mwReleasePhpVersion = str_replace('>',false, $mwReleasePhpVersion);
-            $mwReleasePhpVersion = str_replace('=',false, $mwReleasePhpVersion);
+        $appSharedPath = Modules_Microweber_Config::getAppSharedPath();
+        $appSharedPathVersion = $appSharedPath . 'version.txt';
+        $appSharedPathComposer = $appSharedPath . 'composer.json';
+        $sfm = new pm_ServerFileManager();
+        if ($sfm->fileExists($appSharedPathComposer)) {
+
+            $appSharedPathComposer = $sfm->fileGetContents($appSharedPathComposer);
+            $appSharedPathComposer = json_decode($appSharedPathComposer, true);
+
+            if (isset($appSharedPathComposer['require']['php'])) {
+                $mwReleasePhpVersion = $appSharedPathComposer['require']['php'];
+                $mwReleasePhpVersion = str_replace('<',false, $mwReleasePhpVersion);
+                $mwReleasePhpVersion = str_replace('>',false, $mwReleasePhpVersion);
+                $mwReleasePhpVersion = str_replace('=',false, $mwReleasePhpVersion);
+            }
         }
-
-        $mwReleaseVersion = Modules_Microweber_Helper::getContentFromUrl($mwRelease['version_url']);
+        
+        if ($sfm->fileExists($appSharedPathVersion)) {
+            $mwReleaseVersion = $sfm->fileGetContents($appSharedPathVersion);
+        }
 
         return ['mwReleaseVersion'=>$mwReleaseVersion,'mwReleasePhpVersion'=>$mwReleasePhpVersion];
     }
@@ -325,18 +336,7 @@ class Modules_Microweber_Helper
         $latestRequirements = static::getLatestRequiredPhpVersionOfApp();
 
         $updateApp = true;
-        $appSharedPath = Modules_Microweber_Config::getAppSharedPath();
-        $appSharedPathVersion = $appSharedPath . 'version.txt';
-        $sfm = new pm_ServerFileManager();
-        if ($sfm->fileExists($appSharedPathVersion)) {
-            $appSharedPathVersion = $sfm->fileGetContents($appSharedPathVersion);
-            if ($appSharedPathVersion == $latestRequirements['mwReleaseVersion']) {
-                // $updateApp = false;
-            }
-        }
-
         $outdatedDomains = [];
-        $outdatedDomainsFull = [];
         foreach (Modules_Microweber_Domain::getDomains() as $domain) {
 
             if (!$domain->hasHosting()) {
