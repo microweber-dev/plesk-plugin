@@ -71,7 +71,7 @@ class IndexController extends Modules_Microweber_BasepluginController
         }
 
         $this->view->brandName = Modules_Microweber_WhiteLabel::getBrandName();
-        $this->view->latestRequirements = Modules_Microweber_Helper::getLatestRequiredPhpVersionOfApp();
+        $this->view->latestRequirements = Modules_Microweber_Helper::getRequiredPhpVersionOfSharedApp();
     }
 
     public function indexAction()

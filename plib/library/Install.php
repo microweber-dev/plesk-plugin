@@ -99,7 +99,7 @@ class Modules_Microweber_Install {
             throw new \Exception($domain->getName() . ' domain not found.');
         }
 
-        $latestRequirements = Modules_Microweber_Helper::getLatestRequiredPhpVersionOfApp();
+        $latestRequirements = Modules_Microweber_Helper::getRequiredPhpVersionOfSharedApp();
 
         $domainDocumentRoot = $domain->getDocumentRoot();
         $installationDirPath = $domain->getDocumentRoot();

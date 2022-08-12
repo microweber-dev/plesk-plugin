@@ -283,6 +283,24 @@ class Modules_Microweber_Helper
 		return $ext;
 	}
 
+    public static function getRequiredPhpVersionOfSharedApp()
+    {
+        $mwRelease = Modules_Microweber_Config::getRelease();
+        $mwReleaseComposer = Modules_Microweber_Helper::getJsonFromUrl($mwRelease['composer_url']);
+        $mwReleasePhpVersion = false;
+
+        if (isset($mwReleaseComposer['require']['php'])) {
+            $mwReleasePhpVersion = $mwReleaseComposer['require']['php'];
+            $mwReleasePhpVersion = str_replace('<',false, $mwReleasePhpVersion);
+            $mwReleasePhpVersion = str_replace('>',false, $mwReleasePhpVersion);
+            $mwReleasePhpVersion = str_replace('=',false, $mwReleasePhpVersion);
+        }
+
+        $mwReleaseVersion = Modules_Microweber_Helper::getContentFromUrl($mwRelease['version_url']);
+
+        return ['mwReleaseVersion'=>$mwReleaseVersion,'mwReleasePhpVersion'=>$mwReleasePhpVersion];
+    }
+
     public static function getLatestRequiredPhpVersionOfApp()
     {
         $mwRelease = Modules_Microweber_Config::getRelease();
