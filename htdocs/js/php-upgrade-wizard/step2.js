@@ -25,7 +25,7 @@ function upgradeHostingPlans() {
     $j('.js-upgrade-hosting-plans').html('Updating hosting plans...');
 
     setTimeout(function () {
-        $j('.js-messages').html('<span>This may take some time, so please don\'t refresh the page...</span>');
+        $j('.js-messages').html('<span>This can take some time, so please don\'t refresh the page...</span>');
     }, 5000);
 
     $j.post('/modules/microweber/index.php/phpupgradewizard/updateHostingPlansPhpVersion',{
