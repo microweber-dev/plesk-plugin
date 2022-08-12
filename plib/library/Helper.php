@@ -289,9 +289,10 @@ class Modules_Microweber_Helper
         $mwReleasePhpVersion = 0;
 
         $appSharedPath = Modules_Microweber_Config::getAppSharedPath();
-        $appSharedPathVersion = $appSharedPath . 'version.txt';
-        $appSharedPathComposer = $appSharedPath . 'composer.json';
+
         $sfm = new pm_ServerFileManager();
+
+        $appSharedPathComposer = $appSharedPath . 'composer.json';
         if ($sfm->fileExists($appSharedPathComposer)) {
 
             $appSharedPathComposer = $sfm->fileGetContents($appSharedPathComposer);
@@ -304,7 +305,8 @@ class Modules_Microweber_Helper
                 $mwReleasePhpVersion = str_replace('=',false, $mwReleasePhpVersion);
             }
         }
-        
+
+        $appSharedPathVersion = $appSharedPath . 'version.txt';
         if ($sfm->fileExists($appSharedPathVersion)) {
             $mwReleaseVersion = $sfm->fileGetContents($appSharedPathVersion);
         }
