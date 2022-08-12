@@ -22,6 +22,10 @@ class Modules_Microweber_Helper
 
             foreach ($domainInstallations as $installation) {
 
+                if ($installation['installationType'] !== 'Symlinked') {
+                    continue;
+                }
+
                 $appSharedPath = Modules_Microweber_Config::getAppSharedPath();
 
                 $pleskDomainFileManager = new \MicroweberPackages\SharedServerScripts\FileManager\Adapters\PleskDomainFileManager();
