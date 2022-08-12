@@ -99,7 +99,7 @@ class Modules_Microweber_Install {
             throw new \Exception($domain->getName() . ' domain not found.');
         }
 
-        $latestRequirements = Modules_Microweber_Helper::getRequiredPhpVersionOfSharedApp();
+        $sharedAppRequirements = Modules_Microweber_Helper::getRequiredPhpVersionOfSharedApp();
 
         $domainDocumentRoot = $domain->getDocumentRoot();
         $installationDirPath = $domain->getDocumentRoot();
@@ -163,11 +163,11 @@ class Modules_Microweber_Install {
         }
 
         $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
-        if (version_compare($phpHandler['version'], $latestRequirements['mwReleasePhpVersion'], '<')) {
+        if (version_compare($phpHandler['version'], $sharedAppRequirements['mwReleasePhpVersion'], '<')) {
             return [
                 'success'=>false,
                 'error'=>true,
-                'log'=> 'PHP version ' . $phpHandler['version'] . ' is not supported by Microweber. You must install PHP '.$latestRequirements['mwReleasePhpVersion'].'.'
+                'log'=> 'PHP version ' . $phpHandler['version'] . ' is not supported by Microweber. You must install PHP '.$sharedAppRequirements['mwReleasePhpVersion'].'.'
             ];
         }
         

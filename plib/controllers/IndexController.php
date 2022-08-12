@@ -71,7 +71,7 @@ class IndexController extends Modules_Microweber_BasepluginController
         }
 
         $this->view->brandName = Modules_Microweber_WhiteLabel::getBrandName();
-        $this->view->latestRequirements = Modules_Microweber_Helper::getRequiredPhpVersionOfSharedApp();
+        $this->view->sharedAppRequirements = Modules_Microweber_Helper::getRequiredPhpVersionOfSharedApp();
     }
 
     public function indexAction()
@@ -484,7 +484,7 @@ class IndexController extends Modules_Microweber_BasepluginController
                         if ($property['name'] == 'php_handler_id') {
                             $phpHandler = $hostingManager->getPhpHandler($property['value']);
                             $hostingPlan['php-handler'] = $phpHandler;
-                            if (version_compare($phpHandler['version'], $this->view->latestRequirements['mwReleasePhpVersion'], '>=')) {
+                            if (version_compare($phpHandler['version'], $this->view->sharedAppRequirements['mwReleasePhpVersion'], '>=')) {
                                 $supportedPlans[] = $hostingPlan;
                             } else {
                                 $editPlanLink = '/admin/customer-service-plan/edit/id/' . $hostingPlan['id'];
@@ -708,8 +708,8 @@ class IndexController extends Modules_Microweber_BasepluginController
             }
 
             $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
-            if (version_compare($phpHandler['version'], $this->view->latestRequirements['mwReleasePhpVersion'], '<')) {
-                $this->_status->addMessage('error', 'Domain '.$domainName.' has PHP ' . $phpHandler['version'] . ' and is not supported by Microweber. You must install PHP '.$this->view->latestRequirements['mwReleasePhpVersion'].' or newer.');
+            if (version_compare($phpHandler['version'], $this->view->sharedAppRequirements['mwReleasePhpVersion'], '<')) {
+                $this->_status->addMessage('error', 'Domain '.$domainName.' has PHP ' . $phpHandler['version'] . ' and is not supported by Microweber. You must install PHP '.$this->view->sharedAppRequirements['mwReleasePhpVersion'].' or newer.');
                 $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/install']);
             }
 

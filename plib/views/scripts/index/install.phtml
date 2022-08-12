@@ -55,8 +55,8 @@ endif;
                 <div class="pul-media__body">
                     <div class="pul-media__content">
                         <img src="<?php echo pm_Context::getBaseUrl(); ?>images/delete-icon.png" alt="" title="">
-                        The service plan <b><?php echo $notSupportedPlan['name']; ?></b> does not support <b>PHP <?php echo $this->latestRequirements['mwReleasePhpVersion']; ?></b>.<br/>
-                        Please go to <a href="<?php echo $notSupportedPlan['edit_link']; ?>">Hosting Parameters</a> and enable the <b>PHP <?php echo $this->latestRequirements['mwReleasePhpVersion']; ?></b> version.
+                        The service plan <b><?php echo $notSupportedPlan['name']; ?></b> does not support <b>PHP <?php echo $this->sharedAppRequirements['mwReleasePhpVersion']; ?></b>.<br/>
+                        Please go to <a href="<?php echo $notSupportedPlan['edit_link']; ?>">Hosting Parameters</a> and enable the <b>PHP <?php echo $this->sharedAppRequirements['mwReleasePhpVersion']; ?></b> version.
 
                         <a href="https://www.plesk.com/kb/support/how-to-install-remove-additional-php-versions-provided-by-plesk/"
                            target="_blank">
@@ -80,7 +80,7 @@ endif;
                 <div class="pul-media__body">
                     <div class="pul-media__content">
                         You must have a service plan with <?php echo $this->brandName; ?> service.<br/>
-                        The service plan must support <b>PHP <?php echo $this->latestRequirements['mwReleasePhpVersion']; ?></b>.<br/>
+                        The service plan must support <b>PHP <?php echo $this->sharedAppRequirements['mwReleasePhpVersion']; ?></b>.<br/>
                         You can add <?php echo $this->brandName; ?> service from <b>Additional Services</b> tab.
 
                         <a href="https://microweber.com/cdn/partners/plesk/need_to_have_service_plan.png" target="_blank">
