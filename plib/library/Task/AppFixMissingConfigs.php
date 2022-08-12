@@ -10,8 +10,8 @@
 class Modules_Microweber_Task_AppFixMissingConfigs extends \pm_LongTask_Task
 {
     const UID = 'appFixMissingConfigs';
-    public $hidden = false;
-    public $trackProgress = true;
+    public $hidden = true;
+    public $trackProgress = false;
     public $statusErrorMessage = 'Can\'t fix missing configs.';
 
     public function run()
