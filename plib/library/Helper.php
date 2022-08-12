@@ -303,6 +303,13 @@ class Modules_Microweber_Helper
                 $mwReleasePhpVersion = str_replace('<',false, $mwReleasePhpVersion);
                 $mwReleasePhpVersion = str_replace('>',false, $mwReleasePhpVersion);
                 $mwReleasePhpVersion = str_replace('=',false, $mwReleasePhpVersion);
+
+                $mwReleasePhpVersionExp = explode('.', $mwReleasePhpVersion);
+                if (!empty($mwReleasePhpVersionExp)) {
+                    $mwReleasePhpVersionExpSlice = array_slice($mwReleasePhpVersionExp, 0, 2);
+                    $mwReleasePhpVersion = implode('.', $mwReleasePhpVersionExpSlice);
+                }
+
             }
         }
 
@@ -325,6 +332,13 @@ class Modules_Microweber_Helper
             $mwReleasePhpVersion = str_replace('<',false, $mwReleasePhpVersion);
             $mwReleasePhpVersion = str_replace('>',false, $mwReleasePhpVersion);
             $mwReleasePhpVersion = str_replace('=',false, $mwReleasePhpVersion);
+
+            $mwReleasePhpVersionExp = explode('.', $mwReleasePhpVersion);
+            if (!empty($mwReleasePhpVersionExp)) {
+                $mwReleasePhpVersionExpSlice = array_slice($mwReleasePhpVersionExp, 0, 2);
+                $mwReleasePhpVersion = implode('.', $mwReleasePhpVersionExpSlice);
+            }
+
         }
 
         $mwReleaseVersion = Modules_Microweber_Helper::getContentFromUrl($mwRelease['version_url']);

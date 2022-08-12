@@ -157,7 +157,6 @@ class PhpupgradewizardController extends Modules_Microweber_BasepluginController
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/php-upgrade-wizard/step4.js');
 
-
     }
 
     public function getoutdateddomainsAction()
