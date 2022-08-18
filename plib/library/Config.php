@@ -88,9 +88,7 @@ class Modules_Microweber_Config
         $brandName = Modules_Microweber_WhiteLabel::getBrandName();
 
 		return [
-			'microweber' => 'Install ' . $brandName,
-			'microweber_without_shop' => 'Install '.$brandName.' Without Shop',
-			'microweber_lite' => 'Install '.$brandName.' Lite'
+			'microweber' => 'Install ' . $brandName
 		];
 	}
 
