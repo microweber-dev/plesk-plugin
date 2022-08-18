@@ -921,6 +921,11 @@ class IndexController extends Modules_Microweber_BasepluginController
             'required' => true,
         ]);
 
+
+        $installationTypeAllowCustomers = pm_Settings::get('installation_type_allow_customers');
+        if (!$installationTypeAllowCustomers) {
+            $installationTypeAllowCustomers = 'no';
+        }
         $form->addElement('radio', 'installation_type_allow_customers', [
             'label' => 'Allow customers to choose installation type',
             'multiOptions' =>
@@ -928,10 +933,14 @@ class IndexController extends Modules_Microweber_BasepluginController
                     'yes' => 'Yes',
                     'no' => 'No'
                 ],
-            'value' => pm_Settings::get('installation_type_allow_customers'),
+            'value' => $installationTypeAllowCustomers,
             'required' => true,
         ]);
 
+        $installationDatabaseDriverAllowCustomers = pm_Settings::get('installation_database_driver_allow_customers');
+        if (!$installationDatabaseDriverAllowCustomers) {
+            $installationDatabaseDriverAllowCustomers = 'no';
+        }
         $form->addElement('radio', 'installation_database_driver_allow_customers', [
             'label' => 'Allow customers to choose installation database driver',
             'multiOptions' =>
@@ -939,7 +948,7 @@ class IndexController extends Modules_Microweber_BasepluginController
                     'yes' => 'Yes',
                     'no' => 'No'
                 ],
-            'value' => pm_Settings::get('installation_database_driver_allow_customers'),
+            'value' => $installationDatabaseDriverAllowCustomers,
             'required' => true,
         ]);
 
