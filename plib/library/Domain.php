@@ -42,11 +42,13 @@ class Modules_Microweber_Domain
     public static function getMwOptions($domain) {
 
         $optionFile = Modules_Microweber_Domain::getMwOptionFile($domain);
-        $optionContent = file_get_contents($optionFile);
-        $optionContent = json_decode($optionContent, true);
+        if (is_file($optionFile)) {
+            $optionContent = file_get_contents($optionFile);
+            $optionContent = json_decode($optionContent, true);
 
-        if (!empty($optionContent) && is_array($optionContent)) {
-            return $optionContent;
+            if (!empty($optionContent) && is_array($optionContent)) {
+                return $optionContent;
+            }
         }
 
         return [];
