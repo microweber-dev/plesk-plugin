@@ -388,7 +388,7 @@ class Modules_Microweber_Helper
             $updateApp = false;
         }
 
-        if (count($outdatedDomains > 10)) {
+        if (count($outdatedDomains) > 10) {
             $outdatedDomains = array_slice($outdatedDomains, 0, 10);
         }
 
