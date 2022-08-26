@@ -16,16 +16,17 @@ class Modules_Microweber_LicenseData
     public static function hasActiveLicense()
     {
         $limitations = self::getLimitations();
-        if ($limitations['app_installations_freeze']) {
-            return false;
+        if (isset($limitations['app_has_active_license'])) {
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     public static function getLimitations()
     {
         // Licenses
+        $activeLicense = false;
         $appInstallationsLimit = 'nolimit';
 
         $license = pm_License::getAdditionalKey('microweber');
@@ -35,6 +36,7 @@ class Modules_Microweber_LicenseData
                 $keyBodyJson= json_decode($keyBody, true);
                 if (!empty($keyBodyJson)) {
                     if (isset($keyBodyJson['limit'])) {
+                        $activeLicense = true;
                         $appInstallationsLimit = $keyBodyJson['limit'];
                     }
                 }
@@ -56,6 +58,7 @@ class Modules_Microweber_LicenseData
         }
 
         return [
+            'app_has_active_license'=>$activeLicense,
             'app_installations_limit'=>$appInstallationsLimit,
             'app_installations_count'=>$appInstallationsCount,
             'app_installations_freeze'=>$appInstallationsFreeze,
