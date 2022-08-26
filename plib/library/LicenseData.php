@@ -46,7 +46,7 @@ class Modules_Microweber_LicenseData
         // Freeze app installations
         $appInstallationsFreeze = true;
         if (is_numeric($appInstallationsLimit)) {
-            if ($appInstallationsCount < ($appInstallationsLimit + 1)) {
+            if ($appInstallationsCount < $appInstallationsLimit) {
                 $appInstallationsFreeze = false;
             }
         }
