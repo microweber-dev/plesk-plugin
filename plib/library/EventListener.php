@@ -105,10 +105,13 @@ class Modules_Microweber_EventListener implements EventListener
                         || in_array("microweber_lite", $planItems))) {
 
                     if ($action == 'phys_hosting_create') {
-                        // Install microweber
-                        $this->_installMicroweber($domain, $newValue);
-                        // Enable or disable shop
-                        $this->_updateMicroweber($domain, $newValue);
+                        $limitations = Modules_Microweber_LicenseData::getLimitations();
+                        if ($limitations['app_installations_freeze'] == false) {
+                            // Install microweber
+                            $this->_installMicroweber($domain, $newValue);
+                            // Enable or disable shop
+                            $this->_updateMicroweber($domain, $newValue);
+                        }
                     }
 
                     if ($action == 'phys_hosting_update') {
