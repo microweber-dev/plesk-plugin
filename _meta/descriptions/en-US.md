@@ -153,7 +153,7 @@ Then upload the zip file from the upload button
 Download the latest plugin version from the [Microweber Plesk Plugin](https://github.com/microweber-dev/plesk-plugin) repository.
 
 
-![upload_extension.png](../../assets/upload_extension.png "")
+![upload_extension.png](https://github.com/microweber-dev/plesk-plugin/raw/master/assets/upload_extension.png "")
 
 
 
@@ -162,21 +162,21 @@ Download the latest plugin version from the [Microweber Plesk Plugin](https://gi
 
 **For automatic install**: In order to make automatic install when the user creates new domain, you must go to *Home->Service Plans->Hosting Plans* and then click on *Additional Services* and select *Install Microweber* from the dropdown box.
 
-![plan.png](../../assets/plan.png "")
+![plan.png](https://github.com/microweber-dev/plesk-plugin/raw/master/assets/plan.png "")
 
 
 
 
 **For manual install**: Click the Microweber icon in the sidebar under *Server management->Microweber* and then click on *Install* and select *Domain* from the dropdown box.
 
-![plan.png](../../assets/install.png "")
+![plan.png](https://github.com/microweber-dev/plesk-plugin/raw/master/assets/install.png "")
 
 
 ## Settings
 
 **For plugin setup**: Go to *Server management->Microweber->Settings* and you will be able to set various options of the plugin and also connect it to WHMCS.
 
-![plan.png](../../assets/settings.png "")
+![plan.png](https://github.com/microweber-dev/plesk-plugin/raw/master/assets/settings.png "")
 
 
 ## Templates download and Updates
@@ -184,7 +184,7 @@ Download the latest plugin version from the [Microweber Plesk Plugin](https://gi
 
 **For templates setup**: Go to *Server management->Microweber->Versions* and you will be able to update the plugin and download templates
 
-![plan.png](../../assets/versions.png "")
+![plan.png](https://github.com/microweber-dev/plesk-plugin/raw/master/assets/versions.png "")
 
 
 ##  Web server setting
