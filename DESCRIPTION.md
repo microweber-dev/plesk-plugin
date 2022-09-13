@@ -176,13 +176,3 @@ proxy_buffers              4 256k;
 proxy_busy_buffers_size    256k;
 ```
 
-### Folders where the plugin are installed
-
-Folders where the plugin will be installed:
-
-```
-/opt/psa/admin/sbin/modules/microweber
-/usr/local/psa/admin/plib/modules/microweber
-/usr/local/psa/admin/share/modules/microweber
-/usr/local/psa/var/modules/microweber
-```
