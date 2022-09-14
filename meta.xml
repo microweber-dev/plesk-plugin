@@ -4,13 +4,14 @@
   <name>Microweber</name>
   <vendor>Microweber</vendor>
   <description>Microweber Website Builder and CMS with E-commerce Platform.</description>
-  <version>1.0</version>
-  <release>1.0</release>
+  <version>1.0.0</version>
+  <release>1</release>
   <category>web_app</category>
   <category>developer</category>
   <plesk_min_version>18.0.26</plesk_min_version>
   <os>unix</os>
   <url>https://microweber.org</url>
   <support_url>https://microweber.org/support</support_url>
+  <help_url>https://microweber.org/features</help_url>
   <buy_url>https://go.plesk.com/buy-plesk-ext/</buy_url>
 </module>
