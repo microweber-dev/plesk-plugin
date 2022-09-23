@@ -132,20 +132,20 @@ No-code platform for creating websites of all sorts. Make it easy, with 450 + pr
 
 **For automatic website creation**: In order to make automatic install when the user creates new domain, you must go to *Home->Service Plans->Hosting Plans* and then click on *Additional Services* and select *Install Microweber* from the dropdown box.
 
-![plan.png](assets/plan.png "")
+![plan.png](https://microweber.com/cdn/partners/plesk/plan.png "")
 
 
 
 **For manual website creation**: Click the Microweber icon in the sidebar under *Server management->Microweber* and then click on *Install* and select *Domain* from the dropdown box.
 
-![plan.png](assets/install.png "")
+![plan.png](https://microweber.com/cdn/partners/plesk/install.png "")
 
 
 ## Settings
 
 **For plugin setup**: Go to *Server management->Microweber->Settings* and you will be able to set various options of the plugin and also connect it to WHMCS.
 
-![plan.png](assets/settings.png "")
+![plan.png](https://microweber.com/cdn/partners/plesk/settings.png "")
 
 
 ## Templates download and Updates
@@ -153,7 +153,7 @@ No-code platform for creating websites of all sorts. Make it easy, with 450 + pr
 
 **For templates setup**: Go to *Server management->Microweber->Versions* and you will be able to update the plugin and download templates
 
-![plan.png](assets/versions.png "")
+![plan.png](https://microweber.com/cdn/partners/plesk/versions.png "")
 
 
 #  Web server setting

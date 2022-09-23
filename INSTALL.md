@@ -35,7 +35,7 @@ Download the latest plugin version from the [Microweber Plesk Plugin](https://gi
 
 Then upload the zip file from the upload button
 
-![upload_extension.png](assets/upload_extension.png "")
+![upload_extension.png](https://microweber.com/cdn/partners/plesk/upload_extension.png "")
 
 
 
