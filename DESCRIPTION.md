@@ -122,5 +122,5 @@ No-code platform for creating websites of all sorts. Make it easy, with 450 + pr
 
 # How to use the plugin
 
-[Click here to see how to configure the plugin](https://github.com/microweber-dev/plesk-plugin/HOW_TO_USE.md)
+[Click here to see how to configure the plugin](https://github.com/microweber-dev/plesk-plugin/blob/master/HOW_TO_USE.md)
 
