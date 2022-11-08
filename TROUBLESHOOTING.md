@@ -68,3 +68,14 @@ To solve this error, please restart Apache process. as is explained on the follo
 
 https://support.plesk.com/hc/en-us/articles/360015533959-A-website-or-webmail-hosted-in-Plesk-periodically-shows-the-Plesk-web-server-default-page-or-old-website-content-?source=search
 
+
+# ModSecurity: Output filter: Response body too large
+
+Navigate to Tools & settings > Web Application Firewall (ModSecurity) > Settings > Custom directives section:
+
+Add the following line:
+
+`SecResponseBodyLimit 536870912`
+
+https://www.plesk.com/kb/support/%E2%80%89site-on-plesk-is-not-available-modsecurity-response-body-too-large/
+
