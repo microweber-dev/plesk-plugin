@@ -79,3 +79,8 @@ Add the following line:
 
 https://www.plesk.com/kb/support/%E2%80%89site-on-plesk-is-not-available-modsecurity-response-body-too-large/
 
+
+
+# PHP Memory limit problem
+
+https://docs.plesk.com/en-US/obsidian/administrator-guide/web-hosting/php-management/customizing-php-parameters.79190/
