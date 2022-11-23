@@ -99,9 +99,9 @@ class UpdateController extends Modules_Microweber_BasepluginController
         $messages[] = ['message'=>count($getTemplates) . ' templates found'];
         $messages[] = ['message'=>'Checking new version of templates...'];
 
-        /*foreach ($getTemplates as $template) {
-            $messages[] = ['message'=>'Template: ' . $template['name']];
-        }*/
+        foreach ($getTemplates as $template) {
+
+        }
 
         $this->_helper->json([
             'messages' => $messages,
