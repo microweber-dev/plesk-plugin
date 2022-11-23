@@ -384,6 +384,9 @@ class IndexController extends Modules_Microweber_BasepluginController
         if (!pm_Session::getClient()->isAdmin()) {
             return $this->_redirect('index/error?type=permission');
         }
+    }
+
+    public function startUpdateAction() {
 
         Modules_Microweber_Helper::stopTasks(['task_appversioncheck','task_appdownload','task_templatesdownload']);
 
