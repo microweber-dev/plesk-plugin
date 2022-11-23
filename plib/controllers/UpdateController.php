@@ -32,6 +32,8 @@ class UpdateController extends Modules_Microweber_BasepluginController
         $error = false;
         $messages = [];
 
+        $messages[] = ['message'=>'Getting data from package managers'];
+
         if (!Modules_Microweber_Helper::isAvailableDiskSpace()) {
             $error = true;
             $messages[] = ['error'=>true, 'message'=>'No disk space available on the server.'];

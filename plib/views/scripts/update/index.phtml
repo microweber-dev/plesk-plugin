@@ -29,15 +29,18 @@
     function startUpdating() {
         $j.get('/modules/microweber/index.php/update/start', function(data) {
 
+            $j.each(data.messages, function(iMessage, messageData) {
+                setTimeout(function() {
+                    var html = '<div class="update-log-message">' +
+                        '            <span class="pul-icon pul-icon--intent pul-icon--success pul-icon--on-dark">' +
+                        '                <svg focusable="false"><use href="/ui-library/images/symbols.svg?6bd5879cb9a032639fb375ff6f1dcd26#check-mark-circle-filled:16"></use></svg>' +
+                        '            </span>' +
+                        ' ' + messageData['message'] +
+                        '    </div>';
+                    $j('.update-log').append(html);
+                }, iMessage * 1000);
+            });
 
-            var html = '<div class="update-log-message">'+
-                '            <span class="pul-icon pul-icon--intent pul-icon--success pul-icon--on-dark">'+
-                '                <svg focusable="false"><use href="/ui-library/images/symbols.svg?6bd5879cb9a032639fb375ff6f1dcd26#check-mark-circle-filled:16"></use></svg>'+
-                '            </span>'+
-                '       Getting data from package managers'+
-                '    </div>';
-
-            $j('.update-log').append(html);
 
         });
     }
