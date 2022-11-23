@@ -113,10 +113,14 @@ class UpdateController extends Modules_Microweber_BasepluginController
                 $newTemplates[] = $template['target_dir'];
             }
         }
-        
+
         if (!empty($newTemplates)) {
             $messages[] = ['message'=>'New templates found: ' . implode(',', $newTemplates)];
+        } else {
+            $messages[] = ['message'=>'No new templates found.'];
         }
+
+        $messages[] = ['message'=>'Starting update task...'];
 
         $this->_helper->json([
             'messages' => $messages,
