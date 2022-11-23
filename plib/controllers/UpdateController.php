@@ -29,24 +29,59 @@ class UpdateController extends Modules_Microweber_BasepluginController
 
     public function startAction()
     {
-        $error = false;
         $messages = [];
 
         $messages[] = ['message'=>'Getting data from package managers'];
 
-        if (!Modules_Microweber_Helper::isAvailableDiskSpace()) {
-            $error = true;
-            $messages[] = ['error'=>true, 'message'=>'No disk space available on the server.'];
-            $messages[] = ['error'=>true, 'message'=>'Can\'t download the app.'];
-        } else {
-            $messages[] = ['message'=>'Checking disk space..'];
-            $messages[] = ['message'=>'Disk space is ok..'];
+        $mwRelease = Modules_Microweber_Config::getRelease();
+
+        if (!isset($mwRelease['version_url']) || empty($mwRelease['version_url'])) {
+
+            $messages[] = ['error'=>true, 'message'=>'Error code: 444 - Can\'t get the download url from releases.'];
+
+            $this->_helper->json([
+                'messages' => $messages,
+                'error' => true,
+            ]);
+
+            return;
         }
+
+        $messages[] = ['message'=>'Getting new releases...'];
+
+        $mwReleaseVersion = Modules_Microweber_Helper::getContentFromUrl($mwRelease['version_url']);
+        if (empty($mwReleaseVersion)) {
+            $messages[] = ['error'=>true, 'message'=>'Error code: 445 - Can\'t get the version from releases.'];
+
+            $this->_helper->json([
+                'messages' => $messages,
+                'error' => true,
+            ]);
+
+            return;
+        }
+
+        $messages[] = ['message'=>'Last release version is '.$mwReleaseVersion.' ...'];
+
+        if (!Modules_Microweber_Helper::isAvailableDiskSpace()) {
+
+            $messages[] = ['error'=>true, 'message'=>'No disk space available on the server.'];
+            $messages[] = ['error'=>true, 'message'=>'Error code: 446 - Can\'t download the app.'];
+
+            $this->_helper->json([
+                'messages' => $messages,
+                'error' => true,
+            ]);
+
+            return;
+        }
+
+        $messages[] = ['message'=>'Checking disk space..'];
+        $messages[] = ['message'=>'Disk space is ok..'];
 
         $this->_helper->json([
             'messages' => $messages,
-            'error' => $error,
-            'started' => true,
+            'next' => true,
         ]);
     }
 
