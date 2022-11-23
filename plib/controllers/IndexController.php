@@ -379,18 +379,6 @@ class IndexController extends Modules_Microweber_BasepluginController
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/whitelabel.js');
     }
 
-    public function startUpdateAction() {
-
-        Modules_Microweber_Helper::stopTasks(['task_appversioncheck','task_appdownload','task_templatesdownload']);
-
-        $task = new Modules_Microweber_Task_AppVersionCheck();
-        $this->taskManager->start($task, NULL);
-
-        $this->_status->addMessage('info', 'Update task has been started');
-
-        return $this->_redirect('index/versions');
-    }
-
 /*
     public function activatesymlinkingAction()
     {
