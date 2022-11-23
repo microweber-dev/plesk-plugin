@@ -76,8 +76,8 @@ class UpdateController extends Modules_Microweber_BasepluginController
             return;
         }
 
-        $messages[] = ['message'=>'Checking disk space..', 'error' => true];
-        $messages[] = ['message'=>'Disk space is ok..', 'error' => true];
+        $messages[] = ['message'=>'Checking disk space..'];
+        $messages[] = ['message'=>'Disk space is ok..'];
 
         $messages[] = ['message'=>'Getting template urls...'];
 
@@ -129,10 +129,10 @@ class UpdateController extends Modules_Microweber_BasepluginController
 
     public function queueAction() {
 
-    //    Modules_Microweber_Helper::stopTasks(['task_appversioncheck','task_appdownload','task_templatesdownload']);
+        Modules_Microweber_Helper::stopTasks(['task_appversioncheck','task_appdownload','task_templatesdownload']);
 
-  //      $task = new Modules_Microweber_Task_AppVersionCheck();
-//        $this->taskManager->start($task, NULL);
+        $task = new Modules_Microweber_Task_AppVersionCheck();
+        $this->taskManager->start($task, NULL);
 
         $this->_helper->json([
             'messages' => 'Update task has been started',
