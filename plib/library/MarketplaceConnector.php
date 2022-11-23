@@ -69,25 +69,9 @@ class Modules_Microweber_MarketplaceConnector
 		}
 	}
 	
-	public function add_package_url($url) {
-		
-		$url = trim($url);
-		$url = str_replace(',', false, $url);
-		$url = rtrim($url, "/") . '/';
-		
-		if (! stristr($url, 'packages.json')) {
-			$url = ($url . "/") . 'packages.json';
-		}
-		
-		if (filter_var($url, FILTER_VALIDATE_URL) === FALSE) {
-			return;
-		}
-		
-		if (empty($url)) {
-			return;
-		}
-		
-		$this->package_urls[] = $url;
+	public function add_package_url($originalUrl) {
+		$url = trim($originalUrl);
+		$this->package_urls[] = $url; 
 	}
 	
 	
@@ -123,6 +107,8 @@ class Modules_Microweber_MarketplaceConnector
 				}
 			}
 		}
+
+
 		if ($packages) {
 			foreach ($packages as $pk => $package) {
 				$version_type = false;
@@ -153,7 +139,7 @@ class Modules_Microweber_MarketplaceConnector
 	public function get_templates()
 	{
 		$templates = $this->get_packages();
-		
+
 		$return = array();
 		if ($templates and isset($templates["microweber-template"])) {
 			foreach ($templates["microweber-template"] as $pk => $template) {
@@ -191,6 +177,8 @@ class Modules_Microweber_MarketplaceConnector
 		$download_urls = [];
 		
 		$templates = $this->get_templates();
+
+
 		if (is_array($templates) && !empty($templates)) {
 			foreach ($templates as $template) {
 				if (isset($template['latest_version'])) {
