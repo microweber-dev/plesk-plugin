@@ -23,7 +23,7 @@ class Modules_Microweber_Task_TemplatesDownload extends \pm_LongTask_Task
             $templateVersions = [];
         }
 
-        $templatesUrls = $this->_getTemplatesUrl();
+        $templatesUrls = $this->getTemplatesUrl();
         if (empty($templatesUrls)) {
             return;
         }
@@ -86,7 +86,7 @@ class Modules_Microweber_Task_TemplatesDownload extends \pm_LongTask_Task
         $taskManager->start($task, NULL);
 	}
 
-    private function _getTemplatesUrl()
+    public function getTemplatesUrl()
     {
         $licenses = [];
 

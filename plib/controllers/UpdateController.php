@@ -79,6 +79,30 @@ class UpdateController extends Modules_Microweber_BasepluginController
         $messages[] = ['message'=>'Checking disk space..'];
         $messages[] = ['message'=>'Disk space is ok..'];
 
+
+        $messages[] = ['message'=>'Getting template urls...'];
+
+        $task = new Modules_Microweber_Task_TemplatesDownload();
+        $getTemplates = $task->getTemplatesUrl();
+
+        if (empty($getTemplates)) {
+            $messages[] = ['error'=>true, 'message'=>'Can\'t get download urls for templates.'];
+
+            $this->_helper->json([
+                'messages' => $messages,
+                'error' => true,
+            ]);
+
+            return;
+        }
+
+        $messages[] = ['message'=>count($getTemplates) . ' templates found'];
+        $messages[] = ['message'=>'Checking new version of templates...'];
+
+        /*foreach ($getTemplates as $template) {
+            $messages[] = ['message'=>'Template: ' . $template['name']];
+        }*/
+
         $this->_helper->json([
             'messages' => $messages,
             'next' => true,

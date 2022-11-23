@@ -13,6 +13,8 @@
     .update-log {
         background: hsl(225, 6.1%, 12.9%);
         padding: 15px;
+        overflow-y:scroll;
+        max-height: 600px;
     }
     .update-log-message {
         color: hsl(80.6, 75.5%, 58.4%);
@@ -38,7 +40,14 @@
                         ' ' + messageData['message'] +
                         '    </div>';
                     $j('.update-log').append(html);
-                }, iMessage * 1000);
+
+                    $j(".update-log").animate({
+                        scrollTop: $j('.update-log')[0].scrollHeight
+                    }, 50);
+
+                }, iMessage * 600);
+
+
             });
 
 
