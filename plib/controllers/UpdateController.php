@@ -22,7 +22,18 @@ class UpdateController extends Modules_Microweber_BasepluginController
             return $this->_redirect('index/error?type=permission');
         }
 
+        $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
         $this->view->pageTitle = $this->_moduleName . ' - Update';
+
+
+    }
+
+    public function startAction()
+    {
+
+        $this->_helper->json([
+            'updated' => true,
+        ]);
     }
 
 }

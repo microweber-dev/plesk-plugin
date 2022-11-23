@@ -19,13 +19,36 @@
     }
 </style>
 
+<script>
+
+    var $j = jQuery.noConflict();
+    $j(document).ready(function() {
+        startUpdating();
+    });
+
+    function startUpdating() {
+        $j.get('/modules/microweber/index.php/update/start', function(data) {
+
+            var html = '<div class="update-log-message">'+
+                '            <span class="pul-icon pul-icon--intent pul-icon--success pul-icon--on-dark">'+
+                '                <svg focusable="false"><use href="/ui-library/images/symbols.svg?6bd5879cb9a032639fb375ff6f1dcd26#check-mark-circle-filled:16"></use></svg>'+
+                '            </span>'+
+                '       Getting data from package managers'+
+                '    </div>';
+
+            $j('.update-log').append(html);
+
+        });
+    }
+</script>
+
 <div class="update-log">
 
     <div class="update-log-message">
             <span class="pul-icon pul-icon--intent pul-icon--success pul-icon--on-dark">
                 <svg focusable="false"><use href="/ui-library/images/symbols.svg?6bd5879cb9a032639fb375ff6f1dcd26#check-mark-circle-filled:16"></use></svg>
             </span>
-        Starting update
+        Starting update 
     </div>
 
 </div>
