@@ -1016,6 +1016,13 @@ class IndexController extends Modules_Microweber_BasepluginController
             //'required' => true,
         ]);
 
+        $form->addElement('select', 'use_package_manage_urls_from_whmcs', [
+            'label' => 'Get package manager urls from WHMCS',
+            'multiOptions' => ['no' => 'No', 'yes' => 'Yes'],
+            'value' => pm_Settings::get('use_package_manage_urls_from_whmcs'),
+            'required' => false,
+        ]);
+
         $form->addElement('select', 'allow_reseller_whitelabel', [
             'label' => 'Allow resellers to use their own White Label?',
             'multiOptions' => ['yes' => 'Yes', 'no' => 'No'],
@@ -1044,6 +1051,7 @@ class IndexController extends Modules_Microweber_BasepluginController
             pm_Settings::set('update_app_channel', $form->getValue('update_app_channel'));
             pm_Settings::set('update_app_automatically', $form->getValue('update_app_automatically'));
             pm_Settings::set('whmcs_url', $form->getValue('whmcs_url'));
+            pm_Settings::set('use_package_manage_urls_from_whmcs', $form->getValue('use_package_manage_urls_from_whmcs'));
             pm_Settings::set('allow_reseller_whitelabel', $form->getValue('allow_reseller_whitelabel'));
 
 

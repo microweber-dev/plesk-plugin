@@ -90,7 +90,7 @@ class Modules_Microweber_Task_TemplatesDownload extends \pm_LongTask_Task
     {
         $licenses = [];
 
-        $whiteLabelKey =  pm_Settings::get('wl_key');;
+        $whiteLabelKey =  pm_Settings::get('wl_key');
         if (!empty($whiteLabelKey)) {
             $licenses[] = [
                 'rel_type'=>'plesk-ext',
@@ -105,7 +105,11 @@ class Modules_Microweber_Task_TemplatesDownload extends \pm_LongTask_Task
         }
 
         $connector = new Modules_Microweber_MarketplaceConnector();
-        $connector->set_whmcs_url(Modules_Microweber_Config::getWhmcsUrl());
+
+        if (pm_Settings::get('use_package_manage_urls_from_whmcs') == 'yes') {
+            $connector->set_whmcs_url(Modules_Microweber_Config::getWhmcsUrl());
+        }
+
         $connector->set_license($licenses);
 
         $templatesUrl = $connector->get_templates_download_urls();
