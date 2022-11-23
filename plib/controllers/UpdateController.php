@@ -120,24 +120,24 @@ class UpdateController extends Modules_Microweber_BasepluginController
             $messages[] = ['message'=>'No new templates found.'];
         }
 
-        $messages[] = ['message'=>'Starting update task...'];
+        $messages[] = ['next'=>true, 'message'=>'Starting update task...'];
 
         $this->_helper->json([
-            'messages' => $messages,
-            'next' => true,
+            'messages' => $messages
         ]);
     }
 
 
-    public function startUpdateAction() {
+    public function queueAction() {
 
         Modules_Microweber_Helper::stopTasks(['task_appversioncheck','task_appdownload','task_templatesdownload']);
 
         $task = new Modules_Microweber_Task_AppVersionCheck();
         $this->taskManager->start($task, NULL);
 
-        $this->_status->addMessage('info', 'Update task has been started');
+        $this->_helper->json([
+            'messages' => 'Update task has been started',
+        ]);
 
-        return $this->_redirect('index/versions');
     }
 }

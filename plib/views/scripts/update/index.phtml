@@ -29,6 +29,12 @@
         startUpdating();
     });
 
+    function runUpdatingTask() {
+        $j.get('/modules/microweber/index.php/update/queue', function (data) {
+
+        });
+    }
+
     function startUpdating() {
         $j.get('/modules/microweber/index.php/update/start', function(data) {
 
@@ -46,11 +52,13 @@
                         scrollTop: $j('.update-log')[0].scrollHeight
                     }, 50);
 
+                    if (messageData['next']) {
+                        runUpdatingTask();
+                    }
+
                 }, iMessage * 600);
 
-
             });
-
 
         });
     }
