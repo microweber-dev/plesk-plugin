@@ -159,7 +159,7 @@ class IndexController extends Modules_Microweber_BasepluginController
             $this->view->latestVersion = $mwReleaseVersion;
         }
 
-        $this->view->updateLink = pm_Context::getBaseUrl() . 'index.php/index/update';
+        $this->view->updateLink = pm_Context::getBaseUrl() . 'index.php/update/index';
        // $this->view->updateTemplatesLink = pm_Context::getBaseUrl() . 'index.php/index/update_templates';
 
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
@@ -377,13 +377,6 @@ class IndexController extends Modules_Microweber_BasepluginController
         $this->_getLicensedView();
 
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/whitelabel.js');
-    }
-
-    public function updateAction()
-    {
-        if (!pm_Session::getClient()->isAdmin()) {
-            return $this->_redirect('index/error?type=permission');
-        }
     }
 
     public function startUpdateAction() {
