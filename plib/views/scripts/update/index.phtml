@@ -20,6 +20,9 @@
         margin-bottom:10px;
         color: hsl(80.6, 75.5%, 58.4%);
     }
+    .update-log-message.error {
+        color: #ff4d6d;
+    }
 </style>
 
 <script>
@@ -40,12 +43,26 @@
 
             $j.each(data.messages, function(iMessage, messageData) {
                 setTimeout(function() {
-                    var html = '<div class="update-log-message">' +
-                        '            <span class="pul-icon pul-icon--intent pul-icon--success pul-icon--on-dark">' +
-                        '                <svg focusable="false"><use href="/ui-library/images/symbols.svg?6bd5879cb9a032639fb375ff6f1dcd26#check-mark-circle-filled:16"></use></svg>' +
-                        '            </span>' +
-                        ' ' + messageData['message'] +
-                        '    </div>';
+
+                    var html = '';
+                    if (messageData['error']) {
+                        html += '<div class="update-log-message error">' +
+                            '<span class="pul-icon pul-icon--intent pul-icon--danger pul-icon--on-dark">' +
+                            '<svg focusable="false">' +
+                            '<use href="/ui-library/images/symbols.svg?6bd5879cb9a032639fb3#exclamation-mark-circle-filled:16"></use>' +
+                            '</svg>' +
+                            '</span>' +
+                            ' ' + messageData['message'] +
+                            '</div>';
+                    } else {
+                        html += '<div class="update-log-message">' +
+                            '            <span class="pul-icon pul-icon--intent pul-icon--success pul-icon--on-dark">' +
+                            '                <svg focusable="false"><use href="/ui-library/images/symbols.svg?6bd5879cb9a032639fb375ff6f1dcd26#check-mark-circle-filled:16"></use></svg>' +
+                            '            </span>' +
+                            ' ' + messageData['message'] +
+                            '    </div>';
+                    }
+
                     $j('.update-log').append(html);
 
                     $j(".update-log").animate({
