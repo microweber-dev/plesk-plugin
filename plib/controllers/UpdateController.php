@@ -99,8 +99,23 @@ class UpdateController extends Modules_Microweber_BasepluginController
         $messages[] = ['message'=>count($getTemplates) . ' templates found'];
         $messages[] = ['message'=>'Checking new version of templates...'];
 
-        foreach ($getTemplates as $template) {
+        $templateDirs = [];
+        $availableTemplates = Modules_Microweber_Config::getSupportedTemplates();
+        if (!empty($availableTemplates)) {
+            foreach ($availableTemplates as $availableTemplateTargetDir => $availableTemplate) {
+                $templateDirs[] = $availableTemplateTargetDir;
+            }
+        }
 
+        $newTemplates = [];
+        foreach ($getTemplates as $template) {
+            if (!in_array($template['target_dir'], $templateDirs)) {
+                $newTemplates[] = $template['target_dir'];
+            }
+        }
+        
+        if (!empty($newTemplates)) {
+            $messages[] = ['message'=>'New templates found: ' . implode(',', $newTemplates)];
         }
 
         $this->_helper->json([
