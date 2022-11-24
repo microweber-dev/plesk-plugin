@@ -31,7 +31,14 @@ class UpdateController extends Modules_Microweber_BasepluginController
     {
         $messages = [];
 
-        $messages[] = ['message'=>'Getting data from package managers'];
+        $messages[] = ['message'=>'Update channel: ' . ucfirst(pm_Settings::get('update_app_channel'))];
+
+        $whmcsPackageManagerUrls = pm_Settings::get('use_package_manage_urls_from_whmcs');
+        if ($whmcsPackageManagerUrls == 'yes') {
+            $messages[] = ['message' => 'Getting data from WHMCS package managers urls'];
+        } else {
+            $messages[] = ['message' => 'Getting data from official package managers'];
+        }
 
         $mwRelease = Modules_Microweber_Config::getRelease();
 
@@ -129,10 +136,10 @@ class UpdateController extends Modules_Microweber_BasepluginController
 
     public function queueAction() {
 
-        Modules_Microweber_Helper::stopTasks(['task_appversioncheck','task_appdownload','task_templatesdownload']);
+        /*Modules_Microweber_Helper::stopTasks(['task_appversioncheck','task_appdownload','task_templatesdownload']);
 
         $task = new Modules_Microweber_Task_AppVersionCheck();
-        $this->taskManager->start($task, NULL);
+        $this->taskManager->start($task, NULL);*/
 
         $this->_helper->json([
             'messages' => 'Update task has been started',
