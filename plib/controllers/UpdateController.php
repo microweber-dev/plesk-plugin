@@ -31,7 +31,7 @@ class UpdateController extends Modules_Microweber_BasepluginController
     {
         $messages = [];
 
-        $messages[] = ['message'=>'Update channel: ' . ucfirst(pm_Settings::get('update_app_channel'))];
+        $messages[] = ['message'=>'Update channel: <b>' . ucfirst(pm_Settings::get('update_app_channel')) . '</b>'];
 
         $whmcsPackageManagerUrls = pm_Settings::get('use_package_manage_urls_from_whmcs');
         if ($whmcsPackageManagerUrls == 'yes') {
@@ -68,7 +68,7 @@ class UpdateController extends Modules_Microweber_BasepluginController
             return;
         }
 
-        $messages[] = ['message'=>'Last release version is '.$mwReleaseVersion.''];
+        $messages[] = ['message'=>'Last release version is <b>'.$mwReleaseVersion.'</b>'];
 
         if (!Modules_Microweber_Helper::isAvailableDiskSpace()) {
 
@@ -85,6 +85,19 @@ class UpdateController extends Modules_Microweber_BasepluginController
 
         $messages[] = ['message'=>'Checking disk space..'];
         $messages[] = ['message'=>'Disk space is ok.'];
+
+        $whiteLabelKey = pm_Settings::get('wl_key');
+        if (!empty($whiteLabelKey)) {
+            $messages[] = ['message'=>'Whitelabel key is applied.'];
+            $messages[] = ['message'=>'Checking whitelabel status...'];
+            $licenseCheck = Modules_Microweber_LicenseData::getLicenseData($whiteLabelKey);
+            if (isset($licenseCheck['status']) && $licenseCheck['status'] == 'active') {
+                $messages[] = ['message'=>'Whitelabel is active.'];
+                $messages[] = ['message'=>'Premium access to templates and modules are unlocked.'];
+            } else {
+                $messages[] = ['error'=>true, 'message'=>'Whitelabel key is not active or expired.'];
+            }
+        }
 
         $messages[] = ['message'=>'Getting template urls...'];
 
@@ -121,7 +134,7 @@ class UpdateController extends Modules_Microweber_BasepluginController
         }
 
         if (!empty($newTemplates)) {
-            $messages[] = ['message'=>'New templates found: ' . implode(',', $newTemplates)];
+            $messages[] = ['message'=>'New templates found: <b>' . implode(',', $newTemplates) . '</b>'];
         } else {
             $messages[] = ['message'=>'No new templates found.'];
         }
