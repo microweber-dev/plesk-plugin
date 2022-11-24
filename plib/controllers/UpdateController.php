@@ -14,7 +14,6 @@ class UpdateController extends Modules_Microweber_BasepluginController
 
         $this->view->tabs = [];
         $this->view->mainPluginLink = pm_Context::getBaseUrl() . 'index.php/index/versions';
-
     }
 
     public function indexAction()
@@ -150,10 +149,10 @@ class UpdateController extends Modules_Microweber_BasepluginController
 
     public function queueAction() {
 
-        /*Modules_Microweber_Helper::stopTasks(['task_appversioncheck','task_appdownload','task_templatesdownload']);
+        Modules_Microweber_Helper::stopTasks(['task_appversioncheck','task_appdownload','task_templatesdownload']);
 
         $task = new Modules_Microweber_Task_AppVersionCheck();
-        $this->taskManager->start($task, NULL);*/
+        $this->taskManager->start($task, NULL);
 
         $this->_helper->json([
             'messages' => 'Update task has been started',
