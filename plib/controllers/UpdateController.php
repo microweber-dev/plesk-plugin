@@ -68,7 +68,7 @@ class UpdateController extends Modules_Microweber_BasepluginController
             return;
         }
 
-        $messages[] = ['message'=>'Last release version is '.$mwReleaseVersion.' ...'];
+        $messages[] = ['message'=>'Last release version is '.$mwReleaseVersion.''];
 
         if (!Modules_Microweber_Helper::isAvailableDiskSpace()) {
 
@@ -84,7 +84,7 @@ class UpdateController extends Modules_Microweber_BasepluginController
         }
 
         $messages[] = ['message'=>'Checking disk space..'];
-        $messages[] = ['message'=>'Disk space is ok..'];
+        $messages[] = ['message'=>'Disk space is ok.'];
 
         $messages[] = ['message'=>'Getting template urls...'];
 
@@ -102,7 +102,7 @@ class UpdateController extends Modules_Microweber_BasepluginController
             return;
         }
 
-        $messages[] = ['message'=>count($getTemplates) . ' templates found'];
+        $messages[] = ['message'=>count($getTemplates) . ' templates found.'];
         $messages[] = ['message'=>'Checking new version of templates...'];
 
         $templateDirs = [];
