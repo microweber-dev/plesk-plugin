@@ -6,8 +6,6 @@
  * Copyright: Microweber CMS
  */
 ?>
-<?php echo $this->renderTabs($this->tabs); ?>
-
 
 <style>
     .update-log {
@@ -35,8 +33,12 @@
 
     function runUpdatingTask() {
         $j.get('/modules/microweber/index.php/update/queue', function (data) {
-
+            showBackToPluginBtn();
         });
+    }
+
+    function showBackToPluginBtn() {
+        $j('.update-log').after('<br /><a href="<?php echo $this->mainPluginLink; ?>" class="btn btn-info i-link">Back to plugin</a>');
     }
 
     function startUpdating() {

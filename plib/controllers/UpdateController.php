@@ -13,6 +13,7 @@ class UpdateController extends Modules_Microweber_BasepluginController
         parent::init();
 
         $this->view->tabs = [];
+        $this->view->mainPluginLink = pm_Context::getBaseUrl() . 'index.php/index/versions';
 
     }
 
