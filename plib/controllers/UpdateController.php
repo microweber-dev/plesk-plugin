@@ -141,7 +141,7 @@ class UpdateController extends Modules_Microweber_BasepluginController
 
         $messages[] = ['next'=>true, 'message'=>'Starting update task...'];
 
-        $this->_helper->json([ 
+        $this->_helper->json([
             'messages' => $messages
         ]);
     }

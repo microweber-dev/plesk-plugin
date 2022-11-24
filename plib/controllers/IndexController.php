@@ -68,6 +68,10 @@ class IndexController extends Modules_Microweber_BasepluginController
                 'title' => 'Settings',
                 'action' => 'settings',
             ];
+            $this->view->tabs[] = [
+                'title' => 'Updates',
+                'action' => 'updates',
+            ];
         }
 
         $this->view->brandName = Modules_Microweber_WhiteLabel::getBrandName();
@@ -1523,6 +1527,17 @@ class IndexController extends Modules_Microweber_BasepluginController
         }
 
         return $this->_redirect('index/index');
+    }
+
+    public function updatesAction()
+    {
+        $this->view->pageTitle = $this->_moduleName . ' - Updates';
+
+        $this->view->currentPluginVersion = '';
+        $this->view->latestPluginVersion = '';
+        $this->view->latestPluginUpdateDate = '';
+
+
     }
 
     public function errorAction()
