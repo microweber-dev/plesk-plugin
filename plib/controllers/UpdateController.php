@@ -105,7 +105,7 @@ class UpdateController extends Modules_Microweber_BasepluginController
         $getTemplates = $task->getTemplatesUrl();
 
         if (empty($getTemplates)) {
-            $messages[] = ['error'=>true, 'message'=>'Can\'t get download urls for templates.'];
+            $messages[] = ['error'=>true, 'message'=>'Error code: 447 - Can\'t get download urls for templates.'];
 
             $this->_helper->json([
                 'messages' => $messages,
@@ -141,7 +141,7 @@ class UpdateController extends Modules_Microweber_BasepluginController
 
         $messages[] = ['next'=>true, 'message'=>'Starting update task...'];
 
-        $this->_helper->json([
+        $this->_helper->json([ 
             'messages' => $messages
         ]);
     }

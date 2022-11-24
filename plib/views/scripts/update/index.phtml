@@ -20,7 +20,6 @@
     }
     .update-log-message.error {
         color: #d02d4b;
-        border-left: 4px solid #d02d4b;
     }
 </style>
 
@@ -38,7 +37,7 @@
     }
 
     function showBackToPluginBtn() {
-        $j('.update-log').after('<br /><a href="<?php echo $this->mainPluginLink; ?>" class="btn btn-info i-link">Back to plugin</a>');
+        $j('.js-back-to-plugin').html('<br /><a href="<?php echo $this->mainPluginLink; ?>" class="btn btn-info i-link">Back to plugin</a>');
     }
 
     function startUpdating() {
@@ -49,6 +48,9 @@
 
                     var html = '';
                     if (messageData['error']) {
+
+                        showBackToPluginBtn();
+
                         html += '<div class="update-log-message error">' +
                             '<span class="pul-icon pul-icon--intent pul-icon--danger pul-icon--on-dark">' +
                             '<svg focusable="false">' +
@@ -94,3 +96,5 @@
     </div>
 
 </div>
+
+<div class="js-back-to-plugin"></div>
