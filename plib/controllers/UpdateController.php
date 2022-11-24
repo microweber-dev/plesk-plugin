@@ -92,8 +92,8 @@ class UpdateController extends Modules_Microweber_BasepluginController
             $messages[] = ['message'=>'Checking whitelabel status...'];
             $licenseCheck = Modules_Microweber_LicenseData::getLicenseData($whiteLabelKey);
             if (isset($licenseCheck['status']) && $licenseCheck['status'] == 'active') {
-                $messages[] = ['message'=>'Whitelabel is active.'];
-                $messages[] = ['message'=>'Premium access to templates and modules are unlocked.'];
+                $messages[] = ['message'=>'Whitelabel is <b>active</b>.'];
+                $messages[] = ['message'=>'<b>Premium access to templates and modules are unlocked.</b>'];
             } else {
                 $messages[] = ['error'=>true, 'message'=>'Whitelabel key is not active or expired.'];
             }
@@ -115,7 +115,7 @@ class UpdateController extends Modules_Microweber_BasepluginController
             return;
         }
 
-        $messages[] = ['message'=>count($getTemplates) . ' templates found.'];
+        $messages[] = ['message'=> '<b>'.count($getTemplates) . '</b> templates found.'];
         $messages[] = ['message'=>'Checking new version of templates...'];
 
         $templateDirs = [];
