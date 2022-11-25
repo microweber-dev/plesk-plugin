@@ -23,9 +23,14 @@ class Modules_Microweber_PluginUpdate
             $manager->mkdir($latestPluginPath);
         }
 
-        $move = pm_ApiCli::callSbin('move_folder.sh', [
+        /*$move = pm_ApiCli::callSbin('move_folder.sh', [
             $latestPluginPath . '/htdocs/',
             pm_Context::getHtdocsDir(),
+        ]);*/
+
+        $move = pm_ApiCli::callSbin('move_folder.sh', [
+            $latestPluginPath . '/plib/',
+            pm_Context::getPlibDir(),
         ]);
 
         var_dump($move);
