@@ -1533,13 +1533,22 @@ class IndexController extends Modules_Microweber_BasepluginController
     {
         $this->view->pageTitle = $this->_moduleName . ' - Updates';
 
-        $this->view->currentPluginVersion = '11';
-        $this->view->latestPluginVersion = '0__2';
-        $this->view->latestPluginUpdateDate = '0';
+        $this->view->currentPluginVersion = '-';
+        $this->view->latestPluginVersion = '-';
+        $this->view->latestPluginUpdateDate = '-';
 
+        $metaXml = pm_Context::getPlibDir() . 'meta.xml';
 
-        $task = new Modules_Microweber_Task_UpdatePlugin();
-        $this->taskManager->start($task, NULL);
+        $manager = new pm_ServerFileManager();
+        $xmlContent = $manager->fileGetContents($metaXml);
+        $xmlDecoded = simplexml_load_string($xmlContent);
+        $xmlDecoded = json_decode(json_encode($xmlDecoded), true);
+        if (isset($xmlDecoded['version'])) {
+            $this->view->currentPluginVersion = $xmlDecoded['version'];
+        }
+
+       // $task = new Modules_Microweber_Task_UpdatePlugin();
+       // $this->taskManager->start($task, NULL);
 
     }
 
