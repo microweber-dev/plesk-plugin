@@ -17,8 +17,6 @@ class Modules_Microweber_PluginUpdate
     {
         $extPath = Modules_Microweber_Config::getExtensionVarPath();
         $latestPluginPath = $extPath . 'latest-plugin';
-        $latestPluginUnzipedPath = $latestPluginPath . '/unzipped';
-        $pluginZipPath = $latestPluginPath . '/master.zip';
 
         $manager = new pm_ServerFileManager();
         if (!$manager->isDir($latestPluginPath)) {
@@ -26,14 +24,24 @@ class Modules_Microweber_PluginUpdate
         }
 
         $url = self::getDownloadUrl();
-        $downloadStatus = self::_downloadZipFile($url, $pluginZipPath);
+        $downloadStatus = self::_downloadZipFile($url, $latestPluginPath);
+
+
 
 
     }
 
     private static function _downloadZipFile($url, $filePath) {
 
+        $unzip = pm_ApiCli::callSbin('unzip_app_template.sh', [
+            base64_encode($url),
+            $filePath
+        ]);
 
-
+        if ($unzip['code'] == 0) {
+            return true;
+        }
+        
+        return false;
     }
 }
