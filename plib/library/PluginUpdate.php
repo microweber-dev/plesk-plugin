@@ -26,6 +26,7 @@ class Modules_Microweber_PluginUpdate
         $url = self::getDownloadUrl();
         $downloadStatus = self::_downloadZipFile($url, $latestPluginPath);
         if ($downloadStatus) {
+
             $moveHtdocs = pm_ApiCli::callSbin('move_folder.sh', [
                 $latestPluginPath . '/htdocs/',
                 pm_Context::getHtdocsDir(),
