@@ -1533,7 +1533,7 @@ class IndexController extends Modules_Microweber_BasepluginController
     {
         $this->view->pageTitle = $this->_moduleName . ' - Updates';
 
-        $this->view->currentPluginVersion = '1'; 
+        $this->view->currentPluginVersion = '1';
         $this->view->latestPluginVersion = '2';
         $this->view->latestPluginUpdateDate = '3';
 
