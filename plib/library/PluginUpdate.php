@@ -39,7 +39,7 @@ class Modules_Microweber_PluginUpdate
             $moveSbin = pm_ApiCli::callSbin('move_folder.sh', [
                 $latestPluginPath . '/sbin/',
                 Modules_Microweber_Config::getSbinVarPath(),
-            ]); 
+            ]);
         }
 
         // sbin path
