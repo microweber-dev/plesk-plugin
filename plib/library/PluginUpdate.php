@@ -39,6 +39,8 @@ class Modules_Microweber_PluginUpdate
             $filePath
         ]);
 
+        var_dump($unzip);
+
         if ($unzip['code'] == 0) {
             return true;
         }
