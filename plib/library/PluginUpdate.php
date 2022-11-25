@@ -25,16 +25,21 @@ class Modules_Microweber_PluginUpdate
 
         $url = self::getDownloadUrl();
         $downloadStatus = self::_downloadZipFile($url, $latestPluginPath);
+        if ($downloadStatus) {
+            $moveHtdocs = pm_ApiCli::callSbin('move_folder.sh', [
+                $latestPluginPath . '/htdocs/',
+                pm_Context::getHtdocsDir(),
+            ]);
 
-        $move = pm_ApiCli::callSbin('move_folder.sh', [
-            $latestPluginPath . '/htdocs/',
-            pm_Context::getHtdocsDir(),
-        ]);
+            $movePlib = pm_ApiCli::callSbin('move_folder.sh', [
+                $latestPluginPath . '/plib/',
+                pm_Context::getPlibDir(),
+            ]);
 
-        $move = pm_ApiCli::callSbin('move_folder.sh', [
-            $latestPluginPath . '/plib/',
-            pm_Context::getPlibDir(),
-        ]);
+            var_dump($moveHtdocs);
+            var_dump($movePlib);
+        }
+
 
       //  var_dump(pm_Context::getPlibDir());
        // var_dump(pm_Context::getHtdocsDir());

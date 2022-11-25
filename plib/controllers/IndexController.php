@@ -1538,10 +1538,10 @@ class IndexController extends Modules_Microweber_BasepluginController
         $this->view->latestPluginUpdateDate = '';
 
 
-        // Modules_Microweber_PluginUpdate::downloadPlugin();
-
+         Modules_Microweber_PluginUpdate::downloadPlugin(); 
+/*
         $task = new Modules_Microweber_Task_UpdatePlugin();
-        $this->taskManager->start($task, NULL);
+        $this->taskManager->start($task, NULL);*/
 
 
     }
