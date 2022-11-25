@@ -864,7 +864,7 @@ class IndexController extends Modules_Microweber_BasepluginController
             $this->view->latestVersion = $mwReleaseVersion;
         }
 
-        $this->view->updateLink = pm_Context::getBaseUrl() . 'index.php/index/update';
+        $this->view->updateLink = pm_Context::getBaseUrl() . 'index.php/update/index';
 
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/startup.js');
