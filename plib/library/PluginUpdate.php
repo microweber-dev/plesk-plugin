@@ -23,17 +23,18 @@ class Modules_Microweber_PluginUpdate
             $manager->mkdir($latestPluginPath);
         }
 
+        var_dump($latestPluginPath);
+
         $url = self::getDownloadUrl();
         $downloadStatus = self::_downloadZipFile($url, $latestPluginPath);
 
-
-
+        var_dump($downloadStatus);
 
     }
 
     private static function _downloadZipFile($url, $filePath) {
 
-        $unzip = pm_ApiCli::callSbin('unzip_app_template.sh', [
+        $unzip = pm_ApiCli::callSbin('unzip_app_module.sh', [
             base64_encode($url),
             $filePath
         ]);
