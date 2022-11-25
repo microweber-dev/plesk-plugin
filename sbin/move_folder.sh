@@ -2,4 +2,4 @@
 
 echo "move files from" $1 "to" $2
 
-mv -f $1 $2
+rsync -va --delete-after $1 $2
