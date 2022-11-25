@@ -34,7 +34,7 @@ class Modules_Microweber_PluginUpdate
 
     private static function _downloadZipFile($url, $filePath) {
 
-        $unzip = pm_ApiCli::callSbin('unzip_app_module.sh', [
+        $unzip = pm_ApiCli::callSbin('unzip_plugin.sh', [
             base64_encode($url),
             $filePath
         ]);
