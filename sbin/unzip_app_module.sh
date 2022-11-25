@@ -23,7 +23,7 @@ find $latestFolderModule -type f -exec chmod 0644 {} \;
 
 chcon --user system_u --type httpd_sys_content_t -R $latestFolderModule
 
-#rm -f $zipDownloadedFile
-#rm -f "unzipping-microweber-module.log"
+rm -f $zipDownloadedFile
+rm -f "unzipping-microweber-module.log"
 
 echo "Done!"

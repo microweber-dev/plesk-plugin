@@ -23,7 +23,7 @@ find $latestFolderPlugin -type f -exec chmod 0644 {} \;
 
 chcon --user system_u --type httpd_sys_content_t -R $latestFolderPlugin
 
-rm -f $zipDownloadedFile
-rm -f "unzipping-plugin-master.log"
+#rm -f $zipDownloadedFile
+#rm -f "unzipping-plugin-master.log"
 
 echo "Done!"
