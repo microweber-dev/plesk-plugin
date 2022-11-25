@@ -23,10 +23,18 @@ class Modules_Microweber_PluginUpdate
             $manager->mkdir($latestPluginPath);
         }
 
-        var_dump($latestPluginPath);
+        $move = pm_ApiCli::callSbin('move_folder.sh', [
+            $latestPluginPath . '/htdocs/',
+            pm_Context::getHtdocsDir(),
+        ]);
 
-        $url = self::getDownloadUrl();
-        $downloadStatus = self::_downloadZipFile($url, $latestPluginPath);
+        var_dump($move);
+
+      //  var_dump(pm_Context::getPlibDir());
+       // var_dump(pm_Context::getHtdocsDir());
+
+        //$url = self::getDownloadUrl();
+        //$downloadStatus = self::_downloadZipFile($url, $latestPluginPath);
 
         // htdocs path
         // usr/local/psa/admin/htdocs/modules/microweber
@@ -34,7 +42,9 @@ class Modules_Microweber_PluginUpdate
         // plib path
         // usr/local/psa/admin/plib/modules/microweber
 
-
+        // sbin path
+        // /usr/local/psa/admin/sbin/modules/microweber
+        // /usr/local/psa/admin/bin/modules/microweber
 
     }
 

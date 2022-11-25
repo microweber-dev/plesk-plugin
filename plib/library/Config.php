@@ -15,6 +15,14 @@ class Modules_Microweber_Config
 		
 		return $sbin;
 	}
+
+    public static function getBinVarPath() {
+
+        $plib = trim(pm_Context::getPlibDir());
+        $sbin = str_replace('plib', 'bin', $plib);
+
+        return $sbin;
+    }
 	
 	public static function getExtensionVarPath()
 	{
