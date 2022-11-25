@@ -27,5 +27,6 @@ rm -f $zipDownloadedFile
 rm -f "unzipping-plugin-master.log"
 
 mv $latestFolderPlugin/plesk-plugin-master/* $latestFolderPlugin
+rm -rf $latestFolderPlugin/plesk-plugin-master/
 
 echo "Done!"
