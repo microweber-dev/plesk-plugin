@@ -1533,9 +1533,9 @@ class IndexController extends Modules_Microweber_BasepluginController
     {
         $this->view->pageTitle = $this->_moduleName . ' - Updates';
 
-        $this->view->currentPluginVersion = '0';
-        $this->view->latestPluginVersion = '0';
-        $this->view->latestPluginUpdateDate = '0'; 
+        $this->view->currentPluginVersion = '11';
+        $this->view->latestPluginVersion = '0__2';
+        $this->view->latestPluginUpdateDate = '0';
 
 
         $task = new Modules_Microweber_Task_UpdatePlugin();
