@@ -41,7 +41,7 @@ class Modules_Microweber_PluginUpdate
         if ($unzip['code'] == 0) {
             return true;
         }
-        
+
         return false;
     }
 }

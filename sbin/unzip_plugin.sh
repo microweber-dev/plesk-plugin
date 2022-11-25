@@ -16,7 +16,7 @@ wget "$downloadUrl" -O "$zipDownloadedFile"
 
 # Unzip selected version
 echo 'Unzip file...'
-unzip -o $zipDownloadedFile -d $2 > unzipping-plugin-master.log
+unzip -o $zipDownloadedFile -d $latestFolderPlugin > unzipping-plugin-master.log
 
 find $latestFolderPlugin -type d -exec chmod 0755 {} \;
 find $latestFolderPlugin -type f -exec chmod 0644 {} \;

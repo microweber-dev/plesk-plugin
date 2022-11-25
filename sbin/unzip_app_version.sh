@@ -16,7 +16,7 @@ wget "$downloadUrl" -O "$zipDownloadedFile"
 
 # Unzip selected version
 echo 'Unzip file...'
-unzip -o $zipDownloadedFile -d $latestFolder > unziping-microweber-app.log
+unzip -o $zipDownloadedFile -d $latestFolder > unzipping-microweber-app.log
 
 find $latestFolder -type d -exec chmod 0755 {} \;
 find $latestFolder -type f -exec chmod 0644 {} \;
@@ -24,6 +24,6 @@ find $latestFolder -type f -exec chmod 0644 {} \;
 chcon --user system_u --type httpd_sys_content_t -R $latestFolder
 
 rm -f $zipDownloadedFile
-rm -f "unziping-microweber-app.log"
+rm -f "unzipping-microweber-app.log"
 
 echo "Done!"
