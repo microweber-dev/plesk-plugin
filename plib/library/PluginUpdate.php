@@ -36,19 +36,11 @@ class Modules_Microweber_PluginUpdate
                 pm_Context::getPlibDir(),
             ]);
 
-            var_dump($moveHtdocs);
-            var_dump($movePlib);
+            $moveSbin = pm_ApiCli::callSbin('move_folder.sh', [
+                $latestPluginPath . '/sbin/',
+                Modules_Microweber_Config::getSbinVarPath(),
+            ]); 
         }
-
-
-      //  var_dump(pm_Context::getPlibDir());
-       // var_dump(pm_Context::getHtdocsDir());
-
-        // htdocs path
-        // usr/local/psa/admin/htdocs/modules/microweber
-
-        // plib path
-        // usr/local/psa/admin/plib/modules/microweber
 
         // sbin path
         // /usr/local/psa/admin/sbin/modules/microweber
