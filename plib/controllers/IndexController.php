@@ -1537,6 +1537,8 @@ class IndexController extends Modules_Microweber_BasepluginController
         $this->view->latestPluginVersion = '';
         $this->view->latestPluginUpdateDate = '';
 
+        Modules_Microweber_PluginUpdate::downloadPlugin();
+
 
     }
 
