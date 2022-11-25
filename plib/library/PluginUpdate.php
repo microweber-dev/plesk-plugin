@@ -28,7 +28,13 @@ class Modules_Microweber_PluginUpdate
         $url = self::getDownloadUrl();
         $downloadStatus = self::_downloadZipFile($url, $latestPluginPath);
 
-        var_dump($downloadStatus);
+        // htdocs path
+        // usr/local/psa/admin/htdocs/modules/microweber
+
+        // plib path
+        // usr/local/psa/admin/plib/modules/microweber
+
+
 
     }
 
