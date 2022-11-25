@@ -3,10 +3,11 @@
 downloadUrl=$(echo "$1" | base64 -d)
 
 latestFolderPlugin=$2
-if [ ! -d "$latestFolderPlugin" ]; then
-	mkdir -p "$latestFolderPlugin"
+if [ -d "$latestFolderPlugin" ]; then
+  rm -rf $latestFolderPlugin
 fi
 
+mkdir -p "$latestFolderPlugin"
 cd "$latestFolderPlugin"
 
 zipDownloadedFile="plugin-master.zip";
