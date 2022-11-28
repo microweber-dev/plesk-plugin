@@ -1539,8 +1539,9 @@ class IndexController extends Modules_Microweber_BasepluginController
 
         // Latest plugin version
         $latestMeta = Modules_Microweber_PluginUpdate::getLatestMeta();
-        if (isset($latestMeta['version'])) {}
-        $this->view->latestPluginVersion = $latestMeta['version'];
+        if (isset($latestMeta['version'])) {
+            $this->view->latestPluginVersion = $latestMeta['version'];
+        }
 
         // Current Plugin version
         $metaXml = pm_Context::getPlibDir() . 'meta.xml';

@@ -17,7 +17,6 @@ class Modules_Microweber_PluginUpdate
     {
         $metaUrl = 'https://raw.githubusercontent.com/microweber-dev/plesk-plugin/master/meta.xml';
         $xmlContent = Modules_Microweber_Helper::getContentFromUrl($metaUrl);
-
         $xmlDecoded = simplexml_load_string($xmlContent);
         $xmlDecoded = json_decode(json_encode($xmlDecoded), true);
 

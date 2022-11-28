@@ -14,8 +14,8 @@
 <span>Latest Plugin version is:</span> <b><?php echo $this->latestPluginVersion; ?></b> <br />
 <span>Latest Plugin update date:</span> <b><?php echo $this->latestPluginUpdateDate; ?></b><br />
 
-<?php if (version_compare($this->latestPluginVersion, $this->currentPluginVersion, '>=')) : ?>
-<div class="pul-alert pul-alert--info pul-status-message pul-status-message--info" style="line-height: 50px">
+<?php if (version_compare($this->latestPluginVersion, $this->currentPluginVersion, '>')) : ?>
+<div class="pul-alert pul-alert--info pul-status-message pul-status-message--info" style="line-height: 20px">
     New version of plugin is available.
     <br />
     <button class="pul-button pul-button--primary" type="button">
