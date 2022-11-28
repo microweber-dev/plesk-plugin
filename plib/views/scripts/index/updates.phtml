@@ -15,14 +15,14 @@
 <span>Latest Plugin update date:</span> <b><?php echo $this->latestPluginUpdateDate; ?></b><br />
 
 <?php if (version_compare($this->latestPluginVersion, $this->currentPluginVersion, '>')) : ?>
-<div class="pul-alert pul-alert--info pul-status-message pul-status-message--info" style="line-height: 20px">
+<div class="pul-alert pul-alert--info pul-status-message pul-status-message--info" style="line-height: 40px">
     New version of plugin is available.
     <br />
-    <button class="pul-button pul-button--primary" type="button">
+    <a href="<?php echo $this->updatePluginLink; ?>" class="pul-button pul-button--primary">
         <span class="pul-button__inner">
             <span>Update</span>
         </span>
-    </button>
+    </a>
 </div>
 <?php else: ?>
     <div class="pul-alert pul-alert--success pul-status-message pul-status-message--success">
