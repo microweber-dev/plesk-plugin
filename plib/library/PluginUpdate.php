@@ -13,6 +13,17 @@ class Modules_Microweber_PluginUpdate
         return "https://github.com/microweber-dev/plesk-plugin/archive/refs/heads/master.zip";
     }
 
+    public static function getLatestMeta()
+    {
+        $metaUrl = 'https://raw.githubusercontent.com/microweber-dev/plesk-plugin/master/meta.xml';
+        $xmlContent = Modules_Microweber_Helper::getContentFromUrl($metaUrl);
+
+        $xmlDecoded = simplexml_load_string($xmlContent);
+        $xmlDecoded = json_decode(json_encode($xmlDecoded), true);
+
+        return $xmlDecoded;
+    }
+
     public static function downloadPlugin()
     {
         $extPath = Modules_Microweber_Config::getExtensionVarPath();

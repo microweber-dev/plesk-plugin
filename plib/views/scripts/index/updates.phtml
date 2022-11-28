@@ -13,4 +13,11 @@
 <span>Your Plugin version is: </span> <b><?php echo $this->currentPluginVersion; ?></b> <br />
 <span>Latest Plugin version is:</span> <b><?php echo $this->latestPluginVersion; ?></b> <br />
 <span>Latest Plugin update date:</span> <b><?php echo $this->latestPluginUpdateDate; ?></b><br />
+
+<?php if (version_compare($this->latestPluginVersion, $this->currentPluginVersion, '>=')) : ?>
+New version of plugin is available. <br />
+
+<?php else: ?>
+Your plugin is up to date!
+<?php endif; ?>
 <br />

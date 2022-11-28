@@ -164,7 +164,7 @@ class IndexController extends Modules_Microweber_BasepluginController
         }
 
         $this->view->updateLink = pm_Context::getBaseUrl() . 'index.php/update/index';
-       // $this->view->updateTemplatesLink = pm_Context::getBaseUrl() . 'index.php/index/update_templates';
+       // $this->view->updateTemplatesLink = pm_Context::getBaseUrl() . 'index.php/update/index';
 
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/versions.js');
@@ -1537,19 +1537,32 @@ class IndexController extends Modules_Microweber_BasepluginController
         $this->view->latestPluginVersion = '-';
         $this->view->latestPluginUpdateDate = '-';
 
+        // Latest plugin version
+        $latestMeta = Modules_Microweber_PluginUpdate::getLatestMeta();
+        if (isset($latestMeta['version'])) {}
+        $this->view->latestPluginVersion = $latestMeta['version'];
+
+        // Current Plugin version
         $metaXml = pm_Context::getPlibDir() . 'meta.xml';
 
         $manager = new pm_ServerFileManager();
         $xmlContent = $manager->fileGetContents($metaXml);
+
+        $this->view->latestPluginUpdateDate = date('Y-m-d H:i:s', filemtime($metaXml));
+
         $xmlDecoded = simplexml_load_string($xmlContent);
         $xmlDecoded = json_decode(json_encode($xmlDecoded), true);
+
         if (isset($xmlDecoded['version'])) {
             $this->view->currentPluginVersion = $xmlDecoded['version'];
         }
 
-       // $task = new Modules_Microweber_Task_UpdatePlugin();
-       // $this->taskManager->start($task, NULL);
+    }
 
+    public function runupdateAction()
+    {
+        $task = new Modules_Microweber_Task_UpdatePlugin();
+        $this->taskManager->start($task, NULL);
     }
 
     public function errorAction()
