@@ -3,22 +3,25 @@ $j(document).ready(function() {
 
     $j('body').on('click', '.js-check-for-update', function() {
 
-        $j('.js-check-for-update').attr('disabled','disabled');
-        $j('.js-check-for-update').html('Loading...');
+        if (confirm('Are you sure want to update the app?')) {
 
-        redirectToUpdateLink = $j('.js-check-for-update').data('update-link');
+            $j('.js-check-for-update').attr('disabled', 'disabled');
+            $j('.js-check-for-update').html('Loading...');
 
-        setTimeout(function () {
-            $j('.js-check-for-update').html('Checking free disk space...');
-        }, 2000);
+            redirectToUpdateLink = $j('.js-check-for-update').data('update-link');
 
-        $j.get('/modules/microweber/index.php/index/checkServerDiskSpace', function(data) {
-            if (data.is_ok) {
-                window.location.href = redirectToUpdateLink;
-            } else {
-                $j('.js-check-for-update').html('No disk space. Can\'t download the app.');
-            }
-        })
+            setTimeout(function () {
+                $j('.js-check-for-update').html('Checking free disk space...');
+            }, 2000);
+
+            $j.get('/modules/microweber/index.php/index/checkServerDiskSpace', function (data) {
+                if (data.is_ok) {
+                    window.location.href = redirectToUpdateLink;
+                } else {
+                    $j('.js-check-for-update').html('No disk space. Can\'t download the app.');
+                }
+            })
+        }
 
     });
 
