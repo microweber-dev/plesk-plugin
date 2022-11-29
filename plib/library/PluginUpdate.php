@@ -37,11 +37,20 @@ class Modules_Microweber_PluginUpdate
         $downloadStatus = self::_downloadZipFile($url, $latestPluginPath);
         if ($downloadStatus) {
 
+            // Update meta
+            $metaXml = pm_Context::getPlibDir() . 'meta.xml';
+            $latestMetaXml = $latestPluginPath . '/meta.xml';
+
+            $latestMetaXml = $manager->fileGetContents($latestMetaXml);
+            $manager->filePutContents($metaXml, $latestMetaXml);
+
+            // Update htdocs
             $moveHtdocs = pm_ApiCli::callSbin('move_folder.sh', [
                 $latestPluginPath . '/htdocs/',
                 pm_Context::getHtdocsDir(),
             ]);
 
+            // Update plib
             $movePlib = pm_ApiCli::callSbin('move_folder.sh', [
                 $latestPluginPath . '/plib/',
                 pm_Context::getPlibDir(),
