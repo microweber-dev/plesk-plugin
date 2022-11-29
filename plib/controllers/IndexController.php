@@ -68,10 +68,6 @@ class IndexController extends Modules_Microweber_BasepluginController
                 'title' => 'Settings',
                 'action' => 'settings',
             ];
-            $this->view->tabs[] = [
-                'title' => 'Plugin Updates',
-                'action' => 'updates',
-            ];
         }
 
         $this->view->brandName = Modules_Microweber_WhiteLabel::getBrandName();
