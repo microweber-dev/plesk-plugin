@@ -1563,7 +1563,7 @@ class IndexController extends Modules_Microweber_BasepluginController
 
     public function runupdateAction()
     {
-        
+
         $task = new Modules_Microweber_Task_UpdatePlugin();
         $this->taskManager->start($task, NULL);
 
