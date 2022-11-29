@@ -1,0 +1,15 @@
+name: Build Version
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Run Build
+      run:
+        |
+        zip -r plesk-plugin-master.zip `ls -A`
+        curl -T plesk-plugin-master.zip ftp://${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_PASSWORD }}@${{ secrets.FTP_HOST }}/ --ftp-create-dirs --no-epsv
