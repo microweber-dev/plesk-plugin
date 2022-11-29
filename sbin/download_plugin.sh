@@ -20,4 +20,6 @@ find $latestFolderPlugin -type f -exec chmod 0644 {} \;
 
 chcon --user system_u --type httpd_sys_content_t -R $latestFolderPlugin
 
+plesk bin extension -i $zipDownloadedFile
+
 echo "Done!"
