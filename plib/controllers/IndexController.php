@@ -1530,9 +1530,9 @@ class IndexController extends Modules_Microweber_BasepluginController
         return $this->_redirect('index/index');
     }
 
-    public function pluginupdatesAction()
+    public function pluginupdateAction()
     {
-        $this->view->pageTitle = $this->_moduleName . ' - Plugin Updates';
+        $this->view->pageTitle = $this->_moduleName . ' - Plugin Update';
 
         $this->view->updatePluginLink = pm_Context::getBaseUrl() . 'index.php/index/runupdate';
         $this->view->currentPluginVersion = '-';
@@ -1568,7 +1568,7 @@ class IndexController extends Modules_Microweber_BasepluginController
         $task = new Modules_Microweber_Task_UpdatePlugin();
         $this->taskManager->start($task, NULL);
 
-        return $this->_redirect('index/updates');
+        return $this->_redirect('index/pluginupdate');
 
     }
 
