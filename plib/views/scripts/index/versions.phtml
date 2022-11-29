@@ -72,57 +72,7 @@
 <button data-update-link="<?php echo $this->updateLink; ?>" class="btn action js-check-for-update" style="width:200px;">Check for updates</button>
 <?php endif; ?>
 
+<button data-update-link="<?php echo $this->pluginUpdateLink; ?>" class="pul-button js-check-for-update" style="width:200px;">Check for plugin updates</button>
+
 <?php endif; ?>
-
-
-<hr />
-
-
-
-<h3><?php echo $this->moduleName; ?> Plugin Version</h3>
-<span>Your Plugin version is: </span> <b><?php echo $this->currentPluginVersion; ?></b> <br />
-<span>Latest Plugin version is:</span> <b><?php echo $this->latestPluginVersion; ?></b> <br />
-<span>Latest Plugin update date:</span> <b><?php echo $this->latestPluginUpdateDate; ?></b><br />
-
-<?php if (version_compare($this->latestPluginVersion, $this->currentPluginVersion, '>')) : ?>
-    <div class="pul-alert pul-alert--info pul-status-message pul-status-message--info" style="line-height: 40px">
-        New version of plugin is available.
-        <br />
-        <a href="<?php echo $this->updatePluginLink; ?>" class="pul-button pul-button--primary">
-        <span class="pul-button__inner">
-            <span>Update</span>
-        </span>
-        </a>
-    </div>
-<?php else: ?>
-    <div class="pul-alert pul-alert--success pul-status-message pul-status-message--success">
-    <span class="pul-icon pul-status-message__icon">
-        <svg focusable="false">
-            <use href="/ui-library/images/symbols.svg?6bd5879cb9a032639fb3#check-mark-circle-filled:16"></use>
-        </svg>
-    </span>
-        Your plugin is up-to-date!
-    </div>
-<?php endif; ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
