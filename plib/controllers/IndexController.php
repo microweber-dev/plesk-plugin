@@ -154,6 +154,9 @@ class IndexController extends Modules_Microweber_BasepluginController
 
         $this->view->pageTitle = $this->_moduleName . ' - Versions';
 
+        // Get plugin update links
+        $this->_getPluginUpdateLinks();
+
         $this->view->latestVersion = 'unknown';
         $this->view->currentVersion = $this->_getCurrentVersion();
         $this->view->latestDownloadDate = $this->_getCurrentVersionLastDownloadDateTime();
@@ -1533,31 +1536,7 @@ class IndexController extends Modules_Microweber_BasepluginController
     {
         $this->view->pageTitle = $this->_moduleName . ' - Updates';
 
-        $this->view->updatePluginLink = pm_Context::getBaseUrl() . 'index.php/index/runupdate';
-        $this->view->currentPluginVersion = '-';
-        $this->view->latestPluginVersion = '-';
-        $this->view->latestPluginUpdateDate = '-';
-
-        // Latest plugin version
-        $latestMeta = Modules_Microweber_PluginUpdate::getLatestMeta();
-        if (isset($latestMeta['version'])) {
-            $this->view->latestPluginVersion = $latestMeta['version'];
-        }
-
-        // Current Plugin version
-        $metaXml = pm_Context::getPlibDir() . 'meta.xml';
-
-        $manager = new pm_ServerFileManager();
-        $xmlContent = $manager->fileGetContents($metaXml);
-
-        $this->view->latestPluginUpdateDate = date('Y-m-d H:i:s', filemtime($metaXml));
-
-        $xmlDecoded = simplexml_load_string($xmlContent);
-        $xmlDecoded = json_decode(json_encode($xmlDecoded), true);
-
-        if (isset($xmlDecoded['version'])) {
-            $this->view->currentPluginVersion = $xmlDecoded['version'];
-        }
+        $this->_getPluginUpdateLinks();
 
     }
 
@@ -1858,5 +1837,33 @@ class IndexController extends Modules_Microweber_BasepluginController
         return $list;
     }
 
+    private function _getPluginUpdateLinks()
+    {
+        $this->view->updatePluginLink = pm_Context::getBaseUrl() . 'index.php/index/runupdate';
+        $this->view->currentPluginVersion = '-';
+        $this->view->latestPluginVersion = '-';
+        $this->view->latestPluginUpdateDate = '-';
+
+        // Latest plugin version
+        $latestMeta = Modules_Microweber_PluginUpdate::getLatestMeta();
+        if (isset($latestMeta['version'])) {
+            $this->view->latestPluginVersion = $latestMeta['version'];
+        }
+
+        // Current Plugin version
+        $metaXml = pm_Context::getPlibDir() . 'meta.xml';
+
+        $manager = new pm_ServerFileManager();
+        $xmlContent = $manager->fileGetContents($metaXml);
+
+        $this->view->latestPluginUpdateDate = date('Y-m-d H:i:s', filemtime($metaXml));
+
+        $xmlDecoded = simplexml_load_string($xmlContent);
+        $xmlDecoded = json_decode(json_encode($xmlDecoded), true);
+
+        if (isset($xmlDecoded['version'])) {
+            $this->view->currentPluginVersion = $xmlDecoded['version'];
+        }
+    }
 
 }
