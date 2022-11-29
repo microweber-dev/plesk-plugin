@@ -37,49 +37,13 @@ class Modules_Microweber_PluginUpdate
         $downloadStatus = self::_downloadZipFile($url, $latestPluginPath);
         if ($downloadStatus) {
 
-
-            $symlink = pm_ApiCli::callSbin('symlink_file.sh', [
-                '1',
-                '2'
-            ], pm_ApiCli::RESULT_FULL);
-
-            var_dump($symlink);
-            die();
-
-            // Update meta
-            $metaXml = pm_Context::getPlibDir() . 'meta.xml';
-            $latestMetaXml = $latestPluginPath . '/meta.xml';
-
-            $latestMetaXml = $manager->fileGetContents($latestMetaXml);
-            $manager->filePutContents($metaXml, $latestMetaXml);
-
-            // Update htdocs
-            $moveHtdocs = pm_ApiCli::callSbin('move_folder.sh', [
-                $latestPluginPath . '/htdocs/',
-                pm_Context::getHtdocsDir(),
-            ]);
-
-            // Update plib
-            $movePlib = pm_ApiCli::callSbin('move_folder.sh', [
-                $latestPluginPath . '/plib/',
-                pm_Context::getPlibDir(),
-            ]);
-
-           /* $moveSbin = pm_ApiCli::callSbin('move_folder.sh', [
-                $latestPluginPath . '/sbin/',
-                Modules_Microweber_Config::getBinVarPath(),
-            ]);*/
+            
         }
-
-        // sbin path
-        // /usr/local/psa/admin/sbin/modules/microweber
-        // /usr/local/psa/admin/bin/modules/microweber
-
     }
 
     private static function _downloadZipFile($url, $filePath) {
 
-        $unzip = pm_ApiCli::callSbin('unzip_plugin.sh', [
+        $unzip = pm_ApiCli::callSbin('download_plugin.sh', [
             base64_encode($url),
             $filePath
         ]);
