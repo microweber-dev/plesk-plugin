@@ -34,15 +34,15 @@ class Modules_Microweber_PluginUpdate
         }
 
         $url = self::getDownloadUrl();
-        $downloadStatus = self::_downloadZipFile($url, $latestPluginPath);
-        if ($downloadStatus) {
-
+        $udpateStatus = self::_downloadAndUpdate($url, $latestPluginPath);
+        if ($udpateStatus) {
+            var_dump($udpateStatus);
         }
     }
 
-    private static function _downloadZipFile($url, $filePath) {
+    private static function _downloadAndUpdate($url, $filePath) {
 
-        $unzip = pm_ApiCli::callSbin('download_plugin.sh', [
+        $unzip = pm_ApiCli::callSbin('download_and_update_plugin.sh', [
             base64_encode($url),
             $filePath
         ]);
