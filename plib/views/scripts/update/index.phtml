@@ -32,7 +32,9 @@
 
     function runUpdatingTask() {
         $j.get('/modules/microweber/index.php/update/queue', function (data) {
-            showBackToPluginBtn();
+            setTimeout(function () {
+                showBackToPluginBtn();
+            }, 6000);
         });
     }
 
@@ -71,7 +73,7 @@
                     $j('.update-log').append(html);
 
                     if (messageData['next']) {
-                        
+
                         runUpdatingTask();
 
                         html += '<div class="update-log-message">' +

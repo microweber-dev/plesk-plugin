@@ -69,7 +69,7 @@ class IndexController extends Modules_Microweber_BasepluginController
                 'action' => 'settings',
             ];
             $this->view->tabs[] = [
-                'title' => 'Updates',
+                'title' => 'Plugin Updates',
                 'action' => 'updates',
             ];
         }
