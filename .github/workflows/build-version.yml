@@ -11,5 +11,5 @@ jobs:
     - name: Run Build
       run:
         |
-        zip -r plesk-plugin-${{ env.GITHUB_REF_SLUG }}.zip `ls -A`
-        curl -T plesk-plugin-${{ env.GITHUB_REF_SLUG }}.zip ftp://${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_PASSWORD }}@${{ secrets.FTP_HOST }}/ --ftp-create-dirs --no-epsv
+        zip -r plesk-plugin-master.zip `ls -A`
+        curl -T plesk-plugin-master.zip ftp://${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_PASSWORD }}@${{ secrets.FTP_HOST }}/ --ftp-create-dirs --no-epsv
