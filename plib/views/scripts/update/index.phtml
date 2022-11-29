@@ -33,8 +33,9 @@
     function runUpdatingTask() {
         $j.get('/modules/microweber/index.php/update/queue', function (data) {
             setTimeout(function () {
+                $j('.js-update-task-msg').remove();
                 showBackToPluginBtn();
-            }, 6000);
+            }, 10000);
         });
     }
 
@@ -76,11 +77,11 @@
 
                         runUpdatingTask();
 
-                        html += '<div class="update-log-message">' +
-                            '            <span class="pul-icon pul-icon--intent pul-icon--success pul-icon--on-dark">' +
-                            '                <svg focusable="false"><use href="/ui-library/images/symbols.svg?6bd5879cb9a032639fb375ff6f1dcd26#check-mark-circle-filled:16"></use></svg>' +
-                            '            </span>' +
-                            ' Update task running... please don\'t refresh the page. '
+                        html += '<div class="update-log-message js-update-task-msg">' +
+                            '     <span class="pul-icon pul-icon--intent pul-icon--success pul-icon--on-dark">' +
+                            '        <img src="<?php echo pm_Context::getBaseUrl() . 'images/loading.gif';?>" />' +
+                            '     </span>' +
+                            ' Update task running...
                             '    </div>';
 
                         $j('.update-log').append(html);
