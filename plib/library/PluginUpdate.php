@@ -37,6 +37,15 @@ class Modules_Microweber_PluginUpdate
         $downloadStatus = self::_downloadZipFile($url, $latestPluginPath);
         if ($downloadStatus) {
 
+
+            $symlink = pm_ApiCli::callSbin('symlink_file.sh', [
+                '1',
+                '2'
+            ], pm_ApiCli::RESULT_FULL);
+
+            var_dump($symlink);
+            die();
+
             // Update meta
             $metaXml = pm_Context::getPlibDir() . 'meta.xml';
             $latestMetaXml = $latestPluginPath . '/meta.xml';
