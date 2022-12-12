@@ -18,6 +18,10 @@ foreach ($tasks as $task) {
         pm_Settings::set('microweber_periodic_update_task_id', $task->getId());
         return;
     }
+    if ('microweber-periodic-template-update-task.php' == $task->getCmd()) {
+        pm_Settings::set('microweber_periodic_update_task_id', $task->getId());
+        return;
+    }
 }
 
 Modules_Microweber_Helper::checkAndFixSchedulerTasks();
