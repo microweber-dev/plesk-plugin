@@ -143,29 +143,7 @@ class Modules_Microweber_MarketplaceConnector
 		$return = array();
 		if ($templates and isset($templates["microweber-template"])) {
 			foreach ($templates["microweber-template"] as $pk => $template) {
-				$package_item = $template;
-				$package_item_version = $package_item;
-				$package_item_version = array_reverse($package_item_version);
-				$last_item = false;
-				foreach ($package_item_version as $package_item_version_key => $package_item_version_data) {
-					if (! $last_item and $package_item_version_data and isset($package_item_version_data['version']) and $package_item_version_data['version'] != 'dev-master' and is_numeric($package_item_version_data['version'])) {
-						$last_item2 = $package_item_version_data;
-						$last_item = $last_item2;
-					}
-				}
-				
-				if ($last_item) {
-					$template['latest_version'] = $last_item;
-					$screenshot = '';
-					$readme = '';
-					if (isset($template['latest_version']) and isset($template['latest_version']['extra']) and isset($template['latest_version']['extra']['_meta']) and isset($template['latest_version']['extra']['_meta']['screenshot'])) {
-						$screenshot = $template['latest_version']['extra']['_meta']['screenshot'];
-					}
-					if (isset($template['latest_version']) and isset($template['latest_version']['extra']) and isset($template['latest_version']['extra']['_meta']) and isset($template['latest_version']['extra']['_meta']['readme'])) {
-						$readme = $template['latest_version']['extra']['_meta']['readme'];
-					}
-					$return[$pk] = $template;
-				}
+                $return[$pk] = $template;
 			}
 		}
 		
@@ -178,7 +156,6 @@ class Modules_Microweber_MarketplaceConnector
 		
 		$templates = $this->get_templates();
 
-        
 		if (is_array($templates) && !empty($templates)) {
 			foreach ($templates as $template) {
 				if (isset($template['latest_version'])) {
