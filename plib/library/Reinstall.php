@@ -21,7 +21,12 @@ class Modules_Microweber_Reinstall
         }
 		
 		$fileManager = new \pm_FileManager($domain->getId());
-		
+        
+        if (!is_link($appInstallationPath . '/vendor')) {
+            // this is standalone website
+            return;
+        }
+
 		if (!$fileManager->isDir($appInstallationPath)) {
 			// Dir not exists
 			return;
