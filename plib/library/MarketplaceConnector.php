@@ -178,7 +178,7 @@ class Modules_Microweber_MarketplaceConnector
 		
 		$templates = $this->get_templates();
 
-
+        
 		if (is_array($templates) && !empty($templates)) {
 			foreach ($templates as $template) {
 				if (isset($template['latest_version'])) {
