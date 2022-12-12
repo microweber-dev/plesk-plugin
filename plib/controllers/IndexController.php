@@ -411,6 +411,7 @@ class IndexController extends Modules_Microweber_BasepluginController
 
     public function installAction()
     {
+   
         if ($this->view->limitations['app_installations_freeze']) {
             return $this->_redirect('index/index');
         }
