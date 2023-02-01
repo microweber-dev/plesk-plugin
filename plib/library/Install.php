@@ -100,7 +100,7 @@ class Modules_Microweber_Install {
     	$this->setProgress(5);
     	
     	$domain = Modules_Microweber_Domain::getUserDomainById($this->_domainId);
-        if (empty($domain->getName())) { 
+        if (empty($domain->getName())) {
             throw new \Exception($domain->getName() . ' domain not found.');
         }
 
@@ -315,8 +315,8 @@ class Modules_Microweber_Install {
         $this->setProgress(85);
         
         $adminEmail = 'admin@microweber.com';
-        $adminPassword = '1';
-        $adminUsername = '1';
+        $adminPassword = md5(time().rand(1111,9999));
+        $adminUsername = md5(time().rand(1111,9999));
         
         if (!empty($this->_email)) {
         	$adminEmail = $this->_email;
@@ -405,9 +405,9 @@ class Modules_Microweber_Install {
 		];
         } catch (Exception $e) {
         	return [
-			'success'=>false,
-			'error'=>true,
-			'log'=> $e->getMessage()
+		    	'success'=>false,
+                'error'=>true,
+                'log'=> $e->getMessage()
             ];
         }
         
