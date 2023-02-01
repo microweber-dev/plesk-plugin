@@ -882,16 +882,26 @@ class IndexController extends Modules_Microweber_BasepluginController
 
         $form = new pm_Form_Simple();
 
+        $installationTemplatesOptions = [];
+        $installationTemplatesOptions['none'] = 'Don\'t install template (let user to choose)';
+        $supportedTemplates = Modules_Microweber_Config::getSupportedTemplates();
+        $installationTemplatesOptions = array_merge($installationTemplatesOptions, $supportedTemplates);
+
         $form->addElement('select', 'installation_template', [
             'label' => 'Default Installation template',
-            'multiOptions' => Modules_Microweber_Config::getSupportedTemplates(),
+            'multiOptions' => $installationTemplatesOptions,
             'value' => pm_Settings::get('installation_template'),
             'required' => true,
         ]);
 
+        $installationLanguagesOptions = [];
+        $installationLanguagesOptions['none'] = 'Don\'t install language (let user to choose)';
+        $supportedLanguages = Modules_Microweber_Config::getSupportedLanguages();
+        $installationLanguagesOptions = array_merge($installationLanguagesOptions, $supportedLanguages);
+        
         $form->addElement('select', 'installation_language', [
             'label' => 'Default Installation language',
-            'multiOptions' => Modules_Microweber_Config::getSupportedLanguages(),
+            'multiOptions' => $installationLanguagesOptions,
             'value' => pm_Settings::get('installation_language'),
             'required' => true,
         ]);
@@ -907,6 +917,16 @@ class IndexController extends Modules_Microweber_BasepluginController
             'required' => true,
         ]);
 
+        $form->addElement('radio', 'installation_ssl', [
+            'label' => 'Instantly install SSL certificate',
+            'multiOptions' =>
+                [
+                    'no' => 'No',
+                    'yes' => 'Yes'
+                ],
+            'value' => pm_Settings::get('installation_ssl'),
+            'required' => false,
+        ]);
 
         $installationTypeAllowCustomers = pm_Settings::get('installation_type_allow_customers');
         if (!$installationTypeAllowCustomers) {
@@ -1003,7 +1023,7 @@ class IndexController extends Modules_Microweber_BasepluginController
             'required' => true,
         ]);
 
-        $form->addElement('select', 'Websites Manager', [
+        $form->addElement('select', 'website_manager', [
             'label' => 'Website manager',
             'multiOptions' => ['none', 'microweber' => 'Microweber SaaS', 'whmcs' => 'WHMCS'],
             'value' => pm_Settings::get('website_manager'),
@@ -1042,6 +1062,7 @@ class IndexController extends Modules_Microweber_BasepluginController
             pm_Settings::set('installation_language', $form->getValue('installation_language'));
             pm_Settings::set('installation_template', $form->getValue('installation_template'));
             pm_Settings::set('installation_type', $form->getValue('installation_type'));
+            pm_Settings::set('installation_ssl', $form->getValue('installation_ssl'));
             pm_Settings::set('installation_database_driver', $form->getValue('installation_database_driver'));
             //      pm_Settings::set('installation_database_server_id', $form->getValue('installation_database_server_id'));
             pm_Settings::set('installation_type_allow_customers', $form->getValue('installation_type_allow_customers'));
