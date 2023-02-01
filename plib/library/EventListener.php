@@ -156,6 +156,10 @@ class Modules_Microweber_EventListener implements EventListener
         $installationDomainPath = $domain->getName();
         $installationDirPath = $domain->getDocumentRoot();
 
+        if (pm_Settings::get('installation_ssl') == 'yes') {
+            $task->setParam('ssl', true);
+        }
+
         if (pm_Settings::get('website_manager') == 'whmcs') {
             $whmcs = new Modules_Microweber_WhmcsConnector();
             $whmcs->setDomainName($domain->getName());
@@ -194,7 +198,7 @@ class Modules_Microweber_EventListener implements EventListener
         $task->setParam('domainDisplayName', $domain->getDisplayName());
         $task->setParam('type', pm_Settings::get('installation_type'));
         $task->setParam('databaseDriver', pm_Settings::get('installation_database_driver'));
-        
+
         $installationLanguage = pm_Settings::get('installation_language');
         if (!empty($installationLanguage) || $installationLanguage !== 'none') {
             $task->setParam('language', $installationLanguage);

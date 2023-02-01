@@ -100,7 +100,7 @@ class Modules_Microweber_Install {
     	$this->setProgress(5);
     	
     	$domain = Modules_Microweber_Domain::getUserDomainById($this->_domainId);
-        if (empty($domain->getName())) {
+        if (empty($domain->getName())) { 
             throw new \Exception($domain->getName() . ' domain not found.');
         }
 

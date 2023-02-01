@@ -898,7 +898,7 @@ class IndexController extends Modules_Microweber_BasepluginController
         $installationLanguagesOptions['none'] = 'Don\'t install language (let user to choose)';
         $supportedLanguages = Modules_Microweber_Config::getSupportedLanguages();
         $installationLanguagesOptions = array_merge($installationLanguagesOptions, $supportedLanguages);
-        
+
         $form->addElement('select', 'installation_language', [
             'label' => 'Default Installation language',
             'multiOptions' => $installationLanguagesOptions,
@@ -924,7 +924,7 @@ class IndexController extends Modules_Microweber_BasepluginController
                     'no' => 'No',
                     'yes' => 'Yes'
                 ],
-            'value' => pm_Settings::get('installation_ssl'),
+            'value' => pm_Settings::get('installation_ssl'), 
             'required' => false,
         ]);
 
