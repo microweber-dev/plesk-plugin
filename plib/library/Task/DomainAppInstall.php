@@ -18,7 +18,11 @@ class Modules_Microweber_Task_DomainAppInstall extends \pm_LongTask_Task
 		$newInstallation->setDatabaseDriver($this->getParam('databaseDriver'));
 		//$newInstallation->setDatabaseServerId($this->getParam('databaseServerId'));
 		$newInstallation->setPath($this->getParam('path'));
-		
+
+        if (!empty($this->getParam('ssl'))) { 
+            $newInstallation->setSsl($this->getParam('ssl'));
+        }
+
 		if (!empty($this->getParam('email'))) {
 			$newInstallation->setEmail($this->getParam('email'));
 		}

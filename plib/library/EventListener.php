@@ -151,12 +151,25 @@ class Modules_Microweber_EventListener implements EventListener
 
     private function _installMicroweber($domain, $newValues)
     {
+        $task = new Modules_Microweber_Task_DomainAppInstall();
+
         $installationDomainPath = $domain->getName();
         $installationDirPath = $domain->getDocumentRoot();
 
-        $whmcsConnector = new Modules_Microweber_WhmcsConnector();
-        $whmcsConnector->setDomainName($domain->getName());
-        $selectedTemplate = $whmcsConnector->getSelectedTemplate();
+        if (pm_Settings::get('website_manager') == 'whmcs') {
+            $whmcs = new Modules_Microweber_WhmcsConnector();
+            $whmcs->setDomainName($domain->getName());
+            $whiteLabelWhmcsSettings = $whmcs->getWhitelabelSettings();
+
+            if (!empty($whiteLabelWhmcsSettings)) {
+                if (isset($whiteLabelWhmcsSettings['wl_installation_language'])) {
+                    $task->setParam('language', $whiteLabelWhmcsSettings['wl_installation_language']);
+                }
+                if (isset($whiteLabelWhmcsSettings['wl_installation_template'])) {
+                    $task->setParam('template', $whiteLabelWhmcsSettings['wl_installation_template']);
+                }
+            }
+        }
 
         $installationType = 'Standalone';
         if (pm_Settings::get('installation_type') == 'symlink') {
@@ -176,18 +189,17 @@ class Modules_Microweber_EventListener implements EventListener
         ]);
         pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() + 1));
 
-        $task = new Modules_Microweber_Task_DomainAppInstall();
         $task->setParam('domainId', $domain->getId());
         $task->setParam('domainName', $domain->getName());
         $task->setParam('domainDisplayName', $domain->getDisplayName());
         $task->setParam('type', pm_Settings::get('installation_type'));
         $task->setParam('databaseDriver', pm_Settings::get('installation_database_driver'));
-
-        if (!empty($selectedTemplate)) {
-            $task->setParam('template', $selectedTemplate);
+        
+        $installationLanguage = pm_Settings::get('installation_language');
+        if (!empty($installationLanguage) || $installationLanguage !== 'none') {
+            $task->setParam('language', $installationLanguage);
         }
 
-        $task->setParam('language', pm_Settings::get('installation_language'));
         $task->setParam('email', $newValues['System User']);
         $task->setParam('username', $newValues['System User']);
         $task->setParam('password', $newValues['System User Password']);

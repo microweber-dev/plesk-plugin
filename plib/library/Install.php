@@ -21,6 +21,7 @@ class Modules_Microweber_Install {
     protected $_progressLogger = false;
     protected $_template = false;
     protected $_language = false;
+    protected $_ssl = false;
     
     public function __construct() {
     	$this->appLatestVersionFolder = Modules_Microweber_Config::getAppSharedPath();
@@ -39,6 +40,10 @@ class Modules_Microweber_Install {
     
     public function setPath($path) {
     	$this->_path = $path;	
+    }
+
+    public function setSsl($ssl) {
+    	$this->_ssl = $ssl;
     }
     
     public function setDomainId($id) {
@@ -99,12 +104,13 @@ class Modules_Microweber_Install {
             throw new \Exception($domain->getName() . ' domain not found.');
         }
 
-	    
-	if (!$this->checkSsl($domain->getName())) {
-		$this->addDomainEncryption($domain);
-	} else {
-		Modules_Microweber_Log::debug('Domain already have a SSL.');
-	}
+        if ($this->_ssl) {
+            if (!$this->checkSsl($domain->getName())) {
+                $this->addDomainEncryption($domain);
+            } else {
+                Modules_Microweber_Log::debug('Domain already have a SSL.');
+            }
+        }
 	
         $sharedAppRequirements = Modules_Microweber_Helper::getRequiredPhpVersionOfSharedApp();
 
@@ -112,24 +118,6 @@ class Modules_Microweber_Install {
         $installationDirPath = $domain->getDocumentRoot();
         if ($this->_path && !empty($this->_path)) {
             $installationDirPath = $domainDocumentRoot . '/' . $this->_path;
-        }
-
-        // Start installation setup
-        $whmcs = new Modules_Microweber_WhmcsConnector();
-        $whmcs->setDomainName($domain->getName());
-        $whiteLabelWhmcsSettings = $whmcs->getWhitelabelSettings();
-
-        if (!empty($whiteLabelWhmcsSettings)) {
-            if (!$this->_language) {
-                if (isset($whiteLabelWhmcsSettings['wl_installation_language'])) {
-                    $this->_language = $whiteLabelWhmcsSettings['wl_installation_language'];
-                }
-            }
-            if (!$this->_template) {
-                if (isset($whiteLabelWhmcsSettings['wl_installation_template'])) {
-                    $this->_template = $whiteLabelWhmcsSettings['wl_installation_template'];
-                }
-            }
         }
 
         $fileManager = new \pm_FileManager($domain->getId());
@@ -368,25 +356,16 @@ class Modules_Microweber_Install {
         $installArguments[] = '--db-password='.trim($dbPassword);
         $installArguments[] = '--db-driver=' .trim($this->_databaseDriver);
 
-		if ($this->_language) {
-			$installationLanguage = trim($this->_language);
-		} else {
-			$installationLanguage = pm_Settings::get('installation_language');
-		}
-		
-		if (!empty($installationLanguage)) { 
-			$installArguments[] = '--language=' . trim($installationLanguage);
-    	}
-    	
+        if ($this->language) {
+            $installArguments[] = '--language=' . trim($this->_language);
+        }
+
         $installArguments[] = '--db-prefix=site_';
         
         if ($this->_template) {
         	$installArguments[] = '--template='.trim($this->_template);
-        }
-
-        $installArguments[] = '--default-content=1';
-
-        if (!$this->_template) {
+            $installArguments[] = '--default-content=1';
+        } else {
        		$installArguments[] = '--config-only=1';
         }
 
