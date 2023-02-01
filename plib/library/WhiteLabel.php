@@ -187,6 +187,7 @@ class Modules_Microweber_WhiteLabel
         }
 
         $whiteLabelSettings['whmcs_url'] = Modules_Microweber_Config::getWhmcsUrl();
+        $whiteLabelSettings['website_manager_url'] = Modules_Microweber_Config::getWebsiteManagerUrl();
 
 		return json_encode($whiteLabelSettings, JSON_PRETTY_PRINT);
 	}
