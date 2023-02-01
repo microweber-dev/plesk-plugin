@@ -373,9 +373,9 @@ class Modules_Microweber_Install {
 		$args = [
 			$domain->getSysUserLogin(),
 			'exec',
-		$installationDirPath,
+		    $installationDirPath,
 			$phpHandler['clipath'],
-		'artisan',
+		    'artisan',
 			'microweber:install',
 		];
 		$args = array_merge($args, $installArguments);
