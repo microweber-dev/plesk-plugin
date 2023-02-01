@@ -366,6 +366,7 @@ class Modules_Microweber_Install {
         	$installArguments[] = '--template='.trim($this->_template);
             $installArguments[] = '--default-content=1';
         } else {
+            $installArguments[] = '--default-content=0';
        		$installArguments[] = '--config-only=1';
         }
 
