@@ -1003,17 +1003,24 @@ class IndexController extends Modules_Microweber_BasepluginController
             'required' => true,
         ]);
 
-        $form->addElement('text', 'whmcs_url', [
-            'label' => 'WHMCS Url',
-            'value' => pm_Settings::get('whmcs_url'),
+        $form->addElement('select', 'Websites Manager', [
+            'label' => 'Website manager',
+            'multiOptions' => ['none', 'microweber' => 'Microweber SaaS', 'whmcs' => 'WHMCS'],
+            'value' => pm_Settings::get('website_manager'),
+            'required' => true,
+        ]);
+
+        $form->addElement('text', 'website_manager_url', [
+            'label' => 'Website Manager Url',
+            'value' => pm_Settings::get('website_manager_url'),
             //'required' => true,
         ]);
 
-        $form->addElement('select', 'use_package_manage_urls_from_whmcs', [
-            'label' => 'Get package manager urls from WHMCS',
+        $form->addElement('select', 'use_package_manager_urls_from_website_manager', [
+            'label' => 'Get package manager urls from website manager',
             'multiOptions' => ['no' => 'No', 'yes' => 'Yes'],
-            'value' => pm_Settings::get('use_package_manage_urls_from_whmcs'),
-            'required' => false,
+            'value' => pm_Settings::get('use_package_manager_urls_from_website_manager'),
+            'required' => false,  
         ]);
 
         $form->addElement('select', 'allow_reseller_whitelabel', [
@@ -1044,8 +1051,15 @@ class IndexController extends Modules_Microweber_BasepluginController
             pm_Settings::set('update_app_channel', $form->getValue('update_app_channel'));
             pm_Settings::set('update_app_automatically', $form->getValue('update_app_automatically'));
             pm_Settings::set('update_templates_automatically', $form->getValue('update_templates_automatically'));
-            pm_Settings::set('whmcs_url', $form->getValue('whmcs_url'));
-            pm_Settings::set('use_package_manage_urls_from_whmcs', $form->getValue('use_package_manage_urls_from_whmcs'));
+
+
+            pm_Settings::set('website_manager', $form->getValue('website_manager'));
+            pm_Settings::set('website_manager_url', $form->getValue('website_manager_url'));
+            pm_Settings::set('use_package_manager_urls_from_website_manager', $form->getValue('use_package_manager_urls_from_website_manager'));
+
+            //pm_Settings::set('whmcs_url', $form->getValue('whmcs_url'));
+            //pm_Settings::set('use_package_manage_urls_from_whmcs', $form->getValue('use_package_manage_urls_from_whmcs'));
+
             pm_Settings::set('allow_reseller_whitelabel', $form->getValue('allow_reseller_whitelabel'));
 
 
