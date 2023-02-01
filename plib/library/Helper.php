@@ -28,6 +28,13 @@ class Modules_Microweber_Helper
 
                 $appSharedPath = Modules_Microweber_Config::getAppSharedPath();
 
+                $artisan = new Modules_Microweber_ArtisanExecutor();
+                $artisan->setDomainId($domain->getId());
+                $artisan->setDomainDocumentRoot($installation['appInstallation']);
+                $artisan->exec([
+                    'microweber:reload-database'
+                ]);
+
                 $pleskDomainFileManager = new \MicroweberPackages\SharedServerScripts\FileManager\Adapters\PleskDomainFileManager();
                 $pleskDomainFileManager->setDomainId($domain->getId());
 
