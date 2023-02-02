@@ -335,9 +335,22 @@ class Modules_Microweber_Install {
                 $dbHost = $databaseServerDetails['host'] . ':' . $databaseServerDetails['port'];
             }
 
+            // Database settings Mysql
+            $installArguments[] = '--db-host='.trim($dbHost);
+            $installArguments[] = '--db-name=' . trim($dbName);
+            $installArguments[] = '--db-username='.trim($dbUsername);
+            $installArguments[] = '--db-password='.trim($dbPassword);
+            $installArguments[] = '--db-driver=' .trim($this->_databaseDriver);
+
         } else {
-        	$dbHost = 'localhost';
         	$dbName = $installationDirPath . '/storage/database1.sqlite';
+
+            // Database settings Sqlite
+            $installArguments[] = '--db-name=' . trim($dbName);
+            $installArguments[] = '--db-username='.trim($dbUsername);
+            $installArguments[] = '--db-password='.trim($dbPassword);
+            $installArguments[] = '--db-driver=' .trim($this->_databaseDriver);
+            
         }
 
         $this->setProgress(90);
@@ -348,13 +361,6 @@ class Modules_Microweber_Install {
         $installArguments[] = '--email='.trim($adminEmail);
         $installArguments[] = '--username='.trim($adminUsername);
         $installArguments[] = '--password='.trim($adminPassword);
-        
-        // Database settings
-        $installArguments[] = '--db-host='.trim($dbHost);
-        $installArguments[] = '--db-name=' . trim($dbName);
-        $installArguments[] = '--db-username='.trim($dbUsername);
-        $installArguments[] = '--db-password='.trim($dbPassword);
-        $installArguments[] = '--db-driver=' .trim($this->_databaseDriver);
 
         if ($this->language) {
             $installArguments[] = '--language=' . trim($this->_language);
@@ -365,9 +371,6 @@ class Modules_Microweber_Install {
         if ($this->_template) {
         	$installArguments[] = '--template='.trim($this->_template);
             $installArguments[] = '--default-content=1';
-        } else {
-            $installArguments[] = '--default-content=0';
-       		$installArguments[] = '--config-only=1';
         }
 
         try {
