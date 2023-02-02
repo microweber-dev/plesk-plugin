@@ -368,7 +368,7 @@ class Modules_Microweber_Install {
 
         $installArguments[] = '--db-prefix=site_';
         
-        if ($this->_template) {
+        if (!empty($this->_template)) {
         	$installArguments[] = '--template='.trim($this->_template);
             $installArguments[] = '--default-content=1';
         }
