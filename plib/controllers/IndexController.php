@@ -535,16 +535,26 @@ class IndexController extends Modules_Microweber_BasepluginController
             )
         );
 
+        $installationLanguagesOptions = [];
+        $installationLanguagesOptions['none'] = 'Don\'t install language (let user to choose)';
+        $supportedLanguages = Modules_Microweber_Config::getSupportedLanguages();
+        $installationLanguagesOptions = array_merge($installationLanguagesOptions, $supportedLanguages);
+
         $form->addElement('select', 'installation_language', [
             'label' => 'Installation Language',
-            'multiOptions' => Modules_Microweber_Config::getSupportedLanguages(),
+            'multiOptions' => $installationLanguagesOptions,
             'value' => pm_Settings::get('installation_language'),
             'required' => true,
         ]);
 
+        $installationTemplatesOptions = [];
+        $installationTemplatesOptions['none'] = 'Don\'t install template (let user to choose)';
+        $supportedTemplates = Modules_Microweber_Config::getSupportedTemplates();
+        $installationTemplatesOptions = array_merge($installationTemplatesOptions, $supportedTemplates);
+
         $form->addElement('select', 'installation_template', [
             'label' => 'Installation Template',
-            'multiOptions' => Modules_Microweber_Config::getSupportedTemplates(),
+            'multiOptions' => $installationTemplatesOptions,
             'value' => pm_Settings::get('installation_template'),
             'required' => true,
         ]);
