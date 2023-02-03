@@ -374,39 +374,48 @@ class Modules_Microweber_Install {
         }
 
         try {
-		$args = [
-			$domain->getSysUserLogin(),
-			'exec',
-		    $installationDirPath,
-			$phpHandler['clipath'],
-		    'artisan',
-			'microweber:install',
-		];
-		$args = array_merge($args, $installArguments);
-		$artisan = pm_ApiCli::callSbin('filemng', $args, pm_ApiCli::RESULT_FULL);
+            $args = [
+                $domain->getSysUserLogin(),
+                'exec',
+                $installationDirPath,
+                $phpHandler['clipath'],
+                'artisan',
+                'microweber:install',
+            ];
+            $args = array_merge($args, $installArguments);
+            $artisan = pm_ApiCli::callSbin('filemng', $args, pm_ApiCli::RESULT_FULL);
 
-		$this->setProgress(95);
+            pm_ApiCli::callSbin('filemng', [
+                $domain->getSysUserLogin(),
+                'exec',
+                $installationDirPath,
+                $phpHandler['clipath'],
+                'artisan',
+                'microweber:reload-database',
+            ], pm_ApiCli::RESULT_FULL); 
 
-		Modules_Microweber_Log::debug('Microweber install log for: ' . $domain->getName() . '<br />' . $artisan['stdout']. '<br /><br />');
+            $this->setProgress(95);
 
-		// Set branding json
-		Modules_Microweber_WhiteLabelBranding::applyToInstallation($domain, $installationDirPath);
+            Modules_Microweber_Log::debug('Microweber install log for: ' . $domain->getName() . '<br />' . $artisan['stdout']. '<br /><br />');
 
-		// Save domain settings
-		$saveDomainSettings = [
-			'admin_email'=>$adminEmail,
-			'admin_password'=>$adminPassword,
-			'admin_username'=>$adminUsername,
-			'admin_url'=>'admin',
-			'language'=>$this->_language,
-			'created_at'=> date('Y-m-d H:i:s')
-		];
-		Modules_Microweber_Domain::setMwOption($domain, 'mw_settings_' . md5($installationDirPath), $saveDomainSettings);
+            // Set branding json
+            Modules_Microweber_WhiteLabelBranding::applyToInstallation($domain, $installationDirPath);
 
-		return [
-			'success'=>true,
-			'log'=> $artisan['stdout']
-		];
+            // Save domain settings
+            $saveDomainSettings = [
+                'admin_email'=>$adminEmail,
+                'admin_password'=>$adminPassword,
+                'admin_username'=>$adminUsername,
+                'admin_url'=>'admin',
+                'language'=>$this->_language,
+                'created_at'=> date('Y-m-d H:i:s')
+            ];
+            Modules_Microweber_Domain::setMwOption($domain, 'mw_settings_' . md5($installationDirPath), $saveDomainSettings);
+
+            return [
+                'success'=>true,
+                'log'=> $artisan['stdout']
+            ];
         } catch (Exception $e) {
         	return [
 		    	'success'=>false,
