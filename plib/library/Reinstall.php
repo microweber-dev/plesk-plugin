@@ -164,7 +164,7 @@ class Modules_Microweber_Reinstall
         return $files;
 	}
 
-	private function _getDirsToMake() {
+	private static function _getDirsToMake() {
 
     	$dirs = [];
     	
