@@ -928,6 +928,17 @@ class IndexController extends Modules_Microweber_BasepluginController
             'required' => true,
         ]);
 
+        $form->addElement('radio', 'installation_notifications', [
+            'label' => 'Show installing app notifications',
+            'multiOptions' =>
+                [
+                    'no' => 'No',
+                    'yes' => 'Yes'
+                ],
+            'value' => pm_Settings::get('installation_notifications'),
+            'required' => false,
+        ]);
+
         $form->addElement('radio', 'installation_ssl', [
             'label' => 'Instantly install SSL certificate',
             'multiOptions' =>
@@ -1074,6 +1085,7 @@ class IndexController extends Modules_Microweber_BasepluginController
             pm_Settings::set('installation_template', $form->getValue('installation_template'));
             pm_Settings::set('installation_type', $form->getValue('installation_type'));
             pm_Settings::set('installation_ssl', $form->getValue('installation_ssl'));
+            pm_Settings::set('installation_notifications', $form->getValue('installation_notifications'));
             pm_Settings::set('installation_database_driver', $form->getValue('installation_database_driver'));
             //      pm_Settings::set('installation_database_server_id', $form->getValue('installation_database_server_id'));
             pm_Settings::set('installation_type_allow_customers', $form->getValue('installation_type_allow_customers'));
