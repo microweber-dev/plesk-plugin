@@ -12,6 +12,10 @@ class Modules_Microweber_Task_DomainAppInstall extends \pm_LongTask_Task
 
 	public function run()
 	{
+        if (pm_Settings::get('installation_notifications') !== 'yes') {
+            $this->hidden = true;
+        }
+        
 		$newInstallation = new Modules_Microweber_Install();
 		$newInstallation->setDomainId($this->getParam('domainId'));
 		$newInstallation->setType($this->getParam('type'));
@@ -50,10 +54,6 @@ class Modules_Microweber_Task_DomainAppInstall extends \pm_LongTask_Task
 
         if (isset($status['error']) && $status['error']) {
             throw new pm_Exception($status['log']);
-        }
-
-        if (pm_Settings::get('installation_notifications') !== 'yes') {
-            $this->hidden = true;
         }
 	}
 
