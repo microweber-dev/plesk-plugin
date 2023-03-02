@@ -10,6 +10,7 @@ class IndexController extends Modules_Microweber_BasepluginController
 {
     public function init()
     {
+
         parent::init();
 
         $showButtons = Modules_Microweber_Helper::showMicroweberButtons();
