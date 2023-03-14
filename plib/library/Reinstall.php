@@ -127,6 +127,7 @@ class Modules_Microweber_Reinstall
     	$files[] = 'resources';
     	$files[] = 'database';
     	$files[] = 'userfiles/elements';
+    	$files[] = 'public/build';
 		
         $sfm = new \pm_ServerFileManager();
         $listTemplates = $sfm->scanDir($appLatestFolder . '/userfiles/templates');
@@ -160,8 +161,9 @@ class Modules_Microweber_Reinstall
 		$files[] = 'src';
 		$files[] = 'resources';
 		$files[] = 'database';
+		$files[] = 'public/build';
 
-        return $files;
+		return $files;
 	}
 
 	private static function _getDirsToMake() {
@@ -181,6 +183,9 @@ class Modules_Microweber_Reinstall
     	$dirs[] = 'userfiles/media';
     	$dirs[] = 'userfiles/modules';
     	$dirs[] = 'userfiles/templates';
+		
+	// Public files
+	$dirs[] = 'public';
     	
     	return $dirs;
     }
@@ -188,10 +193,10 @@ class Modules_Microweber_Reinstall
     private static function _getDirsOrFilesToRecopy()
     {
         $files = [];
-		$files[] = 'index.php';
-		$files[] = 'composer.json';
-		$files[] = 'bootstrap'; 
-		$files[] = 'config/cors.php';
+	$files[] = 'index.php';
+	$files[] = 'composer.json';
+	$files[] = 'bootstrap'; 
+	$files[] = 'config/cors.php';
 
 
         return $files;
