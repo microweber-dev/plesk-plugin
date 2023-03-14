@@ -535,6 +535,9 @@ class Modules_Microweber_Install {
     	$dirs[] = 'userfiles/media';
     	$dirs[] = 'userfiles/modules';
     	$dirs[] = 'userfiles/templates';
+	    
+        // Public dir
+	$dirs[] = 'public';
     	
     	return $dirs;
     }
@@ -558,6 +561,7 @@ class Modules_Microweber_Install {
     	$files[] = 'resources';
     	$files[] = 'database';
     	$files[] = 'userfiles/elements';
+	$files[] = 'public/build';   
 
     	$sfm = new \pm_ServerFileManager();
     	$listTemplates = $sfm->scanDir($appLatestFolder . '/userfiles/templates');
