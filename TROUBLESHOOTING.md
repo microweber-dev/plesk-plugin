@@ -84,3 +84,40 @@ https://www.plesk.com/kb/support/%E2%80%89site-on-plesk-is-not-available-modsecu
 # PHP Memory limit problem
 
 https://docs.plesk.com/en-US/obsidian/administrator-guide/web-hosting/php-management/customizing-php-parameters.79190/
+
+
+
+# Too many files open problem
+```
+nano /etc/sysctl.conf
+
+fs.file-max = 564000
+net.ipv4.tcp_tw_reuse=1
+net.ipv4.tcp_tw_recycle=1
+net.ipv4.tcp_fin_timeout=10
+
+
+Edit /etc/security/limits.conf and add:
+nginx soft nofile 64000
+nginx hard nofile 64000
+
+echo 'NGINX_ULIMIT="-n 64000"' >> /etc/sysconfig/nginx
+
+Edit /usr/lib/systemd/system/nginx.service and add a line in the [Service] section:
+LimitNOFILE=64000
+
+In /etc/sysconfig/nginx.systemd add:
+LimitNOFILE=64000
+
+Add the line ulimit -n 64000 at the beginning of the /usr/local/psa/admin/sbin/nginx-config script:
+#!/usr/bin/env bash
+ulimit -n 3164000
+
+Reload system daemon:
+# systemctl --system daemon-reload
+# sysctl -p
+
+Restart sw-cp-server and nginx:
+# /etc/init.d/sw-cp-server restart
+# /etc/init.d/nginx restart
+```
