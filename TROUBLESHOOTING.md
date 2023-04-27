@@ -121,3 +121,26 @@ Restart sw-cp-server and nginx:
 # /etc/init.d/sw-cp-server restart
 # /etc/init.d/nginx restart
 ```
+
+
+
+# 503 Error
+
+https://www.plesk.com/kb/support/increased-memory-usage-by-php-cgi-processes-on-server-after-plesk-update/
+
+Connect to the server via SSH
+Open /etc/httpd/conf.d/fcgid.conf in any text editor
+Decrease timeouts to lower values to finish
+php-cgi
+processes earlier, and execute
+service httpd reload
+command to reload Apache configuration. 
+
+```
+FcgidIdleTimeout 40
+FcgidProcessLifeTime 30
+FcgidMaxProcesses 20
+FcgidConnectTimeout 30
+FcgidIOTimeout 45
+FcgidIdleScanInterval 10
+```
