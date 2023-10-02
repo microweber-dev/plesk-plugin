@@ -1,25 +1,59 @@
 
 
+# Enable Plesk Power user view
 
+`plesk bin poweruser --off -simple false`
 
 
 
 # Sites not working on HTTPS
 
-> ```
-> plesk repair web examplesite.microweber.net -y
-> ```
+```
+plesk repair web examplesite.microweber.net -y
+```
 
+# "New configuration files for the Apache web server were not created"
+https://cloudblue.freshdesk.com/support/solutions/articles/44001881502--new-configuration-files-for-the-apache-web-server-were-not-created-
+ ```
+/usr/local/psa/bin/repair --update-vhosts-structure
+mysql -uadmin -p`cat /etc/psa/.psa.shadow` psa -e" select * from Configurations where status='error' \G"
+```
+
+# Disabling proxy mode on a subdomain over shell
+https://talk.plesk.com/threads/turn-off-nginx-proxy-mode.357525/
+
+```
+plesk bin subscription --update-web-server-settings SUB.DOMAIN.TDL -nginx-proxy-mode false
+```
+# Disabling proxy mode on all subdomains over shell
+
+```
+for i in `mysql -uadmin -p\`cat /etc/psa/.psa.shadow\` psa -Ns -e "select name from domains"`; do /usr/local/psa/bin/subscription --update-web-server-settings $i -nginx-proxy-mode false; done
+```
+
+# Repairing web server configuration
+
+```
 If you have the same issue on other sites, please, just run the same command by changing [examplesite.microweber.net](http://examplesite.microweber.net/) for the desired site, or to run this at server-wide just execute Without specify any particular domain:
 
-> ```
-> plesk repair web -y
-> ```
+```
+plesk repair web -y
+```
+
+# Nginx does not start after IP change
 
 
+```
+/usr/local/psa/admin/sbin/httpdmng --reconfigure-all
+/etc/init.d/nginx restart
+```
+
+# Another command to reconfigure all domains
 
 
-
+```
+/usr/local/psa/admin/sbin/httpdmng --reconfigure-all
+```
 # Nginx fails to start/reload on a Plesk server: Too many open files
 
 https://support.plesk.com/hc/en-us/articles/213938485-nginx-fails-to-start-reload-on-a-Plesk-server-Too-many-open-files
@@ -144,3 +178,62 @@ FcgidConnectTimeout 30
 FcgidIOTimeout 45
 FcgidIdleScanInterval 10
 ```
+
+
+# Migration assistance
+
+ - https://docs.plesk.com/en-US/obsidian/migration-guide/migrating-from-supported-hosting-platfoms/migrating-via-the-command-line.75722/
+ - https://talk.plesk.com/threads/migration-transfer-manager-missing.335372/
+```
+/usr/local/psa/admin/sbin/modules/panel-migrator/plesk-migrator transfer-accounts --skip-services-checks --skip-services-checks --skip-infrastructure-checks
+```
+
+
+# High CPU usage by Nginx is shown in Health Monitor
+https://support.plesk.com/hc/en-us/articles/12377240830999-High-CPU-usage-by-Nginx-is-shown-in-Health-Monitor
+
+```
+/etc/nginx/nginx.conf
+worker_connections 4096;
+
+service nginx restart
+
+
+```
+
+
+# Nginx upstream sent too big header while reading response header from upstream
+
+https://www.cyberciti.biz/faq/nginx-upstream-sent-too-big-header-while-reading-response-header-from-upstream/
+
+
+
+# Nginx too many open file
+https://talk.plesk.com/threads/nginx-24-too-many-open-files.347297/
+```
+nginx -t 
+
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: [emerg] open() "/var/www/vhosts/system/example.com/logs/proxy_access_ssl_log" failed (24: Too many open files)
+nginx: configuration file /etc/nginx/nginx.conf test failed
+```
+
+Run
+```
+ulimit -Sn 200000
+```
+
+Also 
+```
+/usr/local/psa/admin/sbin/websrv_ulimits --set 5242881 --no-restart
+```
+
+
+# Disable Selinux 
+
+https://support.plesk.com/hc/en-us/articles/12377675193879
+
+# Apache Too many open files
+
+https://support.plesk.com/hc/en-us/articles/12377715513111-Apache-failed-to-start-24-Too-many-open-files-Init-Can-t-open-server-certificate-file
+
