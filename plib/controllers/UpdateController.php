@@ -33,8 +33,8 @@ class UpdateController extends Modules_Microweber_BasepluginController
 
         $messages[] = ['message'=>'Update channel: <b>' . ucfirst(pm_Settings::get('update_app_channel')) . '</b>'];
 
-        $whmcsPackageManagerUrls = pm_Settings::get('use_package_manage_urls_from_whmcs');
-        if ($whmcsPackageManagerUrls == 'yes') {
+        $packageManagerUrlsSource = pm_Settings::get('use_package_manager_urls_from_website_manager');
+        if ($packageManagerUrlsSource == 'whmcs') {
             $messages[] = ['message' => 'Getting data from WHMCS package managers urls'];
         } else {
             $messages[] = ['message' => 'Getting data from official package managers'];

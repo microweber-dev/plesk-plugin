@@ -1101,9 +1101,6 @@ class IndexController extends Modules_Microweber_BasepluginController
             pm_Settings::set('website_manager_url', $form->getValue('website_manager_url'));
             pm_Settings::set('use_package_manager_urls_from_website_manager', $form->getValue('use_package_manager_urls_from_website_manager'));
 
-            //pm_Settings::set('whmcs_url', $form->getValue('whmcs_url'));
-            //pm_Settings::set('use_package_manage_urls_from_whmcs', $form->getValue('use_package_manage_urls_from_whmcs'));
-
             pm_Settings::set('allow_reseller_whitelabel', $form->getValue('allow_reseller_whitelabel'));
 
 
