@@ -27,7 +27,6 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
 
         $this->updateProgress(30);
 
-
         // Download the server modules
         $connector = new Modules_Microweber_MarketplaceConnector();
         $connector->package_urls = ['https://packages.microweberapi.com/packages/microweberserverpackages/packages.json'];
