@@ -121,7 +121,12 @@ class Modules_Microweber_Config
         return pm_Settings::get('website_manager_url');
     }
 
-	public static function getWhmcsPackageManagerUrls()
+	public static function getMicroweberSaasPackageManagerUrls()
+	{
+		return Modules_Microweber_Helper::getJsonFromUrl(self::getWebsiteManagerUrl() . '/api/websites/package-manager/urls');
+	}
+
+    public static function getWhmcsPackageManagerUrls()
 	{
 		return Modules_Microweber_Helper::getJsonFromUrl(self::getWhmcsUrl() . '/index.php?m=microweber_addon&function=get_package_manager_urls');
 	}

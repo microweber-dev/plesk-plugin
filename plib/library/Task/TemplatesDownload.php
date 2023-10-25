@@ -110,9 +110,13 @@ class Modules_Microweber_Task_TemplatesDownload extends \pm_LongTask_Task
         }
 
         $connector = new Modules_Microweber_MarketplaceConnector();
-
-        if (pm_Settings::get('use_package_manager_urls_from_website_manager') == 'whmcs') {
-            $connector->set_whmcs_url(Modules_Microweber_Config::getWhmcsUrl());
+        
+        if (pm_Settings::get('use_package_manager_urls_from_website_manager') == 'yes') {
+            if (pm_Settings::get('website_manager') == 'whmcs') {
+                $connector->set_whmcs_url(Modules_Microweber_Config::getWhmcsUrl());
+            } elseif (pm_Settings::get('website_manager') == 'microweber_saas') {
+                $connector->package_urls = Modules_Microweber_Config::getMicroweberSaasPackageManagerUrls();
+            }
         }
 
         $connector->set_license($licenses);
