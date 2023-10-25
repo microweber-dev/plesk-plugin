@@ -80,7 +80,7 @@ class IndexController extends Modules_Microweber_BasepluginController
         if (pm_Session::getClient()->isAdmin()) {
             Modules_Microweber_Helper::checkAndFixSchedulerTasks();
         }
-        
+
         $this->_checkAppSettingsIsCorrect();
 
         $this->view->errorMessage = false;
