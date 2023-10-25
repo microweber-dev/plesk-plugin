@@ -47,31 +47,15 @@ class Modules_Microweber_Task_TemplatesDownload extends \pm_LongTask_Task
                 $this->runningLog = 'Downloading template: ' . $templateTargetDir . ' ...';
 
                 $localTemplatePath = Modules_Microweber_Config::getAppSharedPath() . '/userfiles/templates/' . $templateTargetDir . '/';
-                $localTemplateVersion = 0;
-                if (isset($templateVersions[$templateTargetDir])) {
-                    $localTemplateVersion = $templateVersions[$templateTargetDir];
-                }
 
-                $updateTemplate = false;
-                if ($localTemplateVersion != $templateRequiredVersion) {
-                    $updateTemplate = true;
-                }
-
-                $sfm = new pm_ServerFileManager();
-                if (!$sfm->fileExists($localTemplatePath)) {
-                    $updateTemplate = true;
-                }
-
-                if ($updateTemplate) {
-                    $unzip = pm_ApiCli::callSbin('unzip_app_template.sh', [
-                        base64_encode($templateData['download_url']),
-                        $localTemplatePath
-                    ])['code'];
-                    if ($unzip == 0) {
-                        // Update to required version
-                        $templateVersions[$templateTargetDir] = $templateRequiredVersion;
-                        pm_Settings::set('mw_templates_versions', json_encode($templateVersions));
-                    }
+                $unzip = pm_ApiCli::callSbin('unzip_app_template.sh', [
+                    base64_encode($templateData['download_url']),
+                    $localTemplatePath
+                ])['code'];
+                if ($unzip == 0) {
+                    // Update to required version
+                    $templateVersions[$templateTargetDir] = $templateRequiredVersion;
+                    pm_Settings::set('mw_templates_versions', json_encode($templateVersions));
                 }
 
                 $this->runningLog = 'Unzipping template: ' . $templateTargetDir . ' ...';
