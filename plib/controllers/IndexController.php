@@ -80,7 +80,7 @@ class IndexController extends Modules_Microweber_BasepluginController
         if (pm_Session::getClient()->isAdmin()) {
             Modules_Microweber_Helper::checkAndFixSchedulerTasks();
         }
-
+        
         $this->_checkAppSettingsIsCorrect();
 
         $this->view->errorMessage = false;
@@ -1047,7 +1047,7 @@ class IndexController extends Modules_Microweber_BasepluginController
 
         $form->addElement('select', 'website_manager', [
             'label' => 'Website manager',
-            'multiOptions' => ['none', 'microweber' => 'Microweber SaaS', 'whmcs' => 'WHMCS'],
+            'multiOptions' => ['none', 'microweber_saas' => 'Microweber SaaS', 'whmcs' => 'WHMCS'],
             'value' => pm_Settings::get('website_manager'),
             'required' => true,
         ]);
