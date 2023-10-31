@@ -34,10 +34,7 @@ class Modules_Microweber_PluginUpdate
         }
 
         $url = self::getDownloadUrl();
-        $udpateStatus = self::_downloadAndUpdate($url, $latestPluginPath);
-        if ($udpateStatus) {
-            var_dump($udpateStatus);
-        }
+        self::_downloadAndUpdate($url, $latestPluginPath);
     }
 
     private static function _downloadAndUpdate($url, $filePath) {
