@@ -9,14 +9,9 @@
 class Modules_Microweber_Task_DomainAppInstall extends \pm_LongTask_Task
 {
 	public $trackProgress = true;
-    public $hidden = true;
 
 	public function run()
 	{
-        if (pm_Settings::get('installation_notifications') !== 'yes') {
-            $this->hidden = true;
-        }
-
 		$newInstallation = new Modules_Microweber_Install();
 		$newInstallation->setDomainId($this->getParam('domainId'));
 		$newInstallation->setType($this->getParam('type'));
