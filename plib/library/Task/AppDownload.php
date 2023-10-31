@@ -80,13 +80,5 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
 		return '';
 	}
 
-	public function onStart()
-	{
-		$this->setParam('onStart', 1);
-	}
-
-	public function onDone()
-	{
-		$this->setParam('onDone', 1);
-	}
+	
 }

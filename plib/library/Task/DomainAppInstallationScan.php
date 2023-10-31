@@ -74,13 +74,5 @@ class Modules_Microweber_Task_DomainAppInstallationScan extends \pm_LongTask_Tas
 		return '';
 	}
 
-	public function onStart()
-	{
-		$this->setParam('onStart', 1);
-	}
-
-	public function onDone()
-	{
-		$this->setParam('onDone', 1);
-	}
+	
 }

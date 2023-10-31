@@ -78,13 +78,5 @@ class Modules_Microweber_Task_WhiteLabelBrandingRemove extends \pm_LongTask_Task
     }
 
 
-    public function onStart()
-	{
-		$this->setParam('onStart', 1);
-	}
-
-	public function onDone()
-	{
-		$this->setParam('onDone', 1);
-	}
+    
 }
