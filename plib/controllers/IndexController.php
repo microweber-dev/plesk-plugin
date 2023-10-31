@@ -587,38 +587,6 @@ class IndexController extends Modules_Microweber_BasepluginController
             ]);
         }
 
-        /*$dbManager = new Modules_Microweber_DatabaseManager();
-        $dbManager->setDomainId($domain->getId());
-
-        $hostingManager = new Modules_Microweber_HostingManager();
-        $hostingManager->setDomainId($domain->getId());*/
-
-        /*
-         *      $servers = $dbManager->getDatabaseServers();
-                if (pm_Session::getClient()->isAdmin()) {
-                    $serversOptions = [];
-                    if ($servers) {
-                        foreach ($servers as $server) {
-                            if ($server['data']['type'] != 'mysql') {
-                                continue;
-                            }
-                            $dbServerDetails = $dbManager->getDatabaseServerById($server['id']);
-                            $dbServerHostAndIp = $dbServerDetails['data']['host'] . ':' . $dbServerDetails['data']['port'];
-                            $serversOptions[$server['id']] = $dbServerHostAndIp;
-                        }
-                    } else {
-                        $serversOptions[0] = 'localhost:3306';
-                    }
-
-
-                    $form->addElement('select', 'installation_database_server_id', [
-                        'label' => 'Database Server',
-                        'multiOptions' => $serversOptions,
-                        'value' => pm_Settings::get('installation_database_server_id'),
-                        'required' => true,
-                    ]);
-                }*/
-
         $chooseInstallationDatabaseDriver = pm_Settings::get('installation_database_driver_allow_customers');
         $chooseInstallationDatabaseDriver = trim($chooseInstallationDatabaseDriver);
 
@@ -640,15 +608,6 @@ class IndexController extends Modules_Microweber_BasepluginController
             $form->addElement('hidden', 'installation_database_driver', [
                 'value' => pm_Settings::get('installation_database_driver')
             ]);
-        }
-
-        $httpHost = '';
-        if (isset($_SERVER['HTTP_HOST'])) {
-            $httpHost = $_SERVER['HTTP_HOST'];
-            $exp = explode(":", $httpHost);
-            if (isset($exp[0])) {
-                $httpHost = $exp[0];
-            }
         }
 
         $client = pm_Session::getClient();
@@ -986,43 +945,6 @@ class IndexController extends Modules_Microweber_BasepluginController
             'value' => pm_Settings::get('installation_database_driver'),
             'required' => true,
         ]);
-
-        /*
-        $dbManager = new Modules_Microweber_DatabaseManager();
-
-        if (pm_Session::getClient()->isAdmin()) {
-            $servers = $dbManager->getDatabaseServers();
-        } else {
-            $servers = $dbManager->getDatabaseServersDefault();
-        }
-
-        $serversOptions = [];
-        if ($servers) {
-            foreach($servers as $server) {
-                if ($server['data']['type'] != 'mysql') {
-                    continue;
-                }
-                $dbServerDetails = $dbManager->getDatabaseServerById($server['id']);
-                $dbServerHostAndIp = $dbServerDetails['data']['host'].':'.$dbServerDetails['data']['port'];
-                $serversOptions[$server['id']] = $dbServerHostAndIp;
-            }
-        } else {
-            $serversOptions[0] = 'localhost:3306';
-        }
-
-        $form->addElement('select', 'installation_database_server_id', [
-            'label' => 'Database Server',
-            'multiOptions' => $serversOptions,
-            'value' => pm_Settings::get('installation_database_server_id'),
-            'required' => true,
-        ]);
-        */
-
-      /*  $form->addElement('text', 'update_app_url', [
-            'label' => 'Update App Url',
-            'value' => Modules_Microweber_Config::getUpdateAppUrl(),
-            //'required' => true,
-        ]);*/
 
         $form->addElement('select', 'update_app_channel', [
             'label' => 'Update App Channel',

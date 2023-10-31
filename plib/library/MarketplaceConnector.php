@@ -119,7 +119,6 @@ class Modules_Microweber_MarketplaceConnector
 					$package['latest_version'] = $last_item;
 				}
 				if ($version_type and in_array($version_type, $allowed_package_types)) {
-					$package_is_allowed = true;
 					$return[$pk] = $package;
 					if (! isset($packages_by_type[$version_type])) {
 						$packages_by_type[$version_type] = array();
