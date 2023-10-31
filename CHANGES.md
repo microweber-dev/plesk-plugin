@@ -1,6 +1,6 @@
 # Change Log for Plesk Plugin
 
-## Version 1.0.13 (Release Date: 31.10.2023)
+## Version 1.0.14 (Release Date: 31.10.2023)
 
 ### Fixed Bugs
 - Resolved issue causing [describe the bug and its impact].
