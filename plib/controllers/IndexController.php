@@ -1506,7 +1506,7 @@ class IndexController extends Modules_Microweber_BasepluginController
                 return $this->_redirect('index/index?message=Login module is not found. Reinstalling login module... please, try again after one minute.');
             }
 
-            return $this->_redirect('http://' . $websiteUrl . '/api/user_login?secret_key=' . $token);
+            return $this->_redirect('http://' . $websiteUrl . '/api/login_with_secret_key?key=' . $token);
         }
 
         return $this->_redirect('index/index');
