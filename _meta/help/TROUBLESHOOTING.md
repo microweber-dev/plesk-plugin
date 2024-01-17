@@ -237,3 +237,10 @@ https://support.plesk.com/hc/en-us/articles/12377675193879
 
 https://support.plesk.com/hc/en-us/articles/12377715513111-Apache-failed-to-start-24-Too-many-open-files-Init-Can-t-open-server-certificate-file
 
+# Cannot send email from plesk server
+
+https://support.plesk.com/hc/en-us/articles/12377115352599-Emails-sent-from-Plesk-server-using-PHP-mail-function-are-rejected-on-some-recipient-mail-servers
+
+# Cannot send email to gmail
+
+https://www.plesk.com/kb/support/unable-to-send-an-email-to-gmail-from-a-plesk-server-our-system-has-detected-that-this-message-does-not-meet-ipv6-sending-guidelines-regarding-ptr-records/
