@@ -68,10 +68,9 @@ class Modules_Microweber_LicenseData
 	public static function getLicenseData($whiteLabelKey = false, $relType = 'modules/white_label')
 	{
 		if ($whiteLabelKey) {
-
 			$whiteLabelKey = trim($whiteLabelKey);
 
-			$checkUrl = Modules_Microweber_Config::getUpdateAppUrl() . "/?api_function=validate_licenses&local_key=$whiteLabelKey&rel_type=$relType";
+			$checkUrl = "https://microweber.com/license-server/validate?license_key=$whiteLabelKey&licensable_type=$relType";
             $data = Modules_Microweber_Helper::getJsonFromUrl($checkUrl);
 
 			if ($data and isset($data[$relType])) {
@@ -80,5 +79,5 @@ class Modules_Microweber_LicenseData
 			}
 		}
 	}
-	
+
 }
