@@ -1626,7 +1626,7 @@ class IndexController extends Modules_Microweber_BasepluginController
         $licenseData = pm_Settings::get('wl_license_data');
         if (!empty($licenseData)) {
             $licenseData = json_decode($licenseData, TRUE);
-            if ($licenseData['status'] == 'active') {
+            if (isset($licenseData['active']) && $licenseData['active']) {
                 $isLicensed = true;
             }
         }
