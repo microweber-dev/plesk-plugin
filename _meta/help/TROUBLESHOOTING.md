@@ -1,3 +1,6 @@
+# Install extension maually
+
+plesk bin extension --install-url https://github.com/microweber-dev/plesk-plugin/archive/refs/heads/master.zip
 
 
 # Enable Plesk Power user view
