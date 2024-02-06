@@ -5,6 +5,12 @@
 2. Go to Extensions Catalog and install the "Microweber" extension
 
 
+### Command line Install
+
+plesk bin extension --install-url https://github.com/microweber-dev/plesk-plugin/archive/refs/heads/master.zip
+
+
+
 
 ### Manual installation
 1. Open Plesk Panel
