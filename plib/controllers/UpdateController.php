@@ -91,7 +91,7 @@ class UpdateController extends Modules_Microweber_BasepluginController
             $messages[] = ['message'=>'Whitelabel key is applied.'];
             $messages[] = ['message'=>'Checking whitelabel status...'];
             $licenseCheck = Modules_Microweber_LicenseData::getLicenseData($whiteLabelKey);
-            if (isset($licenseCheck['status']) && $licenseCheck['status'] == 'active') {
+            if (isset($licenseCheck['active']) && $licenseCheck['active']) {
                 $messages[] = ['message'=>'Whitelabel is <b>active</b>.'];
                 $messages[] = ['message'=>'<b>Premium access to templates and modules are unlocked.</b>'];
             } else {

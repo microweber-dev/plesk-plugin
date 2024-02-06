@@ -310,7 +310,8 @@ class IndexController extends Modules_Microweber_BasepluginController
 
             // Check license and save it to pm settings
             $licenseCheck = Modules_Microweber_LicenseData::getLicenseData($formMwKey->getValue('wl_key'));
-            if (isset($licenseCheck['status']) && $licenseCheck['status'] == 'active') {
+
+            if (isset($licenseCheck['active']) && $licenseCheck['active']) {
 
                 pm_Settings::set('wl_key', $formMwKey->getValue('wl_key'));
                 pm_Settings::set('wl_license_data', json_encode($licenseCheck));
@@ -394,20 +395,20 @@ class IndexController extends Modules_Microweber_BasepluginController
 /*
 	public function reinstallAction()
 	{
-		
+
 		$domainId = 39;
-		
+
 		$domain = Modules_Microweber_Domain::getUserDomainById($domainId);
-        if (empty($domain->getName())) { 
+        if (empty($domain->getName())) {
             throw new \Exception($domain->getName() . ' domain not found.');
         }
 
         $domainDocumentRoot = $domain->getDocumentRoot();
-		
+
 		Modules_Microweber_Reinstall::run($domainId, $domainDocumentRoot);
-		
-		
-		die(); 
+
+
+		die();
 	}*/
 
     public function installAction()
@@ -905,7 +906,7 @@ class IndexController extends Modules_Microweber_BasepluginController
                     'no' => 'No',
                     'yes' => 'Yes'
                 ],
-            'value' => pm_Settings::get('installation_ssl'), 
+            'value' => pm_Settings::get('installation_ssl'),
             'required' => false,
         ]);
 
@@ -984,7 +985,7 @@ class IndexController extends Modules_Microweber_BasepluginController
             'label' => 'Get package manager urls from website manager',
             'multiOptions' => ['no' => 'No', 'yes' => 'Yes'],
             'value' => pm_Settings::get('use_package_manager_urls_from_website_manager'),
-            'required' => false,  
+            'required' => false,
         ]);
 
         $form->addElement('select', 'allow_reseller_whitelabel', [
@@ -1586,7 +1587,7 @@ class IndexController extends Modules_Microweber_BasepluginController
         $licenseData = pm_Settings::get('wl_license_data');
         if (!empty($licenseData)) {
             $licenseData = json_decode($licenseData, TRUE);
-            if ($licenseData['status'] == 'active') {
+            if (isset($licenseData['active']) && $licenseData['active']) {
 
                 $this->view->isLicensed = true;
                 $this->view->isMwLicensed = true;
@@ -1737,7 +1738,7 @@ class IndexController extends Modules_Microweber_BasepluginController
                         'type' => $installation['installationType'],
                         'app_version' => $installation['appVersion'],
                         'document_root' => $installation['appInstallation'],
-                        'active' => ($installation['domainIsActive'] ? 'Yes' : 'No'), 
+                        'active' => ($installation['domainIsActive'] ? 'Yes' : 'No'),
                         'action' => '<img src="'.pm_Context::getBaseUrl() . 'images/loading.gif'.'" /> Installing... <script>setTimeout(function () {window.location.href=window.location.href}, 60000);</script>'
                     ];
 
@@ -1755,7 +1756,7 @@ class IndexController extends Modules_Microweber_BasepluginController
                 $loginToWebsite .= '<a href="' . $pleskMainUrl . $installation['manageDomainUrl'] . '" class="btn btn-info"><img src="' . pm_Context::getBaseUrl() . 'images/publish.png" alt=""> Manage Domain</a>';
                 $loginToWebsite .= '<input type="hidden" name="website_url" value="' . $installation['domainNameUrl'] . '" />';
                 $loginToWebsite .= '<input type="hidden" name="domain_id" value="' . $domain->getId() . '" />';
-                $loginToWebsite .= '<input type="hidden" name="document_root" value="' . $installation['appInstallation'] . '" />'; 
+                $loginToWebsite .= '<input type="hidden" name="document_root" value="' . $installation['appInstallation'] . '" />';
                 $loginToWebsite .= '<button type="submit" name="login" value="1" class="btn btn-info js-website-login"><img src="' . pm_Context::getBaseUrl() . 'images/open-in-browser.png" alt=""> Login to website</button>';
                 $loginToWebsite .= '<button type="button" onclick="openSetupForm(this)" name="setup" value="1" class="btn btn-info js-website-setup"><img src="' . pm_Context::getBaseUrl() . 'images/setup.png" /> Setup</button>';
                 $loginToWebsite .= '</form>';
