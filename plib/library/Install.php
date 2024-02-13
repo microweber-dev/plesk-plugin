@@ -567,6 +567,8 @@ class Modules_Microweber_Install {
     	$files[] = 'userfiles/elements';
 	    $files[] = 'public/build';
 
+        $files[] = '/userfiles/templates/default';
+        
     	$sfm = new \pm_ServerFileManager();
     	$listTemplates = $sfm->scanDir($appLatestFolder . '/userfiles/templates');
         if (!empty($listTemplates)) {
