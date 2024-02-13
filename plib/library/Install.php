@@ -257,7 +257,7 @@ class Modules_Microweber_Install {
 
         $this->setProgress(65);
 
-        foreach ($this->_getFilesForSymlinking($this->appLatestVersionFolder, $this->_template) as $folder) {
+        foreach ($this->_getFilesForSymlinking($this->appLatestVersionFolder, $this->_template, $this->_type) as $folder) {
         	$scriptDirOrFile = $this->appLatestVersionFolder . $folder;
         	$domainDirOrFile = $installationDirPath .'/'. $folder;
 
@@ -556,7 +556,7 @@ class Modules_Microweber_Install {
         return $dirs;
     }
 
-    private function _getFilesForSymlinking($appLatestFolder, $desiredTemplate = null) {
+    private function _getFilesForSymlinking($appLatestFolder, $desiredTemplate = null, $installType = null) {
 
     	$files = [];
     	$files[] = 'version.txt';
@@ -568,7 +568,7 @@ class Modules_Microweber_Install {
 	    $files[] = 'public/build';
 
         $files[] = '/userfiles/templates/default';
-        
+
     	$sfm = new \pm_ServerFileManager();
     	$listTemplates = $sfm->scanDir($appLatestFolder . '/userfiles/templates');
         if (!empty($listTemplates)) {
@@ -576,9 +576,11 @@ class Modules_Microweber_Install {
                 if ($template == '.' || $template == '..') {
                     continue;
                 }
-                if ($desiredTemplate) {
-                    if ($desiredTemplate != $template) {
-                        continue;
+                if ($installType != 'symlink') {
+                    if ($desiredTemplate) {
+                        if ($desiredTemplate != $template) {
+                            continue;
+                        }
                     }
                 }
                 $files[] = '/userfiles/templates/' . $template;
