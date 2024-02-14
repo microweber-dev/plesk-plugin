@@ -16,6 +16,7 @@ jobs:
     - name: Run Plesk Marketplace Build
       run:
         |
+        rm -rf /plesk-plugin-master.zip
         rm -rf /plib/library/PluginUpdate.php
         rm -rf /sbin/download_and_update_plugin.sh
         zip -r plesk-plugin-marketplace.zip `ls -A`
