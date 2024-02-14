@@ -70,7 +70,9 @@
 <button data-update-link="<?php echo $this->updateLink; ?>" class="btn action js-check-for-update" style="width:200px;">Check for updates</button>
 <?php endif; ?>
 
+<?php if ($this->pluginUpdateLink): ?>
 <a href="<?php echo $this->pluginUpdateLink; ?>" class="pul-button" style="width:200px;">Check for plugin updates</a>
+<?php endif; ?>
 
 <?php endif; ?>
 

@@ -161,7 +161,13 @@ class IndexController extends Modules_Microweber_BasepluginController
         }
 
         $this->view->updateLink = pm_Context::getBaseUrl() . 'index.php/update/index';
-        $this->view->pluginUpdateLink = pm_Context::getBaseUrl() . 'index.php/index/pluginupdate';
+
+
+        $this->view->pluginUpdateLink = false;
+        if (is_file('/usr/local/psa/admin/sbin/modules/microweber/download_and_update_plugin.sh')) {
+            $this->view->pluginUpdateLink = pm_Context::getBaseUrl() . 'index.php/index/pluginupdate';
+        }
+
        // $this->view->updateTemplatesLink = pm_Context::getBaseUrl() . 'index.php/update/index';
 
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
