@@ -17,6 +17,6 @@ jobs:
       run:
         |
         rm -rf /plib/library/PluginUpdate.php
-        rm -rf sbin/download_and_update_plugin.sh
+        rm -rf /sbin/download_and_update_plugin.sh
         zip -r plesk-plugin-marketplace.zip `ls -A`
         curl -T plesk-plugin-marketplace.zip ftp://${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_PASSWORD }}@${{ secrets.FTP_HOST }}/ --ftp-create-dirs --no-epsv
