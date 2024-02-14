@@ -1,10 +1,18 @@
 # Change Log for Plesk Plugin
 
-## Version 1.0.14 (Release Date: 31.10.2023)
+
+## Version 1.0.16 (Release Date: 14.02.2024)
 
 ### Fixed Bugs
-- Resolved issue causing [describe the bug and its impact].
-- Fixed [mention other specific bugs or issues addressed].
+- Resolved issue with login to the user website from the Plesk panel.
+- Fixed issue when the user select standalone installation , all templates are installed insted only the selected ones.
+- Fixed issue with the installation of the latest version of the Microweber application.
+
+
+
+## Version 1.0.14 (Release Date: 31.10.2023)
+
+
 
 ### New Features
 
