@@ -61,13 +61,4 @@ class Modules_Microweber_Task_UpdateHostingPlansPhpHandler extends \pm_LongTask_
         return '';
     }
 
-    public function onStart()
-    {
-        $this->setParam('onStart', 1);
-    }
-
-    public function onDone()
-    {
-        $this->setParam('onDone', 1);
-    }
 }
