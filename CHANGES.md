@@ -1,7 +1,7 @@
 # Change Log for Plesk Plugin
 
 
-## Version 1.0.16 (Release Date: 14.02.2024)
+## Version 1.0.17 (Release Date: 15.02.2024)
 
 ### Fixed Bugs
 - Resolved issue with login to the user website from the Plesk panel.
