@@ -49,13 +49,4 @@ class Modules_Microweber_Task_DomainAppInstallationRepair extends \pm_LongTask_T
         return '';
     }
 
-    public function onStart()
-    {
-        $this->setParam('onStart', 1);
-    }
-
-    public function onDone()
-    {
-        $this->setParam('onDone', 1);
-    }
 }
