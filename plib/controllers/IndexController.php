@@ -471,6 +471,8 @@ class IndexController extends Modules_Microweber_BasepluginController
         $this->view->showInstallForm = false;
         $this->view->isPhpSupported = false;
         $supportedPlans = [];
+        $notSupportedPlans = [];
+
         if (!empty($servicePlans)) {
             foreach ($servicePlans as &$hostingPlan) {
                 if(isset($hostingPlan['hosting']['vrt_hst']['property'])) {
