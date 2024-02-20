@@ -362,7 +362,7 @@ class Modules_Microweber_Install {
         $installArguments[] = '--username='.trim($adminUsername);
         $installArguments[] = '--password='.trim($adminPassword);
 
-        if ($this->language) {
+        if ($this->_language) {
             $installArguments[] = '--language=' . trim($this->_language);
         }
 
