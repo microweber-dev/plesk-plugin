@@ -13,6 +13,7 @@
         max-height: 500px;
         padding: 15px;
         background: hsl(0, 0%, 97%);
+        display: none;
     }
     .update-log-message {
         margin-bottom: 10px;
@@ -27,7 +28,9 @@
 
     var $j = jQuery.noConflict();
     $j(document).ready(function() {
-        startUpdating();
+        $j('.js-start-update-button').on('click', function() {
+            startUpdating();
+        });
     });
 
     function runUpdatingTask() {
@@ -43,6 +46,8 @@
     }
 
     function startUpdating() {
+        $j('.update-action').hide();
+        $j('.update-log').show();
         $j.get('/modules/microweber/index.php/update/start', function(data) {
 
             $j.each(data.messages, function(iMessage, messageData) {
@@ -93,6 +98,15 @@
         });
     }
 </script>
+
+<div class="update-action">
+    <h3 style="margin-top:20px">
+        Are you sure you want to start the update?
+    </h3>
+    <button class="pul-button js-start-update-button" type="button">
+        <span>YES, START UPDATE</span>
+    </button>
+</div>
 
 <div class="update-log">
 
