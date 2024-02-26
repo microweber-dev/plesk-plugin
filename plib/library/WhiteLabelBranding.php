@@ -21,7 +21,7 @@ class Modules_Microweber_WhiteLabelBranding
         $fileManager = new pm_FileManager($domain->getId());
 
         if ($fileManager->fileExists($appInstallation . '/config/microweber.php')) {
-            $fileManager->removeFile($appInstallation . '/storage/branding.json');
+            $fileManager->removeFile($appInstallation . '/storage/branding_saas.json');
         }
     }
 
@@ -45,7 +45,7 @@ class Modules_Microweber_WhiteLabelBranding
         if ($fileManager->fileExists($appInstallation . '/config/microweber.php')) {
 
             $whitelabelSettings = [];
-            $currentBranding = $appInstallation . '/storage/branding.json';
+            $currentBranding = $appInstallation . '/storage/branding_saas.json';
             if ($fileManager->fileExists($currentBranding)) {
                 $currentBranding = $fileManager->fileGetContents($currentBranding);
                 $currentBranding = json_decode($currentBranding, true);
@@ -62,7 +62,7 @@ class Modules_Microweber_WhiteLabelBranding
                 }
             }
             $whitelabelSettingsEncoded = json_encode($whitelabelSettings);
-            $fileManager->filePutContents($appInstallation . '/storage/branding.json', $whitelabelSettingsEncoded);
+            $fileManager->filePutContents($appInstallation . '/storage/branding_saas.json', $whitelabelSettingsEncoded);
         }
     }
 }
