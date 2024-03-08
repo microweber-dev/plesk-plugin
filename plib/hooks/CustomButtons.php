@@ -37,7 +37,9 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
 
         $places[] = [
             'place' => [
-                self::PLACE_INSTALL_APPLICATION_DRAWER
+                self::PLACE_ADD_DOMAIN_DRAWER,
+                self::PLACE_INSTALL_APPLICATION_DRAWER,
+                self::SECTION_DOMAIN_PROPS_DYNAMIC_HOSTING,
             ],
             'title' => $brandName,
             'description' => 'Create website with ' . $brandName,
