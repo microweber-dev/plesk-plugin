@@ -37,9 +37,7 @@ class Modules_Microweber_Task_DisableSelinux extends \pm_LongTask_Task
 					'id' => $this->getId()
 				]);
 		}
-
-		return '';
 	}
 
-	
+
 }

@@ -52,7 +52,7 @@ class Modules_Microweber_Task_DomainAppInstallationScan extends \pm_LongTask_Tas
             pm_Settings::set('mw_installations_count', $installations);
         }
 
-		
+
 		$this->updateProgress(100);
 	}
 
@@ -70,9 +70,7 @@ class Modules_Microweber_Task_DomainAppInstallationScan extends \pm_LongTask_Tas
 					'id' => $this->getId()
 				]);
 		}
-
-		return '';
 	}
 
-	
+
 }

@@ -39,7 +39,6 @@ class Modules_Microweber_Task_AppFixMissingConfigs extends \pm_LongTask_Task
                 ]);
         }
 
-        return '';
     }
 
 }

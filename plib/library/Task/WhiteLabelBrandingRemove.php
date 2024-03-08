@@ -74,9 +74,8 @@ class Modules_Microweber_Task_WhiteLabelBrandingRemove extends \pm_LongTask_Task
                 ]);
         }
 
-        return '';
     }
 
 
-    
+
 }

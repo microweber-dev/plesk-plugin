@@ -32,8 +32,7 @@ class Modules_Microweber_Task_UpdatePlugin extends \pm_LongTask_Task
 				]);
 		}
 
-		return '';
 	}
 
-	
+
 }

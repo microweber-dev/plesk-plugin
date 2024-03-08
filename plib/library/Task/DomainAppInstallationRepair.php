@@ -46,7 +46,6 @@ class Modules_Microweber_Task_DomainAppInstallationRepair extends \pm_LongTask_T
                 ]);
         }
 
-        return '';
     }
 
 }

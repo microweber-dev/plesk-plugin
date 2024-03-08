@@ -75,7 +75,6 @@ class Modules_Microweber_Task_WhiteLabelBrandingUpdate extends \pm_LongTask_Task
                 ]);
         }
 
-        return '';
     }
-    
+
 }

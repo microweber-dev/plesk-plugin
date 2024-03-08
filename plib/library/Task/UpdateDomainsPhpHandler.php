@@ -50,25 +50,14 @@ class Modules_Microweber_Task_UpdateDomainsPhpHandler extends \pm_LongTask_Task
         switch ($this->getStatus()) {
 
             case static::STATUS_RUNNING:
-
                 return $this->runningLog;
 
-            case static::STATUS_DONE:
-
-                return '';
-
-            case static::STATUS_ERROR:
-
-                return '';
-
             case static::STATUS_NOT_STARTED:
-
                 return pm_Locale::lmsg('taskPingError', [
                     'id' => $this->getId()
                 ]);
         }
 
-        return '';
     }
 
 }

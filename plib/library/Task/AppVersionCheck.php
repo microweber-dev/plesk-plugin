@@ -64,8 +64,7 @@ class Modules_Microweber_Task_AppVersionCheck extends \pm_LongTask_Task
 				]);
 		}
 
-		return '';
 	}
 
-	
+
 }
