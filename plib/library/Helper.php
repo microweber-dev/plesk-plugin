@@ -275,18 +275,18 @@ class Modules_Microweber_Helper
 
         return $data;
     }
-	
+
 	public static function getJsonFromUrl($url, $postfields = [])
 	{
 		$data = Modules_Microweber_Helper::getContentFromUrl($url, $postfields);
-		
+
 		return @json_decode($data, true);
 	}
-	
+
 	public static function getFileExtension($path)
 	{
 		$ext = pathinfo($path, PATHINFO_EXTENSION);
-		
+
 		return $ext;
 	}
 
@@ -360,6 +360,7 @@ class Modules_Microweber_Helper
 
         $updateApp = true;
         $outdatedDomains = [];
+        $outdatedDomainsIds = [];
         foreach (Modules_Microweber_Domain::getDomains() as $domain) {
 
             if (!$domain->hasHosting()) {
