@@ -59,15 +59,6 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
         ];
 
         $places[] = [
-            'place' => [self::PLACE_HOSTING_PANEL_TABS],
-            'order' => 15,
-            'title' => $brandName,
-            'description' => 'Install last version of ' . $brandName,
-            'link' => pm_Context::getActionUrl('index'),
-            'icon' => $brandInvertedIcon
-        ];
-
-        $places[] = [
             'place' => [
                 self::PLACE_RESELLER_NAVIGATION,
                 self::PLACE_HOSTING_PANEL_NAVIGATION,
