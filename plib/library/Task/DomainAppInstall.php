@@ -93,8 +93,7 @@ class Modules_Microweber_Task_DomainAppInstall extends \pm_LongTask_Task
                     ]);
             }
         }
-
-		return false;
+        
 	}
 
 }
