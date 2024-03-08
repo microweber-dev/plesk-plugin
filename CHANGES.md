@@ -1,6 +1,14 @@
 # Change Log for Plesk Plugin
 
 
+## Version 1.0.18 (Release Date: 08.03.2024)
+
+### Fixed Bugs
+- Fixed undefined variables
+- Add module to dynamic view navigation
+
+
+
 ## Version 1.0.17 (Release Date: 15.02.2024)
 
 ### Fixed Bugs
