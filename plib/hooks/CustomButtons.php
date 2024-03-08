@@ -25,6 +25,7 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
             'place' => [
                 self::PLACE_DOMAIN,
                 self::PLACE_DOMAIN_PROPERTIES,
+                self::PLACE_DOMAIN_PROPERTIES_DYNAMIC,
                 self::PLACE_RESELLER_TOOLS_AND_SETTINGS
             ],
             'title' => $brandName,
