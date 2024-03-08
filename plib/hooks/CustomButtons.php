@@ -26,13 +26,23 @@ class Modules_Microweber_CustomButtons extends pm_Hook_CustomButtons
                 self::PLACE_DOMAIN,
                 self::PLACE_DOMAIN_PROPERTIES,
                 self::PLACE_DOMAIN_PROPERTIES_DYNAMIC,
-                self::PLACE_RESELLER_TOOLS_AND_SETTINGS,
-                self::PLACE_INSTALL_APPLICATION_DRAWER
+                self::PLACE_RESELLER_TOOLS_AND_SETTINGS
             ],
             'title' => $brandName,
             'description' => 'View all ' . $brandName . ' websites.',
             'icon' => $brandAppIcon,
             'link' => pm_Context::getBaseUrl() . 'index.php/index/index',
+            'contextParams' => true
+        ];
+
+        $places[] = [
+            'place' => [
+                self::PLACE_INSTALL_APPLICATION_DRAWER
+            ],
+            'title' => $brandName,
+            'description' => 'Create website with ' . $brandName,
+            'icon' => $brandAppIcon,
+            'link' => pm_Context::getBaseUrl() . 'index.php/index/install',
             'contextParams' => true
         ];
 
