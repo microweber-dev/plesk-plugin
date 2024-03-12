@@ -105,7 +105,7 @@ class Modules_Microweber_Install {
         }
 
         if ($this->_ssl) {
-            if (!$this->checkSsl($domain->getName())) {
+            if (!Modules_Microweber_Helper::checkSsl($domain->getName())) {
                 $this->addDomainEncryption($domain);
             } else {
                 Modules_Microweber_Log::debug('Domain already have a SSL.');
@@ -428,23 +428,6 @@ class Modules_Microweber_Install {
             ];
         }
 
-    }
-
-    private function checkSsl($domainName)
-    {
-        try {
-            $g = @stream_context_create(array("ssl" => array("capture_peer_cert" => true)));
-            $r = @stream_socket_client("ssl://www." . $domainName . ":443", $errno, $errstr, 30,
-                STREAM_CLIENT_CONNECT, $g);
-            $cont = @stream_context_get_params($r);
-            if (isset($cont["options"]["ssl"]["peer_certificate"])) {
-                return true;
-            }
-        } catch (Exception $e) {
-            return false;
-        }
-
-        return false;
     }
 
     private function addDomainEncryption($domain)

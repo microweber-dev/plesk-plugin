@@ -406,4 +406,22 @@ class Modules_Microweber_Helper
             'outdated_domains_ids'=>$outdatedDomainsIds
         ];
     }
+
+    public static function checkSsl($domainName)
+    {
+        $apiRequest = <<<APICALL
+<packet>
+<certificate>
+    <get-pool>
+        <filter>
+            <domain-name>$domainName</domain-name>
+        </filter>
+    </get-pool>
+</certificate>
+</packet>
+APICALL;
+        $response = json_decode(json_encode(pm_ApiRpc::getService()->call($apiRequest)), TRUE);
+        
+        
+    }
 }
