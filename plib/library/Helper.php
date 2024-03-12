@@ -421,7 +421,12 @@ class Modules_Microweber_Helper
 </packet>
 APICALL;
         $response = json_decode(json_encode(pm_ApiRpc::getService()->call($apiRequest)), TRUE);
-        
-        
+
+        if (isset($response['certificate']['get-pool']['result']['status'])
+            && $response['certificate']['get-pool']['result']['status'] == 'ok') {
+            return true;
+        }
+
+        return false;
     }
 }
