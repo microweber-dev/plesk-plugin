@@ -1654,7 +1654,7 @@ class IndexController extends Modules_Microweber_BasepluginController
         if ($currentVersion == 'unknown') {
 
             if (empty(pm_Settings::get('installation_language'))) {
-                pm_Settings::set('installation_language', 'EN_US');
+                pm_Settings::set('installation_language', 'en_US');
             }
 
             if (empty(pm_Settings::get('installation_template'))) {
