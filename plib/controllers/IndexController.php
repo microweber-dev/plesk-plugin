@@ -832,9 +832,9 @@ class IndexController extends Modules_Microweber_BasepluginController
         $this->view->currentVersion = $this->_getCurrentVersion();
         $this->view->latestDownloadDate = $this->_getCurrentVersionLastDownloadDateTime();
 
-//        if ($this->view->currentVersion !== 'unknown') {
-//            return $this->_redirect('index');
-//        }
+        if ($this->view->currentVersion !== 'unknown') {
+            return $this->_redirect('index');
+        }
 
         if (!empty($mwRelease)) {
             $this->view->latestVersion = $mwReleaseVersion;
