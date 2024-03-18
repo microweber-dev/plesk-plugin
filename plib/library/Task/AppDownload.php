@@ -52,7 +52,7 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
 
         $appSharedPath = Modules_Microweber_Config::getAppSharedPath();
 
-        $downloadLog .= pm_ApiCli::callSbin('unzip_app_version.sh', [base64_encode($release['url']), $appSharedPath])['stdout'];
+      //  $downloadLog .= pm_ApiCli::callSbin('unzip_app_version.sh', [base64_encode($release['url']), $appSharedPath])['stdout'];
 
         $this->updateProgress(50);
 
@@ -80,7 +80,7 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
         $this->updateProgress(90);
 
         pm_Settings::set('show_php_version_wizard', false);
-        
+
         $taskManager = new pm_LongTask_Manager();
         Modules_Microweber_Helper::stopTasks(['task_templatesdownload']);
 

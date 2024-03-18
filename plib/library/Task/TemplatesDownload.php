@@ -11,6 +11,7 @@ class Modules_Microweber_Task_TemplatesDownload extends \pm_LongTask_Task
     const UID = 'templatesDownload';
     public $runningLog = '';
 	public $trackProgress = true;
+    public $templates = [];
 
 	public function run()
 	{
@@ -28,11 +29,22 @@ class Modules_Microweber_Task_TemplatesDownload extends \pm_LongTask_Task
             return;
         }
 
-        $updateProgress = 1;
-        $this->updateProgress($updateProgress);
+        $this->updateProgress(1);
 
         $batchSize = (int) ceil(sizeof($getTemplatesUrls) / 100);
         $templatesBatch = array_chunk($getTemplatesUrls, $batchSize);
+
+        foreach ($templatesBatch as $templatesUrls) {
+            foreach ($templatesUrls as $templateData) {
+                $this->templates[$templateData['target_dir']] = [
+                    'target_dir' => $templateData['target_dir'],
+                    'downloaded' => false
+                ];
+            }
+        }
+
+        $totalTemplates = sizeof($this->templates);
+        $installedTemplates = 0;
 
         foreach ($templatesBatch as $templatesUrls) {
             foreach ($templatesUrls as $templateData) {
@@ -58,11 +70,17 @@ class Modules_Microweber_Task_TemplatesDownload extends \pm_LongTask_Task
                     pm_Settings::set('mw_templates_versions', json_encode($templateVersions));
                 }
 
-                $this->runningLog = 'Unzipping template: ' . $templateTargetDir . ' ...';
-            }
+                $this->templates[$templateData['target_dir']] = [
+                    'target_dir' => $templateData['target_dir'],
+                    'downloaded' => true
+                ];
 
-            $updateProgress++;
-            $this->updateProgress($updateProgress);
+                $installedTemplates++;
+                $averageProgress = (int) ($installedTemplates / $totalTemplates * 100);
+
+                $this->updateProgress($averageProgress);
+
+            }
         }
 
         $this->updateProgress(100);
@@ -73,6 +91,7 @@ class Modules_Microweber_Task_TemplatesDownload extends \pm_LongTask_Task
 
         $task = new Modules_Microweber_Task_DomainReinstall();
         $taskManager->start($task, NULL);
+
 	}
 
     public function getTemplatesUrl()
@@ -114,7 +133,7 @@ class Modules_Microweber_Task_TemplatesDownload extends \pm_LongTask_Task
 	{
 		switch ($this->getStatus()) {
 			case static::STATUS_RUNNING:
-				return $this->runningLog;
+				return 'Installing '.Modules_Microweber_WhiteLabel::getBrandName().' templates';
 			case static::STATUS_DONE:
 				return Modules_Microweber_WhiteLabel::getBrandName().' templates is up to date.';
 			case static::STATUS_ERROR:
@@ -126,6 +145,47 @@ class Modules_Microweber_Task_TemplatesDownload extends \pm_LongTask_Task
 		}
 
 	}
+
+
+    public function getSteps()
+    {
+        $steps = [];
+
+        $totalTemplates = 0;
+        $installedTemplates = 0;
+        $averageProgress = 0;
+        if (!empty($this->templates)) {
+            $totalTemplates = sizeof($this->templates);
+            $templateI = 0;
+            foreach ($this->templates as $templateTargetDir=>$template) {
+                $templateI++;
+                $templateProgress = 0;
+                if ($template['downloaded'] == true) {
+                    $templateProgress = 100;
+                    $installedTemplates++;
+                }
+                $steps['download_template_' . $template['target_dir']] = [
+                    'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
+                    'title' => 'Downloading '.$template['target_dir'].' template',
+                    'progressStatus' => 'Installed '.$templateI.' of '.$totalTemplates.' templates',
+                    'progress' => $templateProgress,
+                ];
+            }
+        }
+
+        if ($totalTemplates > 0) {
+            $averageProgress = (int) ($installedTemplates / $totalTemplates * 100);
+        }
+
+        $steps['download_templates'] = [
+            'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
+            'title' => 'Downloading ' . Modules_Microweber_WhiteLabel::getBrandName() . ' templates',
+            'progressStatus' => '',
+            'progress' => $averageProgress,
+        ];
+
+        return $steps;
+    }
 
 
 }
