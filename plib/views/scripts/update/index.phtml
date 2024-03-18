@@ -38,6 +38,13 @@
             setTimeout(function () {
                 showBackToPluginBtn();
             }, 5000);
+            let statusInterval = setInterval(() => {
+                $j.get('/modules/microweber/index.php/update/status', function (data) {
+                    if (data.status === 'done') {
+                        clearInterval(statusInterval);
+                    }
+                });
+            }, 5000);
         });
     }
 

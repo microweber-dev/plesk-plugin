@@ -159,4 +159,16 @@ class UpdateController extends Modules_Microweber_BasepluginController
         ]);
 
     }
+
+    public function statusAction()
+    {
+
+        $taskManager = new pm_LongTask_Manager();
+        $tasks = $taskManager->getTasks(['task_appversioncheck','task_appdownload','task_templatesdownload']);
+
+        $this->_helper->json([
+            'status' => '',
+            'tasks' => $tasks
+        ]);
+    }
 }

@@ -10,6 +10,7 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
 {
     const UID = 'appDownload';
 	public $trackProgress = true;
+    public $finished = false;
 
 	public function run()
 	{
@@ -22,6 +23,12 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
         $this->updateProgress(20);
 
         $appSharedPath = Modules_Microweber_Config::getAppSharedPath();
+
+        if (true) {
+            throw new pm_Exception('Some error message');
+            $this->updateProgress(100);
+            return;
+        }
 
         $downloadLog .= pm_ApiCli::callSbin('unzip_app_version.sh', [base64_encode($release['url']), $appSharedPath])['stdout'];
 
@@ -68,6 +75,7 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
 			case static::STATUS_RUNNING:
 				return 'Download '.Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' app...';
 			case static::STATUS_DONE:
+                $this->finished = true;
 				return Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' app is updated successfully.';
 			case static::STATUS_ERROR:
 				return 'Error installing '.Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' app.';
@@ -78,6 +86,31 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
 		}
 
 	}
+
+    public function getSteps()
+    {
+        return [
+            'example-step' => [
+                'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
+                'title' => 'Example Processing',
+                'progressStatus' => 'Processed 10 of 100 items',
+                'progress' => 10,
+            ],
+            'example-step2' => [
+                'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
+                'title' => 'Example Processing 2',
+                'progressStatus' => 'Processed 20 of 100 items',
+                'progress' => 20,
+            ],
+            'example-step3' => [
+                'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
+                'title' => 'Example Processing 3',
+                'progressStatus' => 'Processed 30 of 100 items',
+                'progress' => 30,
+            ],
+        ];
+
+    }
 
 
 }
