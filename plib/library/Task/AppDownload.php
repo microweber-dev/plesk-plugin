@@ -56,9 +56,6 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
 
         $this->updateProgress(50);
 
-        return;
-
-        $this->updateProgress(30);
 
         // Download the server modules
         $connector = new Modules_Microweber_MarketplaceConnector();
@@ -66,9 +63,13 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
         $downloadModuleUrls = $connector->get_modules_download_urls();
 
         if (!empty($downloadModuleUrls)) {
+            $modulesI = 50;
             foreach ($downloadModuleUrls as $moduleUrl) {
                 $modulesPath = Modules_Microweber_Config::getAppSharedPath().'userfiles/modules/'.$moduleUrl['target_dir'];
                 pm_ApiCli::callSbin('unzip_app_module.sh', [base64_encode($moduleUrl['download_url']), $modulesPath])['stdout'];
+
+                $modulesI += 5;
+                $this->updateProgress($modulesI);
             }
         }
 
@@ -79,11 +80,8 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
         $this->updateProgress(90);
 
         pm_Settings::set('show_php_version_wizard', false);
-
-        $this->updateProgress(100);
-
+        
         $taskManager = new pm_LongTask_Manager();
-
         Modules_Microweber_Helper::stopTasks(['task_templatesdownload']);
 
         // Update templates
@@ -93,13 +91,15 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
         // Fix missing configs
         $task = new Modules_Microweber_Task_AppFixMissingConfigs();
         $taskManager->start($task, NULL);
+
+        $this->updateProgress(100);
 	}
 
 	public function statusMessage()
 	{
 		switch ($this->getStatus()) {
 			case static::STATUS_RUNNING:
-				return 'Install & download '.Modules_Microweber_WhiteLabel::getBrandName();
+				return 'Install '.Modules_Microweber_WhiteLabel::getBrandName();
 			case static::STATUS_DONE:
                 $this->finished = true;
 				return Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' app is updated successfully.';
