@@ -17,7 +17,6 @@ class Modules_Microweber_LongTasks extends \pm_Hook_LongTasks
 			new Modules_Microweber_Task_UpdatePlugin(),
 			new Modules_Microweber_Task_DomainAppInstall(),
 			new Modules_Microweber_Task_AppDownload(),
-			new Modules_Microweber_Task_AppVersionCheck(),
 			new Modules_Microweber_Task_AppFixMissingConfigs(),
 			new Modules_Microweber_Task_TemplatesDownload(),
 			new Modules_Microweber_Task_WhiteLabelBrandingUpdate(),

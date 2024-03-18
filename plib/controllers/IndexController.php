@@ -176,12 +176,12 @@ class IndexController extends Modules_Microweber_BasepluginController
 
     public function appupdatecheckAction()
     {
-        Modules_Microweber_Helper::stopTasks(['task_appversioncheck']);
+        Modules_Microweber_Helper::stopTasks(['task_appdownload']);
 
-        $task = new Modules_Microweber_Task_AppVersionCheck();
+        $task = new Modules_Microweber_Task_AppDownload();
         $this->taskManager->start($task, NULL);
 
-        return $this->_redirect('index/versions');
+        return $this->_redirect('index/startup');
     }
 
     public function checkserverdiskspaceAction()
@@ -843,18 +843,19 @@ class IndexController extends Modules_Microweber_BasepluginController
         $this->view->currentVersion = $this->_getCurrentVersion();
         $this->view->latestDownloadDate = $this->_getCurrentVersionLastDownloadDateTime();
 
-        if ($this->view->currentVersion !== 'unknown') {
-            return $this->_redirect('index');
-        }
+//        if ($this->view->currentVersion !== 'unknown') {
+//            return $this->_redirect('index');
+//        }
 
         if (!empty($mwRelease)) {
             $this->view->latestVersion = $mwReleaseVersion;
         }
 
-        $this->view->updateLink = pm_Context::getBaseUrl() . 'index.php/update/index';
+        $this->view->updateLink = pm_Context::getBaseUrl() . 'index.php/index/appupdatecheck';
 
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/startup.js');
+
     }
 
     public function settingsAction()

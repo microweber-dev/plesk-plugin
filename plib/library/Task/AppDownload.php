@@ -18,19 +18,45 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
 
         $this->updateProgress(10);
 
-        $release = Modules_Microweber_Config::getRelease();
+        if (!Modules_Microweber_Helper::isAvailableDiskSpace()) {
+            throw new pm_Exception('No disk space available on the server. Can\'t download the app.');
+        }
+
+        // Update app
+        $status = Modules_Microweber_Helper::canIUpdateNewVersionOfApp();
 
         $this->updateProgress(20);
 
-        $appSharedPath = Modules_Microweber_Config::getAppSharedPath();
-
-        if (true) {
-            throw new pm_Exception('Some error message');
-            $this->updateProgress(100);
-            return;
+        $canIContinue = false;
+        if ($status['update_app']) {
+            $mwRelease = Modules_Microweber_Config::getRelease();
+            if (!empty($mwRelease)) {
+                $canIContinue = true;
+            }
+        } else {
+            pm_Settings::set('show_php_version_wizard', true);
+            $msg = 'There are domains with old php versions that prevent updating.';
+            $msg .= ' ' . implode(', ', $status['outdated_domains']);
+            throw new pm_Exception($msg);
         }
 
+        if (!$canIContinue) {
+            throw new pm_Exception('Can\'t continue with the update.');
+        }
+
+        $this->updateProgress(30);
+
+        $release = Modules_Microweber_Config::getRelease();
+
+        $this->updateProgress(40);
+
+        $appSharedPath = Modules_Microweber_Config::getAppSharedPath();
+
         $downloadLog .= pm_ApiCli::callSbin('unzip_app_version.sh', [base64_encode($release['url']), $appSharedPath])['stdout'];
+
+        $this->updateProgress(50);
+
+        return;
 
         $this->updateProgress(30);
 
@@ -73,7 +99,7 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
 	{
 		switch ($this->getStatus()) {
 			case static::STATUS_RUNNING:
-				return 'Download '.Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' app...';
+				return 'Install & download '.Modules_Microweber_WhiteLabel::getBrandName();
 			case static::STATUS_DONE:
                 $this->finished = true;
 				return Modules_Microweber_WhiteLabel::getBrandName().' '.$this->getParam('targetDir').' app is updated successfully.';
@@ -89,27 +115,54 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
 
     public function getSteps()
     {
-        return [
-            'example-step' => [
+        if ($this->getProgress() < 40) {
+            $steps = [
+                'isAvailableDiskSpace' => [
+                    'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
+                    'title' => 'Checking available disk space',
+                    'progressStatus' => 'Processed 10 of 100 items',
+                    'progress' => 10,
+                ],
+                'canIUpdateNewVersionOfApp' => [
+                    'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
+                    'title' => 'Checking compatability with new version of ' . Modules_Microweber_WhiteLabel::getBrandName(),
+                    'progressStatus' => 'Processed 30 of 100 items',
+                    'progress' => 30,
+                ]
+            ];
+
+            return $steps;
+        }
+
+        if ($this->getProgress() == 40) {
+            $steps = [];
+            $steps['checks'] = [
                 'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
-                'title' => 'Example Processing',
-                'progressStatus' => 'Processed 10 of 100 items',
-                'progress' => 10,
-            ],
-            'example-step2' => [
-                'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
-                'title' => 'Example Processing 2',
-                'progressStatus' => 'Processed 20 of 100 items',
-                'progress' => 20,
-            ],
-            'example-step3' => [
-                'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
-                'title' => 'Example Processing 3',
+                'title' => 'All checks passed',
                 'progressStatus' => 'Processed 30 of 100 items',
                 'progress' => 30,
-            ],
-        ];
+            ];
+            $steps['downloadApp'] = [
+                'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
+                'title' => 'Downloading ' . Modules_Microweber_WhiteLabel::getBrandName(),
+                'progressStatus' => 'Processed 40 of 100 items',
+                'progress' => 40,
+            ];
+            return $steps;
+        }
 
+        if ($this->getProgress() == 100) {
+            $steps = [];
+            $steps['downloadApp'] = [
+                'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
+                'title' => "Latest version of " . Modules_Microweber_WhiteLabel::getBrandName() . ' is installed successfully',
+                'progressStatus' => 'Processed 100 of 100 items',
+                'progress' => 100,
+            ];
+            return $steps;
+        }
+
+        return [];
     }
 
 
