@@ -160,7 +160,7 @@ class IndexController extends Modules_Microweber_BasepluginController
             $this->view->latestVersion = $mwReleaseVersion;
         }
 
-        $this->view->updateLink = pm_Context::getBaseUrl() . 'index.php/update/index';
+        $this->view->updateLink = pm_Context::getBaseUrl() . 'index.php/index/appupdatecheck';
 
 
         $this->view->pluginUpdateLink = false;
@@ -172,6 +172,16 @@ class IndexController extends Modules_Microweber_BasepluginController
 
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/versions.js');
+    }
+
+    public function appupdatecheckAction()
+    {
+        Modules_Microweber_Helper::stopTasks(['task_appversioncheck']);
+
+        $task = new Modules_Microweber_Task_AppVersionCheck();
+        $this->taskManager->start($task, NULL);
+
+        return $this->_redirect('index/versions');
     }
 
     public function checkserverdiskspaceAction()
