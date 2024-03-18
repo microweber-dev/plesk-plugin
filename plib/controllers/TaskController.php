@@ -31,6 +31,21 @@ class TaskController extends pm_Controller_Action
             ];
         }
 
-        return $taskStatuses;
+        $this->_helper->json($taskStatuses);
     }
+
+
+    public function appupdatecheckAction()
+    {
+        Modules_Microweber_Helper::stopTasks(['task_appdownload']);
+
+        $taskManager = new pm_LongTask_Manager();
+
+        $task = new Modules_Microweber_Task_AppDownload();
+        $taskManager->start($task, NULL);
+
+        $this->_helper->json(['started' => 1]);
+
+    }
+
 }
