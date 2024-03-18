@@ -31,7 +31,18 @@ class TaskController extends pm_Controller_Action
             ];
         }
 
-        $this->_helper->json($taskStatuses);
+        $appInstalled = false;
+        $currentVersionOfApp = Modules_Microweber_Helper::getCurrentVersionOfApp();
+        if ($currentVersionOfApp !== 'unknown') {
+            $appInstalled = true;
+        }
+
+        $this->_helper->json([
+            'tasks' => $taskStatuses,
+            'current_version' => $currentVersionOfApp,
+            'app_installed' => $appInstalled,
+        ]);
+
     }
 
 
