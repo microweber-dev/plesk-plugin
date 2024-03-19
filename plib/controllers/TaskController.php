@@ -25,7 +25,7 @@ class TaskController extends pm_Controller_Action
 
         $tasks = $taskManager->getTasks(['task_domainreinstall']);
         if (isset($tasks[0])) {
-            $taskStatuses['app_download'] = [
+            $taskStatuses['domain_reinstall'] = [
                 'status' => $tasks[0]->getStatus(),
                 'progress' => $tasks[0]->getProgress(),
             ];
