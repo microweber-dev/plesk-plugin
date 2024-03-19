@@ -49,12 +49,7 @@ $j(document).ready(function() {
 
         let updateLink = $j('.js-download-app').data('update-link');
         $j.get(updateLink, function(data) {
-            $j('.js-download-app').html('Installing...');
-
-            setInterval(function() {
-                getLongTaskStatus();
-            }, 3000);
-
+            window.location.reload();
         });
 
     });

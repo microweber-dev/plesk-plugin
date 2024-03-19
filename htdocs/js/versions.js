@@ -55,7 +55,7 @@ $j(document).ready(function() {
         let updateLink = $j('.js-check-for-update').data('update-link');
         $j.get(updateLink, function(data) {
             window.location.reload();
-        }); 
+        });
 
     });
 
