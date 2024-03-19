@@ -2,7 +2,6 @@
 
 abstract class Modules_Microweber_BasepluginController extends pm_Controller_Action {
 
-    protected $devMode = false;
     protected $taskManager = NULL;
     protected $_moduleName = 'Microweber';
 

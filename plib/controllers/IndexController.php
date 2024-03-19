@@ -420,6 +420,14 @@ class IndexController extends Modules_Microweber_BasepluginController
             return $this->_redirect('index/index');
         }
 
+        $requestParams = $this->getRequest()->getParams();
+
+        if (isset($requestParams['dom_id'])
+            && isset($requestParams['site_id'])) {
+
+            return;
+        }
+
         /*
         $this->view->selinuxError = false;
         $this->view->activateSymlinking = false;
@@ -683,82 +691,55 @@ class IndexController extends Modules_Microweber_BasepluginController
                 }
             }
 
-            if (!$this->devMode) {
-
-                // Save pending installation
-                $installationDomainPath = $domain->getName();
-                $installationDirPath = $domain->getDocumentRoot();
-                $installationType = 'Standalone';
-                if (!empty($post['installation_folder'])) {
-                    $installationDirPath = $domain->getDocumentRoot() . '/' . $post['installation_folder'];
-                    $installationDomainPath = $domain->getName() . '/' . $post['installation_folder'];
-                }
-                if ($post['installation_type'] == 'symlink') {
-                    $installationType = 'Symlinked';
-                }
-
-                Modules_Microweber_Domain::addAppInstallation($domain, [
-                    'domainNameUrl' => $installationDomainPath,
-                    'domainCreation' => $domain->getProperty('cr_date'),
-                    'installationType' => $installationType,
-                    'appVersion' => '-',
-                    'appInstallation' => $installationDirPath,
-                    'domainIsActive' => true,
-                    'manageDomainUrl' => '',
-                    'pending' => true,
-                    'created_at' => date('Y-m-d H:i:s'),
-                ]);
-                pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() + 1));
-
-
-                $task = new Modules_Microweber_Task_DomainAppInstall();
-                $task->setParam('domainId', $domain->getId());
-                $task->setParam('domainName', $domain->getName());
-                $task->setParam('domainDisplayName', $domain->getDisplayName());
-                $task->setParam('type', $post['installation_type']);
-                $task->setParam('databaseDriver', $post['installation_database_driver']);
-                //$task->setParam('databaseServerId', $post['installation_database_server_id']);
-                $task->setParam('path', $post['installation_folder']);
-                $task->setParam('template', $post['installation_template']);
-                $task->setParam('language', $post['installation_language']);
-                $task->setParam('email', $post['installation_email']);
-                $task->setParam('username', $post['installation_username']);
-                $task->setParam('password', $post['installation_password']);
-
-                if (pm_Session::getClient()->isAdmin()) {
-                    // Run global
-                    $this->taskManager->start($task, NULL);
-                } else {
-                    // Run for domain
-                    $this->taskManager->start($task, $domain);
-                }
-
-                $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/index']);
-            } else {
-
-                $newInstallation = new Modules_Microweber_Install();
-                $newInstallation->setDomainId($post['installation_domain']);
-                $newInstallation->setType($post['installation_type']);
-                $newInstallation->setDatabaseDriver($post['installation_database_driver']);
-                //$newInstallation->setDatabaseServerId($post['installation_database_server_id']);
-                $newInstallation->setPath($post['installation_folder']);
-                $newInstallation->setTemplate($post['installation_template']);
-                $newInstallation->setLanguage($post['installation_language']);
-
-                if (!empty($post['installation_email'])) {
-                    $newInstallation->setEmail($post['installation_email']);
-                }
-
-                if (!empty($post['installation_username'])) {
-                    $newInstallation->setUsername($post['installation_username']);
-                }
-
-                if (!empty($post['installation_password'])) {
-                    $newInstallation->setPassword($post['installation_password']);
-                }
-
-                return $newInstallation->run();
+            // Save pending installation
+            $installationDomainPath = $domain->getName();
+            $installationDirPath = $domain->getDocumentRoot();
+            $installationType = 'Standalone';
+            if (!empty($post['installation_folder'])) {
+                $installationDirPath = $domain->getDocumentRoot() . '/' . $post['installation_folder'];
+                $installationDomainPath = $domain->getName() . '/' . $post['installation_folder'];
             }
+            if ($post['installation_type'] == 'symlink') {
+                $installationType = 'Symlinked';
+            }
+
+            Modules_Microweber_Domain::addAppInstallation($domain, [
+                'domainNameUrl' => $installationDomainPath,
+                'domainCreation' => $domain->getProperty('cr_date'),
+                'installationType' => $installationType,
+                'appVersion' => '-',
+                'appInstallation' => $installationDirPath,
+                'domainIsActive' => true,
+                'manageDomainUrl' => '',
+                'pending' => true,
+                'created_at' => date('Y-m-d H:i:s'),
+            ]);
+
+            pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() + 1));
+
+            $task = new Modules_Microweber_Task_DomainAppInstall();
+            $task->setParam('domainId', $domain->getId());
+            $task->setParam('domainName', $domain->getName());
+            $task->setParam('domainDisplayName', $domain->getDisplayName());
+            $task->setParam('type', $post['installation_type']);
+            $task->setParam('databaseDriver', $post['installation_database_driver']);
+            //$task->setParam('databaseServerId', $post['installation_database_server_id']);
+            $task->setParam('path', $post['installation_folder']);
+            $task->setParam('template', $post['installation_template']);
+            $task->setParam('language', $post['installation_language']);
+            $task->setParam('email', $post['installation_email']);
+            $task->setParam('username', $post['installation_username']);
+            $task->setParam('password', $post['installation_password']);
+
+            if (pm_Session::getClient()->isAdmin()) {
+                // Run global
+                $this->taskManager->start($task, NULL);
+            } else {
+                // Run for domain
+                $this->taskManager->start($task, $domain);
+            }
+
+            $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/index']);
 
         }
 
