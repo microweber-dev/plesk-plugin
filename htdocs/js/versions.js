@@ -54,13 +54,8 @@ $j(document).ready(function() {
 
         let updateLink = $j('.js-check-for-update').data('update-link');
         $j.get(updateLink, function(data) {
-            $j('.js-check-for-update').html('Installing...');
-
-            setInterval(function() {
-                getLongTaskStatus();
-            }, 3000);
-
-        });
+            window.location.reload();
+        }); 
 
     });
 
