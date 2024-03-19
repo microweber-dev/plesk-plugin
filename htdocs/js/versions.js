@@ -1,27 +1,33 @@
 var $j = jQuery.noConflict();
 $j(document).ready(function() {
 
+    function getLongTaskStatus() {
+        $j.get('/modules/microweber/index.php/task/taskstatuses', function (data) {
+            if (data.tasks.templates_download) {
+                if (data.tasks.templates_download.status == 'running') {
+                    $j('.js-check-for-update').attr('disabled','disabled');
+                    $j('.js-check-for-update').html('Installing templates...');
+                }
+            }
+        });
+    }
+
+    getLongTaskStatus();
+
     $j('body').on('click', '.js-check-for-update', function() {
 
-        if (confirm('Are you sure want to update the app?')) {
+        $j('.js-check-for-update').attr('disabled','disabled');
 
-            $j('.js-check-for-update').attr('disabled', 'disabled');
-            $j('.js-check-for-update').html('Loading...');
+        let updateLink = $j('.js-check-for-update').data('update-link');
 
-            redirectToUpdateLink = $j('.js-check-for-update').data('update-link');
+        $j.get(updateLink, function(data) {
+            $j('.js-check-for-update').html('Installing...');
 
-            setTimeout(function () {
-                $j('.js-check-for-update').html('Checking free disk space...');
-            }, 2000);
+            setInterval(function() {
+                getLongTaskStatus();
+            }, 3000);
 
-            $j.get('/modules/microweber/index.php/index/checkServerDiskSpace', function (data) {
-                if (data.is_ok) {
-                    window.location.href = redirectToUpdateLink;
-                } else {
-                    $j('.js-check-for-update').html('No disk space. Can\'t download the app.');
-                }
-            })
-        }
+        });
 
     });
 
