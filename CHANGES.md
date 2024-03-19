@@ -7,7 +7,7 @@
 - Simplified Microweber Plugin Installation
 - Added quick button installation
 - Fixed bugs
-- 
+
 ## Version 1.0.18 (Release Date: 08.03.2024)
 
 ### Fixed Bugs
