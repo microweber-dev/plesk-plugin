@@ -3,6 +3,8 @@ $j(document).ready(function() {
 
     function getLongTaskStatus(callback = null) {
         $j.get('/modules/microweber/index.php/task/taskstatuses', function (data) {
+            let templatesDownloadStatus = false;
+            let appDownloadStatus = false;
             let showTemplateUpToDate = true;
             if (data.tasks.templates_download) {
                 if (data.tasks.templates_download.status == 'running') {
@@ -10,12 +12,14 @@ $j(document).ready(function() {
                     $j('.js-check-for-update').html('Installing templates...');
                     $j('.js-templates-up-to-date').hide();
                     showTemplateUpToDate = false;
+                    templatesDownloadStatus = 'running';
                 }
             }
             if (data.tasks.app_download) {
                 if (data.tasks.app_download.status == 'running') {
                     $j('.js-check-for-update').attr('disabled', 'disabled');
                     $j('.js-check-for-update').html('Installing app...');
+                    appDownloadStatus = 'running';
                 }
             }
             if (data.app_installed && showTemplateUpToDate) {
@@ -24,7 +28,10 @@ $j(document).ready(function() {
                 $j('.js-check-for-update').html('Check for updates');
             }
             if (callback) {
-                callback(data);
+                callback({
+                    templatesDownloadStatus: templatesDownloadStatus,
+                    appDownloadStatus: appDownloadStatus,
+                });
             }
         });
     }
@@ -32,21 +39,18 @@ $j(document).ready(function() {
     getLongTaskStatus((getLongTaskStatuses)=> {
         if (getLongTaskStatuses) {
             // Some tasks are running
-            if (typeof getLongTaskStatuses.tasks.templates_download != 'undefined' ||
-                typeof getLongTaskStatuses.tasks.app_download != 'undefined') {
-                if (
-                    getLongTaskStatuses.tasks.templates_download.status == 'running' ||
-                    getLongTaskStatuses.tasks.app_download.status == 'running'
-                ) {
-                    let longTaskStatusInterval = setInterval(function () {
-                        getLongTaskStatus(checkStatus => {
-                            if (checkStatus.tasks.templates_download.status !== 'running'
-                                && checkStatus.tasks.app_download.status !== 'running') {
-                                clearInterval(longTaskStatusInterval);
-                            }
-                        });
-                    }, 3000);
-                }
+            if (
+                (getLongTaskStatuses.templatesDownloadStatus == 'running') ||
+                (getLongTaskStatuses.appDownloadStatus == 'running')
+            ) {
+                let longTaskStatusInterval = setInterval(function () {
+                    getLongTaskStatus(checkStatus => {
+                        if (checkStatus.templatesDownloadStatus !== 'running'
+                            && checkStatus.appDownloadStatus !== 'running') {
+                            clearInterval(longTaskStatusInterval);
+                        }
+                    });
+                }, 3000);
             }
         }
     });
