@@ -27,18 +27,21 @@ $j(document).ready(function() {
     getLongTaskStatus((getLongTaskStatuses)=> {
         if (getLongTaskStatuses) {
             // Some tasks are running
-            if (
-                getLongTaskStatuses.tasks.templates_download.status == 'running' ||
-                getLongTaskStatuses.tasks.app_download.status == 'running'
-            ) {
-                let longTaskStatusInterval = setInterval(function() {
-                    getLongTaskStatus(checkStatus => {
-                        if (checkStatus.tasks.templates_download.status !== 'running'
-                            && checkStatus.tasks.app_download.status !== 'running') {
-                            clearInterval(longTaskStatusInterval);
-                        }
-                    });
-                }, 3000);
+            if (typeof getLongTaskStatuses.tasks.templates_download != 'undefined' ||
+                typeof getLongTaskStatuses.tasks.app_download != 'undefined') {
+                if (
+                    getLongTaskStatuses.tasks.templates_download.status == 'running' ||
+                    getLongTaskStatuses.tasks.app_download.status == 'running'
+                ) {
+                    let longTaskStatusInterval = setInterval(function () {
+                        getLongTaskStatus(checkStatus => {
+                            if (checkStatus.tasks.templates_download.status !== 'running'
+                                && checkStatus.tasks.app_download.status !== 'running') {
+                                clearInterval(longTaskStatusInterval);
+                            }
+                        });
+                    }, 3000);
+                }
             }
         }
     });
