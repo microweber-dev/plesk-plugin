@@ -35,8 +35,13 @@ $j(document).ready(function() {
                 getLongTaskStatuses.tasks.templates_download.status == 'running' ||
                 getLongTaskStatuses.tasks.app_download.status == 'running'
             ) {
-                setInterval(function() {
-                    getLongTaskStatus();
+                let longTaskStatusInterval = setInterval(function() {
+                    getLongTaskStatus(checkStatus => {
+                        if (checkStatus.tasks.templates_download.status !== 'running'
+                            && checkStatus.tasks.app_download.status !== 'running') {
+                            clearInterval(longTaskStatusInterval);
+                        }
+                    });
                 }, 3000);
             }
         }
