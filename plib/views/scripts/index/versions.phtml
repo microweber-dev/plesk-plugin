@@ -59,7 +59,7 @@
 <br />
 <br />
 <?php if ($this->currentVersion != $this->latestVersion): ?>
-<button type="button" class="btn action js-check-for-update" style="width:200px;">Update</button>
+<button data-update-link="<?php echo $this->updateLink; ?>" type="button" class="btn action js-check-for-update" style="width:200px;">Update</button>
 <?php else: ?>
 <div style="display:none" class="js-templates-up-to-date pul-alert pul-alert--success pul-status-message pul-status-message--success">
 <span class="pul-icon pul-status-message__icon">
@@ -67,7 +67,7 @@
 </span>
     Your app and templates is up-to-date!
 </div>
-<button type="button" class="btn action js-check-for-update" style="width:200px;">
+<button data-update-link="<?php echo $this->updateLink; ?>" type="button" class="btn action js-check-for-update" style="width:200px;">
     Check for updates
 </button>
 <?php endif; ?>
