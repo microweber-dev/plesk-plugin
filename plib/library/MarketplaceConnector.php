@@ -13,7 +13,7 @@ class Modules_Microweber_MarketplaceConnector
 	 *
 	 * @var array
 	 */
-	public $package_urls = [ 
+	public $package_urls = [
 		'https://packages.microweberapi.com/packages.json'
 	];
 
@@ -29,7 +29,7 @@ class Modules_Microweber_MarketplaceConnector
     {
         $this->licenses = $license;
     }
-    
+
     public function add_license($license)
     {
         $this->licenses[] = $license;
@@ -41,9 +41,9 @@ class Modules_Microweber_MarketplaceConnector
 			$this->update_package_urls();
 		}
 	}
-	
+
 	public function update_package_urls() {
-		
+
 		$whmcsUrl = $this->whmcs_url . '/index.php?m=microweber_addon&function=get_package_manager_urls';
 		$whmcsPackageUrls = $this->_get_content_from_url($whmcsUrl);
 		$whmcsPackageUrls = json_decode($whmcsPackageUrls, TRUE);
@@ -51,7 +51,7 @@ class Modules_Microweber_MarketplaceConnector
 			$this->set_package_urls($whmcsPackageUrls);
 		}
 	}
-	
+
 	public function add_package_urls($urls) {
 		if (is_array($urls) && !empty($urls)) {
 			foreach($urls as $url) {
@@ -59,7 +59,7 @@ class Modules_Microweber_MarketplaceConnector
 			}
 		}
 	}
-	
+
 	public function set_package_urls($urls) {
 		if (is_array($urls) && !empty($urls)) {
 			$this->package_urls = [];
@@ -68,13 +68,13 @@ class Modules_Microweber_MarketplaceConnector
 			}
 		}
 	}
-	
+
 	public function add_package_url($originalUrl) {
 		$url = trim($originalUrl);
-		$this->package_urls[] = $url; 
+		$this->package_urls[] = $url;
 	}
-	
-	
+
+
 	/**
 	 * Get package urls
 	 * @return string[]
@@ -83,7 +83,7 @@ class Modules_Microweber_MarketplaceConnector
 	{
 		return $this->package_urls;
 	}
-	
+
 	/**
 	 * Get available packages
 	 *
@@ -129,7 +129,7 @@ class Modules_Microweber_MarketplaceConnector
 		}
 		return $packages_by_type;
 	}
-	
+
 	/**
 	 * Get available templates
 	 *
@@ -145,14 +145,14 @@ class Modules_Microweber_MarketplaceConnector
                 $return[$pk] = $template;
 			}
 		}
-		
+
 		return $return;
 	}
-	
+
 	public function get_templates_download_urls()
 	{
 		$download_urls = [];
-		
+
 		$templates = $this->get_templates();
 
 		if (is_array($templates) && !empty($templates)) {
@@ -169,11 +169,29 @@ class Modules_Microweber_MarketplaceConnector
 						'target_dir'=>$template['latest_version']['target-dir'],
 						'download_url'=>$template['latest_version']['dist']['url']
 					];
-					
+
 				}
 			}
 		}
-		
+
+        // Fix for BIG premium and BIG free template
+        $big_premium_found = false;
+        foreach ($download_urls as $download_url) {
+            if ($download_url['name'] == 'microweber-templates/big') {
+                $big_premium_found = true;
+            }
+        }
+        if ($big_premium_found) {
+            $new_download_urls = [];
+            foreach ($download_urls as &$download_url) {
+                if ($download_url['name'] == 'microweber-templates/big-free') {
+                    continue;
+                }
+                $new_download_urls[] = $download_url;
+            }
+            $download_urls = $new_download_urls;
+        }
+
 		return $download_urls;
 	}
 
@@ -242,7 +260,7 @@ class Modules_Microweber_MarketplaceConnector
             curl_setopt_array($ch, $opts);
 
             $data = curl_exec($ch);
-            
+
             curl_close($ch);
             return $data;
         } else {
