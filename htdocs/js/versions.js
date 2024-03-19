@@ -22,7 +22,7 @@ $j(document).ready(function() {
                     appDownloadStatus = 'running';
                 }
             }
-            if (data.app_installed && showTemplateUpToDate) {
+            if (data.running_tasks_count == 0) {
                 $j('.js-templates-up-to-date').show();
                 $j('.js-check-for-update').removeAttr('disabled');
                 $j('.js-check-for-update').html('Check for updates');

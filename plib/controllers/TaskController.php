@@ -6,13 +6,16 @@ class TaskController extends pm_Controller_Action
     {
         $taskStatuses = [];
         $taskManager = new pm_LongTask_Manager();
-
+        $runningTasksCount = 0;
         $tasks = $taskManager->getTasks(['task_templatesdownload']);
         if (isset($tasks[0])) {
             $taskStatuses['templates_download'] = [
                 'status' => $tasks[0]->getStatus(),
                 'progress' => $tasks[0]->getProgress(),
             ];
+            if ($tasks[0]->getStatus() == pm_LongTask_Task::STATUS_RUNNING) {
+                $runningTasksCount++;
+            }
         }
 
         $tasks = $taskManager->getTasks(['task_appdownload']);
@@ -21,6 +24,9 @@ class TaskController extends pm_Controller_Action
                 'status' => $tasks[0]->getStatus(),
                 'progress' => $tasks[0]->getProgress(),
             ];
+            if ($tasks[0]->getStatus() == pm_LongTask_Task::STATUS_RUNNING) {
+                $runningTasksCount++;
+            }
         }
 
         $tasks = $taskManager->getTasks(['task_domainreinstall']);
@@ -29,6 +35,9 @@ class TaskController extends pm_Controller_Action
                 'status' => $tasks[0]->getStatus(),
                 'progress' => $tasks[0]->getProgress(),
             ];
+            if ($tasks[0]->getStatus() == pm_LongTask_Task::STATUS_RUNNING) {
+                $runningTasksCount++;
+            }
         }
 
         $appInstalled = false;
@@ -41,6 +50,7 @@ class TaskController extends pm_Controller_Action
             'tasks' => $taskStatuses,
             'current_version' => $currentVersionOfApp,
             'app_installed' => $appInstalled,
+            'running_tasks_count' => $runningTasksCount,
         ]);
 
     }
