@@ -27,7 +27,7 @@ $j(document).ready(function() {
             $j('.js-download-app').html('Installing...');
 
             setInterval(function() {
-                getLongTaskStatus(); 
+                getLongTaskStatus();
             }, 3000);
 
         });
