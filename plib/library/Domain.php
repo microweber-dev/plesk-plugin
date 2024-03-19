@@ -267,17 +267,18 @@ class Modules_Microweber_Domain
             if (!$domain->hasHosting()) {
                 continue;
             }
-            $planItems = $domain->getPlanItems();
+           // $planItems = $domain->getPlanItems();  
 
             if (pm_Session::getClient()->hasAccessToDomain($domain->getId())) {
 
-                if (is_array($planItems)
-                    && count($planItems) > 0
-                    && (in_array("microweber", $planItems)
-                        || in_array("microweber_without_shop", $planItems)
-                        || in_array("microweber_lite", $planItems))) {
-                    $domains[] = $domain;
-                }
+//                if (is_array($planItems)
+//                    && count($planItems) > 0
+//                    && (in_array("microweber", $planItems)
+//                        || in_array("microweber_without_shop", $planItems)
+//                        || in_array("microweber_lite", $planItems))) {
+//                    $domains[] = $domain;
+//                }
+                $domains[] = $domain;
             }
         }
 

@@ -424,8 +424,16 @@ class IndexController extends Modules_Microweber_BasepluginController
 
         if (isset($requestParams['dom_id'])
             && isset($requestParams['site_id'])) {
-
-            return;
+            $domain = pm_Domain::getByDomainId($requestParams['dom_id']);
+            if (pm_Session::getClient()->hasAccessToDomain($domain->getId())) {
+                $installationQueue = [];
+                $installationQueue['installation_domain'] = $requestParams['dom_id'];
+                $installationQueue['installation_folder'] = '';
+                $response = $this->installMicroweberOnDomainQueue($installationQueue);
+                if (isset($response['redirect'])) {
+                    return $this->_redirect($response['redirect']);
+                }
+            }
         }
 
         /*
@@ -647,105 +655,117 @@ class IndexController extends Modules_Microweber_BasepluginController
         ]);
 
         if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
-
             $post = $this->getRequest()->getPost();
-
-            $currentVersion = $this->_getCurrentVersion();
-            if ($currentVersion == 'unknown') {
-                $this->_updateApp();
-                $this->_updateTemplates();
-            }
-
-            $currentVersion = $this->_getCurrentVersion();
-            if ($currentVersion == 'unknown') {
-                $this->_status->addMessage('error', 'Can\'t install app because not releases found.');
-                $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/index']);
-            }
-
-            $domain = new pm_Domain($post['installation_domain']);
-            if (!$domain->getName()) {
-                $this->_status->addMessage('error', 'Please, select domain to install microweber.');
-                $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/install']);
-            }
-
-            $hostingManager = new Modules_Microweber_HostingManager();
-            $hostingManager->setDomainId($domain->getId());
-            $hostingProperties = $hostingManager->getHostingProperties();
-            if (!$hostingProperties['php']) {
-                $this->_status->addMessage('error', 'PHP is not activated on selected domain.');
-                $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/install']);
-            }
-
-            $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
-            if (version_compare($phpHandler['version'], $this->view->sharedAppRequirements['mwReleasePhpVersion'], '<')) {
-                $this->_status->addMessage('error', 'Domain '.$domainName.' has PHP ' . $phpHandler['version'] . ' and is not supported by Microweber. You must install PHP '.$this->view->sharedAppRequirements['mwReleasePhpVersion'].' or newer.');
-                $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/install']);
-            }
-
-            if (!pm_Session::getClient()->isAdmin()) {
-                $dbServerIdDefault = pm_Settings::get('installation_database_server_id');
-                $dbServerIdDefault = trim($dbServerIdDefault);
-
-                if (!empty($dbServerIdDefault)) {
-                    $post['installation_database_server_id'] = $dbServerIdDefault;
-                }
-            }
-
-            // Save pending installation
-            $installationDomainPath = $domain->getName();
-            $installationDirPath = $domain->getDocumentRoot();
-            $installationType = 'Standalone';
-            if (!empty($post['installation_folder'])) {
-                $installationDirPath = $domain->getDocumentRoot() . '/' . $post['installation_folder'];
-                $installationDomainPath = $domain->getName() . '/' . $post['installation_folder'];
-            }
-            if ($post['installation_type'] == 'symlink') {
-                $installationType = 'Symlinked';
-            }
-
-            Modules_Microweber_Domain::addAppInstallation($domain, [
-                'domainNameUrl' => $installationDomainPath,
-                'domainCreation' => $domain->getProperty('cr_date'),
-                'installationType' => $installationType,
-                'appVersion' => '-',
-                'appInstallation' => $installationDirPath,
-                'domainIsActive' => true,
-                'manageDomainUrl' => '',
-                'pending' => true,
-                'created_at' => date('Y-m-d H:i:s'),
-            ]);
-
-            pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() + 1));
-
-            $task = new Modules_Microweber_Task_DomainAppInstall();
-            $task->setParam('domainId', $domain->getId());
-            $task->setParam('domainName', $domain->getName());
-            $task->setParam('domainDisplayName', $domain->getDisplayName());
-            $task->setParam('type', $post['installation_type']);
-            $task->setParam('databaseDriver', $post['installation_database_driver']);
-            //$task->setParam('databaseServerId', $post['installation_database_server_id']);
-            $task->setParam('path', $post['installation_folder']);
-            $task->setParam('template', $post['installation_template']);
-            $task->setParam('language', $post['installation_language']);
-            $task->setParam('email', $post['installation_email']);
-            $task->setParam('username', $post['installation_username']);
-            $task->setParam('password', $post['installation_password']);
-
-            if (pm_Session::getClient()->isAdmin()) {
-                // Run global
-                $this->taskManager->start($task, NULL);
-            } else {
-                // Run for domain
-                $this->taskManager->start($task, $domain);
-            }
-
-            $this->_helper->json(['redirect' => pm_Context::getBaseUrl() . 'index.php/index/index']);
-
+            return $this->installMicroweberOnDomainQueue($post);
         }
 
         $this->view->form = $form;
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/jquery.min.js');
         $this->view->headScript()->appendFile(pm_Context::getBaseUrl() . 'js/install.js');
+    }
+
+    public function installMicroweberOnDomainQueue($post)
+    {
+        $currentVersion = $this->_getCurrentVersion();
+        if ($currentVersion == 'unknown') {
+            $this->_updateApp();
+            $this->_updateTemplates();
+        }
+
+        $currentVersion = $this->_getCurrentVersion();
+        if ($currentVersion == 'unknown') {
+            return [
+                'redirect' => 'index/index',
+                'error' => 'Can\'t install app because not releases found.'
+            ];
+        }
+
+        $domain = new pm_Domain($post['installation_domain']);
+        if (!$domain->getName()) {
+            return [
+                'redirect' => 'index/install',
+                'error' => 'Please, select domain to install microweber.'
+            ];
+        }
+
+        $hostingManager = new Modules_Microweber_HostingManager();
+        $hostingManager->setDomainId($domain->getId());
+        $hostingProperties = $hostingManager->getHostingProperties();
+        if (!$hostingProperties['php']) {
+            return [
+                'redirect' => 'index/install',
+                'error' => 'PHP is not activated on selected domain.'
+            ];
+        }
+
+        $phpHandler = $hostingManager->getPhpHandler($hostingProperties['php_handler_id']);
+        if (version_compare($phpHandler['version'], $this->view->sharedAppRequirements['mwReleasePhpVersion'], '<')) {
+
+            return [
+                'redirect' =>  'index/install',
+                'error' => 'Domain '.$post['installation_domain'].' has PHP ' . $phpHandler['version'] . ' and is not supported by Microweber. You must install PHP '.$this->view->sharedAppRequirements['mwReleasePhpVersion'].' or newer.'
+            ];
+        }
+
+        if (!pm_Session::getClient()->isAdmin()) {
+            $dbServerIdDefault = pm_Settings::get('installation_database_server_id');
+            $dbServerIdDefault = trim($dbServerIdDefault);
+
+            if (!empty($dbServerIdDefault)) {
+                $post['installation_database_server_id'] = $dbServerIdDefault;
+            }
+        }
+
+        // Save pending installation
+        $installationDomainPath = $domain->getName();
+        $installationDirPath = $domain->getDocumentRoot();
+        $installationType = 'Standalone';
+        if (!empty($post['installation_folder'])) {
+            $installationDirPath = $domain->getDocumentRoot() . '/' . $post['installation_folder'];
+            $installationDomainPath = $domain->getName() . '/' . $post['installation_folder'];
+        }
+        if ($post['installation_type'] == 'symlink') {
+            $installationType = 'Symlinked';
+        }
+
+        Modules_Microweber_Domain::addAppInstallation($domain, [
+            'domainNameUrl' => $installationDomainPath,
+            'domainCreation' => $domain->getProperty('cr_date'),
+            'installationType' => $installationType,
+            'appVersion' => '-',
+            'appInstallation' => $installationDirPath,
+            'domainIsActive' => true,
+            'manageDomainUrl' => '',
+            'pending' => true,
+            'created_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        pm_Settings::set('mw_installations_count',  (Modules_Microweber_LicenseData::getAppInstallationsCount() + 1));
+
+        $task = new Modules_Microweber_Task_DomainAppInstall();
+        $task->setParam('domainId', $domain->getId());
+        $task->setParam('domainName', $domain->getName());
+        $task->setParam('domainDisplayName', $domain->getDisplayName());
+        $task->setParam('type', $post['installation_type']);
+        $task->setParam('databaseDriver', $post['installation_database_driver']);
+        //$task->setParam('databaseServerId', $post['installation_database_server_id']);
+        $task->setParam('path', $post['installation_folder']);
+        $task->setParam('template', $post['installation_template']);
+        $task->setParam('language', $post['installation_language']);
+        $task->setParam('email', $post['installation_email']);
+        $task->setParam('username', $post['installation_username']);
+        $task->setParam('password', $post['installation_password']);
+
+        if (pm_Session::getClient()->isAdmin()) {
+            // Run global
+            $this->taskManager->start($task, NULL);
+        } else {
+            // Run for domain
+            $this->taskManager->start($task, $domain);
+        }
+
+        return ['redirect' => 'index/index'];
+
     }
 
     public function checkinstallpathAction()
