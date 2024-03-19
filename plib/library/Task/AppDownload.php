@@ -118,13 +118,13 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
         if ($this->getProgress() < 40) {
             $steps = [
                 'isAvailableDiskSpace' => [
-                    'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
+               //     'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
                     'title' => 'Checking available disk space',
                     'progressStatus' => 'Processed 10 of 100 items',
                     'progress' => 10,
                 ],
                 'canIUpdateNewVersionOfApp' => [
-                    'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
+              //      'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
                     'title' => 'Checking compatability with new version of ' . Modules_Microweber_WhiteLabel::getBrandName(),
                     'progressStatus' => 'Processed 30 of 100 items',
                     'progress' => 30,
@@ -137,13 +137,13 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
         if ($this->getProgress() == 40) {
             $steps = [];
             $steps['checks'] = [
-                'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
+              //  'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
                 'title' => 'All checks passed',
-                'progressStatus' => 'Processed 30 of 100 items',
-                'progress' => 30,
+                'progressStatus' => 'Processed 4 of 4 checks',
+                'progress' => 100,
             ];
             $steps['downloadApp'] = [
-                'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
+              //  'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
                 'title' => 'Downloading ' . Modules_Microweber_WhiteLabel::getBrandName(),
                 'progressStatus' => 'Processed 40 of 100 items',
                 'progress' => 40,
@@ -154,7 +154,7 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
         if ($this->getProgress() == 100) {
             $steps = [];
             $steps['downloadApp'] = [
-                'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
+             //   'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
                 'title' => "Latest version of " . Modules_Microweber_WhiteLabel::getBrandName() . ' is installed successfully',
                 'progressStatus' => 'Processed 100 of 100 items',
                 'progress' => 100,

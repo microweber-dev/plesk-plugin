@@ -165,7 +165,7 @@ class Modules_Microweber_Task_TemplatesDownload extends \pm_LongTask_Task
                     $installedTemplates++;
                 }
                 $steps['download_template_' . $template['target_dir']] = [
-                    'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
+                   // 'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
                     'title' => 'Downloading '.$template['target_dir'].' template',
                     'progressStatus' => 'Installed '.$templateI.' of '.$totalTemplates.' templates',
                     'progress' => $templateProgress,
@@ -178,7 +178,7 @@ class Modules_Microweber_Task_TemplatesDownload extends \pm_LongTask_Task
         }
 
         $steps['download_templates'] = [
-            'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
+           // 'icon' => pm_Context::getBaseUrl() . 'images/icon.png',
             'title' => 'Downloading ' . Modules_Microweber_WhiteLabel::getBrandName() . ' templates',
             'progressStatus' => '',
             'progress' => $averageProgress,
