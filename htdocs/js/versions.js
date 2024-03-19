@@ -8,6 +8,7 @@ $j(document).ready(function() {
                 if (data.tasks.templates_download.status == 'running') {
                     $j('.js-check-for-update').attr('disabled','disabled');
                     $j('.js-check-for-update').html('Installing templates...');
+                    $j('.js-templates-up-to-date').hide();
                     showTemplateUpToDate = false;
                 }
             }
