@@ -14,7 +14,6 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
 
 	public function run()
 	{
-
         $this->updateProgress(10);
 
         if (!Modules_Microweber_Helper::isAvailableDiskSpace()) {
