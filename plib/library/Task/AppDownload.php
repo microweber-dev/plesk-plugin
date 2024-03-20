@@ -14,13 +14,12 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
 
 	public function run()
 	{
-        $downloadLog = '';
 
         $this->updateProgress(10);
-//
-//        if (!Modules_Microweber_Helper::isAvailableDiskSpace()) {
-//            throw new pm_Exception('No disk space available on the server. Can\'t download the app.');
-//        }
+
+        if (!Modules_Microweber_Helper::isAvailableDiskSpace()) {
+            throw new pm_Exception('No disk space available on the server. Can\'t download the app.');
+        }
 
         // Update app
         $status = Modules_Microweber_Helper::canIUpdateNewVersionOfApp();
@@ -52,17 +51,12 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
 
         $appSharedPath = Modules_Microweber_Config::getAppSharedPath();
 
-        $downloadZipFile = pm_ApiCli::callSbin('download_file.sh', [
+        pm_ApiCli::callSbin('unzip_app_version.sh', [
             base64_encode($release['url']),
-            $appSharedPath,
-            'microweber-app.zip'
+            $appSharedPath
         ])['stdout'];
 
-
-        var_dump($downloadZipFile);
-        die();
         $this->updateProgress(50);
-
 
         // Download the server modules
         $connector = new Modules_Microweber_MarketplaceConnector();
