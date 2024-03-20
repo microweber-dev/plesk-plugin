@@ -13,19 +13,6 @@ zipDownloadedFile="$3";
 
 echo "Download from url:" "$downloadUrl";
 
-#wget "$downloadUrl" -O "$zipDownloadedFile"
+wget "$downloadUrl" -O "$zipDownloadedFile" 1>/dev/null 2>&1 &
 
-# Retry 100 times
-Retry=0
-until wget "$downloadUrl" -O "$zipDownloadedFile"; do
-    printf 'DOWNLOAD....\n'
-    sleep 2
-    Retry=$((Retry+1))
-    if [ $Retry -eq 100 ]; then
-        echo "Failed to download file after 100 retries"
-        exit 1
-    fi
-done
-
-echo "Downloaded file:" "$zipDownloadedFile";
-
+echo "File is downloaded:" "$zipDownloadedFile";
