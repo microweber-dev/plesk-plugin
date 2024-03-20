@@ -11,6 +11,7 @@ cd "$targetFolder"
 
 zipDownloadedFile="$3";
 
-echo 'Download from url:' "$downloadUrl";
+echo "Download from url:" "$downloadUrl";
+
 
 wget "$downloadUrl" -O "$zipDownloadedFile"

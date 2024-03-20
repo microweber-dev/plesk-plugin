@@ -17,10 +17,10 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
         $downloadLog = '';
 
         $this->updateProgress(10);
-
-        if (!Modules_Microweber_Helper::isAvailableDiskSpace()) {
-            throw new pm_Exception('No disk space available on the server. Can\'t download the app.');
-        }
+//
+//        if (!Modules_Microweber_Helper::isAvailableDiskSpace()) {
+//            throw new pm_Exception('No disk space available on the server. Can\'t download the app.');
+//        }
 
         // Update app
         $status = Modules_Microweber_Helper::canIUpdateNewVersionOfApp();
@@ -58,6 +58,9 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
             'microweber-app.zip'
         ])['stdout'];
 
+
+        var_dump($downloadZipFile);
+        die();
         $this->updateProgress(50);
 
 
