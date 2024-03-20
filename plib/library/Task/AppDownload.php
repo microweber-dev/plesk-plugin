@@ -52,13 +52,11 @@ class Modules_Microweber_Task_AppDownload extends \pm_LongTask_Task
 
         $appSharedPath = Modules_Microweber_Config::getAppSharedPath();
 
-        $downloadLog .= pm_ApiCli::callSbin('download_file.sh', [
+        $downloadZipFile = pm_ApiCli::callSbin('download_file.sh', [
             base64_encode($release['url']),
             $appSharedPath,
             'microweber-app.zip'
         ])['stdout'];
-
-        die($downloadLog);
 
         $this->updateProgress(50);
 
