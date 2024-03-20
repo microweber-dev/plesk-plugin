@@ -656,7 +656,13 @@ class IndexController extends Modules_Microweber_BasepluginController
 
         if ($this->getRequest()->isPost() && $form->isValid($this->getRequest()->getPost())) {
             $post = $this->getRequest()->getPost();
-            return $this->installMicroweberOnDomainQueue($post);
+            $responseDomainQueue = $this->installMicroweberOnDomainQueue($post);
+            if (isset($responseDomainQueue['redirect'])) {
+                return $this->_redirect($responseDomainQueue['redirect']);
+            }
+            if (isset($responseDomainQueue['error'])) {
+                $this->_status->addMessage('error', $responseDomainQueue['error']);
+            }
         }
 
         $this->view->form = $form;
