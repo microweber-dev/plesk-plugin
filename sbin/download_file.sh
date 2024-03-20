@@ -2,14 +2,15 @@
 
 downloadUrl=$(echo "$1" | base64 -d)
 
-latestFolder=$2
-if [ ! -d "$latestFolder" ]; then
-	mkdir -p "$latestFolder"
+targetFolder=$2
+if [ ! -d "$targetFolder" ]; then
+	mkdir -p "$targetFolder"
 fi
 
-cd "$latestFolder"
+cd "$targetFolder"
 
-zipDownloadedFile="microweber-app.zip";
+zipDownloadedFile="$3";
 
-echo 'Download from url...'
-#wget "$downloadUrl" -O "$zipDownloadedFile"
+echo 'Download from url:' "$downloadUrl";
+
+wget "$downloadUrl" -O "$zipDownloadedFile"

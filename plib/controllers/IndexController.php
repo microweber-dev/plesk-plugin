@@ -80,6 +80,11 @@ class IndexController extends Modules_Microweber_BasepluginController
             Modules_Microweber_Helper::checkAndFixSchedulerTasks();
         }
 
+
+        $task = new Modules_Microweber_Task_AppDownload();
+        $task->run();
+        echo 1;
+        die();
         $this->_checkAppSettingsIsCorrect();
 
         $this->view->errorMessage = false;
