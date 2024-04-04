@@ -43,9 +43,12 @@ class Modules_Microweber_Config
         if ($sfm->fileExists($templatesPath)) {
             $listDir = $sfm->scandir($templatesPath, true);
             foreach ($listDir as $file) {
-                $upperText = $file;
-                $upperText = ucfirst($upperText);
-                $templates[trim($file)] = $upperText;
+                if($file) {
+                    $upperText = $file;
+                    $upperText = ucfirst($upperText);
+                    $templates[trim($file)] = $upperText;
+                }
+
             }
         } else {
             $templates['Default'] = 'Default';
